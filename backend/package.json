@@ -4,8 +4,8 @@
   "description": "HVAC-R CRM Backend",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node startup.cjs && node dist/index.js",
+    "build": "npx prisma generate && tsc",
+    "start": "node startup.cjs && npx tsx src/index.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",

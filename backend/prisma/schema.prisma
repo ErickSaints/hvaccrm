@@ -3,9 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
+// Para desarrollo local con SQLite, descomenta las 3 líneas de abajo
+// y comenta las 3 líneas de arriba:
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
 
 enum UserRole {
   ADMIN
