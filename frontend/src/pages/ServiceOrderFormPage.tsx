@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Save, Loader2, Ticket, Shield } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Ticket, Shield, Camera, Plus, Trash2 } from 'lucide-react';
 import api from '../lib/api';
+import PhotoUploader from '../components/PhotoUploader';
 import type { ServiceOrder, Customer, User, Equipment, Ticket as TicketType, MaintenancePolicy } from '../types';
+
+const photoSchema = z.object({
+  url: z.string().min(1),
+  caption: z.string().optional(),
+  type: z.string().optional(),
+});
 
 const serviceOrderSchema = z.object({
   customerId: z.number({ required_error: 'Selecciona un cliente' }),
@@ -16,6 +23,7 @@ const serviceOrderSchema = z.object({
   scheduledDate: z.string().optional(),
   assignedTo: z.number().optional().nullable(),
   notes: z.string().optional(),
+  photos: z.array(photoSchema).optional(),
 });
 
 type ServiceOrderFormData = z.infer<typeof serviceOrderSchema>;
@@ -139,11 +147,15 @@ export default function ServiceOrderFormPage() {
 
   const mutation = useMutation({
     mutationFn: async (data: ServiceOrderFormData) => {
-      const payload = {
-        ...data,
+      const { photos, ...rest } = data;
+      const payload: any = {
+        ...rest,
         ...(ticketId ? { ticketId: Number(ticketId) } : {}),
         ...(policyId ? { policyId: Number(policyId) } : {}),
       };
+      if (photos && photos.length > 0 && photos[0]?.url) {
+        payload.photos = photos.filter((p) => p.url);
+      }
       if (isEditing) {
         await api.put(`/service-orders/${id}`, payload);
       } else {
@@ -314,6 +326,77 @@ export default function ServiceOrderFormPage() {
             placeholder="Notas internas o adicionales..."
           />
         </div>
+
+        {/* Photos */}
+        <Controller
+          name="photos"
+          control={control}
+          render={({ field }) => {
+            const photos = field.value || [];
+            return (
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Camera className="w-5 h-5 text-primary-600" />
+                  <h3 className="text-lg font-semibold text-gray-900">Fotografías</h3>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {photos.map((photo, index) => (
+                    <div key={index} className="relative">
+                      <PhotoUploader
+                        value={photo.url}
+                        onChange={(url) => {
+                          const updated = [...photos];
+                          updated[index] = { ...updated[index], url };
+                          field.onChange(updated);
+                        }}
+                        onClear={() => {
+                          const updated = photos.filter((_, i) => i !== index);
+                          field.onChange(updated);
+                        }}
+                      />
+                      <div className="mt-1 flex gap-1">
+                        <input
+                          type="text"
+                          value={photo.caption || ''}
+                          onChange={(e) => {
+                            const updated = [...photos];
+                            updated[index] = { ...updated[index], caption: e.target.value };
+                            field.onChange(updated);
+                          }}
+                          placeholder="Pie de foto"
+                          className="input-field text-xs flex-1"
+                        />
+                        <select
+                          value={photo.type || ''}
+                          onChange={(e) => {
+                            const updated = [...photos];
+                            updated[index] = { ...updated[index], type: e.target.value };
+                            field.onChange(updated);
+                          }}
+                          className="input-field text-xs w-24"
+                        >
+                          <option value="">Tipo</option>
+                          <option value="ANTES">Antes</option>
+                          <option value="PROCESO">Proceso</option>
+                          <option value="DESPUES">Después</option>
+                          <option value="OTRO">Otro</option>
+                        </select>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => field.onChange([...photos, { url: '', caption: '', type: '' }])}
+                    className="border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center gap-1 p-4 hover:border-primary-300 hover:bg-primary-50/30 transition-all cursor-pointer min-h-[120px]"
+                  >
+                    <Plus className="w-6 h-6 text-gray-300" />
+                    <span className="text-xs text-gray-400">Agregar foto</span>
+                  </button>
+                </div>
+              </div>
+            );
+          }}
+        />
 
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
           <button type="button" onClick={() => navigate('/service-orders')} className="btn-secondary">

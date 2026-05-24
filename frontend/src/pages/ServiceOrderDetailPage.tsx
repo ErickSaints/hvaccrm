@@ -17,6 +17,7 @@ import {
   Clock,
   DollarSign,
   ChevronDown,
+  Camera,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
@@ -243,6 +244,35 @@ export default function ServiceOrderDetailPage() {
             <div className="card space-y-3">
               <h2 className="text-lg font-semibold text-gray-900">Notas</h2>
               <p className="text-gray-700 whitespace-pre-wrap">{order.notes}</p>
+            </div>
+          )}
+
+          {order.photos && order.photos.length > 0 && (
+            <div className="card space-y-3">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Camera className="w-5 h-5 text-primary-600" />
+                Fotografías ({order.photos.length})
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {order.photos.map((photo: any) => (
+                  <div key={photo.id} className="relative group">
+                    <img
+                      src={photo.url}
+                      alt={photo.caption || 'Foto'}
+                      className="w-full h-32 object-cover rounded-xl border border-gray-200"
+                      onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/400x300?text=Error'; }}
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2 rounded-b-xl">
+                      {photo.caption && <p className="text-xs text-white truncate">{photo.caption}</p>}
+                      {photo.type && (
+                        <span className="text-[10px] text-white/80">
+                          {photo.type === 'ANTES' ? 'Antes' : photo.type === 'DESPUES' ? 'Después' : photo.type === 'PROCESO' ? 'Proceso' : photo.type}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

@@ -23,6 +23,11 @@ const serviceOrderSchema = z.object({
   scheduledDate: z.string().optional(),
   status: z.enum(['PENDIENTE', 'EN_PROGRESO', 'COMPLETADO', 'CANCELADO']).optional(),
   notes: z.string().optional(),
+  photos: z.array(z.object({
+    url: z.string(),
+    caption: z.string().optional(),
+    type: z.string().optional(),
+  })).optional(),
 });
 
 async function generateOrderNumber(): Promise<string> {
@@ -44,7 +49,7 @@ router.use(authenticate);
 router.get('/', async (req: Request, res: Response) => {
   try {
     const orders = await prisma.serviceOrder.findMany({
-      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true },
+      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
       orderBy: { createdAt: 'desc' },
     });
     res.json(orders.map((o) => stripCosts(o, req.user!.role)));
@@ -58,7 +63,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     const id = parseInt(String(req.params.id));
     const order = await prisma.serviceOrder.findUnique({
       where: { id },
-      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true },
+      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
     });
     if (!order) {
       return res.status(404).json({ error: 'Orden de servicio no encontrada' });
@@ -86,8 +91,11 @@ router.post('/', requireBackoffice, async (req: Request, res: Response) => {
         scheduledDate: data.scheduledDate ? new Date(data.scheduledDate) : undefined,
         status: data.status,
         notes: data.notes,
+        photos: data.photos ? {
+          createMany: { data: data.photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })) },
+        } : undefined,
       },
-      include: { customer: true, equipment: true },
+      include: { customer: true, equipment: true, photos: true },
     });
     res.status(201).json(order);
   } catch (err) {
@@ -102,15 +110,46 @@ router.put('/:id', requireBackoffice, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = serviceOrderSchema.partial().parse(req.body);
-    const updateData: any = { ...data };
+    const { photos, ...fields } = data;
+    const updateData: any = { ...fields };
     if (data.scheduledDate) updateData.scheduledDate = new Date(data.scheduledDate);
-    const order = await prisma.serviceOrder.update({ where: { id }, data: updateData });
+
+    if (photos) {
+      await prisma.photo.deleteMany({ where: { serviceOrderId: id } });
+      updateData.photos = {
+        createMany: { data: photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })) },
+      };
+    }
+
+    const order = await prisma.serviceOrder.update({
+      where: { id },
+      data: updateData,
+      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
+    });
     res.json(order);
   } catch (err) {
     if (err instanceof z.ZodError) {
       return res.status(400).json({ error: err.errors });
     }
     res.status(500).json({ error: 'Error al actualizar orden de servicio' });
+  }
+});
+
+router.patch('/:id', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const { status } = req.body;
+    if (!status) {
+      return res.status(400).json({ error: 'Estado requerido' });
+    }
+    const order = await prisma.serviceOrder.update({
+      where: { id },
+      data: { status, ...(status === 'COMPLETADO' ? { completedDate: new Date() } : {}) },
+      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
+    });
+    res.json(stripCosts(order, req.user!.role));
+  } catch {
+    res.status(500).json({ error: 'Error al actualizar estado' });
   }
 });
 

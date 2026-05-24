@@ -187,7 +187,7 @@ model Ticket {
   assignedTo    Int?
   assignedUser  User?         @relation(fields: [assignedTo], references: [id])
 
-  serviceOrder  ServiceOrder?
+  serviceOrders ServiceOrder[]
 }
 
 model Quotation {
@@ -272,13 +272,14 @@ model ServiceOrder {
   assignedTo      Int?
   assignedUser    User?               @relation(fields: [assignedTo], references: [id])
 
-  ticketId        Int?                @unique
+  ticketId        Int?
   ticket          Ticket?             @relation(fields: [ticketId], references: [id])
 
   policyId        Int?
   policy          MaintenancePolicy?  @relation(fields: [policyId], references: [id])
 
   report          ServiceReport?
+  photos          Photo[]             @relation("OrderPhotos")
 }
 
 model ServiceReport {
@@ -316,8 +317,11 @@ model Photo {
   caption         String?
   type            String?
 
-  reportId        Int
-  report          ServiceReport @relation(fields: [reportId], references: [id])
+  reportId        Int?
+  report          ServiceReport? @relation(fields: [reportId], references: [id])
+
+  serviceOrderId  Int?
+  serviceOrder    ServiceOrder?  @relation("OrderPhotos", fields: [serviceOrderId], references: [id])
 }
 
 model UsedMaterial {

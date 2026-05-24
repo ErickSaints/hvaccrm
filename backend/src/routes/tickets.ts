@@ -51,7 +51,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     const id = parseInt(String(req.params.id));
     const ticket = await prisma.ticket.findUnique({
       where: { id },
-      include: { customer: true, equipment: true, assignedUser: true, serviceOrder: true },
+      include: { customer: true, equipment: true, assignedUser: true, serviceOrders: { include: { photos: true, report: { select: { id: true, title: true } } } } },
     });
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket no encontrado' });

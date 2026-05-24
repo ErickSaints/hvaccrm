@@ -16,6 +16,7 @@ import {
   Clock,
   MessageSquare,
   ChevronDown,
+  Plus,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
@@ -391,6 +392,56 @@ export default function TicketDetailPage() {
                 })}
               </p>
             </div>
+          </div>
+
+          {/* Service Orders linked to this ticket */}
+          <div className="card space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <ClipboardList className="w-5 h-5 text-gray-400" />
+                Órdenes de Servicio
+              </h2>
+              <Link
+                to={`/service-orders/new?ticketId=${ticket.id}`}
+                className="text-xs text-primary-600 hover:text-primary-700 font-medium inline-flex items-center gap-1"
+              >
+                <Plus className="w-3 h-3" />
+                Nueva OS
+              </Link>
+            </div>
+            {(ticket as any).serviceOrders?.length > 0 ? (
+              <div className="space-y-2">
+                {(ticket as any).serviceOrders.map((os: any) => (
+                  <Link
+                    key={os.id}
+                    to={`/service-orders/${os.id}`}
+                    className="block p-3 bg-gray-50 rounded-xl hover:bg-primary-50/50 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-900">{os.number}</span>
+                      <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                        os.status === 'COMPLETADO' ? 'bg-green-100 text-green-700' :
+                        os.status === 'EN_PROGRESO' ? 'bg-blue-100 text-blue-700' :
+                        os.status === 'CANCELADO' ? 'bg-gray-100 text-gray-500' :
+                        'bg-amber-100 text-amber-700'
+                      }`}>
+                        {os.status === 'PENDIENTE' ? 'Pendiente' :
+                         os.status === 'EN_PROGRESO' ? 'En Progreso' :
+                         os.status === 'COMPLETADO' ? 'Completado' :
+                         os.status === 'CANCELADO' ? 'Cancelado' : os.status}
+                      </span>
+                    </div>
+                    {os.description && <p className="text-xs text-gray-500 mt-1 truncate">{os.description}</p>}
+                    <div className="flex items-center gap-2 mt-1.5 text-[10px] text-gray-400">
+                      {os.photos?.length > 0 && <span>{os.photos.length} foto(s)</span>}
+                      {os.report && <span>Reporte #{os.report.id}</span>}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">Sin órdenes de servicio vinculadas</p>
+            )}
           </div>
         </div>
       </div>

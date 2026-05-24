@@ -53,6 +53,7 @@ export interface Ticket {
   equipment?: Equipment;
   assignedTo?: number;
   assignedUser?: User;
+  serviceOrders?: ServiceOrder[];
   createdAt: string;
 }
 
@@ -126,6 +127,7 @@ export interface ServiceOrder {
   policyId?: number;
   policy?: MaintenancePolicy;
   report?: ServiceReport;
+  photos?: Photo[];
 }
 
 export interface ServiceReport {
