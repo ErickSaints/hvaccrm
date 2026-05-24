@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "npx prisma generate",
-    "start": "npx prisma db push --accept-data-loss --skip-generate 2>&1; echo '---SEED---'; npx tsx src/seed.ts 2>&1; echo '---SERVER---'; npx tsx src/index.ts",
+    "start": "npx prisma db push --accept-data-loss --skip-generate 2>&1 || echo 'DB PUSH FAILED (continuing)'; echo '---SEED---'; npx tsx src/seed.ts 2>&1 || echo 'SEED FAILED (continuing)'; echo '---SERVER---'; npx tsx src/index.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",

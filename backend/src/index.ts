@@ -33,23 +33,34 @@ app.get('/health', (_req, res) => {
 });
 
 app.get('/debug', async (_req, res) => {
+  let userCount = 0;
+  let customerCount = 0;
+  let dbStatus = 'error';
+  let dbError = '';
   try {
-    const userCount = await prisma.user.count();
-    const customerCount = await prisma.customer.count();
-    res.json({
-      database: 'connected',
-      users: userCount,
-      customers: customerCount,
-      env: {
-        node: process.version,
-        jwt: process.env.JWT_SECRET ? 'set' : 'not set',
-        database_url: process.env.DATABASE_URL ? 'set' : 'not set',
-        mp_token: process.env.MP_ACCESS_TOKEN ? 'set' : 'not set',
-      },
-    });
+    userCount = await prisma.user.count();
+    customerCount = await prisma.customer.count();
+    dbStatus = 'connected';
   } catch (err: any) {
-    res.json({ database: 'error', message: err.message });
+    dbStatus = 'error';
+    dbError = err.message;
   }
+  res.json({
+    database: dbStatus,
+    dbError,
+    users: userCount,
+    customers: customerCount,
+    env: {
+      node: process.version,
+      jwt: process.env.JWT_SECRET ? 'set' : 'not set',
+      jwt_value: process.env.JWT_SECRET ? `...${process.env.JWT_SECRET.slice(-4)}` : 'not set',
+      database_url: process.env.DATABASE_URL ? 'set' : 'not set',
+      database_url_preview: process.env.DATABASE_URL ? `${process.env.DATABASE_URL.substring(0, 20)}...` : 'not set',
+      mp_token: process.env.MP_ACCESS_TOKEN ? 'set' : 'not set',
+      port: process.env.PORT || 'not set',
+      railway_env: process.env.RAILWAY_ENVIRONMENT || 'not set',
+    },
+  });
 });
 
 app.get(/^\/(?!api\/).*/, (_req, res) => {
