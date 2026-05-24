@@ -24,8 +24,26 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+const publicPath = path.join(__dirname, '../public');
+app.use(express.static(publicPath));
+
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+app.get(/^\/(?!api\/).*/, (_req, res) => {
+  const indexPath = path.join(publicPath, 'index.html');
+  if (require('fs').existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.json({
+      message: 'HVAC-R CRM API',
+      version: '1.0.0',
+      docs: '/health',
+      endpoints: '/api/auth, /api/customers, /api/tickets, /api/quotations, /api/service-orders, /api/service-reports, /api/policies, /api/maintenance, /api/users, /api/profile, /api/subscriptions, /api/mercadolibre',
+      frontend: 'Ejecuta npm run dev en la carpeta frontend/',
+    });
+  }
 });
 
 app.use('/api/auth', authRoutes);
