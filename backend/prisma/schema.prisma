@@ -1,0 +1,344 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+enum UserRole {
+  ADMIN
+  TECHNICIAN
+  SALES
+  CLIENT
+}
+
+enum TicketLevel {
+  EMERGENCIA
+  ATENCION
+  PROGRAMAR
+}
+
+enum TicketStatus {
+  ABIERTO
+  EN_PROCESO
+  RESUELTO
+  CERRADO
+}
+
+enum ServiceOrderStatus {
+  PENDIENTE
+  EN_PROGRESO
+  COMPLETADO
+  CANCELADO
+}
+
+enum QuotationStatus {
+  BORRADOR
+  ENVIADA
+  APROBADA
+  RECHAZADA
+  VENCIDA
+}
+
+enum PolicyStatus {
+  ACTIVA
+  EXPIRADA
+  CANCELADA
+}
+
+enum PolicyFrequency {
+  MENSUAL
+  BIMESTRAL
+  TRIMESTRAL
+  SEMESTRAL
+  ANUAL
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password      String
+  name          String
+  role          UserRole  @default(TECHNICIAN)
+  phone         String?
+  avatar        String?
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  tickets       Ticket[]
+  serviceOrders ServiceOrder[]
+  quotations    Quotation[]
+  serviceReports ServiceReport[]
+  maintenanceLogs MaintenanceLog[]
+  subscription  UserSubscription?
+  createdPlans  SubscriptionPlan[] @relation("PlanCreator")
+}
+
+model SubscriptionPlan {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String?
+  price         Float
+  duration      String    @default("MENSUAL")
+  durationDays  Int       @default(30)
+  features      String?
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  createdById   Int
+  createdBy     User      @relation("PlanCreator", fields: [createdById], references: [id])
+
+  subscriptions UserSubscription[]
+}
+
+model UserSubscription {
+  id            Int       @id @default(autoincrement())
+  startDate     DateTime  @default(now())
+  endDate       DateTime
+  status        String    @default("ACTIVA")
+  autoRenew     Boolean   @default(false)
+  paymentMethod String?
+  paymentRef    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  userId        Int       @unique
+  user          User      @relation(fields: [userId], references: [id])
+
+  planId        Int
+  plan          SubscriptionPlan @relation(fields: [planId], references: [id])
+}
+
+model Customer {
+  id            Int       @id @default(autoincrement())
+  companyName   String?
+  contactName   String
+  email         String?
+  phone         String
+  phone2        String?
+  address       String
+  city          String?
+  state         String?
+  zipCode       String?
+  taxId         String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  equipment     Equipment[]
+  tickets       Ticket[]
+  serviceOrders ServiceOrder[]
+  serviceReports ServiceReport[]
+  quotations    Quotation[]
+  policies      MaintenancePolicy[]
+}
+
+model Equipment {
+  id            Int       @id @default(autoincrement())
+  type          String
+  brand         String?
+  model         String?
+  serialNumber  String?
+  capacity      String?
+  location      String?
+  installDate   DateTime?
+  lastService   DateTime?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  customerId    Int
+  customer      Customer  @relation(fields: [customerId], references: [id])
+
+  tickets       Ticket[]
+  serviceOrders ServiceOrder[]
+  serviceReports ServiceReport[]
+  maintenanceLogs MaintenanceLog[]
+}
+
+model Ticket {
+  id            Int           @id @default(autoincrement())
+  title         String
+  description   String
+  level         TicketLevel
+  status        TicketStatus  @default(ABIERTO)
+  resolution    String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  customerId    Int
+  customer      Customer      @relation(fields: [customerId], references: [id])
+
+  equipmentId   Int?
+  equipment     Equipment?    @relation(fields: [equipmentId], references: [id])
+
+  assignedTo    Int?
+  assignedUser  User?         @relation(fields: [assignedTo], references: [id])
+
+  serviceOrder  ServiceOrder?
+}
+
+model Quotation {
+  id              Int               @id @default(autoincrement())
+  number          String            @unique
+  title           String?
+  subtotal        Float             @default(0)
+  tax             Float             @default(0)
+  discount        Float             @default(0)
+  total           Float             @default(0)
+  status          QuotationStatus   @default(BORRADOR)
+  validUntil      DateTime?
+  notes           String?
+  terms           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  customerId      Int
+  customer        Customer          @relation(fields: [customerId], references: [id])
+
+  createdById     Int
+  createdBy       User              @relation(fields: [createdById], references: [id])
+
+  items           QuotationItem[]
+}
+
+model QuotationItem {
+  id            Int       @id @default(autoincrement())
+  description   String
+  quantity      Float     @default(1)
+  unitPrice     Float     @default(0)
+  total         Float     @default(0)
+
+  quotationId   Int
+  quotation     Quotation @relation(fields: [quotationId], references: [id])
+}
+
+model MaintenancePolicy {
+  id              Int               @id @default(autoincrement())
+  number          String            @unique
+  name            String
+  description     String?
+  frequency        PolicyFrequency
+  visitCount      Int               @default(1)
+  pricePerVisit   Float             @default(0)
+  totalPrice      Float             @default(0)
+  startDate       DateTime
+  endDate         DateTime
+  status          PolicyStatus      @default(ACTIVA)
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  customerId      Int
+  customer        Customer          @relation(fields: [customerId], references: [id])
+
+  serviceOrders   ServiceOrder[]
+  maintenanceLogs MaintenanceLog[]
+}
+
+model ServiceOrder {
+  id              Int                 @id @default(autoincrement())
+  number          String              @unique
+  description     String?
+  scheduledDate   DateTime?
+  completedDate   DateTime?
+  status          ServiceOrderStatus  @default(PENDIENTE)
+  laborHours      Float?
+  materialsCost   Float               @default(0)
+  laborCost       Float               @default(0)
+  totalCost       Float               @default(0)
+  notes           String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  customerId      Int
+  customer        Customer            @relation(fields: [customerId], references: [id])
+
+  equipmentId      Int?
+  equipment       Equipment?          @relation(fields: [equipmentId], references: [id])
+
+  assignedTo      Int?
+  assignedUser    User?               @relation(fields: [assignedTo], references: [id])
+
+  ticketId        Int?                @unique
+  ticket          Ticket?             @relation(fields: [ticketId], references: [id])
+
+  policyId        Int?
+  policy          MaintenancePolicy?  @relation(fields: [policyId], references: [id])
+
+  report          ServiceReport?
+}
+
+model ServiceReport {
+  id              Int       @id @default(autoincrement())
+  title           String
+  description     String?
+  diagnosis       String?
+  workPerformed   String?
+  recommendations String?
+  arrivalTime     String?
+  departureTime   String?
+  signature       String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  serviceOrderId  Int       @unique
+  serviceOrder    ServiceOrder @relation(fields: [serviceOrderId], references: [id])
+
+  technicianId    Int
+  technician      User      @relation(fields: [technicianId], references: [id])
+
+  customerId      Int
+  customer        Customer  @relation(fields: [customerId], references: [id])
+
+  equipmentId      Int?
+  equipment       Equipment? @relation(fields: [equipmentId], references: [id])
+
+  photos          Photo[]
+  usedMaterials   UsedMaterial[]
+}
+
+model Photo {
+  id              Int       @id @default(autoincrement())
+  url             String
+  caption         String?
+  type            String?
+
+  reportId        Int
+  report          ServiceReport @relation(fields: [reportId], references: [id])
+}
+
+model UsedMaterial {
+  id              Int       @id @default(autoincrement())
+  name            String
+  quantity        Float     @default(1)
+  unitPrice       Float     @default(0)
+  total           Float     @default(0)
+
+  reportId        Int
+  report          ServiceReport @relation(fields: [reportId], references: [id])
+}
+
+model MaintenanceLog {
+  id              Int       @id @default(autoincrement())
+  description     String
+  scheduledDate   DateTime
+  completedDate   DateTime?
+  status          String    @default("PENDIENTE")
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  policyId        Int
+  policy          MaintenancePolicy @relation(fields: [policyId], references: [id])
+
+  equipmentId      Int?
+  equipment       Equipment? @relation(fields: [equipmentId], references: [id])
+
+  assignedTo      Int?
+  assignedUser    User?      @relation(fields: [assignedTo], references: [id])
+}
