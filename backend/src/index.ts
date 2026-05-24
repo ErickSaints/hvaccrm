@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import prisma from './prisma';
 import authRoutes from './routes/auth';
 import customerRoutes from './routes/customers';
 import equipmentRoutes from './routes/equipment';

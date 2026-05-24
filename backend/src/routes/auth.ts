@@ -39,7 +39,8 @@ router.post('/login', async (req: Request, res: Response) => {
     if (err instanceof z.ZodError) {
       return res.status(400).json({ error: err.errors });
     }
-    res.status(500).json({ error: 'Error al iniciar sesión' });
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Error al iniciar sesión', detail: err instanceof Error ? err.message : String(err) });
   }
 });
 
@@ -67,7 +68,8 @@ router.post('/register', async (req: Request, res: Response) => {
     if (err instanceof z.ZodError) {
       return res.status(400).json({ error: err.errors });
     }
-    res.status(500).json({ error: 'Error al registrar usuario' });
+    console.error('Register error:', err);
+    res.status(500).json({ error: 'Error al registrar usuario', detail: err instanceof Error ? err.message : String(err) });
   }
 });
 
