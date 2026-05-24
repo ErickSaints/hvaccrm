@@ -59,6 +59,58 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/:id/timeline', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const [tickets, orders, quotations, reports, policies] = await Promise.all([
+      prisma.ticket.findMany({ where: { customerId: id }, include: { assignedUser: { select: { name: true } } } }),
+      prisma.serviceOrder.findMany({ where: { customerId: id }, include: { assignedUser: { select: { name: true } } } }),
+      prisma.quotation.findMany({ where: { customerId: id }, include: { createdBy: { select: { name: true } } } }),
+      prisma.serviceReport.findMany({ where: { customerId: id }, include: { technician: { select: { name: true } } } }),
+      prisma.maintenancePolicy.findMany({ where: { customerId: id } }),
+    ]);
+
+    const events: any[] = [];
+
+    tickets.forEach((t) => events.push({
+      type: 'ticket', id: t.id, title: t.title, description: t.level,
+      status: t.status, date: t.createdAt, user: t.assignedUser?.name,
+      link: `/tickets/${t.id}`,
+    }));
+
+    orders.forEach((o) => events.push({
+      type: 'service_order', id: o.id, title: o.number, description: o.description || '',
+      status: o.status, date: o.createdAt, user: o.assignedUser?.name,
+      link: `/service-orders/${o.id}`,
+    }));
+
+    quotations.forEach((q) => events.push({
+      type: 'quotation', id: q.id, title: q.number, description: q.title || '',
+      status: q.status, date: q.createdAt, user: q.createdBy?.name,
+      link: `/quotations/${q.id}`,
+    }));
+
+    reports.forEach((r) => events.push({
+      type: 'report', id: r.id, title: r.title, description: r.diagnosis || '',
+      status: '', date: r.createdAt, user: r.technician?.name,
+      link: `/service-reports/${r.id}`,
+    }));
+
+    policies.forEach((p) => events.push({
+      type: 'policy', id: p.id, title: p.name, description: p.frequency,
+      status: p.status, date: p.createdAt, user: '',
+      link: `/policies/${p.id}`,
+    }));
+
+    events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    res.json(events);
+  } catch (err) {
+    console.error('Timeline error:', err);
+    res.status(500).json({ error: 'Error al obtener línea de tiempo' });
+  }
+});
+
 router.post('/', requireRole(['ADMIN', 'SALES']), async (req: Request, res: Response) => {
   try {
     const data = customerSchema.parse(req.body);

@@ -21,6 +21,17 @@ import {
 import api from '../lib/api';
 import type { Customer, Equipment, Ticket, ServiceOrder, MaintenancePolicy } from '../types';
 
+interface TimelineEvent {
+  type: string;
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+  date: string;
+  user?: string;
+  link: string;
+}
+
 interface CustomerDetail extends Customer {
   tickets?: Ticket[];
   serviceOrders?: ServiceOrder[];
@@ -29,6 +40,7 @@ interface CustomerDetail extends Customer {
 
 const tabs = [
   { id: 'info', label: 'Información', icon: FileText },
+  { id: 'timeline', label: 'Historial', icon: Calendar },
   { id: 'equipment', label: 'Equipos', icon: Wrench },
   { id: 'tickets', label: 'Tickets', icon: TicketCheck },
   { id: 'orders', label: 'Órdenes de Servicio', icon: ClipboardList },
@@ -301,6 +313,8 @@ export default function CustomerDetailPage() {
         </div>
       )}
 
+      {activeTab === 'timeline' && <TimelineTab customerId={Number(id)} />}
+
       {activeTab === 'equipment' && (
         <div>
           {customer.equipment && customer.equipment.length > 0 ? (
@@ -483,6 +497,94 @@ export default function CustomerDetailPage() {
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+const TIMELINE_ICONS: Record<string, any> = {
+  ticket: TicketCheck,
+  service_order: ClipboardList,
+  quotation: FileText,
+  report: FileText,
+  policy: ShieldCheck,
+};
+
+const TIMELINE_COLORS: Record<string, string> = {
+  ticket: 'text-amber-600 bg-amber-100',
+  service_order: 'text-emerald-600 bg-emerald-100',
+  quotation: 'text-violet-600 bg-violet-100',
+  report: 'text-blue-600 bg-blue-100',
+  policy: 'text-rose-600 bg-rose-100',
+};
+
+const TIMELINE_LABELS: Record<string, string> = {
+  ticket: 'Ticket',
+  service_order: 'Orden de Servicio',
+  quotation: 'Cotización',
+  report: 'Reporte de Servicio',
+  policy: 'Póliza',
+};
+
+function TimelineTab({ customerId }: { customerId: number }) {
+  const { data: events, isLoading } = useQuery<TimelineEvent[]>({
+    queryKey: ['customer-timeline', customerId],
+    queryFn: async () => {
+      const { data } = await api.get(`/customers/${customerId}/timeline`);
+      return data;
+    },
+  });
+
+  if (isLoading) {
+    return <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 text-primary-600 animate-spin" /></div>;
+  }
+
+  if (!events || events.length === 0) {
+    return (
+      <div className="card text-center py-12">
+        <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-1">Sin actividad</h3>
+        <p className="text-gray-500">No hay eventos registrados para este cliente</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative">
+      <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-200" />
+      <div className="space-y-0">
+        {events.map((event) => {
+          const Icon = TIMELINE_ICONS[event.type] || FileText;
+          const color = TIMELINE_COLORS[event.type] || 'text-gray-600 bg-gray-100';
+          const label = TIMELINE_LABELS[event.type] || event.type;
+          return (
+            <Link
+              key={`${event.type}-${event.id}`}
+              to={event.link}
+              className="relative flex items-start gap-4 px-4 py-4 hover:bg-gray-50 transition-colors -mx-4 rounded-lg"
+            >
+              <div className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${color}`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <div className="min-w-0 flex-1 pt-1">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-xs font-medium text-gray-400 uppercase">{label}</span>
+                  <span className="text-[10px] text-gray-400">
+                    {new Date(event.date).toLocaleDateString('es-MX', {
+                      day: 'numeric', month: 'short', year: 'numeric',
+                      hour: '2-digit', minute: '2-digit',
+                    })}
+                  </span>
+                </div>
+                <p className="text-sm font-medium text-gray-900">{event.title}</p>
+                {event.description && (
+                  <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{event.description}</p>
+                )}
+                {event.user && <p className="text-[11px] text-gray-400 mt-0.5">{event.user}</p>}
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }

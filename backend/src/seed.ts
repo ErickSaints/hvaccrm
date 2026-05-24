@@ -364,6 +364,17 @@ async function main() {
     },
   });
 
+  // Sample notifications
+  await prisma.notification.createMany({
+    data: [
+      { userId: admin.id, type: 'ticket', title: 'Ticket EMERGENCIA asignado', message: 'Chiller Hotel Paraíso - Revisión urgente', link: '/tickets/1', read: false },
+      { userId: tech1.id, type: 'ticket', title: 'Ticket asignado', message: 'Chiller no enfría adecuadamente - Hotel Paraíso', link: '/tickets/1', read: false },
+      { userId: tech1.id, type: 'order', title: 'Nueva orden de servicio', message: 'ORD-202605-0001 - Atención a emergencia', link: '/service-orders/1', read: false },
+      { userId: admin.id, type: 'maintenance', title: 'Mantenimiento próximo', message: 'Visita trimestral 2 - Hotel Paraíso (15 jul 2026)', link: '/maintenance', read: false },
+      { userId: sales.id, type: 'quotation', title: 'Cotización aprobada', message: 'COT-202605-0001 - Hotel Paraíso - $29,000', link: '/quotations/1', read: false },
+    ],
+  });
+
   console.log('Database seeded successfully!');
   console.log('');
   const planMensual = await prisma.subscriptionPlan.create({

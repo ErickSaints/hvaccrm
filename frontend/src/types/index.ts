@@ -186,5 +186,16 @@ export interface DashboardStats {
   pendingOrders: number;
   activePolicies: number;
   monthlyQuotations: number;
-  criticalTickets: number;
+  totalUsers: number;
+  technicians: number;
+  completedOrdersThisMonth: number;
+  totalEquipment: number;
+}
+
+export interface ChartData {
+  monthlyRevenue: { month: string; revenue: number; orders: number }[];
+  ticketTrends: { month: string; creados: number; resueltos: number }[];
+  ticketsByLevel: { name: string; value: number }[];
+  ticketsByStatus: { name: string; value: number }[];
+  technicianPerformance: { name: string; completadas: number; pendientes: number }[];
 }

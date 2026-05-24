@@ -18,8 +18,11 @@ import {
   LogOut,
   PackageSearch,
   Calculator,
+  Search,
 } from 'lucide-react';
 import { useAuth } from '../lib/auth';
+import GlobalSearch from './GlobalSearch';
+import NotificationBell from './NotificationBell';
 
 const adminNav = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -69,6 +72,7 @@ const roleLabels: Record<string, string> = {
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -79,6 +83,15 @@ export default function Layout() {
   useEffect(() => {
     setSidebarOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setSearchOpen(true); }
+      if (e.key === 'Escape') setSearchOpen(false);
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -177,9 +190,19 @@ export default function Layout() {
             <Menu className="w-6 h-6" />
           </button>
 
-          <div className="flex-1 lg:flex-none" />
+          <div className="flex-1 flex justify-center px-4">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="w-full max-w-md flex items-center gap-2 px-3 py-1.5 text-sm text-gray-400 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <Search className="w-4 h-4" />
+              <span>Buscar en el CRM...</span>
+              <span className="ml-auto hidden sm:inline text-xs text-gray-400 bg-gray-200 px-1.5 py-0.5 rounded">Ctrl+K</span>
+            </button>
+          </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <NotificationBell />
             {user && (
               <div className="hidden sm:flex items-center gap-3">
                 <div className="text-right">
@@ -205,6 +228,8 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
+
+      <GlobalSearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 }

@@ -7,10 +7,18 @@ import {
   FileText,
   AlertTriangle,
   ArrowRight,
+  Wrench,
+  Package,
+  TrendingUp,
+  BarChart3,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  LineChart, Line, PieChart, Pie, Cell, Legend,
+} from 'recharts';
 import api from '../lib/api';
-import type { DashboardStats, Ticket, ServiceOrder, MaintenanceLog } from '../types';
+import type { DashboardStats, ChartData, Ticket, ServiceOrder, MaintenanceLog } from '../types';
 
 function statCardBg(index: number) {
   const colors = [
@@ -126,11 +134,32 @@ function SkeletonList() {
   );
 }
 
+const STAT_CARDS = [
+  { label: 'Total Clientes', icon: Users, color: 'bg-blue-500', key: 'totalCustomers' as const },
+  { label: 'Tickets Activos', icon: TicketCheck, color: 'bg-amber-500', key: 'activeTickets' as const },
+  { label: 'Órdenes Pendientes', icon: ClipboardList, color: 'bg-emerald-500', key: 'pendingOrders' as const },
+  { label: 'Pólizas Activas', icon: ShieldCheck, color: 'bg-violet-500', key: 'activePolicies' as const },
+  { label: 'Cotizaciones del Mes', icon: FileText, color: 'bg-cyan-500', key: 'monthlyQuotations' as const },
+  { label: 'Equipos Registrados', icon: Package, color: 'bg-rose-500', key: 'totalEquipment' as const },
+  { label: 'Técnicos', icon: Wrench, color: 'bg-indigo-500', key: 'technicians' as const },
+  { label: 'Órdenes Completadas', icon: BarChart3, color: 'bg-teal-500', key: 'completedOrdersThisMonth' as const },
+];
+
+const PIE_COLORS = ['#ef4444', '#f59e0b', '#3b82f6', '#22c55e', '#8b5cf6', '#ec4899'];
+
 export default function DashboardPage() {
   const { data: stats, isLoading: statsLoading } = useQuery<DashboardStats>({
     queryKey: ['dashboard-stats'],
     queryFn: async () => {
       const { data } = await api.get<DashboardStats>('/dashboard/stats');
+      return data;
+    },
+  });
+
+  const { data: chartData, isLoading: chartLoading } = useQuery<ChartData>({
+    queryKey: ['dashboard-chart-data'],
+    queryFn: async () => {
+      const { data } = await api.get<ChartData>('/dashboard/chart-data');
       return data;
     },
   });
@@ -159,16 +188,6 @@ export default function DashboardPage() {
     },
   });
 
-  const statValues = stats
-    ? [
-        stats.totalCustomers,
-        stats.activeTickets,
-        stats.pendingOrders,
-        stats.activePolicies,
-        stats.monthlyQuotations,
-      ]
-    : [];
-
   return (
     <div className="space-y-6">
       <div>
@@ -177,37 +196,129 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 gap-3">
         {statsLoading
-          ? Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
-          : statValues.map((value, i) => {
-              const Icon = statCardIcon(i);
-              const isCritical = i === 1 && stats && stats.criticalTickets > 0;
+          ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+          : STAT_CARDS.map((card) => {
+              const Icon = card.icon;
+              const value = stats ? stats[card.key] : 0;
               return (
-                <div key={i} className="card">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 ${statCardBg(i)} rounded-xl flex items-center justify-center`}>
-                      <Icon className="w-6 h-6 text-white" />
+                <div key={card.key} className="card p-3">
+                  <div className="flex flex-col items-center text-center gap-1">
+                    <div className={`w-8 h-8 ${card.color} rounded-lg flex items-center justify-center`}>
+                      <Icon className="w-4 h-4 text-white" />
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">{statCardLabel(i)}</p>
-                      <div className="flex items-center gap-2">
-                        <p className="text-2xl font-bold text-gray-900">{value}</p>
-                        {isCritical && (
-                          <span className="flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full">
-                            <AlertTriangle className="w-3 h-3" />
-                            {stats.criticalTickets} críticos
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                    <p className="text-xs text-gray-500">{card.label}</p>
+                    <p className="text-lg font-bold text-gray-900">{value}</p>
                   </div>
                 </div>
               );
             })}
       </div>
 
-      {/* Three Column Lists */}
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Revenue Chart */}
+        <div className="card">
+          <div className="flex items-center gap-2 mb-4">
+            <TrendingUp className="w-5 h-5 text-emerald-600" />
+            <h2 className="text-lg font-semibold text-gray-900">Ingresos Mensuales</h2>
+          </div>
+          {chartLoading ? (
+            <div className="h-64 bg-gray-100 rounded-lg animate-pulse" />
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={chartData?.monthlyRevenue}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" fontSize={12} />
+                <YAxis fontSize={12} />
+                <Tooltip formatter={(v: number) => `$${v.toLocaleString('es-MX')}`} />
+                <Bar dataKey="revenue" fill="#059669" radius={[4, 4, 0, 0]} name="Ingresos" />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+
+        {/* Ticket Trends */}
+        <div className="card">
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="w-5 h-5 text-blue-600" />
+            <h2 className="text-lg font-semibold text-gray-900">Tendencia de Tickets</h2>
+          </div>
+          {chartLoading ? (
+            <div className="h-64 bg-gray-100 rounded-lg animate-pulse" />
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={chartData?.ticketTrends}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" fontSize={12} />
+                <YAxis fontSize={12} />
+                <Tooltip />
+                <Line type="monotone" dataKey="creados" stroke="#3b82f6" strokeWidth={2} name="Creados" />
+                <Line type="monotone" dataKey="resueltos" stroke="#22c55e" strokeWidth={2} name="Resueltos" />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+
+        {/* Tickets by Level */}
+        <div className="card">
+          <div className="flex items-center gap-2 mb-4">
+            <TicketCheck className="w-5 h-5 text-amber-600" />
+            <h2 className="text-lg font-semibold text-gray-900">Tickets por Nivel</h2>
+          </div>
+          {chartLoading ? (
+            <div className="h-64 bg-gray-100 rounded-lg animate-pulse" />
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
+              <PieChart>
+                <Pie
+                  data={chartData?.ticketsByLevel}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={4}
+                  dataKey="value"
+                  label={({ name, value }) => `${name}: ${value}`}
+                >
+                  {(chartData?.ticketsByLevel || []).map((_entry: any, i: number) => (
+                    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+
+        {/* Tickets by Status */}
+        <div className="card">
+          <div className="flex items-center gap-2 mb-4">
+            <BarChart3 className="w-5 h-5 text-violet-600" />
+            <h2 className="text-lg font-semibold text-gray-900">Tickets por Estado</h2>
+          </div>
+          {chartLoading ? (
+            <div className="h-64 bg-gray-100 rounded-lg animate-pulse" />
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={chartData?.ticketsByStatus} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" fontSize={12} />
+                <YAxis dataKey="name" type="category" fontSize={12} width={90} />
+                <Tooltip />
+                <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                  {(chartData?.ticketsByStatus || []).map((_entry: any, i: number) => (
+                    <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      </div>
+
+      {/* Bottom Lists Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Tickets */}
         <div>
@@ -236,20 +347,14 @@ export default function DashboardPage() {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             {levelBadge(ticket.level)}
-                            <span className="text-xs text-gray-400 truncate">
-                              #{ticket.id}
-                            </span>
+                            <span className="text-xs text-gray-400 truncate">#{ticket.id}</span>
                           </div>
-                          <p className="text-sm font-medium text-gray-900 truncate">
-                            {ticket.title}
-                          </p>
+                          <p className="text-sm font-medium text-gray-900 truncate">{ticket.title}</p>
                           <p className="text-xs text-gray-500 truncate mt-0.5">
                             {ticket.customer?.contactName || ticket.customer?.companyName || `Cliente #${ticket.customerId}`}
                           </p>
                         </div>
-                        <div className="shrink-0">
-                          {ticketStatusBadge(ticket.status)}
-                        </div>
+                        <div className="shrink-0">{ticketStatusBadge(ticket.status)}</div>
                       </div>
                     </Link>
                   ))
@@ -286,16 +391,12 @@ export default function DashboardPage() {
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900 truncate">
-                            {order.number}
-                          </p>
+                          <p className="text-sm font-medium text-gray-900 truncate">{order.number}</p>
                           <p className="text-xs text-gray-500 truncate mt-0.5">
                             {order.description || order.customer?.contactName || `Cliente #${order.customerId}`}
                           </p>
                         </div>
-                        <div className="shrink-0">
-                          {orderStatusBadge(order.status)}
-                        </div>
+                        <div className="shrink-0">{orderStatusBadge(order.status)}</div>
                       </div>
                     </Link>
                   ))
@@ -325,21 +426,14 @@ export default function DashboardPage() {
               <div className="space-y-3">
                 {upcomingMaintenance && upcomingMaintenance.length > 0 ? (
                   upcomingMaintenance.map((log) => (
-                    <div
-                      key={log.id}
-                      className="p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3"
-                    >
+                    <div key={log.id} className="p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900 truncate">
-                            {log.description}
-                          </p>
+                          <p className="text-sm font-medium text-gray-900 truncate">{log.description}</p>
                           <p className="text-xs text-gray-500 truncate mt-0.5">
                             {log.scheduledDate
                               ? new Date(log.scheduledDate).toLocaleDateString('es-MX', {
-                                  year: 'numeric',
-                                  month: 'short',
-                                  day: 'numeric',
+                                  year: 'numeric', month: 'short', day: 'numeric',
                                 })
                               : 'Fecha no disponible'}
                           </p>
