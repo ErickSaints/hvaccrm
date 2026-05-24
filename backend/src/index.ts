@@ -31,6 +31,26 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+app.get('/debug', async (_req, res) => {
+  try {
+    const userCount = await prisma.user.count();
+    const customerCount = await prisma.customer.count();
+    res.json({
+      database: 'connected',
+      users: userCount,
+      customers: customerCount,
+      env: {
+        node: process.version,
+        jwt: process.env.JWT_SECRET ? 'set' : 'not set',
+        database_url: process.env.DATABASE_URL ? 'set' : 'not set',
+        mp_token: process.env.MP_ACCESS_TOKEN ? 'set' : 'not set',
+      },
+    });
+  } catch (err: any) {
+    res.json({ database: 'error', message: err.message });
+  }
+});
+
 app.get(/^\/(?!api\/).*/, (_req, res) => {
   const indexPath = path.join(publicPath, 'index.html');
   if (require('fs').existsSync(indexPath)) {
