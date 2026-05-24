@@ -1,0 +1,8 @@
+{
+  "name": "hvaccrm",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix backend install && npx --package=prisma prisma generate --schema=backend/prisma/schema.prisma",
+    "start": "node backend/startup.cjs && npx --package=tsx tsx backend/src/index.ts"
+  }
+}

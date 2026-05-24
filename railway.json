@@ -1,13 +1,13 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "cd backend && npm install && npx prisma generate"
+    "builder": "NIXPACKS"
   },
   "deploy": {
     "numReplicas": 1,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10,
-    "startCommand": "cd backend && npm run start"
+    "healthcheckPath": "/api/auth/login",
+    "healthcheckTimeout": 300
   }
 }
