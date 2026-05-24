@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, Save, Loader2, Plus, Trash2, Image, Package, Clock } from 'lucide-react';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
+import PhotoUploader from '../components/PhotoUploader';
 import type { ServiceReport, ServiceOrder } from '../types';
 
 const photoSchema = z.object({
@@ -316,43 +317,46 @@ export default function ServiceReportFormPage() {
           {photoFields.length === 0 ? (
             <p className="text-gray-500 text-sm text-center py-4">No hay fotos agregadas</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {photoFields.map((field, index) => (
-                <div key={field.id} className="grid grid-cols-12 gap-3 items-start">
-                  <div className="col-span-5">
-                    <input
-                      {...register(`photos.${index}.url`)}
-                      className="input-field text-sm"
-                      placeholder="URL de la imagen"
-                    />
-                    {errors.photos?.[index]?.url && (
-                      <p className="text-red-500 text-xs mt-1">{errors.photos[index]?.url?.message}</p>
+                <div key={field.id} className="p-4 bg-gray-50 rounded-lg space-y-3 relative">
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(index)}
+                    className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors z-10"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+
+                  <Controller
+                    name={`photos.${index}.url`}
+                    control={control}
+                    render={({ field: ctrlField }) => (
+                      <PhotoUploader
+                        value={ctrlField.value || ''}
+                        onChange={(url) => ctrlField.onChange(url)}
+                        onClear={() => ctrlField.onChange('')}
+                        className="max-w-xs"
+                      />
                     )}
-                  </div>
-                  <div className="col-span-4">
+                  />
+                  {errors.photos?.[index]?.url && (
+                    <p className="text-red-500 text-xs mt-1">{errors.photos[index]?.url?.message}</p>
+                  )}
+
+                  <div className="flex gap-3">
                     <input
                       {...register(`photos.${index}.caption`)}
-                      className="input-field text-sm"
-                      placeholder="Descripción"
+                      className="input-field text-sm flex-1"
+                      placeholder="Descripción de la foto"
                     />
-                  </div>
-                  <div className="col-span-2">
-                    <select {...register(`photos.${index}.type`)} className="input-field text-sm">
+                    <select {...register(`photos.${index}.type`)} className="input-field text-sm w-36">
                       <option value="">Tipo</option>
                       <option value="ANTES">Antes</option>
                       <option value="DESPUES">Después</option>
                       <option value="PROCESO">En Proceso</option>
                       <option value="OTRO">Otro</option>
                     </select>
-                  </div>
-                  <div className="col-span-1 flex justify-end">
-                    <button
-                      type="button"
-                      onClick={() => removePhoto(index)}
-                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
                   </div>
                 </div>
               ))}
