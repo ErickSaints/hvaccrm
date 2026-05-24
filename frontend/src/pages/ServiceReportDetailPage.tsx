@@ -309,7 +309,7 @@ export default function ServiceReportDetailPage() {
 
         <div className="mt-12 pt-6 border-t border-gray-200 text-center text-xs text-gray-400">
           <p>Reporte generado el {new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-          <p className="mt-1">Documento oficial - Sistema HVAC-R CRM</p>
+          <p className="mt-1">Documento oficial · HVAC-R CRM · by semasi</p>
         </div>
       </div>
 

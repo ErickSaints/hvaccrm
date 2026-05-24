@@ -158,7 +158,7 @@ export default function Layout() {
             </div>
             <div>
               <span className="font-bold text-sm text-gray-900 block leading-tight">HVAC-R CRM</span>
-              <span className="text-[10px] text-gray-400 leading-tight">Sistema de Gestión</span>
+              <span className="text-[10px] text-gray-400 leading-tight">El CRM inteligente para HVAC-R</span>
             </div>
           </div>
           <button className="lg:hidden text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-1.5 rounded-lg transition-colors" onClick={() => setSidebarOpen(false)}>

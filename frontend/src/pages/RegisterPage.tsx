@@ -113,7 +113,7 @@ export default function RegisterPage() {
           <Snowflake className="w-8 h-8 text-white" />
         </div>
         <h1 className="text-3xl font-bold text-white">HVAC-R CRM</h1>
-        <p className="text-primary-200 mt-1">Sistema de Gestión para Climatización</p>
+        <p className="text-primary-200 mt-1">El CRM inteligente para HVAC-R · <span className="text-white/60">by semasi</span></p>
       </div>
 
       <div className="flex-1 flex items-start justify-center px-4 pb-12">
@@ -289,7 +289,7 @@ export default function RegisterPage() {
           </div>
 
           <p className="text-center text-primary-200 text-sm">
-            &copy; {new Date().getFullYear()} HVAC-R CRM. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} HVAC-R CRM · by semasi. Todos los derechos reservados.
           </p>
         </div>
       </div>
