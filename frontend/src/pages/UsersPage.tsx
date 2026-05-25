@@ -72,7 +72,7 @@ export default function UsersPage() {
     onError: (err: unknown) => {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message || 'Error al crear usuario'
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error || 'Error al crear usuario'
           : 'Error al crear usuario';
       toast.error(message);
     },
@@ -91,7 +91,7 @@ export default function UsersPage() {
     onError: (err: unknown) => {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message || 'Error al actualizar'
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error || 'Error al actualizar'
           : 'Error al actualizar';
       toast.error(message);
     },

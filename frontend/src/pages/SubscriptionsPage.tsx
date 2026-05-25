@@ -64,7 +64,7 @@ export default function SubscriptionsPage() {
     onError: (err: unknown) => {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message ||
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error ||
             'Error al crear plan'
           : 'Error al crear plan';
       toast.error(message);
@@ -83,7 +83,7 @@ export default function SubscriptionsPage() {
     onError: (err: unknown) => {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message ||
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error ||
             'Error al actualizar plan'
           : 'Error al actualizar plan';
       toast.error(message);

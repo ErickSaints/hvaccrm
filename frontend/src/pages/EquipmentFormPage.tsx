@@ -108,7 +108,7 @@ export default function EquipmentFormPage() {
     onError: (err: unknown) => {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message || 'Error al guardar'
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error || 'Error al guardar'
           : 'Error al guardar';
       toast.error(message);
     },

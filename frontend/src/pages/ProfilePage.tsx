@@ -74,7 +74,7 @@ export default function ProfilePage() {
     onError: (err: unknown) => {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message || 'Error al actualizar'
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error || 'Error al actualizar'
           : 'Error al actualizar';
       toast.error(message);
     },

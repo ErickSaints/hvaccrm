@@ -28,7 +28,7 @@ export default function LoginPage() {
     } catch (err: unknown) {
       const message =
         err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message || 'Error al iniciar sesión'
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error || 'Error al iniciar sesión'
           : 'Error al iniciar sesión';
       toast.error(message);
     } finally {

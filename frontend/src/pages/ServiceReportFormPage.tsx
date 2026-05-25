@@ -139,19 +139,26 @@ export default function ServiceReportFormPage() {
   }, [serviceOrder, isEditing, reportData, reset]);
 
   const mutation = useMutation({
-    mutationFn: async (data: ServiceReportFormData) => {
+    mutationFn: async (formData: ServiceReportFormData) => {
       const payload = {
-        ...data,
+        title: formData.title,
+        description: formData.description,
+        diagnosis: formData.diagnosis,
+        workPerformed: formData.workPerformed,
+        recommendations: formData.recommendations,
+        arrivalTime: formData.arrivalTime,
+        departureTime: formData.departureTime,
+        signature: formData.signature,
         serviceOrderId: serviceOrderId ? Number(serviceOrderId) : reportData?.serviceOrderId,
         technicianId: currentUser?.id,
         customerId: serviceOrder?.customerId || reportData?.customerId,
         equipmentId: serviceOrder?.equipmentId || reportData?.equipmentId,
-        photos: data.photos?.filter((p) => p.url?.trim()).map((p) => ({
+        photos: formData.photos?.filter((p) => p.url?.trim()).map((p) => ({
           url: p.url,
           caption: p.caption,
           type: p.type,
         })) || [],
-        materials: data.materials?.filter((m) => m.name.trim()).map((m) => ({
+        usedMaterials: formData.materials?.filter((m) => m.name.trim()).map((m) => ({
           name: m.name,
           quantity: m.quantity,
           unitPrice: m.unitPrice,
@@ -174,10 +181,8 @@ export default function ServiceReportFormPage() {
       navigate('/service-reports');
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message || 'Error al guardar'
-          : 'Error al guardar';
+      const axiosErr = err as { response?: { data?: { error?: string } } };
+      const message = axiosErr?.response?.data?.error || 'Error al guardar';
       toast.error(message);
     },
   });

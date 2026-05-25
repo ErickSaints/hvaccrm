@@ -170,11 +170,8 @@ export default function ServiceOrderFormPage() {
       navigate('/service-orders');
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data?: { message?: string } } }).response?.data?.message || 'Error al guardar'
-          : 'Error al guardar';
-      toast.error(message);
+      const axiosErr = err as { response?: { data?: { error?: string } } };
+      toast.error(axiosErr?.response?.data?.error || 'Error al guardar');
     },
   });
 
