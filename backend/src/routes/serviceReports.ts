@@ -100,8 +100,8 @@ router.post('/', requireBackoffice, async (req: Request, res: Response) => {
         technicianId: data.technicianId,
         customerId: data.customerId,
         equipmentId: data.equipmentId,
-        photos: data.photos ? { create: data.photos } : undefined,
-        usedMaterials: data.usedMaterials ? { create: data.usedMaterials } : undefined,
+        photos: data.photos && data.photos.length > 0 ? { create: data.photos } : undefined,
+        usedMaterials: data.usedMaterials && data.usedMaterials.length > 0 ? { create: data.usedMaterials } : undefined,
       },
       include: { photos: true, usedMaterials: true },
     });

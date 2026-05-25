@@ -92,7 +92,7 @@ router.post('/', requireBackoffice, async (req: Request, res: Response) => {
         status: data.status,
         notes: data.notes,
         photos: data.photos ? {
-          createMany: { data: data.photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })) },
+          create: data.photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })),
         } : undefined,
       },
       include: { customer: true, equipment: true, photos: true },
@@ -117,7 +117,7 @@ router.put('/:id', requireBackoffice, async (req: Request, res: Response) => {
     if (photos) {
       await prisma.photo.deleteMany({ where: { serviceOrderId: id } });
       updateData.photos = {
-        createMany: { data: photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })) },
+        create: photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })),
       };
     }
 

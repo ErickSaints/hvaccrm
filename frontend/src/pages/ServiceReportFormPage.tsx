@@ -12,7 +12,7 @@ import PhotoUploader from '../components/PhotoUploader';
 import type { ServiceReport, ServiceOrder } from '../types';
 
 const photoSchema = z.object({
-  url: z.string().url('URL inválida').optional().or(z.literal('')),
+  url: z.string().min(1, 'La foto es requerida'),
   caption: z.string().optional(),
   type: z.string().optional(),
 });
