@@ -26,11 +26,13 @@ export default function PhotoUploader({ value, onChange, onClear, preview = true
     try {
       const form = new FormData();
       form.append('photo', file);
-      const { data } = await api.post<{ url: string; inline?: boolean }>('/upload/photo', form, {
+      const { data } = await api.post<{ url: string; dataUrl?: string; inline?: boolean }>('/upload/photo', form, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setPreviewUrl(data.url);
-      onChange(data.url);
+      // Use dataUrl when available (survives Railway restarts), otherwise fall back to file URL
+      const storeUrl = data.dataUrl || data.url;
+      setPreviewUrl(storeUrl);
+      onChange(storeUrl);
     } catch {
       // Fallback: convert to base64 data URL inline
       try {

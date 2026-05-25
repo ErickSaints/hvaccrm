@@ -57,6 +57,14 @@ const avatarUpload = multer({
   fileFilter: imageFilter,
 });
 
+function fileToDataUrl(file: Express.Multer.File): string {
+  const ext = path.extname(file.originalname).toLowerCase().replace('.', '');
+  const mime = ext === 'jpg' ? 'jpeg' : ext;
+  const data = fs.readFileSync(file.path);
+  const base64 = data.toString('base64');
+  return `data:image/${mime};base64,${base64}`;
+}
+
 router.use(authenticate);
 router.use(requireBackoffice);
 
@@ -70,7 +78,6 @@ router.post('/photo', (req: Request, res: Response) => {
     if (dataUrl.length > 10 * 1024 * 1024) {
       return res.status(400).json({ error: 'Imagen demasiado grande (máx 10MB)' });
     }
-    // Store the data URL directly in the response
     return res.json({ url: dataUrl, inline: true });
   }
 
@@ -84,8 +91,16 @@ router.post('/photo', (req: Request, res: Response) => {
     if (!req.file) {
       return res.status(400).json({ error: 'No se recibió ningún archivo' });
     }
-    const url = `/uploads/photos/${req.file.filename}`;
-    res.json({ url, filename: req.file.filename });
+    // Always return the data URL so photos survive Railway restarts
+    try {
+      const dataUrl = fileToDataUrl(req.file);
+      const url = `/uploads/photos/${req.file.filename}`;
+      res.json({ url, dataUrl, inline: false });
+    } catch (e) {
+      // Fallback if file read fails
+      const url = `/uploads/photos/${req.file.filename}`;
+      res.json({ url, inline: false });
+    }
   });
 });
 
