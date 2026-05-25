@@ -39,9 +39,25 @@ export default function PaymentPage() {
       setPreference(data);
       window.open(data.initPoint || data.sandboxInitPoint, '_blank');
     } catch (err: any) {
-      toast.error(err.response?.data?.error || 'Error al crear pago');
+      const code = err.response?.data?.code;
+      if (code === 'MP_NOT_CONFIGURED') {
+        toast.success('Registro completado. La pasarela de pago se configurará próximamente.');
+        setTimeout(() => navigate('/'), 2000);
+      } else {
+        toast.error(err.response?.data?.error || 'Error al crear pago');
+      }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const activateWithoutPayment = async () => {
+    try {
+      await api.post('/subscriptions/activate');
+      toast.success('Suscripción activada');
+      navigate('/');
+    } catch {
+      toast.error('Error al activar suscripción');
     }
   };
 
@@ -145,6 +161,18 @@ export default function PaymentPage() {
                     )}
                   </button>
                 </div>
+              </div>
+            </div>
+
+            <div className="card border-dashed border-2 border-gray-200">
+              <div className="text-center">
+                <p className="text-sm text-gray-500 mb-2">¿No puedes pagar ahora?</p>
+                <button
+                  onClick={activateWithoutPayment}
+                  className="btn-secondary text-sm"
+                >
+                  Activar cuenta sin pago (prueba)
+                </button>
               </div>
             </div>
 

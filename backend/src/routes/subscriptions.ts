@@ -9,8 +9,9 @@ import { authenticate, requireRole } from '../middleware/auth';
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'hvaccrm-secret-key';
 
-const mpAccessToken = process.env.MP_ACCESS_TOKEN || 'TEST-0000000000000000-000000-00000000000000000000000000000000-000000000';
-const mpClient = new MercadoPagoConfig({ accessToken: mpAccessToken });
+const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
+const mpConfigured = Boolean(MP_ACCESS_TOKEN && !MP_ACCESS_TOKEN.startsWith('TEST-000'));
+const mpClient = MP_ACCESS_TOKEN ? new MercadoPagoConfig({ accessToken: MP_ACCESS_TOKEN }) : null;
 
 const planSchema = z.object({
   name: z.string().min(1),
@@ -148,6 +149,13 @@ router.post('/register', async (req: Request, res: Response) => {
 
 router.post('/create-preference', authenticate, async (req: Request, res: Response) => {
   try {
+    if (!mpClient || !mpConfigured) {
+      return res.status(503).json({
+        error: 'Pasarela de pago no disponible',
+        detail: 'Mercado Pago no está configurado. Contacta al administrador.',
+        code: 'MP_NOT_CONFIGURED',
+      });
+    }
     const subscription = await prisma.userSubscription.findUnique({
       where: { userId: req.user!.id },
       include: { plan: true },
@@ -263,6 +271,27 @@ router.get('/my', authenticate, async (req: Request, res: Response) => {
     res.json(subscription);
   } catch {
     res.status(500).json({ error: 'Error al obtener suscripción' });
+  }
+});
+
+router.post('/activate', authenticate, async (req: Request, res: Response) => {
+  try {
+    const subscription = await prisma.userSubscription.findUnique({
+      where: { userId: req.user!.id },
+    });
+    if (!subscription) {
+      return res.status(404).json({ error: 'No tienes una suscripción pendiente' });
+    }
+    if (subscription.status === 'ACTIVA') {
+      return res.json({ message: 'Ya está activa' });
+    }
+    const updated = await prisma.userSubscription.update({
+      where: { userId: req.user!.id },
+      data: { status: 'ACTIVA' },
+    });
+    res.json(updated);
+  } catch {
+    res.status(500).json({ error: 'Error al activar suscripción' });
   }
 });
 

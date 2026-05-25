@@ -61,6 +61,19 @@ router.use(authenticate);
 router.use(requireBackoffice);
 
 router.post('/photo', (req: Request, res: Response) => {
+  // Accept base64 data URLs directly
+  if (req.body?.dataUrl) {
+    const dataUrl = req.body.dataUrl as string;
+    if (!dataUrl.startsWith('data:image/')) {
+      return res.status(400).json({ error: 'Formato de imagen no válido' });
+    }
+    if (dataUrl.length > 10 * 1024 * 1024) {
+      return res.status(400).json({ error: 'Imagen demasiado grande (máx 10MB)' });
+    }
+    // Store the data URL directly in the response
+    return res.json({ url: dataUrl, inline: true });
+  }
+
   photoUpload.single('photo')(req, res, async (err) => {
     if (err) {
       if (err instanceof multer.MulterError) {
