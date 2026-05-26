@@ -206,12 +206,12 @@ export default function TicketFormPage() {
           <select
             {...register('customerId', { valueAsNumber: true })}
             className="input-field"
-            onChange={(e) => {
-              const val = e.target.value ? Number(e.target.value) : null;
-              setSelectedCustomerId(val);
-              setValue('customerId', val ?? undefined as unknown as number);
-              setValue('equipmentId', null);
-            }}
+              onChange={(e) => {
+                const val = e.target.value ? Number(e.target.value) : null;
+                setSelectedCustomerId(val);
+                setValue('customerId', val ?? (undefined as unknown as number));
+                setValue('equipmentId', null);
+              }}
           >
             <option value="">Seleccionar cliente...</option>
             {customers?.map((c) => (

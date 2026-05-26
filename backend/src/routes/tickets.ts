@@ -12,6 +12,7 @@ const ticketSchema = z.object({
   status: z.enum(['ABIERTO', 'EN_PROCESO', 'RESUELTO', 'CERRADO']).optional(),
   customerId: z.number().optional(),
   equipmentId: z.number().optional(),
+  assignedTo: z.number().optional(),
   resolution: z.string().optional(),
 });
 
@@ -23,12 +24,10 @@ router.get('/', async (req: Request, res: Response) => {
     const where: any = {};
 
     if (req.user!.role === 'CLIENT') {
-      where.assignedTo = req.user!.id;
-      const user = await prisma.user.findUnique({ where: { id: req.user!.id }, include: { tickets: true } });
-      const ticketIds = user?.tickets.map(t => t.id) || [];
+      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
       where.OR = [
         { assignedTo: req.user!.id },
-        { id: { in: ticketIds } },
+        { customerId: { in: userCustomers.map(c => c.id) } },
       ];
     }
 
@@ -97,7 +96,7 @@ router.post('/', requireSubscription, async (req: Request, res: Response) => {
         status: data.status || 'ABIERTO',
         customerId: customer.id,
         equipmentId: data.equipmentId,
-        assignedTo: req.user!.id,
+        assignedTo: data.assignedTo ?? (req.user!.role === 'CLIENT' ? customer.id : req.user!.id),
         resolution: data.resolution,
       },
     });
@@ -124,19 +123,6 @@ router.put('/:id', async (req: Request, res: Response) => {
       return res.status(400).json({ error: err.errors });
     }
     res.status(500).json({ error: 'Error al actualizar ticket' });
-  }
-});
-
-router.delete('/:id', async (req: Request, res: Response) => {
-  try {
-    const id = parseInt(String(req.params.id));
-    if (req.user!.role === 'CLIENT') {
-      return res.status(403).json({ error: 'No tienes permiso para eliminar tickets' });
-    }
-    await prisma.ticket.delete({ where: { id } });
-    res.status(204).send();
-  } catch {
-    res.status(500).json({ error: 'Error al eliminar ticket' });
   }
 });
 

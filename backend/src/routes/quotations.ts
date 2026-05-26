@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice, requireRole } from '../middleware/auth';
+import { authenticate, requireBackoffice, requireRole, requireSubscription } from '../middleware/auth';
 
 const router = Router();
 
@@ -46,7 +46,13 @@ router.use(authenticate);
 
 router.get('/', async (req: Request, res: Response) => {
   try {
+    const where: any = {};
+    if (req.user!.role === 'CLIENT') {
+      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
+      where.customerId = { in: userCustomers.map(c => c.id) };
+    }
     const quotations = await prisma.quotation.findMany({
+      where,
       include: { customer: true, createdBy: true, items: true },
       orderBy: { createdAt: 'desc' },
     });
@@ -93,7 +99,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireBackoffice, async (req: Request, res: Response) => {
+router.post('/', requireSubscription, async (req: Request, res: Response) => {
   try {
     const data = quotationSchema.parse(req.body);
     const number = await generateQuotationNumber();
@@ -131,7 +137,7 @@ router.post('/', requireBackoffice, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', requireBackoffice, async (req: Request, res: Response) => {
+router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = quotationSchema.partial().parse(req.body);

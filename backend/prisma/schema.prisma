@@ -143,6 +143,7 @@ model Customer {
   serviceReports ServiceReport[]
   quotations    Quotation[]
   policies      MaintenancePolicy[]
+  assets        Asset[]
 }
 
 model Equipment {
@@ -346,6 +347,20 @@ model Notification {
 
   userId          Int
   user            User      @relation(fields: [userId], references: [id])
+}
+
+model Asset {
+  id              Int       @id @default(autoincrement())
+  name            String
+  description     String?
+  serialNumber    String?
+  location        String?
+  qrCode          String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  customerId      Int
+  customer        Customer  @relation(fields: [customerId], references: [id])
 }
 
 model MaintenanceLog {

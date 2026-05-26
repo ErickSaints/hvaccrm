@@ -116,6 +116,7 @@ export default function ServiceOrderFormPage() {
         scheduledDate: orderData.scheduledDate ? orderData.scheduledDate.split('T')[0] : '',
         assignedTo: orderData.assignedTo ?? null,
         notes: orderData.notes || '',
+        photos: orderData.photos?.map(p => ({ url: p.url, caption: p.caption || '', type: p.type || '' })) || [],
       });
       setSelectedCustomerId(orderData.customerId);
     }
@@ -153,8 +154,11 @@ export default function ServiceOrderFormPage() {
         ...(ticketId ? { ticketId: Number(ticketId) } : {}),
         ...(policyId ? { policyId: Number(policyId) } : {}),
       };
-      if (photos && photos.length > 0 && photos[0]?.url) {
-        payload.photos = photos.filter((p) => p.url);
+      if (photos) {
+        const validPhotos = photos.filter((p) => p.url?.trim());
+        if (validPhotos.length > 0) {
+          payload.photos = validPhotos;
+        }
       }
       if (isEditing) {
         await api.put(`/service-orders/${id}`, payload);

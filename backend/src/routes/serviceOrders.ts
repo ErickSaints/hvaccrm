@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate, requireBackoffice, requireSubscription } from '../middleware/auth';
 
 const router = Router();
 
@@ -48,7 +48,13 @@ router.use(authenticate);
 
 router.get('/', async (req: Request, res: Response) => {
   try {
+    const where: any = {};
+    if (req.user!.role === 'CLIENT') {
+      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
+      where.customerId = { in: userCustomers.map(c => c.id) };
+    }
     const orders = await prisma.serviceOrder.findMany({
+      where,
       include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
       orderBy: { createdAt: 'desc' },
     });
@@ -74,7 +80,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireBackoffice, async (req: Request, res: Response) => {
+router.post('/', requireSubscription, async (req: Request, res: Response) => {
   try {
     const data = serviceOrderSchema.parse(req.body);
     const number = await generateOrderNumber();
@@ -91,7 +97,7 @@ router.post('/', requireBackoffice, async (req: Request, res: Response) => {
         scheduledDate: data.scheduledDate ? new Date(data.scheduledDate) : undefined,
         status: data.status,
         notes: data.notes,
-        photos: data.photos ? {
+        photos: data.photos && data.photos.length > 0 ? {
           create: data.photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })),
         } : undefined,
       },
@@ -106,7 +112,7 @@ router.post('/', requireBackoffice, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', requireBackoffice, async (req: Request, res: Response) => {
+router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = serviceOrderSchema.partial().parse(req.body);
@@ -114,11 +120,17 @@ router.put('/:id', requireBackoffice, async (req: Request, res: Response) => {
     const updateData: any = { ...fields };
     if (data.scheduledDate) updateData.scheduledDate = new Date(data.scheduledDate);
 
-    if (photos) {
-      await prisma.photo.deleteMany({ where: { serviceOrderId: id } });
-      updateData.photos = {
-        create: photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })),
-      };
+    if (photos !== undefined) {
+      // Only delete and replace if new photos are provided and non-empty
+      if (photos.length > 0) {
+        await prisma.photo.deleteMany({ where: { serviceOrderId: id } });
+        updateData.photos = {
+          create: photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })),
+        };
+      } else {
+        // Empty array means clear all photos
+        await prisma.photo.deleteMany({ where: { serviceOrderId: id } });
+      }
     }
 
     const order = await prisma.serviceOrder.update({
@@ -135,7 +147,7 @@ router.put('/:id', requireBackoffice, async (req: Request, res: Response) => {
   }
 });
 
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id', requireSubscription, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const { status } = req.body;
