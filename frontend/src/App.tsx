@@ -16,6 +16,9 @@ import TicketDetailPage from './pages/TicketDetailPage';
 import QuotationsPage from './pages/QuotationsPage';
 import QuotationFormPage from './pages/QuotationFormPage';
 import QuotationDetailPage from './pages/QuotationDetailPage';
+import AssetsPage from './pages/AssetsPage';
+import AssetFormPage from './pages/AssetFormPage';
+import AssetDetailPage from './pages/AssetDetailPage';
 import ServiceOrdersPage from './pages/ServiceOrdersPage';
 import ServiceOrderFormPage from './pages/ServiceOrderFormPage';
 import ServiceOrderDetailPage from './pages/ServiceOrderDetailPage';
@@ -98,6 +101,9 @@ export default function App() {
               <Route path="customers/:id" element={<CustomerDetailPage />} />
               <Route path="equipment" element={<EquipmentPage />} />
               <Route path="equipment/new" element={<EquipmentFormPage />} />
+              <Route path="assets" element={<AssetsPage />} />
+              <Route path="assets/new" element={<AssetFormPage />} />
+              <Route path="assets/:id" element={<AssetDetailPage />} />
               <Route path="tickets" element={<TicketsPage />} />
               <Route path="tickets/new" element={<TicketFormPage />} />
               <Route path="tickets/:id" element={<TicketDetailPage />} />

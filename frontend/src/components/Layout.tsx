@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Users,
   Wrench,
+  QrCode,
   TicketCheck,
   FileText,
   ClipboardList,
@@ -33,6 +34,7 @@ const mainNav = [
   { section: 'Clientes', items: [
     { name: 'Clientes', href: '/customers', icon: Users },
     { name: 'Equipos', href: '/equipment', icon: Wrench },
+    { name: 'Activos con QR', href: '/assets', icon: QrCode },
   ]},
   { section: 'Operaciones', items: [
     { name: 'Tickets', href: '/tickets', icon: TicketCheck },
