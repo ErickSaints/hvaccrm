@@ -55,7 +55,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export const requireBackoffice = requireRole(['ADMIN', 'TECHNICIAN', 'SALES']);
+export const requireBackoffice = requireRole(['ADMIN', 'TECHNICIAN', 'SALES', 'PROYECTOS', 'COMPRAS']);
 
 export function requireRole(roles: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {

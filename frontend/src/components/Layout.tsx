@@ -22,6 +22,7 @@ import {
   Search,
   ChevronDown,
   Building2,
+  Ruler,
 } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import GlobalSearch from './GlobalSearch';
@@ -45,6 +46,9 @@ const mainNav = [
   { section: 'Mantenimiento', items: [
     { name: 'Pólizas', href: '/policies', icon: ShieldCheck },
     { name: 'Mantenimientos', href: '/maintenance', icon: CalendarCheck },
+  ]},
+  { section: 'Proyectos', items: [
+    { name: 'Levantamientos', href: '/surveys', icon: Ruler },
   ]},
   { section: 'Herramientas', items: [
     { name: 'Refacciones e Insumos', href: '/refacciones', icon: PackageSearch },
@@ -72,6 +76,8 @@ const roleLabels: Record<string, string> = {
   TECHNICIAN: 'Técnico',
   SALES: 'Ventas',
   CLIENT: 'Cliente',
+  PROYECTOS: 'Proyectos',
+  COMPRAS: 'Compras',
 };
 
 const roleColors: Record<string, string> = {
@@ -79,6 +85,8 @@ const roleColors: Record<string, string> = {
   TECHNICIAN: 'bg-blue-100 text-blue-700',
   SALES: 'bg-emerald-100 text-emerald-700',
   CLIENT: 'bg-gray-100 text-gray-700',
+  PROYECTOS: 'bg-amber-100 text-amber-700',
+  COMPRAS: 'bg-rose-100 text-rose-700',
 };
 
 export default function Layout() {
@@ -88,8 +96,13 @@ export default function Layout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const role = user?.role;
+  const role = user?.role as string || '';
   const isClient = role === 'CLIENT';
+
+  const visibleMainNav = mainNav.filter(section =>
+    section.section !== 'Proyectos' || (role === 'ADMIN' || role === 'SALES' || role === 'PROYECTOS' || role === 'COMPRAS')
+  );
+
   const bottomNav = isClient ? clientBottomNav : adminBottomNav;
 
   useEffect(() => {
@@ -97,7 +110,7 @@ export default function Layout() {
   }, [location.pathname]);
 
   useEffect(() => {
-    setExpandedSections({ 'General': true, 'Clientes': true, 'Operaciones': true, 'Mantenimiento': true, 'Herramientas': true });
+    setExpandedSections({ 'General': true, 'Clientes': true, 'Operaciones': true, 'Mantenimiento': true, 'Proyectos': true, 'Herramientas': true });
   }, []);
 
   useEffect(() => {
@@ -176,7 +189,7 @@ export default function Layout() {
             </div>
           ) : (
             <div className="space-y-5">
-              {mainNav.map((section) => {
+              {visibleMainNav.map((section) => {
                 const isExpanded = expandedSections[section.section] !== false;
                 const hasActive = section.items.some(
                   (item) => item.href === '/' ? location.pathname === '/' : location.pathname.startsWith(item.href)

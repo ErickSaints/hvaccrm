@@ -20,6 +20,7 @@ import mercadolibreRoutes from './routes/mercadolibre';
 import searchRoutes from './routes/search';
 import notificationRoutes from './routes/notifications';
 import assetRoutes from './routes/assets';
+import surveyRoutes from './routes/surveys';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -100,6 +101,7 @@ app.use('/api/mercadolibre', mercadolibreRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/assets', assetRoutes);
+app.use('/api/surveys', surveyRoutes);
 
 app.listen(PORT, () => {
   console.log(`HVAC-R CRM API running on port ${PORT}`);

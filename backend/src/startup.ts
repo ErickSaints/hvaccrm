@@ -110,12 +110,14 @@ async function startup() {
 
   // 3. Ensure demo technicians and sales users exist
   const techPassword = await bcrypt.hash('tecnic0123', 10);
-  const existingUsers = await prisma.user.findMany({ where: { role: { in: ['TECHNICIAN', 'SALES'] } } });
-  if (existingUsers.length < 3) {
+  const existingUsers = await prisma.user.findMany({ where: { role: { in: ['TECHNICIAN', 'SALES', 'PROYECTOS', 'COMPRAS'] } } });
+  if (existingUsers.length < 5) {
     const needed = [
       { email: 'tecnico1@hvaccrm.com', name: 'Carlos Técnico', role: 'TECHNICIAN' as const, phone: '555-0101' },
       { email: 'tecnico2@hvaccrm.com', name: 'María López', role: 'TECHNICIAN' as const, phone: '555-0102' },
       { email: 'ventas@hvaccrm.com', name: 'Roberto Ventas', role: 'SALES' as const, phone: '555-0103' },
+      { email: 'proyectos@hvaccrm.com', name: 'Ana Proyectos', role: 'PROYECTOS' as const, phone: '555-0104' },
+      { email: 'compras@hvaccrm.com', name: 'Luis Compras', role: 'COMPRAS' as const, phone: '555-0105' },
     ];
     for (const u of needed) {
       const exists = existingUsers.find((eu) => eu.email === u.email);

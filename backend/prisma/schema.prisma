@@ -19,6 +19,8 @@ enum UserRole {
   TECHNICIAN
   SALES
   CLIENT
+  PROYECTOS
+  COMPRAS
 }
 
 enum TicketLevel {
@@ -83,6 +85,7 @@ model User {
   notifications Notification[]
   subscription  UserSubscription?
   createdPlans  SubscriptionPlan[] @relation("PlanCreator")
+  surveys       Survey[]
 }
 
 model SubscriptionPlan {
@@ -144,6 +147,7 @@ model Customer {
   quotations    Quotation[]
   policies      MaintenancePolicy[]
   assets        Asset[]
+  surveys       Survey[]
 }
 
 model Equipment {
@@ -271,7 +275,7 @@ model ServiceOrder {
   equipment       Equipment?          @relation(fields: [equipmentId], references: [id])
 
   assignedTo      Int?
-  assignedUser    User?               @relation(fields: [assignedTo], references: [id])
+  assignedUser    User?      @relation(fields: [assignedTo], references: [id])
 
   ticketId        Int?
   ticket          Ticket?             @relation(fields: [ticketId], references: [id])
@@ -281,6 +285,60 @@ model ServiceOrder {
 
   report          ServiceReport?
   photos          Photo[]             @relation("OrderPhotos")
+}
+
+model Survey {
+  id            Int       @id @default(autoincrement())
+  title         String
+  description   String?
+  status        String    @default("BORRADOR")
+  location      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  customerId    Int
+  customer      Customer  @relation(fields: [customerId], references: [id])
+
+  createdById   Int
+  createdBy     User      @relation(fields: [createdById], references: [id])
+
+  photos        SurveyPhoto[]
+  materials     SurveyMaterial[]
+  drawings      SurveyDrawing[]
+}
+
+model SurveyPhoto {
+  id            Int       @id @default(autoincrement())
+  url           String
+  caption       String?
+  createdAt     DateTime  @default(now())
+
+  surveyId      Int
+  survey        Survey    @relation(fields: [surveyId], references: [id])
+}
+
+model SurveyDrawing {
+  id            Int       @id @default(autoincrement())
+  name          String?
+  canvasData    String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  surveyId      Int
+  survey        Survey    @relation(fields: [surveyId], references: [id])
+}
+
+model SurveyMaterial {
+  id            Int       @id @default(autoincrement())
+  description   String
+  quantity      Float     @default(1)
+  unit          String    @default("pza")
+  category      String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+
+  surveyId      Int
+  survey        Survey    @relation(fields: [surveyId], references: [id])
 }
 
 model ServiceReport {

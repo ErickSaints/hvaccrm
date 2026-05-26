@@ -19,11 +19,25 @@ const equipmentSchema = z.object({
 });
 
 router.use(authenticate);
-router.use(requireRole(['ADMIN', 'SALES']));
 
-router.get('/', async (req: Request, res: Response) => {
+const readRoles = ['ADMIN', 'SALES', 'TECHNICIAN', 'PROYECTOS', 'COMPRAS', 'CLIENT'];
+const writeRoles = ['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS', 'TECHNICIAN'];
+
+router.get('/', requireRole(readRoles), async (req: Request, res: Response) => {
   try {
+    const { customerId, search } = req.query;
+    const where: any = {};
+    if (customerId) where.customerId = parseInt(String(customerId));
+    if (search) {
+      where.OR = [
+        { type: { contains: search as string } },
+        { brand: { contains: search as string } },
+        { model: { contains: search as string } },
+        { serialNumber: { contains: search as string } },
+      ];
+    }
     const equipment = await prisma.equipment.findMany({
+      where,
       include: { customer: true },
       orderBy: { createdAt: 'desc' },
     });
@@ -33,7 +47,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requireRole(readRoles), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const equipment = await prisma.equipment.findUnique({
@@ -49,7 +63,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', requireRole(writeRoles), async (req: Request, res: Response) => {
   try {
     const data = equipmentSchema.parse(req.body);
     const equipment = await prisma.equipment.create({
@@ -75,7 +89,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', requireRole(writeRoles), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = equipmentSchema.partial().parse(req.body);
@@ -92,7 +106,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', requireRole(writeRoles), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.equipment.delete({ where: { id } });

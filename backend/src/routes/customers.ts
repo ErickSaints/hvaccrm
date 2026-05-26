@@ -59,6 +59,19 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/:id/equipment', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const equipment = await prisma.equipment.findMany({
+      where: { customerId: id },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json(equipment);
+  } catch {
+    res.status(500).json({ error: 'Error al obtener equipos del cliente' });
+  }
+});
+
 router.get('/:id/timeline', async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
@@ -111,7 +124,7 @@ router.get('/:id/timeline', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireRole(['ADMIN', 'SALES']), async (req: Request, res: Response) => {
+router.post('/', requireRole(['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS']), async (req: Request, res: Response) => {
   try {
     const data = customerSchema.parse(req.body);
     const customer = await prisma.customer.create({ data });
@@ -124,7 +137,7 @@ router.post('/', requireRole(['ADMIN', 'SALES']), async (req: Request, res: Resp
   }
 });
 
-router.put('/:id', requireRole(['ADMIN', 'SALES']), async (req: Request, res: Response) => {
+router.put('/:id', requireRole(['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS']), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = customerSchema.partial().parse(req.body);
@@ -138,7 +151,7 @@ router.put('/:id', requireRole(['ADMIN', 'SALES']), async (req: Request, res: Re
   }
 });
 
-router.delete('/:id', requireRole(['ADMIN', 'SALES']), async (req: Request, res: Response) => {
+router.delete('/:id', requireRole(['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS']), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.customer.delete({ where: { id } });
