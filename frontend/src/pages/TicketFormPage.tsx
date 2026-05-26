@@ -145,14 +145,14 @@ export default function TicketFormPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/tickets')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={() => navigate('/tickets')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {isEditing ? 'Editar Ticket' : 'Nuevo Ticket'}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {isEditing ? 'Modifica los datos del ticket' : 'Registra un nuevo ticket de servicio'}
           </p>
         </div>
@@ -160,7 +160,7 @@ export default function TicketFormPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className={`card space-y-5 ${watchedLevel === 'EMERGENCIA' ? 'ring-2 ring-red-300 border-red-200' : ''}`}>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Nivel *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nivel *</label>
           <div className="flex gap-2">
             {(['EMERGENCIA', 'ATENCION', 'PROGRAMAR'] as const).map((lvl) => (
               <label
@@ -172,7 +172,7 @@ export default function TicketFormPage() {
                       : lvl === 'ATENCION'
                       ? 'border-amber-500 bg-amber-50 text-amber-700'
                       : 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-600 hover:border-gray-300'
                 }`}
               >
                 <input
@@ -190,19 +190,19 @@ export default function TicketFormPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Título *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Título *</label>
           <input {...register('title')} className="input-field" placeholder="Describre el problema en una línea" />
           {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Descripción *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción *</label>
           <textarea {...register('description')} rows={4} className="input-field" placeholder="Describe el problema detalladamente..." />
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Cliente *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
           <select
             {...register('customerId', { valueAsNumber: true })}
             className="input-field"
@@ -224,7 +224,7 @@ export default function TicketFormPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Equipo (opcional)</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Equipo (opcional)</label>
           <select
             {...register('equipmentId', { valueAsNumber: true })}
             className="input-field"
@@ -241,7 +241,7 @@ export default function TicketFormPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Asignar a (opcional)</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Asignar a (opcional)</label>
           <Controller
             name="assignedTo"
             control={control}
@@ -261,7 +261,7 @@ export default function TicketFormPage() {
           {errors.assignedTo && <p className="text-red-500 text-xs mt-1">{errors.assignedTo.message}</p>}
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <button type="button" onClick={() => navigate('/tickets')} className="btn-secondary">
             Cancelar
           </button>

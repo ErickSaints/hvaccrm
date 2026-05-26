@@ -950,10 +950,10 @@ export default function HvacCalculatorPage() {
   function Input({ label, value, onChange, min = '0', step, placeholder, suffix }: { label: string; value: string; onChange: (v: string) => void; min?: string; step?: string; placeholder?: string; suffix?: string }) {
     return (
       <div>
-        <label className="text-xs font-medium text-gray-500 mb-1 block">{label}</label>
+        <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{label}</label>
         <div className="relative">
           <input type="number" value={value} onChange={e => onChange(e.target.value)} className="input-field pr-8" min={min} step={step} placeholder={placeholder} />
-          {suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">{suffix}</span>}
+          {suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 dark:text-gray-500">{suffix}</span>}
         </div>
       </div>
     );
@@ -962,7 +962,7 @@ export default function HvacCalculatorPage() {
   function Select({ label, value, onChange, options }: { label: string; value: any; onChange: (v: any) => void; options: { value: any; label: string }[] }) {
     return (
       <div>
-        <label className="text-xs font-medium text-gray-500 mb-1 block">{label}</label>
+        <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">{label}</label>
         <select value={value} onChange={e => onChange(e.target.value)} className="input-field">
           {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
@@ -973,7 +973,7 @@ export default function HvacCalculatorPage() {
   function Section({ title, icon: Icon, children }: { title: string; icon: any; children: React.ReactNode }) {
     return (
       <div className="card-static p-5">
-        <div className="flex items-center gap-2 mb-4"><Icon className="w-5 h-5 text-primary-600" /><h2 className="text-lg font-semibold text-gray-900">{title}</h2></div>
+        <div className="flex items-center gap-2 mb-4"><Icon className="w-5 h-5 text-primary-600" /><h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h2></div>
         <div className="space-y-3">{children}</div>
       </div>
     );
@@ -982,8 +982,8 @@ export default function HvacCalculatorPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Calculadora Técnica HVAC-R</h1>
-        <p className="text-gray-500 mt-1">Dimensionamiento profesional HVAC-R · <span className="text-gray-400">by semasi</span></p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Calculadora Técnica HVAC-R</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Dimensionamiento profesional HVAC-R · <span className="text-gray-400 dark:text-gray-500">by semasi</span></p>
       </div>
 
       {/* Tab Bar */}
@@ -996,10 +996,10 @@ export default function HvacCalculatorPage() {
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all border ${
                 active
                   ? 'bg-primary-50 text-primary-700 border-primary-200 shadow-sm'
-                  : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  : 'bg-white text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
-              <Icon className={`w-4 h-4 ${active ? 'text-primary-500' : 'text-gray-400'}`} />
+              <Icon className={`w-4 h-4 ${active ? 'text-primary-500' : 'text-gray-400 dark:text-gray-500'}`} />
               {v.label.split('(')[0].trim()}
             </button>
           );
@@ -1025,16 +1025,16 @@ export default function HvacCalculatorPage() {
             <>
               <Section title="Aplicación y Clima" icon={Layers}>
                 <div>
-                  <label className="text-xs font-medium text-gray-500 mb-1 block">Tipo de aplicación</label>
+                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block">Tipo de aplicación</label>
                   <div className="grid grid-cols-2 gap-1.5">
                     {(Object.entries(USAGES) as [UsageType, typeof USAGES[UsageType]][]).map(([k, v]) => {
                       const Icon = v.icon; const active = usage === k;
                       return (
                         <button key={k} onClick={() => setUsage(k)}
                           className={`flex items-center gap-1.5 px-2 py-3 rounded-xl text-xs font-medium transition-all border ${
-                            active ? 'bg-primary-50 text-primary-700 border-primary-200 shadow-sm' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                            active ? 'bg-primary-50 text-primary-700 border-primary-200 shadow-sm' : 'bg-white text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
                           }`}
-                        ><Icon className={`w-4 h-4 ${active ? 'text-primary-500' : 'text-gray-400'}`} />{v.label}</button>
+                        ><Icon className={`w-4 h-4 ${active ? 'text-primary-500' : 'text-gray-400 dark:text-gray-500'}`} />{v.label}</button>
                       );
                     })}
                   </div>
@@ -1057,7 +1057,7 @@ export default function HvacCalculatorPage() {
                   <Input label="Carga equipos (W)" value={equipmentLoad} onChange={setEquipmentLoad} step="100" />
                 </div>
                 <Input label="Infiltración (ACH, 0=automático)" value={achComfort} onChange={setAchComfort} step="0.5" />
-                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer p-2 hover:bg-gray-50 rounded-lg">
+                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg">
                   <input type="checkbox" checked={hasSolarControl} onChange={e => setHasSolarControl(e.target.checked)} className="w-4 h-4 text-primary-600 rounded" />
                   Película / control solar en ventanas
                 </label>
@@ -1079,8 +1079,8 @@ export default function HvacCalculatorPage() {
                 <Input label="Aperturas de puerta al día" value={doorOpenings} onChange={setDoorOpenings} />
                 <Input label="Personas que ingresan" value={chamberPeople} onChange={setChamberPeople} />
                 <Select label="Tipo de evaporador" value={evapType} onChange={setEvapType} options={Object.entries(EVAPORATOR_TYPES).map(([k, v]) => ({ value: k, label: `${v.label} - ${v.desc}` }))} />
-                <label className="flex items-center justify-between p-3 bg-gray-50 rounded-xl cursor-pointer">
-                  <div><p className="text-sm font-medium text-gray-700">Descongelación eléctrica</p><p className="text-xs text-gray-400">+15% carga por descarche</p></div>
+                <label className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl cursor-pointer">
+                  <div><p className="text-sm font-medium text-gray-700 dark:text-gray-300">Descongelación eléctrica</p><p className="text-xs text-gray-400 dark:text-gray-500">+15% carga por descarche</p></div>
                   <input type="checkbox" checked={hasDefrost} onChange={e => setHasDefrost(e.target.checked)} className="sr-only peer" />
                   <div className="w-9 h-5 bg-gray-200 peer-checked:bg-primary-600 rounded-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full relative" />
                 </label>
@@ -1101,7 +1101,7 @@ export default function HvacCalculatorPage() {
                 <Input label="Masa de producto (kg/día)" value={freezeProductMass} onChange={setFreezeProductMass} step="10" />
                 <Input label="Aperturas de puerta al día" value={freezeDoorOpenings} onChange={setFreezeDoorOpenings} />
                 <Input label="Personas que ingresan" value={freezePeople} onChange={setFreezePeople} />
-                <p className="text-xs text-gray-500 bg-gray-50 p-2 rounded-lg">La descongelación está siempre activa para cámaras de congelación (+20% sobre transmisión)</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 p-2 rounded-lg">La descongelación está siempre activa para cámaras de congelación (+20% sobre transmisión)</p>
               </Section>
             </>
           )}
@@ -1152,7 +1152,7 @@ export default function HvacCalculatorPage() {
                   <Input label="Longitud de conducto (m)" value={ductLength} onChange={setDuctLength} step="5" suffix="m" />
                   <Input label="Accesorios en conducto" value={ductFittings} onChange={setDuctFittings} />
                 </div>
-                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer p-2 hover:bg-gray-50 rounded-lg">
+                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg">
                   <input type="checkbox" checked={useCortina} onChange={e => setUseCortina(e.target.checked)} className="w-4 h-4 text-primary-600 rounded" />
                   Cortina de aire (puerta)
                 </label>
@@ -1172,7 +1172,7 @@ export default function HvacCalculatorPage() {
               <Section title="Datos del Sistema" icon={Droplets}>
                 <Select label="Tipo de sistema" value={pumpSystem} onChange={(v) => { setPumpSystem(v as PumpSystem); const sys = PUMP_SYSTEMS[v as PumpSystem]; setDeltaTC(String(sys.deltaT_default || 5.5)); }} options={Object.entries(PUMP_SYSTEMS).map(([k, v]) => ({ value: k, label: v.label }))} />
                 <Select label="Tipo de fluido" value={fluidType} onChange={setFluidType} options={Object.entries(FLUID_TYPES).map(([k, v]) => ({ value: k, label: `${v.label} (sg=${v.sg})` }))} />
-                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer p-2 hover:bg-gray-50 rounded-lg">
+                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg">
                   <input type="checkbox" checked={useDirectFlow} onChange={e => setUseDirectFlow(e.target.checked)} className="w-4 h-4 text-primary-600 rounded" />
                   Especificar caudal directamente
                 </label>
@@ -1187,7 +1187,7 @@ export default function HvacCalculatorPage() {
                 <Input label="Longitud de tubería (m)" value={pipeLength} onChange={setPipeLength} step="10" suffix="m" />
                 <Input label="Altura de elevación (m)" value={elevation} onChange={setElevation} step="1" suffix="mca" />
                 <Input label="Núm. de accesorios (codos, válvulas)" value={fittings} onChange={setFittings} />
-                <p className="text-xs text-gray-400">Incluye codos, válvulas de compuerta, check, filtros, etc.</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500">Incluye codos, válvulas de compuerta, check, filtros, etc.</p>
               </Section>
             </>
           )}
@@ -1279,7 +1279,7 @@ export default function HvacCalculatorPage() {
 
               {/* Detail Breakdown */}
               <div className="card-static p-5">
-                <div className="flex items-center gap-2 mb-4"><Info className="w-5 h-5 text-primary-600" /><h3 className="text-lg font-semibold text-gray-900">Desglose de Cálculo</h3></div>
+                <div className="flex items-center gap-2 mb-4"><Info className="w-5 h-5 text-primary-600" /><h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Desglose de Cálculo</h3></div>
                 <div className="space-y-3">
                   {result.details?.map((d: any, i: number) => {
                     const isLabel = typeof d.value === 'number' && d.value === 0 && typeof d.unit === 'string';
@@ -1287,9 +1287,9 @@ export default function HvacCalculatorPage() {
                     return (
                       <div key={i} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                         <span className="text-sm text-gray-600">{d.label}</span>
-                        <span className="text-sm font-semibold text-gray-900">
+                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                           {isLabel ? d.unit : `${typeof d.value === 'number' ? d.value.toLocaleString() : d.value} ${d.unit}`}
-                          {pct !== null && pct > 0 && pct < 200 && <span className="text-gray-400 font-normal ml-1">({pct}%)</span>}
+                          {pct !== null && pct > 0 && pct < 200 && <span className="text-gray-400 dark:text-gray-500 font-normal ml-1">({pct}%)</span>}
                         </span>
                       </div>
                     );
@@ -1335,10 +1335,10 @@ export default function HvacCalculatorPage() {
               {recommended.length > 0 && (
                 <div className="card-static p-5">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                    <div className="flex items-center gap-2"><Thermometer className="w-5 h-5 text-primary-600" /><h3 className="text-lg font-semibold text-gray-900">Equipo Recomendado</h3></div>
+                    <div className="flex items-center gap-2"><Thermometer className="w-5 h-5 text-primary-600" /><h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Equipo Recomendado</h3></div>
                     <div className="flex-1" />
                     <div className="w-full sm:w-56">
-                      <label className="text-xs font-medium text-gray-500 mb-1 block"><User className="w-3 h-3 inline mr-1" />Cliente</label>
+                      <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block"><User className="w-3 h-3 inline mr-1" />Cliente</label>
                       <select value={selectedCustomerId ?? ''} onChange={e => setSelectedCustomerId(e.target.value ? Number(e.target.value) : null)} className="input-field text-sm">
                         <option value="">Seleccionar cliente...</option>
                         {customers?.map(c => <option key={c.id} value={c.id}>{c.companyName ? `${c.companyName} - ${c.contactName}` : c.contactName}</option>)}
@@ -1352,11 +1352,11 @@ export default function HvacCalculatorPage() {
                       const need = result.btu || result.gpm || result.cfm || result.area || 0;
                       const isBest = val >= need * 0.85 && val <= need * 1.5;
                       return (
-                        <div key={item.id} className={`relative border rounded-xl p-4 transition-all hover:shadow-sm ${isBest ? 'border-emerald-300 bg-emerald-50/30' : 'border-gray-200 hover:border-primary-300'}`}>
+                        <div key={item.id} className={`relative border rounded-xl p-4 transition-all hover:shadow-sm ${isBest ? 'border-emerald-300 bg-emerald-50/30' : 'border-gray-200 dark:border-gray-700 hover:border-primary-300'}`}>
                           {isBest && <span className="absolute top-2 right-2 flex items-center gap-1 text-[10px] font-medium text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded-full"><CheckCircle2 className="w-3 h-3" />Ideal</span>}
-                          <div className="mb-2"><h4 className="font-semibold text-gray-900 text-sm">{item.name}</h4><p className="text-xs text-gray-500">{item.description}</p></div>
-                          <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
-                            <span className="font-medium text-gray-700">{item.spec1}</span><span>·</span><span>{item.spec2}</span><span>·</span><span>{item.spec3}</span>
+                          <div className="mb-2"><h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm">{item.name}</h4><p className="text-xs text-gray-500 dark:text-gray-400">{item.description}</p></div>
+                          <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mb-2">
+                            <span className="font-medium text-gray-700 dark:text-gray-300">{item.spec1}</span><span>·</span><span>{item.spec2}</span><span>·</span><span>{item.spec3}</span>
                           </div>
                           <div className="flex items-center justify-between mt-3">
                             <p className="text-lg font-bold text-primary-600">{formatMoney(item.price)}</p>
@@ -1378,10 +1378,10 @@ export default function HvacCalculatorPage() {
           {!result && (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <Calculator className="w-16 h-16 text-gray-200 mb-4" />
-              <h2 className="text-xl font-semibold text-gray-400 mb-1">{CALC_MODES[mode].label}</h2>
-              <p className="text-gray-400 text-sm max-w-md mb-2">{CALC_MODES[mode].desc}</p>
-              <p className="text-gray-400 text-xs">Selecciona la pestaña del tipo de cálculo que necesitas, ingresa los datos y presiona Calcular</p>
-              <div className="flex flex-wrap items-center gap-4 mt-6 text-xs text-gray-400">
+              <h2 className="text-xl font-semibold text-gray-400 dark:text-gray-500 mb-1">{CALC_MODES[mode].label}</h2>
+              <p className="text-gray-400 dark:text-gray-500 text-sm max-w-md mb-2">{CALC_MODES[mode].desc}</p>
+              <p className="text-gray-400 dark:text-gray-500 text-xs">Selecciona la pestaña del tipo de cálculo que necesitas, ingresa los datos y presiona Calcular</p>
+              <div className="flex flex-wrap items-center gap-4 mt-6 text-xs text-gray-400 dark:text-gray-500">
                 <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Precios mercado México +35%</span>
                 <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Basado en ASHRAE / NOM</span>
                 <span className="flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />7 calculadoras especializadas</span>
@@ -1397,18 +1397,18 @@ export default function HvacCalculatorPage() {
 function SumCard({ label, value, sub, color }: { label: string; value: string; sub: string; color: string }) {
   return (
     <div className="card-static p-5 text-center">
-      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">{label}</p>
+      <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{label}</p>
       <p className={`text-3xl font-bold ${color}`}>{value}</p>
-      <p className="text-sm text-gray-500">{sub}</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">{sub}</p>
     </div>
   );
 }
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-gray-50 rounded-xl p-3 text-center">
-      <p className="text-xs text-gray-500 mb-0.5">{label}</p>
-      <p className="text-sm font-semibold text-gray-900">{value}</p>
+    <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-3 text-center">
+      <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">{label}</p>
+      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{value}</p>
     </div>
   );
 }

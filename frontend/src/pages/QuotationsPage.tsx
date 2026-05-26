@@ -72,8 +72,8 @@ export default function QuotationsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Cotizaciones</h1>
-          <p className="text-gray-500 mt-1">Gestión de cotizaciones y presupuestos</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Cotizaciones</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Gestión de cotizaciones y presupuestos</p>
         </div>
         <Link to="/quotations/new" className="btn-primary inline-flex items-center gap-2 w-fit">
           <Plus className="w-4 h-4" />
@@ -83,7 +83,7 @@ export default function QuotationsPage() {
 
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Buscar por número o cliente..."
@@ -93,7 +93,7 @@ export default function QuotationsPage() {
           />
         </div>
         <div className="relative">
-          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -126,7 +126,7 @@ export default function QuotationsPage() {
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100">
+              <tr className="border-b border-gray-100 dark:border-gray-800">
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Número</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Título</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Cliente</th>
@@ -141,13 +141,13 @@ export default function QuotationsPage() {
               {filtered.map((q) => {
                 const expired = isExpired(q);
                 return (
-                  <tr key={q.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-medium text-gray-900">{q.number}</td>
+                  <tr key={q.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">{q.number}</td>
                     <td className="px-6 py-4 text-gray-600">{q.title || '—'}</td>
                     <td className="px-6 py-4 text-gray-600">
                       {q.customer?.contactName || q.customer?.companyName || `#${q.customerId}`}
                     </td>
-                    <td className="px-6 py-4 text-right font-medium text-gray-900">
+                    <td className="px-6 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
                       ${q.total.toFixed(2)}
                     </td>
                     <td className="px-6 py-4">
@@ -157,10 +157,10 @@ export default function QuotationsPage() {
                         statusBadge(q.status)
                       )}
                     </td>
-                    <td className="px-6 py-4 text-gray-500 text-xs">
+                    <td className="px-6 py-4 text-gray-500 dark:text-gray-400 text-xs">
                       {new Date(q.createdAt).toLocaleDateString('es-MX')}
                     </td>
-                    <td className="px-6 py-4 text-gray-500 text-xs">
+                    <td className="px-6 py-4 text-gray-500 dark:text-gray-400 text-xs">
                       {q.validUntil
                         ? new Date(q.validUntil).toLocaleDateString('es-MX')
                         : '—'}
@@ -168,7 +168,7 @@ export default function QuotationsPage() {
                     <td className="px-6 py-4 text-right">
                       <Link
                         to={`/quotations/${q.id}`}
-                        className="p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
                         title="Ver detalle"
                       >
                         <Eye className="w-4 h-4" />
@@ -183,10 +183,10 @@ export default function QuotationsPage() {
       ) : (
         <div className="card text-center py-12">
           <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-1">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
             {search || statusFilter ? 'Sin resultados' : 'No hay cotizaciones'}
           </h3>
-          <p className="text-gray-500 mb-6">
+          <p className="text-gray-500 dark:text-gray-400 mb-6">
             {search || statusFilter
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza creando la primera cotización'}

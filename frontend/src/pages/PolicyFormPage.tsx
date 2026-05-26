@@ -138,14 +138,14 @@ export default function PolicyFormPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/policies')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={() => navigate('/policies')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-gray-800 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {isEditing ? 'Editar Póliza' : 'Nueva Póliza de Mantenimiento'}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {isEditing ? 'Modifica los datos de la póliza' : 'Registra una nueva póliza de mantenimiento'}
           </p>
         </div>
@@ -153,7 +153,7 @@ export default function PolicyFormPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="card space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Cliente *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
           <select {...register('customerId', { valueAsNumber: true })} className="input-field">
             <option value="">Seleccionar cliente...</option>
             {customers?.map((c) => (
@@ -167,18 +167,18 @@ export default function PolicyFormPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre de la Póliza *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nombre de la Póliza *</label>
             <input {...register('name')} className="input-field" placeholder="Mantenimiento Preventivo Anual" />
             {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Descripción</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>
             <textarea {...register('description')} rows={3} className="input-field" placeholder="Describe los servicios incluidos en la póliza..." />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Frecuencia *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Frecuencia *</label>
             <select {...register('frequency')} className="input-field">
               <option value="">Seleccionar frecuencia...</option>
               {frequencies.map((f) => (
@@ -189,53 +189,53 @@ export default function PolicyFormPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Número de Visitas *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Número de Visitas *</label>
             <input {...register('visitCount', { valueAsNumber: true })} type="number" min="1" className="input-field" />
             {errors.visitCount && <p className="text-red-500 text-xs mt-1">{errors.visitCount.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Precio por Visita ($) *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Precio por Visita ($) *</label>
             <input {...register('pricePerVisit', { valueAsNumber: true })} type="number" min="0" step="0.01" className="input-field" placeholder="0.00" />
             {errors.pricePerVisit && <p className="text-red-500 text-xs mt-1">{errors.pricePerVisit.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Precio Total ($)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Precio Total ($)</label>
             <div className="relative">
               <input
                 {...register('totalPrice', { valueAsNumber: true })}
                 type="number"
                 readOnly
-                className="input-field bg-gray-50 pr-10"
+                className="input-field bg-gray-50 dark:bg-gray-800 pr-10"
                 placeholder="Calculado automáticamente"
               />
-              <Calculator className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Calculator className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
             </div>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               {visitCount || 0} visitas × ${Number(pricePerVisit || 0).toFixed(2)} = ${((visitCount || 0) * (pricePerVisit || 0)).toFixed(2)}
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Fecha de Inicio *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Fecha de Inicio *</label>
             <input {...register('startDate')} type="date" className="input-field" />
             {errors.startDate && <p className="text-red-500 text-xs mt-1">{errors.startDate.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Fecha de Fin *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Fecha de Fin *</label>
             <input {...register('endDate')} type="date" className="input-field" />
             {errors.endDate && <p className="text-red-500 text-xs mt-1">{errors.endDate.message}</p>}
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Notas</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notas</label>
             <textarea {...register('notes')} rows={3} className="input-field" placeholder="Notas adicionales..." />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <button type="button" onClick={() => navigate('/policies')} className="btn-secondary">
             Cancelar
           </button>

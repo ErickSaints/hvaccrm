@@ -210,14 +210,14 @@ export default function ServiceReportFormPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/service-reports')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={() => navigate('/service-reports')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {isEditing ? 'Editar Reporte de Servicio' : 'Nuevo Reporte de Servicio'}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {isEditing ? 'Modifica el reporte técnico' : 'Registra el reporte del servicio realizado'}
           </p>
         </div>
@@ -235,9 +235,9 @@ export default function ServiceReportFormPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="card space-y-5">
-          <h2 className="text-lg font-semibold text-gray-900">Información General</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Información General</h2>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Título *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Título *</label>
             <input
               {...register('title')}
               className="input-field"
@@ -246,7 +246,7 @@ export default function ServiceReportFormPage() {
             {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Descripción</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>
             <textarea
               {...register('description')}
               rows={2}
@@ -257,7 +257,7 @@ export default function ServiceReportFormPage() {
         </div>
 
         <div className="card space-y-5">
-          <h2 className="text-lg font-semibold text-gray-900">Diagnóstico</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Diagnóstico</h2>
           <textarea
             {...register('diagnosis')}
             rows={4}
@@ -267,7 +267,7 @@ export default function ServiceReportFormPage() {
         </div>
 
         <div className="card space-y-5">
-          <h2 className="text-lg font-semibold text-gray-900">Trabajo Realizado</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Trabajo Realizado</h2>
           <textarea
             {...register('workPerformed')}
             rows={4}
@@ -277,7 +277,7 @@ export default function ServiceReportFormPage() {
         </div>
 
         <div className="card space-y-5">
-          <h2 className="text-lg font-semibold text-gray-900">Recomendaciones</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Recomendaciones</h2>
           <textarea
             {...register('recommendations')}
             rows={4}
@@ -287,17 +287,17 @@ export default function ServiceReportFormPage() {
         </div>
 
         <div className="card space-y-5">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-gray-400" />
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <Clock className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             Tiempo de Servicio
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Hora de Llegada</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Hora de Llegada</label>
               <input type="time" {...register('arrivalTime')} className="input-field" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Hora de Salida</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Hora de Salida</label>
               <input type="time" {...register('departureTime')} className="input-field" />
             </div>
           </div>
@@ -305,8 +305,8 @@ export default function ServiceReportFormPage() {
 
         <div className="card space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <Image className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <Image className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               Fotografías
             </h2>
             <button
@@ -320,15 +320,15 @@ export default function ServiceReportFormPage() {
           </div>
 
           {photoFields.length === 0 ? (
-            <p className="text-gray-500 text-sm text-center py-4">No hay fotos agregadas</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-4">No hay fotos agregadas</p>
           ) : (
             <div className="space-y-4">
               {photoFields.map((field, index) => (
-                <div key={field.id} className="p-4 bg-gray-50 rounded-lg space-y-3 relative">
+                <div key={field.id} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg space-y-3 relative">
                   <button
                     type="button"
                     onClick={() => removePhoto(index)}
-                    className="absolute top-2 right-2 p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors z-10"
+                    className="absolute top-2 right-2 p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors z-10"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -371,8 +371,8 @@ export default function ServiceReportFormPage() {
 
         <div className="card space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <Package className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <Package className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               Materiales Utilizados
             </h2>
             <button
@@ -388,7 +388,7 @@ export default function ServiceReportFormPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-100">
+                <tr className="border-b border-gray-100 dark:border-gray-800">
                   <th className="text-left px-3 py-3 font-semibold text-gray-600">Material</th>
                   <th className="text-center px-3 py-3 font-semibold text-gray-600 w-24">Cant.</th>
                   <th className="text-right px-3 py-3 font-semibold text-gray-600 w-32">P. Unitario</th>
@@ -440,14 +440,14 @@ export default function ServiceReportFormPage() {
                         )}
                       />
                     </td>
-                    <td className="px-3 py-2 text-right font-medium text-gray-900">
+                    <td className="px-3 py-2 text-right font-medium text-gray-900 dark:text-gray-100">
                       ${((materials[index]?.quantity || 0) * (materials[index]?.unitPrice || 0)).toFixed(2)}
                     </td>
                     <td className="px-3 py-2 text-center">
                       <button
                         type="button"
                         onClick={() => removeMaterial(index)}
-                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         disabled={materialFields.length <= 1}
                       >
                         <Trash2 className="w-4 h-4" />
@@ -457,11 +457,11 @@ export default function ServiceReportFormPage() {
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-gray-200">
-                  <td colSpan={3} className="px-3 py-3 text-right font-semibold text-gray-900">
+                <tr className="border-t-2 border-gray-200 dark:border-gray-700">
+                  <td colSpan={3} className="px-3 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">
                     Total Materiales:
                   </td>
-                  <td className="px-3 py-3 text-right font-bold text-gray-900">
+                  <td className="px-3 py-3 text-right font-bold text-gray-900 dark:text-gray-100">
                     ${materialsTotal.toFixed(2)}
                   </td>
                   <td></td>
@@ -472,9 +472,9 @@ export default function ServiceReportFormPage() {
         </div>
 
         <div className="card space-y-5">
-          <h2 className="text-lg font-semibold text-gray-900">Firma Digital</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Firma Digital</h2>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
               Nombre completo de quien recibe
             </label>
             <input

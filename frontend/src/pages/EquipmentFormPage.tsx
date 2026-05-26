@@ -129,14 +129,14 @@ export default function EquipmentFormPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/equipment')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={() => navigate('/equipment')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {isEditing ? 'Editar Equipo' : 'Nuevo Equipo'}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {isEditing ? 'Modifica los datos del equipo' : 'Registra un nuevo equipo en el sistema'}
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function EquipmentFormPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="card space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Cliente *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
             <select {...register('customerId', { valueAsNumber: true })} className="input-field">
               <option value="">Seleccionar cliente...</option>
               {customers?.map((c) => (
@@ -158,7 +158,7 @@ export default function EquipmentFormPage() {
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Tipo de Equipo *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tipo de Equipo *</label>
             <select {...register('type')} className="input-field">
               <option value="">Seleccionar tipo...</option>
               {equipmentTypes.map((t) => (
@@ -169,47 +169,47 @@ export default function EquipmentFormPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Marca</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Marca</label>
             <input {...register('brand')} className="input-field" placeholder="Carrier, Trane, etc." />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Modelo</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Modelo</label>
             <input {...register('model')} className="input-field" placeholder="Modelo del equipo" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Número de Serie</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Número de Serie</label>
             <input {...register('serialNumber')} className="input-field" placeholder="SN-12345" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Capacidad</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Capacidad</label>
             <input {...register('capacity')} className="input-field" placeholder="5 Tons / 60,000 BTU" />
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Ubicación</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Ubicación</label>
             <input {...register('location')} className="input-field" placeholder="Planta baja, edificio A, etc." />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Fecha de Instalación</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Fecha de Instalación</label>
             <input {...register('installDate')} type="date" className="input-field" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Último Servicio</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Último Servicio</label>
             <input {...register('lastService')} type="date" className="input-field" />
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Notas</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notas</label>
             <textarea {...register('notes')} rows={3} className="input-field" placeholder="Notas adicionales..." />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <button type="button" onClick={() => navigate('/equipment')} className="btn-secondary">
             Cancelar
           </button>

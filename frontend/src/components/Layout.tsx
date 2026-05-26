@@ -24,10 +24,13 @@ import {
   ChevronDown,
   Building2,
   Ruler,
+  Moon,
+  Sun,
 } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import GlobalSearch from './GlobalSearch';
 import NotificationBell from './NotificationBell';
+import { useDarkMode } from '../lib/useDarkMode';
 
 const mainNav = [
   { section: 'General', items: [
@@ -100,6 +103,7 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  const [isDark, toggleDark] = useDarkMode();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -157,12 +161,12 @@ export default function Layout() {
     return (
       <NavLink to={href} className={`group relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
         isActive
-          ? 'bg-primary-50 text-primary-700 shadow-sm'
-          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+          ? 'bg-primary-50 text-primary-700 shadow-sm dark:bg-primary-900/30 dark:text-primary-400'
+          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100'
       }`}>
         {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-primary-600 rounded-r-full" />}
         <span className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-150 ${
-          isActive ? 'bg-primary-100 text-primary-600' : 'bg-transparent text-gray-400 group-hover:bg-gray-200 group-hover:text-gray-600'
+          isActive ? 'bg-primary-100 text-primary-600 dark:bg-primary-800/50 dark:text-primary-400' : 'bg-transparent text-gray-400 group-hover:bg-gray-200 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:bg-gray-700 dark:group-hover:text-gray-300'
         }`}>
           <Icon className="w-4.5 h-4.5" />
         </span>
@@ -172,7 +176,7 @@ export default function Layout() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
       {sidebarOpen && (
         <div className="fixed inset-0 z-40 bg-black/50 lg:hidden backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
       )}
@@ -181,7 +185,7 @@ export default function Layout() {
         sidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full shadow-none'
       }`}>
         {/* Logo */}
-        <div className="flex items-center justify-between h-16 px-5 border-b border-gray-100 shrink-0">
+        <div className="flex items-center justify-between h-16 px-5 border-b border-gray-100 shrink-0 dark:border-gray-800">
           <div className="flex items-center gap-2.5">
             <div className="flex items-center justify-center w-9 h-9 bg-gradient-to-br from-blue-600 via-cyan-500 to-sky-400 text-white rounded-xl shadow-md shadow-blue-200">
               <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -193,11 +197,11 @@ export default function Layout() {
               </svg>
             </div>
             <div>
-              <span className="font-bold text-sm text-gray-900 block leading-tight">HVAC-R CRM</span>
-              <span className="text-[10px] text-gray-400 leading-tight">El CRM inteligente para HVAC-R</span>
+              <span className="font-bold text-sm text-gray-900 block leading-tight dark:text-gray-100">HVAC-R CRM</span>
+              <span className="text-[10px] text-gray-400 leading-tight dark:text-gray-500">El CRM inteligente para HVAC-R</span>
             </div>
           </div>
-          <button className="lg:hidden text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-1.5 rounded-lg transition-colors" onClick={() => setSidebarOpen(false)}>
+          <button className="lg:hidden text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-1.5 rounded-lg transition-colors dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-gray-800" onClick={() => setSidebarOpen(false)}>
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -220,7 +224,7 @@ export default function Layout() {
                     <button
                       onClick={() => toggleSection(section.section)}
                       className={`flex items-center justify-between w-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-widest transition-colors ${
-                        hasActive ? 'text-primary-600' : 'text-gray-400 hover:text-gray-600'
+                        hasActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                       }`}
                     >
                       {section.section}
@@ -239,23 +243,23 @@ export default function Layout() {
         </nav>
 
         {/* Bottom section */}
-        <div className="shrink-0 border-t border-gray-100 bg-gray-50/50 px-3 py-3">
+        <div className="shrink-0 border-t border-gray-100 bg-gray-50/50 px-3 py-3 dark:border-gray-800 dark:bg-gray-800/50">
           {bottomNav.map((item) => <NavItem key={item.name} {...item} />)}
 
           {/* User info */}
           {user && (
-            <div className="mt-3 pt-3 border-t border-gray-200 px-3">
+              <div className="mt-3 pt-3 border-t border-gray-200 px-3 dark:border-gray-700">
               <div className="flex items-center gap-3">
                 <div className={`flex items-center justify-center w-9 h-9 rounded-full font-semibold text-sm shrink-0 ${roleColors[user.role] || 'bg-gray-100 text-gray-700'}`}>
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-gray-900 truncate">{user.name}</p>
-                  <p className="text-[11px] text-gray-400 truncate">{roleLabels[user.role] || user.role}</p>
+                  <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-100">{user.name}</p>
+                  <p className="text-[11px] text-gray-400 truncate dark:text-gray-500">{roleLabels[user.role] || user.role}</p>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors"
+                  className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors dark:hover:bg-red-950"
                   title="Cerrar sesión"
                 >
                   <LogOut className="w-4 h-4" />
@@ -268,10 +272,10 @@ export default function Layout() {
 
       {/* Main Content */}
       <div className="flex flex-col flex-1 w-0 min-w-0">
-        <header className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200 lg:px-6 shrink-0">
+        <header className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200 lg:px-6 shrink-0 dark:bg-gray-900 dark:border-gray-800">
           <div className="flex items-center gap-3">
             <button
-              className="lg:hidden text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-lg transition-colors"
+              className="lg:hidden text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-lg transition-colors dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="w-5 h-5" />
@@ -281,22 +285,29 @@ export default function Layout() {
           <div className="flex-1 flex justify-center px-4">
             <button
               onClick={() => setSearchOpen(true)}
-              className="w-full max-w-lg flex items-center gap-2.5 px-4 py-2 text-sm text-gray-400 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 hover:border-gray-300 transition-all group"
+              className="w-full max-w-lg flex items-center gap-2.5 px-4 py-2 text-sm text-gray-400 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 hover:border-gray-300 transition-all group dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:border-gray-600"
             >
               <Search className="w-4 h-4 text-gray-400 group-hover:text-gray-500" />
               <span className="text-gray-400 group-hover:text-gray-500">Buscar en el CRM...</span>
-              <span className="ml-auto hidden sm:inline-flex items-center gap-0.5 text-[11px] text-gray-400 bg-gray-200 px-1.5 py-0.5 rounded-md font-mono">
+              <span className="ml-auto hidden sm:inline-flex items-center gap-0.5 text-[11px] text-gray-400 bg-gray-200 px-1.5 py-0.5 rounded-md font-mono dark:bg-gray-700 dark:text-gray-500">
                 <span className="text-[10px]">⌘</span>K
               </span>
             </button>
           </div>
 
           <div className="flex items-center gap-1">
+            <button
+              onClick={toggleDark}
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              title={isDark ? 'Modo claro' : 'Modo oscuro'}
+            >
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
             <NotificationBell />
             {user && (
-              <div className="hidden sm:flex items-center gap-2.5 ml-2 pl-2 border-l border-gray-200">
+              <div className="hidden sm:flex items-center gap-2.5 ml-2 pl-2 border-l border-gray-200 dark:border-gray-700">
                 <div className="text-right">
-                  <p className="text-sm font-medium text-gray-900 leading-tight">{user.name}</p>
+                  <p className="text-sm font-medium text-gray-900 leading-tight dark:text-gray-100">{user.name}</p>
                   <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${roleColors[user.role] || 'bg-gray-100 text-gray-600'}`}>
                     {roleLabels[user.role] || user.role}
                   </span>

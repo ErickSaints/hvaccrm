@@ -60,9 +60,9 @@ export default function GlobalSearch({ isOpen, onClose }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24">
       <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative w-full max-w-2xl mx-4 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200">
-          <Search className="w-5 h-5 text-gray-400" />
+      <div className="relative w-full max-w-2xl mx-4 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+          <Search className="w-5 h-5 text-gray-400 dark:text-gray-500" />
           <input
             ref={inputRef}
             type="text"
@@ -71,42 +71,42 @@ export default function GlobalSearch({ isOpen, onClose }: Props) {
             placeholder="Buscar clientes, tickets, órdenes, cotizaciones..."
             className="flex-1 text-base outline-none placeholder:text-gray-400"
           />
-          {loading && <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />}
-          <button onClick={onClose} className="text-xs text-gray-400 hover:text-gray-600 bg-gray-100 px-2 py-1 rounded">
+          {loading && <Loader2 className="w-4 h-4 text-gray-400 dark:text-gray-500 animate-spin" />}
+          <button onClick={onClose} className="text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
             ESC
           </button>
         </div>
 
         {query.length >= 2 && !loading && results && totalResults === 0 && (
-          <p className="text-sm text-gray-400 text-center py-8">Sin resultados para "{query}"</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-8">Sin resultados para "{query}"</p>
         )}
 
         {results && totalResults > 0 && (
           <div className="max-h-96 overflow-y-auto p-2 space-y-0.5">
             {results.customers.length > 0 && (
               <>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 pt-2 pb-1">Clientes</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-3 pt-2 pb-1">Clientes</p>
                 {results.customers.map((c) => (
-                  <button key={`c-${c.id}`} onClick={() => goTo(`/customers/${c.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-left">
+                  <button key={`c-${c.id}`} onClick={() => goTo(`/customers/${c.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-left">
                     <Users className="w-4 h-4 text-blue-500 shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{c.contactName}</p>
-                      <p className="text-xs text-gray-500 truncate">{c.companyName || c.email || c.phone}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{c.contactName}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{c.companyName || c.email || c.phone}</p>
                     </div>
-                    {c.city && <span className="text-xs text-gray-400 shrink-0">{c.city}</span>}
+                    {c.city && <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">{c.city}</span>}
                   </button>
                 ))}
               </>
             )}
             {results.tickets.length > 0 && (
               <>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 pt-2 pb-1">Tickets</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-3 pt-2 pb-1">Tickets</p>
                 {results.tickets.map((t) => (
-                  <button key={`t-${t.id}`} onClick={() => goTo(`/tickets/${t.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-left">
+                  <button key={`t-${t.id}`} onClick={() => goTo(`/tickets/${t.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-left">
                     <TicketCheck className="w-4 h-4 text-amber-500 shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{t.title}</p>
-                      <p className="text-xs text-gray-500 truncate">{t.customer?.contactName || t.customer?.companyName}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{t.title}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{t.customer?.contactName || t.customer?.companyName}</p>
                     </div>
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                       t.level === 'EMERGENCIA' ? 'bg-red-100 text-red-700' :
@@ -119,13 +119,13 @@ export default function GlobalSearch({ isOpen, onClose }: Props) {
             )}
             {results.orders.length > 0 && (
               <>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 pt-2 pb-1">Órdenes de Servicio</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-3 pt-2 pb-1">Órdenes de Servicio</p>
                 {results.orders.map((o) => (
-                  <button key={`o-${o.id}`} onClick={() => goTo(`/service-orders/${o.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-left">
+                  <button key={`o-${o.id}`} onClick={() => goTo(`/service-orders/${o.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-left">
                     <ClipboardList className="w-4 h-4 text-emerald-500 shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{o.number}</p>
-                      <p className="text-xs text-gray-500 truncate">{o.description || o.customer?.contactName}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{o.number}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{o.description || o.customer?.contactName}</p>
                     </div>
                   </button>
                 ))}
@@ -133,13 +133,13 @@ export default function GlobalSearch({ isOpen, onClose }: Props) {
             )}
             {results.quotations.length > 0 && (
               <>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 pt-2 pb-1">Cotizaciones</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-3 pt-2 pb-1">Cotizaciones</p>
                 {results.quotations.map((q) => (
-                  <button key={`q-${q.id}`} onClick={() => goTo(`/quotations/${q.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-left">
+                  <button key={`q-${q.id}`} onClick={() => goTo(`/quotations/${q.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-left">
                     <FileText className="w-4 h-4 text-violet-500 shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{q.number}</p>
-                      <p className="text-xs text-gray-500 truncate">{q.title || q.customer?.contactName}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{q.number}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{q.title || q.customer?.contactName}</p>
                     </div>
                   </button>
                 ))}
@@ -147,13 +147,13 @@ export default function GlobalSearch({ isOpen, onClose }: Props) {
             )}
             {results.equipment.length > 0 && (
               <>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 pt-2 pb-1">Equipos</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-3 pt-2 pb-1">Equipos</p>
                 {results.equipment.map((e) => (
-                  <button key={`e-${e.id}`} onClick={() => goTo(`/equipment`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-left">
+                  <button key={`e-${e.id}`} onClick={() => goTo(`/equipment`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-left">
                     <Wrench className="w-4 h-4 text-cyan-500 shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{e.type}</p>
-                      <p className="text-xs text-gray-500 truncate">{e.brand} {e.model} — {e.customer?.companyName || e.customer?.contactName}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{e.type}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{e.brand} {e.model} — {e.customer?.companyName || e.customer?.contactName}</p>
                     </div>
                   </button>
                 ))}
@@ -161,13 +161,13 @@ export default function GlobalSearch({ isOpen, onClose }: Props) {
             )}
             {results.policies.length > 0 && (
               <>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 pt-2 pb-1">Pólizas</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-3 pt-2 pb-1">Pólizas</p>
                 {results.policies.map((p) => (
-                  <button key={`p-${p.id}`} onClick={() => goTo(`/policies/${p.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-left">
+                  <button key={`p-${p.id}`} onClick={() => goTo(`/policies/${p.id}`)} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 text-left">
                     <ShieldCheck className="w-4 h-4 text-rose-500 shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{p.name}</p>
-                      <p className="text-xs text-gray-500 truncate">{p.number}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{p.name}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{p.number}</p>
                     </div>
                   </button>
                 ))}
@@ -175,7 +175,7 @@ export default function GlobalSearch({ isOpen, onClose }: Props) {
             )}
           </div>
         )}
-        <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 text-xs text-gray-400 flex items-center gap-4">
+        <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 text-xs text-gray-400 dark:text-gray-500 flex items-center gap-4">
           <span>↑↓ Navegar</span>
           <span>↵ Abrir</span>
           <span>Esc Cerrar</span>

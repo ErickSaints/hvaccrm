@@ -92,13 +92,13 @@ export default function RefaccionesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Herramientas e Insumos</h1>
-        <p className="text-gray-500 mt-1">Busca herramientas, refacciones, gases, tubería, soldaduras y más para HVAC-R</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Herramientas e Insumos</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Busca herramientas, refacciones, gases, tubería, soldaduras y más para HVAC-R</p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
         <div className="relative flex-1 w-full sm:w-auto">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             value={query}
@@ -110,7 +110,7 @@ export default function RefaccionesPage() {
         </div>
 
         <div className="w-full sm:w-64">
-          <label className="block text-xs font-medium text-gray-500 mb-1">
+          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
             <User className="w-3 h-3 inline mr-1" />
             Cliente
           </label>
@@ -131,9 +131,9 @@ export default function RefaccionesPage() {
 
       <div>
         {!searchTerm && (
-          <div className="text-center py-16 text-gray-500">
+          <div className="text-center py-16 text-gray-500 dark:text-gray-400">
             <Package className="w-16 h-16 mx-auto mb-4 text-gray-200" />
-            <p className="text-lg font-medium text-gray-400">Busca cualquier refacción o herramienta</p>
+            <p className="text-lg font-medium text-gray-400 dark:text-gray-500">Busca cualquier refacción o herramienta</p>
             <p className="text-sm mt-1">Encuentra productos y genera una cotización al instante</p>
           </div>
         )}
@@ -148,26 +148,26 @@ export default function RefaccionesPage() {
           <div className="text-center py-16">
             <AlertCircle className="w-12 h-12 mx-auto mb-3 text-red-400" />
             <p className="text-red-600 font-medium">Error al buscar productos</p>
-            <p className="text-sm text-gray-500 mt-1">Servicio temporalmente no disponible</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Servicio temporalmente no disponible</p>
             <button onClick={() => setSearchTerm(query.trim())} className="btn-secondary mt-4">Reintentar</button>
           </div>
         )}
 
         {data?.results?.length > 0 && (
           <div>
-            <p className="text-sm text-gray-500 mb-4">{data.total} resultados para "<strong>{data.query}</strong>"</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{data.total} resultados para "<strong>{data.query}</strong>"</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {data.results.map((product: PartProduct) => (
                 <div key={product.id} className="card group hover:shadow-lg transition-shadow flex flex-col">
-                  <div className="aspect-square bg-gray-50 rounded-lg overflow-hidden mb-3 flex items-center justify-center p-4">
+                  <div className="aspect-square bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden mb-3 flex items-center justify-center p-4">
                     <img
                       src={product.thumbnail}
                       alt={product.title}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                     />
                   </div>
-                  <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-2 flex-1">{product.title}</h3>
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mb-2">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-2 mb-2 flex-1">{product.title}</h3>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
                     <span className="bg-gray-100 px-1.5 py-0.5 rounded">{product.condition}</span>
                     {product.freeShipping && (
                       <span className="text-green-600 flex items-center gap-1">
@@ -182,7 +182,7 @@ export default function RefaccionesPage() {
                     ${product.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </p>
                   <div className="flex items-center gap-2 mb-3">
-                    <label className="text-xs text-gray-500 font-medium">Cant:</label>
+                    <label className="text-xs text-gray-500 dark:text-gray-400 font-medium">Cant:</label>
                     <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
                       <button
                         onClick={() => setQty(product.id, (quantities[product.id] || 1) - 1)}
@@ -190,7 +190,7 @@ export default function RefaccionesPage() {
                       >
                         -
                       </button>
-                      <span className="px-3 py-1 text-sm font-semibold text-gray-900 min-w-[2rem] text-center border-x border-gray-300">
+                      <span className="px-3 py-1 text-sm font-semibold text-gray-900 dark:text-gray-100 min-w-[2rem] text-center border-x border-gray-300">
                         {quantities[product.id] || 1}
                       </span>
                       <button
@@ -220,7 +220,7 @@ export default function RefaccionesPage() {
         )}
 
         {searchTerm && !isLoading && data?.results?.length === 0 && (
-          <div className="text-center py-16 text-gray-500">
+          <div className="text-center py-16 text-gray-500 dark:text-gray-400">
             <Package className="w-12 h-12 mx-auto mb-3 text-gray-300" />
             <p className="font-medium">No se encontraron resultados</p>
             <p className="text-sm mt-1">Intenta con otros términos de búsqueda</p>

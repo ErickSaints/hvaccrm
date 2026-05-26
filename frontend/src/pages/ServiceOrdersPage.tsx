@@ -85,8 +85,8 @@ export default function ServiceOrdersPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Ordenes de Servicio</h1>
-          <p className="text-gray-500 mt-1">Gestión de ordenes de servicio técnico</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Ordenes de Servicio</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Gestión de ordenes de servicio técnico</p>
         </div>
         <Link to="/service-orders/new" className="btn-primary inline-flex items-center gap-2 w-fit">
           <Plus className="w-4 h-4" />
@@ -103,7 +103,7 @@ export default function ServiceOrdersPage() {
               className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
                 statusFilter === f.key
                   ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 hover:bg-gray-200'
               }`}
             >
               {f.label}
@@ -112,7 +112,7 @@ export default function ServiceOrdersPage() {
         </div>
         <div className="flex-1">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Buscar por número o cliente..."
@@ -142,7 +142,7 @@ export default function ServiceOrdersPage() {
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100">
+              <tr className="border-b border-gray-100 dark:border-gray-800">
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Número</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Cliente</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Descripción</th>
@@ -154,7 +154,7 @@ export default function ServiceOrdersPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {filtered.map((order) => (
-                <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                   <td className="px-6 py-4">
                     <Link to={`/service-orders/${order.id}`} className="font-medium text-primary-600 hover:text-primary-700">
                       {order.number}
@@ -166,7 +166,7 @@ export default function ServiceOrdersPage() {
                   <td className="px-6 py-4 text-gray-600 max-w-xs truncate">
                     {order.description || '—'}
                   </td>
-                  <td className="px-6 py-4 text-gray-500">
+                  <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                     {order.scheduledDate
                       ? new Date(order.scheduledDate).toLocaleDateString('es-MX')
                       : '—'}
@@ -191,7 +191,7 @@ export default function ServiceOrdersPage() {
                   <td className="px-6 py-4 text-right">
                     <Link
                       to={`/service-orders/${order.id}`}
-                      className="p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
+                      className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
                       title="Ver detalle"
                     >
                       <Eye className="w-4 h-4" />
@@ -205,10 +205,10 @@ export default function ServiceOrdersPage() {
       ) : (
         <div className="card text-center py-12">
           <ClipboardList className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-1">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
             {search || statusFilter ? 'Sin resultados' : 'No hay ordenes de servicio'}
           </h3>
-          <p className="text-gray-500 mb-6">
+          <p className="text-gray-500 dark:text-gray-400 mb-6">
             {search || statusFilter
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza creando la primera orden de servicio'}

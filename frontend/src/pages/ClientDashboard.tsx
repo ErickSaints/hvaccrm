@@ -84,8 +84,8 @@ export default function ClientDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Bienvenido, {user?.name}</h1>
-        <p className="text-gray-500 mt-1">Panel de cliente</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Bienvenido, {user?.name}</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Panel de cliente</p>
       </div>
 
       {/* Summary Cards */}
@@ -96,8 +96,8 @@ export default function ClientDashboard() {
               <TicketCheck className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{activeTickets.length}</p>
-              <p className="text-xs text-gray-500">Tickets activos</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{activeTickets.length}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Tickets activos</p>
             </div>
           </div>
           <Link to="/tickets" className="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
@@ -111,8 +111,8 @@ export default function ClientDashboard() {
               <ClipboardList className="w-5 h-5 text-amber-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{pendingOrders.length}</p>
-              <p className="text-xs text-gray-500">Órdenes activas</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{pendingOrders.length}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Órdenes activas</p>
             </div>
           </div>
           <Link to="/service-orders" className="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
@@ -126,8 +126,8 @@ export default function ClientDashboard() {
               <FileText className="w-5 h-5 text-violet-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{pendingQuotations.length}</p>
-              <p className="text-xs text-gray-500">Cotizaciones pendientes</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{pendingQuotations.length}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Cotizaciones pendientes</p>
             </div>
           </div>
           <Link to="/quotations" className="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
@@ -141,8 +141,8 @@ export default function ClientDashboard() {
               <Wrench className="w-5 h-5 text-emerald-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{equipment?.length || 0}</p>
-              <p className="text-xs text-gray-500">Equipos registrados</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{equipment?.length || 0}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Equipos registrados</p>
             </div>
           </div>
           <Link to="/equipment" className="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
@@ -156,18 +156,18 @@ export default function ClientDashboard() {
         {/* Recent Tickets */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Mis Tickets Recientes</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Mis Tickets Recientes</h2>
             <Link to="/tickets" className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="space-y-2">
             {tickets && tickets.length > 0 ? tickets.slice(0, 5).map((t) => (
-              <Link key={t.id} to={`/tickets/${t.id}`} className="block p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3">
+              <Link key={t.id} to={`/tickets/${t.id}`} className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 truncate">{t.title}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{t.title}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                       {new Date(t.createdAt).toLocaleDateString('es-MX', { dateStyle: 'short' })}
                     </p>
                   </div>
@@ -175,7 +175,7 @@ export default function ClientDashboard() {
                 </div>
               </Link>
             )) : (
-              <p className="text-sm text-gray-400 text-center py-4">Sin tickets</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin tickets</p>
             )}
           </div>
         </div>
@@ -183,18 +183,18 @@ export default function ClientDashboard() {
         {/* Recent Orders */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Mis Órdenes de Servicio</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Mis Órdenes de Servicio</h2>
             <Link to="/service-orders" className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
               Ver todas <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="space-y-2">
             {orders && orders.length > 0 ? orders.slice(0, 5).map((o) => (
-              <Link key={o.id} to={`/service-orders/${o.id}`} className="block p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3">
+              <Link key={o.id} to={`/service-orders/${o.id}`} className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 truncate">{o.number}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{o.number}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                       {o.scheduledDate
                         ? new Date(o.scheduledDate).toLocaleDateString('es-MX', { dateStyle: 'short' })
                         : 'Sin programar'}
@@ -204,7 +204,7 @@ export default function ClientDashboard() {
                 </div>
               </Link>
             )) : (
-              <p className="text-sm text-gray-400 text-center py-4">Sin órdenes</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin órdenes</p>
             )}
           </div>
         </div>
@@ -212,24 +212,24 @@ export default function ClientDashboard() {
         {/* Recent Quotations */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Mis Cotizaciones</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Mis Cotizaciones</h2>
             <Link to="/quotations" className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
               Ver todas <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="space-y-2">
             {quotations && quotations.length > 0 ? quotations.slice(0, 5).map((q) => (
-              <Link key={q.id} to={`/quotations/${q.id}`} className="block p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3">
+              <Link key={q.id} to={`/quotations/${q.id}`} className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 truncate">{q.title || q.number}</p>
-                    <p className="text-xs text-gray-500 mt-0.5">${q.total?.toLocaleString('es-MX') || '0'}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{q.title || q.number}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">${q.total?.toLocaleString('es-MX') || '0'}</p>
                   </div>
                   {statusBadge(q.status, 'quotation')}
                 </div>
               </Link>
             )) : (
-              <p className="text-sm text-gray-400 text-center py-4">Sin cotizaciones</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin cotizaciones</p>
             )}
           </div>
         </div>
@@ -237,19 +237,19 @@ export default function ClientDashboard() {
         {/* My Equipment */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Mis Equipos</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Mis Equipos</h2>
             <Link to="/equipment" className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="space-y-2">
             {equipment && equipment.length > 0 ? equipment.slice(0, 5).map((e) => (
-              <div key={e.id} className="p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3">
-                <p className="text-sm font-medium text-gray-900 truncate">{e.type}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{e.brand} {e.model ? `- ${e.model}` : ''}</p>
+              <div key={e.id} className="p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3">
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{e.type}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{e.brand} {e.model ? `- ${e.model}` : ''}</p>
               </div>
             )) : (
-              <p className="text-sm text-gray-400 text-center py-4">Sin equipos registrados</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin equipos registrados</p>
             )}
           </div>
         </div>

@@ -104,14 +104,14 @@ export default function CustomerFormPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/customers')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={() => navigate('/customers')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {isEditing ? 'Editar Cliente' : 'Nuevo Cliente'}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {isEditing ? 'Modifica los datos del cliente' : 'Registra un nuevo cliente en el sistema'}
           </p>
         </div>
@@ -120,66 +120,66 @@ export default function CustomerFormPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="card space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre de Contacto *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nombre de Contacto *</label>
             <input {...register('contactName')} className="input-field" placeholder="Juan Pérez" />
             {errors.contactName && <p className="text-red-500 text-xs mt-1">{errors.contactName.message}</p>}
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Empresa</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Empresa</label>
             <input {...register('companyName')} className="input-field" placeholder="Climatización XYZ S.A. de C.V." />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Teléfono *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Teléfono *</label>
             <input {...register('phone')} className="input-field" placeholder="55 1234 5678" />
             {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Teléfono 2</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Teléfono 2</label>
             <input {...register('phone2')} className="input-field" placeholder="55 8765 4321" />
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
             <input {...register('email')} type="email" className="input-field" placeholder="juan@ejemplo.com" />
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Dirección *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Dirección *</label>
             <input {...register('address')} className="input-field" placeholder="Calle Principal #123, Col. Centro" />
             {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Ciudad</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Ciudad</label>
             <input {...register('city')} className="input-field" placeholder="Ciudad de México" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Estado</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Estado</label>
             <input {...register('state')} className="input-field" placeholder="CDMX" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Código Postal</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Código Postal</label>
             <input {...register('zipCode')} className="input-field" placeholder="06600" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">RFC / Tax ID</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">RFC / Tax ID</label>
             <input {...register('taxId')} className="input-field" placeholder="XAXX010101000" />
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Notas</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notas</label>
             <textarea {...register('notes')} rows={3} className="input-field" placeholder="Notas adicionales..." />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <button type="button" onClick={() => navigate('/customers')} className="btn-secondary">
             Cancelar
           </button>

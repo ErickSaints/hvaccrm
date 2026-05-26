@@ -64,8 +64,8 @@ export default function EquipmentPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Equipos</h1>
-          <p className="text-gray-500 mt-1">Inventario de equipos de climatización</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Equipos</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Inventario de equipos de climatización</p>
         </div>
         <Link to="/equipment/new" className="btn-primary inline-flex items-center gap-2 w-fit">
           <Plus className="w-4 h-4" />
@@ -75,7 +75,7 @@ export default function EquipmentPage() {
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Buscar por tipo, marca, modelo, serie o cliente..."
@@ -125,7 +125,7 @@ export default function EquipmentPage() {
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100">
+              <tr className="border-b border-gray-100 dark:border-gray-800">
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Tipo</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Marca</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Modelo</th>
@@ -138,13 +138,13 @@ export default function EquipmentPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {filtered.map((eq) => (
-                <tr key={eq.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={eq.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center">
                         <Wrench className="w-4 h-4" />
                       </div>
-                      <span className="font-medium text-gray-900">{eq.type}</span>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">{eq.type}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-gray-600">{eq.brand || '—'}</td>
@@ -152,21 +152,21 @@ export default function EquipmentPage() {
                   <td className="px-6 py-4">
                     {eq.serialNumber ? (
                       <span className="inline-flex items-center gap-1 text-gray-600">
-                        <Hash className="w-3 h-3 text-gray-400" />
+                        <Hash className="w-3 h-3 text-gray-400 dark:text-gray-500" />
                         {eq.serialNumber}
                       </span>
                     ) : '—'}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1.5 text-gray-600">
-                      <Building2 className="w-4 h-4 text-gray-400" />
+                      <Building2 className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                       {eq.customer?.contactName || eq.customer?.companyName || `Cliente #${eq.customerId}`}
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     {eq.location ? (
                       <span className="inline-flex items-center gap-1 text-gray-600">
-                        <MapPin className="w-3 h-3 text-gray-400" />
+                        <MapPin className="w-3 h-3 text-gray-400 dark:text-gray-500" />
                         {eq.location}
                       </span>
                     ) : '—'}
@@ -174,7 +174,7 @@ export default function EquipmentPage() {
                   <td className="px-6 py-4">
                     {eq.lastService ? (
                       <span className="inline-flex items-center gap-1 text-gray-600">
-                        <Calendar className="w-3 h-3 text-gray-400" />
+                        <Calendar className="w-3 h-3 text-gray-400 dark:text-gray-500" />
                         {new Date(eq.lastService).toLocaleDateString('es-MX')}
                       </span>
                     ) : '—'}
@@ -195,10 +195,10 @@ export default function EquipmentPage() {
       ) : (
         <div className="card text-center py-12">
           <Wrench className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-1">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
             {search || filterType || filterBrand ? 'Sin resultados' : 'No hay equipos'}
           </h3>
-          <p className="text-gray-500 mb-6">
+          <p className="text-gray-500 dark:text-gray-400 mb-6">
             {search || filterType || filterBrand
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza registrando el primer equipo'}

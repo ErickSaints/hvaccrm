@@ -68,7 +68,7 @@ export default function ServiceReportDetailPage() {
   if (!report) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-500">Reporte de servicio no encontrado</p>
+        <p className="text-gray-500 dark:text-gray-400">Reporte de servicio no encontrado</p>
         <Link to="/service-reports" className="text-primary-600 hover:text-primary-700 font-medium mt-2 inline-block">
           Volver a reportes
         </Link>
@@ -80,12 +80,12 @@ export default function ServiceReportDetailPage() {
     <div className="space-y-6 print:space-y-4">
       <div className="flex items-center justify-between print:hidden">
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/service-reports')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+          <button onClick={() => navigate('/service-reports')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Reporte de Servicio</h1>
-            <p className="text-gray-500 mt-1">#{report.id} - {report.title}</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Reporte de Servicio</h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">#{report.id} - {report.title}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -104,9 +104,9 @@ export default function ServiceReportDetailPage() {
       </div>
 
       <div className="card print:shadow-none print:border-gray-300" id="report-content">
-        <div className="text-center border-b border-gray-200 pb-6 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{report.title}</h1>
-          <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
+        <div className="text-center border-b border-gray-200 dark:border-gray-700 pb-6 mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{report.title}</h1>
+          <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
             <span className="flex items-center gap-1">
               <FileText className="w-4 h-4" />
               Reporte #{report.id}
@@ -122,14 +122,14 @@ export default function ServiceReportDetailPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="space-y-4">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 pb-2">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2">
               Información del Cliente
             </h2>
             <div className="space-y-2">
               <div className="flex items-start gap-2">
-                <Building2 className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <Building2 className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="font-medium text-gray-900">
+                  <p className="font-medium text-gray-900 dark:text-gray-100">
                     {report.customer?.companyName || report.customer?.contactName}
                   </p>
                   {report.customer?.contactName && report.customer?.companyName && (
@@ -147,22 +147,22 @@ export default function ServiceReportDetailPage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 pb-2">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2">
               Información del Servicio
             </h2>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                <p className="text-sm text-gray-700">
+                <User className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                   <span className="font-medium">Técnico:</span>{' '}
                   {report.technician?.name || 'No asignado'}
                 </p>
               </div>
               {report.equipment && (
                 <div className="flex items-start gap-2">
-                  <Wrench className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                  <Wrench className="w-4 h-4 text-gray-400 dark:text-gray-500 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{report.equipment.type}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{report.equipment.type}</p>
                     {report.equipment.brand && (
                       <p className="text-sm text-gray-600">Marca: {report.equipment.brand}</p>
                     )}
@@ -177,8 +177,8 @@ export default function ServiceReportDetailPage() {
               )}
               {report.serviceOrder?.completedDate && (
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <p className="text-sm text-gray-700">
+                  <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                     <span className="font-medium">Fecha:</span>{' '}
                     {new Date(report.serviceOrder.completedDate).toLocaleDateString('es-MX', {
                       year: 'numeric',
@@ -190,8 +190,8 @@ export default function ServiceReportDetailPage() {
               )}
               {(report.arrivalTime || report.departureTime) && (
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                  <p className="text-sm text-gray-700">
+                  <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
                     <span className="font-medium">Horario:</span>{' '}
                     {report.arrivalTime || '--:--'} - {report.departureTime || '--:--'}
                   </p>
@@ -203,49 +203,49 @@ export default function ServiceReportDetailPage() {
 
         {report.description && (
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 pb-2 mb-3">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2 mb-3">
               Descripción
             </h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{report.description}</p>
+            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{report.description}</p>
           </div>
         )}
 
         {report.diagnosis && (
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 pb-2 mb-3">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2 mb-3">
               Diagnóstico
             </h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{report.diagnosis}</p>
+            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{report.diagnosis}</p>
           </div>
         )}
 
         {report.workPerformed && (
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 pb-2 mb-3">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2 mb-3">
               Trabajo Realizado
             </h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{report.workPerformed}</p>
+            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{report.workPerformed}</p>
           </div>
         )}
 
         {report.recommendations && (
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 pb-2 mb-3">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2 mb-3">
               Recomendaciones
             </h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{report.recommendations}</p>
+            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{report.recommendations}</p>
           </div>
         )}
 
         {report.photos && report.photos.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 pb-2 mb-3 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2 mb-3 flex items-center gap-2">
               <Image className="w-4 h-4" />
               Fotografías
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {report.photos.map((photo, index) => (
-                <div key={photo.id || index} className="border border-gray-200 rounded-lg overflow-hidden">
+                <div key={photo.id || index} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                   {photo.url ? (
                     <img
                       src={photo.url}
@@ -258,12 +258,12 @@ export default function ServiceReportDetailPage() {
                       }}
                     />
                   ) : null}
-                  <div className={`p-3 bg-gray-50 ${photo.url ? '' : 'hidden'}`}>
+                  <div className={`p-3 bg-gray-50 dark:bg-gray-800 ${photo.url ? '' : 'hidden'}`}>
                     {photo.caption && (
-                      <p className="text-sm font-medium text-gray-900">{photo.caption}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{photo.caption}</p>
                     )}
                     {photo.type && (
-                      <p className="text-xs text-gray-500 mt-1">{photo.type}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{photo.type}</p>
                     )}
                   </div>
                 </div>
@@ -274,44 +274,44 @@ export default function ServiceReportDetailPage() {
 
         {report.usedMaterials && report.usedMaterials.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 pb-2 mb-3 flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2 mb-3 flex items-center gap-2">
               <Package className="w-4 h-4" />
               Materiales Utilizados
             </h2>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border border-gray-200 rounded-lg">
+              <table className="w-full text-sm border border-gray-200 dark:border-gray-700 rounded-lg">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="text-left px-4 py-3 font-semibold text-gray-700 border-b border-gray-200">
+                  <tr className="bg-gray-50 dark:bg-gray-800">
+                    <th className="text-left px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
                       Material
                     </th>
-                    <th className="text-center px-4 py-3 font-semibold text-gray-700 border-b border-gray-200 w-24">
+                    <th className="text-center px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 w-24">
                       Cantidad
                     </th>
-                    <th className="text-right px-4 py-3 font-semibold text-gray-700 border-b border-gray-200 w-32">
+                    <th className="text-right px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 w-32">
                       P. Unitario
                     </th>
-                    <th className="text-right px-4 py-3 font-semibold text-gray-700 border-b border-gray-200 w-32">
+                    <th className="text-right px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 w-32">
                       Total
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {report.usedMaterials.map((material, index) => (
-                    <tr key={material.id || index} className="border-b border-gray-100 last:border-b-0">
-                      <td className="px-4 py-3 text-gray-900">{material.name}</td>
-                      <td className="px-4 py-3 text-center text-gray-700">{material.quantity}</td>
-                      <td className="px-4 py-3 text-right text-gray-700">${material.unitPrice.toFixed(2)}</td>
-                      <td className="px-4 py-3 text-right font-medium text-gray-900">${material.total.toFixed(2)}</td>
+                    <tr key={material.id || index} className="border-b border-gray-100 dark:border-gray-800 last:border-b-0">
+                      <td className="px-4 py-3 text-gray-900 dark:text-gray-100">{material.name}</td>
+                      <td className="px-4 py-3 text-center text-gray-700 dark:text-gray-300">{material.quantity}</td>
+                      <td className="px-4 py-3 text-right text-gray-700 dark:text-gray-300">${material.unitPrice.toFixed(2)}</td>
+                      <td className="px-4 py-3 text-right font-medium text-gray-900 dark:text-gray-100">${material.total.toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="bg-gray-50">
-                    <td colSpan={3} className="px-4 py-3 text-right font-semibold text-gray-900 border-t-2 border-gray-200">
+                  <tr className="bg-gray-50 dark:bg-gray-800">
+                    <td colSpan={3} className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-gray-100 border-t-2 border-gray-200 dark:border-gray-700">
                       Total:
                     </td>
-                    <td className="px-4 py-3 text-right font-bold text-gray-900 border-t-2 border-gray-200">
+                    <td className="px-4 py-3 text-right font-bold text-gray-900 dark:text-gray-100 border-t-2 border-gray-200 dark:border-gray-700">
                       ${report.usedMaterials.reduce((sum, m) => sum + m.total, 0).toFixed(2)}
                     </td>
                   </tr>
@@ -322,21 +322,21 @@ export default function ServiceReportDetailPage() {
         )}
 
         {report.signature && (
-          <div className="mt-12 pt-8 border-t-2 border-gray-200">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider pb-2 mb-6 flex items-center gap-2">
+          <div className="mt-12 pt-8 border-t-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider pb-2 mb-6 flex items-center gap-2">
               <PenLine className="w-4 h-4" />
               Firma de Conformidad
             </h2>
             <div className="max-w-md">
               <div className="border-b-2 border-gray-900 mb-4 pt-8">
-                <p className="text-center text-gray-700 font-medium">{report.signature}</p>
+                <p className="text-center text-gray-700 dark:text-gray-300 font-medium">{report.signature}</p>
               </div>
-              <p className="text-xs text-gray-500 text-center">Nombre y firma de quien recibe el servicio</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Nombre y firma de quien recibe el servicio</p>
             </div>
           </div>
         )}
 
-        <div className="mt-12 pt-6 border-t border-gray-200 text-center text-xs text-gray-400">
+        <div className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-400 dark:text-gray-500">
           <p>Reporte generado el {new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
           <p className="mt-1">Documento oficial · HVAC-R CRM · by semasi</p>
         </div>

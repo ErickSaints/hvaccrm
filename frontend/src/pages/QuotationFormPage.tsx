@@ -187,14 +187,14 @@ export default function QuotationFormPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/quotations')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={() => navigate('/quotations')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {isEditing ? 'Editar Cotización' : 'Nueva Cotización'}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {isEditing ? 'Modifica los datos de la cotización' : 'Crea una nueva cotización para el cliente'}
           </p>
         </div>
@@ -202,10 +202,10 @@ export default function QuotationFormPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="card space-y-5">
-          <h2 className="text-lg font-semibold text-gray-900">Datos Generales</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Datos Generales</h2>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Cliente *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
             <select {...register('customerId', { valueAsNumber: true })} className="input-field">
               <option value="">Seleccionar cliente...</option>
               {customers?.map((c) => (
@@ -218,17 +218,17 @@ export default function QuotationFormPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Título</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Título</label>
             <input {...register('title')} className="input-field" placeholder="Ej: Mantenimiento preventivo" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Válida hasta</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Válida hasta</label>
               <input {...register('validUntil')} type="date" className="input-field" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">IVA (%)</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">IVA (%)</label>
               <input
                 type="number"
                 value={taxPercent}
@@ -243,7 +243,7 @@ export default function QuotationFormPage() {
 
         <div className="card space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Partidas</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Partidas</h2>
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -263,7 +263,7 @@ export default function QuotationFormPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-100">
+                <tr className="border-b border-gray-100 dark:border-gray-800">
                   <th className="text-left px-3 py-3 font-semibold text-gray-600 w-1/2">Descripción</th>
                   <th className="text-center px-3 py-3 font-semibold text-gray-600 w-16">Cant.</th>
                   <th className="text-right px-3 py-3 font-semibold text-gray-600 w-28">P. Unitario</th>
@@ -303,14 +303,14 @@ export default function QuotationFormPage() {
                           className="input-field text-sm text-right"
                         />
                       </td>
-                      <td className="px-3 py-2 text-right font-medium text-gray-900">
+                      <td className="px-3 py-2 text-right font-medium text-gray-900 dark:text-gray-100">
                         ${lineTotal.toFixed(2)}
                       </td>
                       <td className="px-3 py-2 text-center">
                         <button
                           type="button"
                           onClick={() => removeItem(index)}
-                          className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                           disabled={items.length <= 1}
                         >
                           <Trash2 className="w-4 h-4" />
@@ -323,15 +323,15 @@ export default function QuotationFormPage() {
             </table>
           </div>
 
-          <div className="border-t border-gray-100 pt-4">
+          <div className="border-t border-gray-100 dark:border-gray-800 pt-4">
             <div className="space-y-2 ml-auto w-full sm:w-72">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-medium text-gray-900">${subtotal.toFixed(2)}</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">${subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">IVA ({taxPercent}%)</span>
-                <span className="font-medium text-gray-900">${taxTotal.toFixed(2)}</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">${taxTotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm items-center">
                 <span className="text-gray-600">Descuento</span>
@@ -344,22 +344,22 @@ export default function QuotationFormPage() {
                   className="input-field text-sm text-right w-28"
                 />
               </div>
-              <div className="flex justify-between text-base font-bold border-t border-gray-200 pt-2">
-                <span className="text-gray-900">Total</span>
-                <span className="text-gray-900">${grandTotal.toFixed(2)}</span>
+              <div className="flex justify-between text-base font-bold border-t border-gray-200 dark:border-gray-700 pt-2">
+                <span className="text-gray-900 dark:text-gray-100">Total</span>
+                <span className="text-gray-900 dark:text-gray-100">${grandTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="card space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Notas y Términos</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Notas y Términos</h2>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Notas</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notas</label>
             <textarea {...register('notes')} rows={3} className="input-field" placeholder="Notas adicionales para el cliente..." />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Términos y condiciones</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Términos y condiciones</label>
             <textarea {...register('terms')} rows={3} className="input-field" placeholder="Términos de pago, garantía, etc..." />
           </div>
         </div>

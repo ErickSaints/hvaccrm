@@ -187,35 +187,35 @@ export default function SurveyFormPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/surveys')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg">
+        <button onClick={() => navigate('/surveys')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-gray-800 rounded-lg">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{isEditing ? 'Editar Levantamiento' : 'Nuevo Levantamiento'}</h1>
-          <p className="text-gray-500 mt-1">Captura información técnica del sitio, dibujos y materiales</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{isEditing ? 'Editar Levantamiento' : 'Nuevo Levantamiento'}</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Captura información técnica del sitio, dibujos y materiales</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Basic Info */}
         <div className="card space-y-5">
-          <h2 className="text-lg font-semibold text-gray-900">Información General</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Información General</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Título *</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Título *</label>
               <input {...register('title')} className="input-field" placeholder="Ej: Levantamiento inicial - Hotel Paraíso" />
               {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Descripción</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>
               <textarea {...register('description')} rows={3} className="input-field" placeholder="Describe el alcance del levantamiento..." />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Ubicación</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Ubicación</label>
               <input {...register('location')} className="input-field" placeholder="Ej: Planta baja, azotea, etc." />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Cliente *</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
               <select {...register('customerId', { valueAsNumber: true })} className="input-field">
                 <option value="">Seleccionar cliente...</option>
                 {customers?.map((c) => (
@@ -232,8 +232,8 @@ export default function SurveyFormPage() {
         {/* Photos */}
         <div className="card space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <Camera className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <Camera className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               Fotos del Sitio
             </h2>
             <label className="btn-secondary text-sm cursor-pointer">
@@ -243,12 +243,12 @@ export default function SurveyFormPage() {
             </label>
           </div>
           {photos.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center py-6">Aún no hay fotos. Toma o sube fotos del sitio.</p>
+            <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-6">Aún no hay fotos. Toma o sube fotos del sitio.</p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {photos.map((photo, idx) => (
                 <div key={idx} className="relative group">
-                  <img src={photo.url} alt={photo.caption || ''} className="w-full h-28 object-cover rounded-lg border border-gray-200" />
+                  <img src={photo.url} alt={photo.caption || ''} className="w-full h-28 object-cover rounded-lg border border-gray-200 dark:border-gray-700" />
                   <button type="button" onClick={() => removePhoto(idx)} className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                     <Trash2 className="w-3 h-3" />
                   </button>
@@ -267,7 +267,7 @@ export default function SurveyFormPage() {
         {/* Drawings */}
         <div className="card space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <h2 className="text-lg font-semibold text-gray-900">Dibujos y Croquis</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Dibujos y Croquis</h2>
             <div className="flex items-center gap-2">
               <button type="button" onClick={addDrawing} className="btn-secondary text-sm">
                 <Plus className="w-4 h-4 inline mr-1" />
@@ -278,14 +278,14 @@ export default function SurveyFormPage() {
 
           {/* Drawing tabs */}
           {drawings.length > 0 && (
-            <div className="flex items-center gap-2 flex-wrap border-b border-gray-200 pb-2">
+            <div className="flex items-center gap-2 flex-wrap border-b border-gray-200 dark:border-gray-700 pb-2">
               {drawings.map((d, idx) => (
                 <div key={idx} className="flex items-center gap-1">
                   <button
                     type="button"
                     onClick={() => setCurrentDrawing(idx)}
                     className={`px-3 py-1.5 text-sm rounded-t-lg border border-b-0 transition-colors ${
-                      currentDrawing === idx ? 'bg-white border-gray-200 text-primary-700 font-medium' : 'bg-gray-50 border-transparent text-gray-500 hover:text-gray-700'
+                      currentDrawing === idx ? 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-primary-700 font-medium' : 'bg-gray-50 dark:bg-gray-800 border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     <input
@@ -318,8 +318,8 @@ export default function SurveyFormPage() {
         {/* Materials */}
         <div className="card space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <Package className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <Package className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               Lista de Materiales
             </h2>
             <button type="button" onClick={addMaterial} className="btn-secondary text-sm">
@@ -330,7 +330,7 @@ export default function SurveyFormPage() {
 
           {/* Search catalog */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
             <input
               value={searchQuery}
               onChange={handleSearchChange}
@@ -338,7 +338,7 @@ export default function SurveyFormPage() {
               placeholder="Buscar material en el catálogo HVAC..."
             />
             {searchResults.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto">
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto">
                 {searchResults.map((m) => (
                   <button
                     key={m.id}
@@ -346,9 +346,9 @@ export default function SurveyFormPage() {
                     onClick={() => selectCatalogMaterial(m)}
                     className="w-full text-left px-4 py-2.5 text-sm hover:bg-primary-50 transition-colors border-b border-gray-50 last:border-0"
                   >
-                    <span className="text-gray-900">{m.description}</span>
-                    <span className="ml-2 text-xs text-gray-400">{m.category}</span>
-                    <span className="ml-1 text-xs text-gray-400">({m.unit})</span>
+                    <span className="text-gray-900 dark:text-gray-100">{m.description}</span>
+                    <span className="ml-2 text-xs text-gray-400 dark:text-gray-500">{m.category}</span>
+                    <span className="ml-1 text-xs text-gray-400 dark:text-gray-500">({m.unit})</span>
                   </button>
                 ))}
               </div>
@@ -356,13 +356,13 @@ export default function SurveyFormPage() {
           </div>
 
           {materials.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center py-6">
+            <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-6">
               Agrega materiales del proyecto: soportería, ductería, rejillas, aislamientos, herramientas...
             </p>
           ) : (
             <div className="space-y-2">
               {/* Header */}
-              <div className="hidden md:grid grid-cols-12 gap-2 px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div className="hidden md:grid grid-cols-12 gap-2 px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 <div className="col-span-4">Descripción</div>
                 <div className="col-span-1">Cant</div>
                 <div className="col-span-1">Unidad</div>
@@ -371,7 +371,7 @@ export default function SurveyFormPage() {
                 <div className="col-span-1" />
               </div>
               {materials.map((mat, idx) => (
-                <div key={idx} className="grid grid-cols-12 gap-2 items-center p-2 bg-gray-50 rounded-lg">
+                <div key={idx} className="grid grid-cols-12 gap-2 items-center p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div className="col-span-12 md:col-span-4">
                     <input
                       value={mat.description}

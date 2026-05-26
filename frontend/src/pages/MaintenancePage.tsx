@@ -137,8 +137,8 @@ export default function MaintenancePage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Mantenimientos</h1>
-          <p className="text-gray-500 mt-1">Programación de visitas de mantenimiento</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Mantenimientos</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Programación de visitas de mantenimiento</p>
         </div>
         <Link to="/maintenance/new" className="btn-primary inline-flex items-center gap-2 w-fit">
           <Plus className="w-4 h-4" />
@@ -152,7 +152,7 @@ export default function MaintenancePage() {
           className={`inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
             view === 'list'
               ? 'bg-primary-600 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              : 'bg-gray-100 dark:bg-gray-800 text-gray-600 hover:bg-gray-200'
           }`}
         >
           <List className="w-4 h-4" />
@@ -163,7 +163,7 @@ export default function MaintenancePage() {
           className={`inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
             view === 'calendar'
               ? 'bg-primary-600 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              : 'bg-gray-100 dark:bg-gray-800 text-gray-600 hover:bg-gray-200'
           }`}
         >
           <Calendar className="w-4 h-4" />
@@ -182,7 +182,7 @@ export default function MaintenancePage() {
                   className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
                     statusFilter === f.key
                       ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   {f.label}
@@ -191,7 +191,7 @@ export default function MaintenancePage() {
             </div>
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
                 <input
                   type="text"
                   placeholder="Buscar por descripción, póliza, cliente..."
@@ -223,7 +223,7 @@ export default function MaintenancePage() {
               className="input-field w-auto"
               placeholder="Desde"
             />
-            <span className="text-gray-400">a</span>
+            <span className="text-gray-400 dark:text-gray-500">a</span>
             <input
               type="date"
               value={dateTo}
@@ -253,7 +253,7 @@ export default function MaintenancePage() {
             <div className="card overflow-x-auto p-0">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100">
+                  <tr className="border-b border-gray-100 dark:border-gray-800">
                     <th className="text-left px-6 py-4 font-semibold text-gray-600">Descripción</th>
                     <th className="text-left px-6 py-4 font-semibold text-gray-600">Póliza</th>
                     <th className="text-left px-6 py-4 font-semibold text-gray-600">Cliente</th>
@@ -265,8 +265,8 @@ export default function MaintenancePage() {
                 </thead>
                 <tbody className="divide-y divide-gray-50">
                   {filtered.map((log) => (
-                    <tr key={log.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 font-medium text-gray-900 max-w-xs truncate">
+                    <tr key={log.id} className="hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-800 transition-colors">
+                      <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100 max-w-xs truncate">
                         {log.description || '—'}
                       </td>
                       <td className="px-6 py-4 text-gray-600">
@@ -281,7 +281,7 @@ export default function MaintenancePage() {
                       <td className="px-6 py-4 text-gray-600">
                         {log.policy?.customer?.contactName || log.policy?.customer?.companyName || '—'}
                       </td>
-                      <td className="px-6 py-4 text-gray-500">
+                      <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                         {log.scheduledDate
                           ? new Date(log.scheduledDate).toLocaleDateString('es-MX')
                           : '—'}
@@ -289,14 +289,14 @@ export default function MaintenancePage() {
                       <td className="px-6 py-4 text-center">{statusBadge(log.status)}</td>
                       <td className="px-6 py-4 text-gray-600">
                         <div className="flex items-center gap-1.5">
-                          <User className="w-3.5 h-3.5 text-gray-400" />
+                          <User className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
                           {log.assignedUser?.name || '—'}
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <Link
                           to={`/maintenance/${log.id}`}
-                          className="p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
+                          className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
                           title="Ver detalle"
                         >
                           <Eye className="w-4 h-4" />
@@ -310,10 +310,10 @@ export default function MaintenancePage() {
           ) : (
             <div className="card text-center py-12">
               <CalendarCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
                 {search || statusFilter || policyFilter || dateFrom || dateTo ? 'Sin resultados' : 'No hay mantenimientos'}
               </h3>
-              <p className="text-gray-500 mb-6">
+              <p className="text-gray-500 dark:text-gray-400 mb-6">
                 {search || statusFilter || policyFilter || dateFrom || dateTo
                   ? 'Intenta con otros filtros de búsqueda'
                   : 'Comienza programando el primer mantenimiento'}
@@ -330,26 +330,26 @@ export default function MaintenancePage() {
       ) : (
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <button onClick={prevMonth} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+            <button onClick={prevMonth} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-100 dark:bg-gray-800 rounded-lg transition-colors">
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               {monthNames[calMonth]} {calYear}
             </h2>
-            <button onClick={nextMonth} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+            <button onClick={nextMonth} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-100 dark:bg-gray-800 rounded-lg transition-colors">
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
 
           <div className="grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden">
             {dayNames.map((day) => (
-              <div key={day} className="bg-gray-50 px-2 py-2 text-center text-xs font-semibold text-gray-600">
+              <div key={day} className="bg-gray-50 dark:bg-gray-800 px-2 py-2 text-center text-xs font-semibold text-gray-600">
                 {day}
               </div>
             ))}
             {calendarDays.map((day, idx) => {
               if (day === null) {
-                return <div key={`empty-${idx}`} className="bg-white min-h-[100px] p-1" />;
+                return <div key={`empty-${idx}`} className="bg-white dark:bg-gray-900 min-h-[100px] p-1" />;
               }
               const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
               const dayLogs = logsByDate.get(dateStr) || [];
@@ -362,7 +362,7 @@ export default function MaintenancePage() {
               return (
                 <div
                   key={dateStr}
-                  className={`bg-white min-h-[100px] p-1 ${isToday ? 'bg-primary-50' : ''}`}
+                  className={`bg-white dark:bg-gray-900 min-h-[100px] p-1 ${isToday ? 'bg-primary-50' : ''}`}
                 >
                   <div className={`text-xs font-medium mb-1 w-6 h-6 flex items-center justify-center rounded-full ${
                     isToday ? 'bg-primary-600 text-white' : 'text-gray-700'
@@ -384,7 +384,7 @@ export default function MaintenancePage() {
                       </div>
                     ))}
                     {dayLogs.length > 3 && (
-                      <div className="text-[10px] text-gray-400 px-1">+{dayLogs.length - 3} más</div>
+                      <div className="text-[10px] text-gray-400 dark:text-gray-500 px-1">+{dayLogs.length - 3} más</div>
                     )}
                   </div>
                 </div>

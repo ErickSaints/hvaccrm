@@ -130,8 +130,8 @@ export default function ProfilePage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Mi Perfil</h1>
-        <p className="text-gray-500 mt-1">Información personal y configuración de cuenta</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Mi Perfil</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Información personal y configuración de cuenta</p>
       </div>
 
       {/* Profile Card */}
@@ -139,7 +139,7 @@ export default function ProfilePage() {
         <div className="flex flex-col sm:flex-row items-start gap-6">
           {/* Avatar */}
           <div className="relative group">
-            <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
               {currentUser.avatar ? (
                 <img
                   src={currentUser.avatar}
@@ -147,7 +147,7 @@ export default function ProfilePage() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <User className="w-10 h-10 text-gray-400" />
+                <User className="w-10 h-10 text-gray-400 dark:text-gray-500" />
               )}
             </div>
             <button
@@ -170,7 +170,7 @@ export default function ProfilePage() {
             {isEditing ? (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre</label>
                   <input
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -179,7 +179,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
                   <input
                     type="email"
                     value={formData.email}
@@ -189,7 +189,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono</label>
                   <input
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -229,7 +229,7 @@ export default function ProfilePage() {
               <>
                 <div className="flex items-start justify-between">
                   <div>
-                    <h2 className="text-xl font-semibold text-gray-900">{currentUser.name}</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{currentUser.name}</h2>
                     <span
                       className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
                         roleColors[currentUser.role]
@@ -246,11 +246,11 @@ export default function ProfilePage() {
 
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2 text-gray-600">
-                    <Mail className="w-4 h-4 text-gray-400" />
+                    <Mail className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                     {currentUser.email}
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
-                    <Phone className="w-4 h-4 text-gray-400" />
+                    <Phone className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                     {currentUser.phone || 'Sin teléfono'}
                   </div>
                 </div>
@@ -263,7 +263,7 @@ export default function ProfilePage() {
       {/* Trial Info */}
       {isOnTrial && (
         <div className="card bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
             <Clock className="w-5 h-5 text-cyan-500" />
             Período de Prueba
           </h3>
@@ -278,17 +278,17 @@ export default function ProfilePage() {
       {/* Subscription Info */}
       {subscription && (
         <div className="card">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-gray-400" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+            <CreditCard className="w-5 h-5 text-gray-400 dark:text-gray-500" />
             Suscripción
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Plan</p>
-              <p className="font-medium text-gray-900 mt-0.5">{subscription.plan.name}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Plan</p>
+              <p className="font-medium text-gray-900 dark:text-gray-100 mt-0.5">{subscription.plan.name}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Estado</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Estado</p>
               <span
                 className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium mt-0.5 ${
                   statusColors[subscription.status] || 'bg-gray-100 text-gray-700'
@@ -298,18 +298,18 @@ export default function ProfilePage() {
               </span>
             </div>
             <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Inicio</p>
-              <p className="font-medium text-gray-900 mt-0.5 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-gray-400" />
+              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Inicio</p>
+              <p className="font-medium text-gray-900 dark:text-gray-100 mt-0.5 flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
                 {subscription.startDate
                   ? new Date(subscription.startDate).toLocaleDateString('es-MX')
                   : '—'}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Vencimiento</p>
-              <p className="font-medium text-gray-900 mt-0.5 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-gray-400" />
+              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Vencimiento</p>
+              <p className="font-medium text-gray-900 dark:text-gray-100 mt-0.5 flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
                 {subscription.endDate
                   ? new Date(subscription.endDate).toLocaleDateString('es-MX')
                   : '—'}

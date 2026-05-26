@@ -147,7 +147,7 @@ export default function CustomerDetailPage() {
   if (!customer) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-500">Cliente no encontrado</p>
+        <p className="text-gray-500 dark:text-gray-400">Cliente no encontrado</p>
         <Link to="/customers" className="text-primary-600 hover:text-primary-700 font-medium mt-2 inline-block">
           Volver a clientes
         </Link>
@@ -159,12 +159,12 @@ export default function CustomerDetailPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/customers')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+          <button onClick={() => navigate('/customers')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:bg-gray-100 rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{customer.contactName}</h1>
-            <p className="text-gray-500 mt-1">{customer.companyName || 'Sin empresa'}</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{customer.contactName}</h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">{customer.companyName || 'Sin empresa'}</p>
           </div>
         </div>
         <Link
@@ -176,7 +176,7 @@ export default function CustomerDetailPage() {
         </Link>
       </div>
 
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 dark:border-gray-700">
         <nav className="flex gap-6 overflow-x-auto">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -187,7 +187,7 @@ export default function CustomerDetailPage() {
                 className={`flex items-center gap-2 px-1 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'border-primary-600 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:border-gray-300'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -201,105 +201,105 @@ export default function CustomerDetailPage() {
       {activeTab === 'info' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 card space-y-5">
-            <h2 className="text-lg font-semibold text-gray-900">Datos Generales</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Datos Generales</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</p>
-                <p className="text-gray-900 mt-1">{customer.contactName}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Contacto</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{customer.contactName}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Empresa</p>
-                <p className="text-gray-900 mt-1">{customer.companyName || '—'}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Empresa</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{customer.companyName || '—'}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Teléfono</p>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <Phone className="w-4 h-4 text-gray-400" />
+                  <Phone className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                   <a href={`tel:${customer.phone}`} className="text-primary-600 hover:text-primary-700">{customer.phone}</a>
                 </div>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono 2</p>
-                <p className="text-gray-900 mt-1">{customer.phone2 || '—'}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Teléfono 2</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{customer.phone2 || '—'}</p>
               </div>
               <div className="sm:col-span-2">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Email</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</p>
                 {customer.email ? (
                   <a href={`mailto:${customer.email}`} className="text-primary-600 hover:text-primary-700 flex items-center gap-1.5 mt-1">
                     <Mail className="w-4 h-4" />
                     {customer.email}
                   </a>
                 ) : (
-                  <p className="text-gray-900 mt-1">—</p>
+                  <p className="text-gray-900 dark:text-gray-100 mt-1">—</p>
                 )}
               </div>
               <div className="sm:col-span-2">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Dirección</p>
-                <p className="text-gray-900 mt-1 flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-gray-400" />
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Dirección</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1 flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                   {customer.address}
                 </p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Ciudad</p>
-                <p className="text-gray-900 mt-1">{customer.city || '—'}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Ciudad</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{customer.city || '—'}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</p>
-                <p className="text-gray-900 mt-1">{customer.state || '—'}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Estado</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{customer.state || '—'}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Código Postal</p>
-                <p className="text-gray-900 mt-1">{customer.zipCode || '—'}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Código Postal</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{customer.zipCode || '—'}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">RFC / Tax ID</p>
-                <p className="text-gray-900 mt-1">{customer.taxId || '—'}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">RFC / Tax ID</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{customer.taxId || '—'}</p>
               </div>
             </div>
             {customer.notes && (
-              <div className="pt-4 border-t border-gray-100">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Notas</p>
-                <p className="text-gray-700 text-sm whitespace-pre-wrap">{customer.notes}</p>
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Notas</p>
+                <p className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">{customer.notes}</p>
               </div>
             )}
           </div>
 
           <div className="card space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Resumen</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Resumen</h2>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2 text-gray-600">
                   <Wrench className="w-4 h-4" />
                   <span className="text-sm">Equipos</span>
                 </div>
-                <span className="font-semibold text-gray-900">{customer.equipment?.length ?? 0}</span>
+                <span className="font-semibold text-gray-900 dark:text-gray-100">{customer.equipment?.length ?? 0}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2 text-gray-600">
                   <TicketCheck className="w-4 h-4" />
                   <span className="text-sm">Tickets</span>
                 </div>
-                <span className="font-semibold text-gray-900">{customer.tickets?.length ?? 0}</span>
+                <span className="font-semibold text-gray-900 dark:text-gray-100">{customer.tickets?.length ?? 0}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2 text-gray-600">
                   <ClipboardList className="w-4 h-4" />
                   <span className="text-sm">Órdenes</span>
                 </div>
-                <span className="font-semibold text-gray-900">{customer.serviceOrders?.length ?? 0}</span>
+                <span className="font-semibold text-gray-900 dark:text-gray-100">{customer.serviceOrders?.length ?? 0}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2 text-gray-600">
                   <ShieldCheck className="w-4 h-4" />
                   <span className="text-sm">Pólizas</span>
                 </div>
-                <span className="font-semibold text-gray-900">{customer.policies?.length ?? 0}</span>
+                <span className="font-semibold text-gray-900 dark:text-gray-100">{customer.policies?.length ?? 0}</span>
               </div>
             </div>
-            <div className="pt-3 border-t border-gray-100">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Registrado</p>
-              <p className="text-sm text-gray-900">
+            <div className="pt-3 border-t border-gray-100 dark:border-gray-800">
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Registrado</p>
+              <p className="text-sm text-gray-900 dark:text-gray-100">
                 {customer.createdAt
                   ? new Date(customer.createdAt).toLocaleDateString('es-MX', {
                       year: 'numeric',
@@ -330,8 +330,8 @@ export default function CustomerDetailPage() {
                       <Wrench className="w-5 h-5" />
                     </div>
                   </div>
-                  <h3 className="font-semibold text-gray-900">{eq.type}</h3>
-                  <div className="mt-2 space-y-1 text-sm text-gray-500">
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">{eq.type}</h3>
+                  <div className="mt-2 space-y-1 text-sm text-gray-500 dark:text-gray-400">
                     {eq.brand && (
                       <p><span className="font-medium text-gray-600">Marca:</span> {eq.brand}</p>
                     )}
@@ -363,8 +363,8 @@ export default function CustomerDetailPage() {
           ) : (
             <div className="card text-center py-12">
               <Wrench className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">Sin equipos registrados</h3>
-              <p className="text-gray-500">Este cliente no tiene equipos asociados</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Sin equipos registrados</h3>
+              <p className="text-gray-500 dark:text-gray-400">Este cliente no tiene equipos asociados</p>
             </div>
           )}
         </div>
@@ -384,12 +384,12 @@ export default function CustomerDetailPage() {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         {levelBadge(ticket.level)}
-                        <span className="text-xs text-gray-400">#{ticket.id}</span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">#{ticket.id}</span>
                       </div>
-                      <h3 className="font-medium text-gray-900">{ticket.title}</h3>
-                      <p className="text-sm text-gray-500 mt-1 line-clamp-2">{ticket.description}</p>
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100">{ticket.title}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{ticket.description}</p>
                       {ticket.equipment && (
-                        <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-1">
                           <Wrench className="w-3 h-3" />
                           {ticket.equipment.type} {ticket.equipment.brand ? `- ${ticket.equipment.brand}` : ''}
                         </p>
@@ -403,8 +403,8 @@ export default function CustomerDetailPage() {
           ) : (
             <div className="card text-center py-12">
               <TicketCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">Sin tickets</h3>
-              <p className="text-gray-500">Este cliente no tiene tickets registrados</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Sin tickets</h3>
+              <p className="text-gray-500 dark:text-gray-400">Este cliente no tiene tickets registrados</p>
             </div>
           )}
         </div>
@@ -423,13 +423,13 @@ export default function CustomerDetailPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-semibold text-gray-900">{order.number}</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{order.number}</span>
                         {order.equipment && (
-                          <span className="text-xs text-gray-400">{order.equipment.type}</span>
+                          <span className="text-xs text-gray-400 dark:text-gray-500">{order.equipment.type}</span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-500">{order.description || 'Sin descripción'}</p>
-                      <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{order.description || 'Sin descripción'}</p>
+                      <div className="flex items-center gap-3 mt-2 text-xs text-gray-400 dark:text-gray-500">
                         {order.scheduledDate && (
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
@@ -450,8 +450,8 @@ export default function CustomerDetailPage() {
           ) : (
             <div className="card text-center py-12">
               <ClipboardList className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">Sin órdenes de servicio</h3>
-              <p className="text-gray-500">Este cliente no tiene órdenes de servicio</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Sin órdenes de servicio</h3>
+              <p className="text-gray-500 dark:text-gray-400">Este cliente no tiene órdenes de servicio</p>
             </div>
           )}
         </div>
@@ -470,11 +470,11 @@ export default function CustomerDetailPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-semibold text-gray-900">{policy.number}</span>
-                        <span className="text-xs text-gray-400">{policy.frequency}</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{policy.number}</span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">{policy.frequency}</span>
                       </div>
-                      <h3 className="font-medium text-gray-900">{policy.name}</h3>
-                      <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100">{policy.name}</h3>
+                      <div className="flex items-center gap-3 mt-2 text-xs text-gray-400 dark:text-gray-500">
                         <span>{new Date(policy.startDate).toLocaleDateString('es-MX')} - {new Date(policy.endDate).toLocaleDateString('es-MX')}</span>
                         <span>{policy.visitCount} visitas</span>
                         <span className="flex items-center gap-1">
@@ -491,8 +491,8 @@ export default function CustomerDetailPage() {
           ) : (
             <div className="card text-center py-12">
               <ShieldCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">Sin pólizas</h3>
-              <p className="text-gray-500">Este cliente no tiene pólizas de mantenimiento</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Sin pólizas</h3>
+              <p className="text-gray-500 dark:text-gray-400">Este cliente no tiene pólizas de mantenimiento</p>
             </div>
           )}
         </div>
@@ -542,8 +542,8 @@ function TimelineTab({ customerId }: { customerId: number }) {
     return (
       <div className="card text-center py-12">
         <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-1">Sin actividad</h3>
-        <p className="text-gray-500">No hay eventos registrados para este cliente</p>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Sin actividad</h3>
+        <p className="text-gray-500 dark:text-gray-400">No hay eventos registrados para este cliente</p>
       </div>
     );
   }
@@ -560,26 +560,26 @@ function TimelineTab({ customerId }: { customerId: number }) {
             <Link
               key={`${event.type}-${event.id}`}
               to={event.link}
-              className="relative flex items-start gap-4 px-4 py-4 hover:bg-gray-50 transition-colors -mx-4 rounded-lg"
+              className="relative flex items-start gap-4 px-4 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-4 rounded-lg"
             >
               <div className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${color}`}>
                 <Icon className="w-5 h-5" />
               </div>
               <div className="min-w-0 flex-1 pt-1">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-xs font-medium text-gray-400 uppercase">{label}</span>
-                  <span className="text-[10px] text-gray-400">
+                  <span className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase">{label}</span>
+                  <span className="text-[10px] text-gray-400 dark:text-gray-500">
                     {new Date(event.date).toLocaleDateString('es-MX', {
                       day: 'numeric', month: 'short', year: 'numeric',
                       hour: '2-digit', minute: '2-digit',
                     })}
                   </span>
                 </div>
-                <p className="text-sm font-medium text-gray-900">{event.title}</p>
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{event.title}</p>
                 {event.description && (
-                  <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{event.description}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">{event.description}</p>
                 )}
-                {event.user && <p className="text-[11px] text-gray-400 mt-0.5">{event.user}</p>}
+                {event.user && <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">{event.user}</p>}
               </div>
             </Link>
           );

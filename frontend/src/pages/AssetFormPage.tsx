@@ -70,40 +70,40 @@ export default function AssetFormPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/assets')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg">
+        <button onClick={() => navigate('/assets')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{isEditing ? 'Editar Activo' : 'Nuevo Activo'}</h1>
-          <p className="text-gray-500 mt-1">Registra un equipo o activo fijo con código QR</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{isEditing ? 'Editar Activo' : 'Nuevo Activo'}</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Registra un equipo o activo fijo con código QR</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit((data) => mutation.mutate(data))} className="card space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre del Activo *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nombre del Activo *</label>
           <input {...register('name')} className="input-field" placeholder="Ej: Chiller Carrier 30RB-200" />
           {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Descripción</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>
           <textarea {...register('description')} rows={3} className="input-field" placeholder="Descripción del activo..." />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Número de Serie</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Número de Serie</label>
             <input {...register('serialNumber')} className="input-field" placeholder="SN-001" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Ubicación</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Ubicación</label>
             <input {...register('location')} className="input-field" placeholder="Ej: Planta baja, cuarto técnico" />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Cliente *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
           <select {...register('customerId', { valueAsNumber: true })} className="input-field">
             <option value="">Seleccionar cliente...</option>
             {customers?.map((c) => (
@@ -115,7 +115,7 @@ export default function AssetFormPage() {
           {errors.customerId && <p className="text-red-500 text-xs mt-1">{errors.customerId.message}</p>}
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <button type="button" onClick={() => navigate('/assets')} className="btn-secondary">Cancelar</button>
           <button type="submit" disabled={isSubmitting} className="btn-primary inline-flex items-center gap-2">
             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}

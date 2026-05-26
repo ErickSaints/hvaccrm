@@ -43,8 +43,8 @@ export default function AssetsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Activos</h1>
-          <p className="text-gray-500 mt-1">Equipos registrados con código QR</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Activos</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Equipos registrados con código QR</p>
         </div>
         <Link to="/assets/new" className="btn-primary inline-flex items-center gap-2">
           <Plus className="w-4 h-4" />
@@ -53,7 +53,7 @@ export default function AssetsPage() {
       </div>
 
       <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -69,7 +69,7 @@ export default function AssetsPage() {
       ) : filtered?.length === 0 ? (
         <div className="card text-center py-12">
           <QrCode className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-500">No hay activos registrados</p>
+          <p className="text-gray-500 dark:text-gray-400">No hay activos registrados</p>
           <Link to="/assets/new" className="btn-primary inline-flex items-center gap-2 mt-4">
             <Plus className="w-4 h-4" />
             Crear primer activo
@@ -85,14 +85,14 @@ export default function AssetsPage() {
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-gray-900 truncate">{asset.name}</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">{asset.name}</h3>
                   {asset.serialNumber && (
-                    <p className="text-sm text-gray-500 mt-0.5">SN: {asset.serialNumber}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">SN: {asset.serialNumber}</p>
                   )}
                   {asset.location && (
-                    <p className="text-sm text-gray-500">{asset.location}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{asset.location}</p>
                   )}
-                  <p className="text-xs text-gray-400 mt-2">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                     {asset.customer.companyName || asset.customer.contactName}
                   </p>
                 </div>

@@ -186,7 +186,7 @@ export default function TicketDetailPage() {
   if (!ticket) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-500">Ticket no encontrado</p>
+        <p className="text-gray-500 dark:text-gray-400">Ticket no encontrado</p>
         <Link to="/tickets" className="text-primary-600 hover:text-primary-700 font-medium mt-2 inline-block">
           Volver a tickets
         </Link>
@@ -201,16 +201,16 @@ export default function TicketDetailPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/tickets')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+          <button onClick={() => navigate('/tickets')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <div className="flex items-center gap-2 mb-1">
               {levelBadge(ticket.level)}
               {statusBadge(ticket.status)}
-              <span className="text-xs text-gray-400">#{ticket.id}</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">#{ticket.id}</span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">{ticket.title}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{ticket.title}</h1>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -227,14 +227,14 @@ export default function TicketDetailPage() {
               {statusDropdown && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setStatusDropdown(false)} />
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-20 py-1">
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20 py-1">
                     {statusOptions
                       .filter((s) => s.value !== ticket.status)
                       .map((opt) => (
                         <button
                           key={opt.value}
                           onClick={() => handleStatusChange(opt.value)}
-                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                         >
                           {opt.label}
                         </button>
@@ -257,22 +257,22 @@ export default function TicketDetailPage() {
               {assignDropdown && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setAssignDropdown(false)} />
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-20 py-1">
+                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20 py-1">
                     <button
                       onClick={() => assignMutation.mutate(null)}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 transition-colors"
+                      className="w-full text-left px-4 py-2 text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                     >
                       Sin asignar
                     </button>
-                    <div className="border-t border-gray-100" />
+                    <div className="border-t border-gray-100 dark:border-gray-800" />
                     {users?.map((u) => (
                       <button
                         key={u.id}
                         onClick={() => assignMutation.mutate(u.id)}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-2"
                       >
                         <span>{u.name}</span>
-                        <span className="text-xs text-gray-400">{u.role}</span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">{u.role}</span>
                       </button>
                     ))}
                   </div>
@@ -296,7 +296,7 @@ export default function TicketDetailPage() {
 
       {showResolutionInput && (
         <div className="card border-2 border-green-200 bg-green-50">
-          <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-green-600" />
             Resolución del Ticket
           </h3>
@@ -322,23 +322,23 @@ export default function TicketDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <div className="card space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Descripción</h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{ticket.description}</p>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Descripción</h2>
+            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{ticket.description}</p>
             {ticket.resolution && (
-              <div className="pt-4 border-t border-gray-100">
-                <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-600" />
                   Resolución
                 </h3>
-                <p className="text-gray-700 whitespace-pre-wrap">{ticket.resolution}</p>
+                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{ticket.resolution}</p>
               </div>
             )}
           </div>
 
           {ticket.changelog && ticket.changelog.length > 0 && (
             <div className="card space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-gray-400" />
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 Historial de Cambios
               </h2>
               <div className="space-y-3">
@@ -349,11 +349,11 @@ export default function TicketDetailPage() {
                       <div className="w-px flex-1 bg-gray-200" />
                     </div>
                     <div className="flex-1 pb-3">
-                      <p className="text-gray-700">
-                        <span className="font-medium text-gray-900">{log.user?.name || 'Sistema'}</span>{' '}
+                      <p className="text-gray-700 dark:text-gray-300">
+                        <span className="font-medium text-gray-900 dark:text-gray-100">{log.user?.name || 'Sistema'}</span>{' '}
                         {log.description || log.action}
                       </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                         {new Date(log.createdAt).toLocaleDateString('es-MX', {
                           year: 'numeric',
                           month: 'long',
@@ -372,23 +372,23 @@ export default function TicketDetailPage() {
 
         <div className="space-y-6">
           <div className="card space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Información</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Información</h2>
 
             <div>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Cliente</p>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Cliente</p>
               {ticket.customer ? (
                 <Link to={`/customers/${ticket.customerId}`} className="text-primary-600 hover:text-primary-700 flex items-center gap-1.5 text-sm font-medium">
                   <Building2 className="w-4 h-4" />
                   {ticket.customer.companyName || ticket.customer.contactName}
                 </Link>
               ) : (
-                <p className="text-gray-900 text-sm">#{ticket.customerId}</p>
+                <p className="text-gray-900 dark:text-gray-100 text-sm">#{ticket.customerId}</p>
               )}
             </div>
 
             {ticket.equipment && (
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Equipo</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Equipo</p>
                 <Link to={`/equipment/${ticket.equipmentId}`} className="text-primary-600 hover:text-primary-700 flex items-center gap-1.5 text-sm font-medium">
                   <Wrench className="w-4 h-4" />
                   {ticket.equipment.type}{ticket.equipment.brand ? ` - ${ticket.equipment.brand}` : ''}
@@ -397,17 +397,17 @@ export default function TicketDetailPage() {
             )}
 
             <div>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Asignado a</p>
-              <p className="text-gray-900 text-sm flex items-center gap-1.5">
-                <User className="w-4 h-4 text-gray-400" />
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Asignado a</p>
+              <p className="text-gray-900 dark:text-gray-100 text-sm flex items-center gap-1.5">
+                <User className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                 {ticket.assignedUser?.name || 'Sin asignar'}
               </p>
             </div>
 
             <div>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Creado</p>
-              <p className="text-gray-900 text-sm flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-gray-400" />
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Creado</p>
+              <p className="text-gray-900 dark:text-gray-100 text-sm flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                 {new Date(ticket.createdAt).toLocaleDateString('es-MX', {
                   year: 'numeric',
                   month: 'long',
@@ -422,8 +422,8 @@ export default function TicketDetailPage() {
           {/* Service Orders linked to this ticket */}
           <div className="card space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <ClipboardList className="w-5 h-5 text-gray-400" />
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <ClipboardList className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 Órdenes de Servicio
               </h2>
               <Link
@@ -440,10 +440,10 @@ export default function TicketDetailPage() {
                   <Link
                     key={os.id}
                     to={`/service-orders/${os.id}`}
-                    className="block p-3 bg-gray-50 rounded-xl hover:bg-primary-50/50 transition-colors"
+                    className="block p-3 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-primary-50/50 transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-900">{os.number}</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{os.number}</span>
                       <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
                         os.status === 'COMPLETADO' ? 'bg-green-100 text-green-700' :
                         os.status === 'EN_PROGRESO' ? 'bg-blue-100 text-blue-700' :
@@ -456,8 +456,8 @@ export default function TicketDetailPage() {
                          os.status === 'CANCELADO' ? 'Cancelado' : os.status}
                       </span>
                     </div>
-                    {os.description && <p className="text-xs text-gray-500 mt-1 truncate">{os.description}</p>}
-                    <div className="flex items-center gap-2 mt-1.5 text-[10px] text-gray-400">
+                    {os.description && <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{os.description}</p>}
+                    <div className="flex items-center gap-2 mt-1.5 text-[10px] text-gray-400 dark:text-gray-500">
                       {os.photos?.length > 0 && <span>{os.photos.length} foto(s)</span>}
                       {os.report && <span>Reporte #{os.report.id}</span>}
                     </div>
@@ -465,7 +465,7 @@ export default function TicketDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-gray-400">Sin órdenes de servicio vinculadas</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500">Sin órdenes de servicio vinculadas</p>
             )}
           </div>
         </div>

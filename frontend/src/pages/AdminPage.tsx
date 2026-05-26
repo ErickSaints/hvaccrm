@@ -96,11 +96,11 @@ export default function AdminPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             <Shield className="w-6 h-6 text-purple-600" />
             Panel de Administración
           </h1>
-          <p className="text-gray-500 mt-1">Gestión de usuarios y sistema</p>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Gestión de usuarios y sistema</p>
         </div>
         <button onClick={handleShutdown} className="btn-secondary text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-2">
           <Power className="w-4 h-4" />
@@ -110,7 +110,7 @@ export default function AdminPage() {
 
       {/* Search */}
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
         <input
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
@@ -122,19 +122,19 @@ export default function AdminPage() {
       {/* Edit Modal */}
       {editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setEditingUser(null)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-md shadow-2xl" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold mb-4">Editar Usuario</h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre</label>
                 <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} className="input-field" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
                 <input value={editForm.email} onChange={e => setEditForm({ ...editForm, email: e.target.value })} className="input-field" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rol</label>
                 <select value={editForm.role} onChange={e => setEditForm({ ...editForm, role: e.target.value })} className="input-field">
                   {['ADMIN', 'TECHNICIAN', 'SALES', 'CLIENT', 'PROYECTOS', 'COMPRAS'].map(r => (
                     <option key={r} value={r}>{r}</option>
@@ -142,11 +142,11 @@ export default function AdminPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono</label>
                 <input value={editForm.phone} onChange={e => setEditForm({ ...editForm, phone: e.target.value })} className="input-field" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nueva Contraseña (dejar vacío para no cambiar)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nueva Contraseña (dejar vacío para no cambiar)</label>
                 <input type="password" value={editForm.password} onChange={e => setEditForm({ ...editForm, password: e.target.value })} className="input-field" placeholder="••••••••" />
               </div>
               <div className="flex gap-3 pt-2">
@@ -169,7 +169,7 @@ export default function AdminPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-100 text-left text-gray-500">
+                <tr className="border-b border-gray-100 dark:border-gray-800 text-left text-gray-500 dark:text-gray-400">
                   <th className="pb-3 font-medium px-4">Usuario</th>
                   <th className="pb-3 font-medium px-4">Rol</th>
                   <th className="pb-3 font-medium px-4">Estado</th>
@@ -183,8 +183,8 @@ export default function AdminPage() {
                 {filteredUsers?.map(user => (
                   <tr key={user.id} className="border-b border-gray-50 hover:bg-gray-50/50">
                     <td className="py-3 px-4">
-                      <p className="font-medium text-gray-900">{user.name}</p>
-                      <p className="text-gray-400 text-xs">{user.email}</p>
+                      <p className="font-medium text-gray-900 dark:text-gray-100">{user.name}</p>
+                      <p className="text-gray-400 dark:text-gray-500 text-xs">{user.email}</p>
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-1.5">
@@ -201,7 +201,7 @@ export default function AdminPage() {
                     <td className="py-3 px-4">
                       {user.subscription
                         ? <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${user.subscription.status === 'ACTIVA' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{user.subscription.status}</span>
-                        : <span className="text-gray-400">—</span>
+                        : <span className="text-gray-400 dark:text-gray-500">—</span>
                       }
                     </td>
                     <td className="py-3 px-4 text-gray-600 text-xs">
@@ -216,7 +216,7 @@ export default function AdminPage() {
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button onClick={() => openEdit(user)} className="p-1.5 hover:bg-gray-100 rounded-lg" title="Editar">
-                          <Edit3 className="w-4 h-4 text-gray-500" />
+                          <Edit3 className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                         </button>
                         <button onClick={() => toggleActive(user)} className="p-1.5 hover:bg-gray-100 rounded-lg" title={user.active ? 'Desactivar' : 'Activar'}>
                           {user.active ? <XCircle className="w-4 h-4 text-red-500" /> : <CheckCircle className="w-4 h-4 text-green-500" />}
@@ -231,11 +231,11 @@ export default function AdminPage() {
               </tbody>
             </table>
           </div>
-          {filteredUsers?.length === 0 && <p className="text-center py-8 text-gray-400">No hay usuarios</p>}
+          {filteredUsers?.length === 0 && <p className="text-center py-8 text-gray-400 dark:text-gray-500">No hay usuarios</p>}
         </div>
       )}
 
-      <p className="text-xs text-gray-400 text-center">
+      <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
         Solo tú como administrador tienes acceso a este panel. Usa "Ver como" para navegar como cualquier usuario.
       </p>
     </div>

@@ -126,7 +126,7 @@ export default function PolicyDetailPage() {
   if (!policy) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-500">Póliza no encontrada</p>
+        <p className="text-gray-500 dark:text-gray-400">Póliza no encontrada</p>
         <Link to="/policies" className="text-primary-600 hover:text-primary-700 font-medium mt-2 inline-block">
           Volver a pólizas
         </Link>
@@ -140,15 +140,15 @@ export default function PolicyDetailPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/policies')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+          <button onClick={() => navigate('/policies')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:bg-gray-100 rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <div className="flex items-center gap-2 mb-1">
               {statusBadge(policy.status)}
-              <span className="text-xs text-gray-400">{policy.number}</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">{policy.number}</span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">{policy.name}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{policy.name}</h1>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -176,14 +176,14 @@ export default function PolicyDetailPage() {
         </div>
       </div>
 
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 dark:border-gray-700">
         <nav className="flex gap-6 overflow-x-auto">
           <button
             onClick={() => setActiveTab('info')}
             className={`flex items-center gap-2 px-1 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'info'
                 ? 'border-primary-600 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:border-gray-300'
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
@@ -194,7 +194,7 @@ export default function PolicyDetailPage() {
             className={`flex items-center gap-2 px-1 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'orders'
                 ? 'border-primary-600 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:border-gray-300'
             }`}
           >
             <ClipboardList className="w-4 h-4" />
@@ -205,7 +205,7 @@ export default function PolicyDetailPage() {
             className={`flex items-center gap-2 px-1 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'logs'
                 ? 'border-primary-600 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:border-gray-300'
             }`}
           >
             <CalendarCheck className="w-4 h-4" />
@@ -217,51 +217,51 @@ export default function PolicyDetailPage() {
       {activeTab === 'info' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 card space-y-5">
-            <h2 className="text-lg font-semibold text-gray-900">Detalles de la Póliza</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Detalles de la Póliza</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Número</p>
-                <p className="text-gray-900 mt-1 font-medium">{policy.number}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Número</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1 font-medium">{policy.number}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</p>
-                <p className="text-gray-900 mt-1">{policy.name}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nombre</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{policy.name}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Frecuencia</p>
-                <p className="text-gray-900 mt-1 flex items-center gap-1.5">
-                  <Repeat className="w-4 h-4 text-gray-400" />
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Frecuencia</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1 flex items-center gap-1.5">
+                  <Repeat className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                   {frequencyLabels[policy.frequency] || policy.frequency}
                 </p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Visitas</p>
-                <p className="text-gray-900 mt-1">{policy.visitCount} visita(s)</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Visitas</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">{policy.visitCount} visita(s)</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Precio por Visita</p>
-                <p className="text-gray-900 mt-1">${policy.pricePerVisit.toFixed(2)}</p>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Precio por Visita</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1">${policy.pricePerVisit.toFixed(2)}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Precio Total</p>
-                <p className="text-gray-900 mt-1 flex items-center gap-1.5 font-semibold">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Precio Total</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1 flex items-center gap-1.5 font-semibold">
                   <DollarSign className="w-4 h-4 text-green-500" />
                   ${policy.totalPrice.toFixed(2)}
                 </p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Inicio</p>
-                <p className="text-gray-900 mt-1 flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-gray-400" />
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Fecha de Inicio</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1 flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                   {new Date(policy.startDate).toLocaleDateString('es-MX', {
                     year: 'numeric', month: 'long', day: 'numeric',
                   })}
                 </p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Fin</p>
-                <p className="text-gray-900 mt-1 flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-gray-400" />
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Fecha de Fin</p>
+                <p className="text-gray-900 dark:text-gray-100 mt-1 flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                   {new Date(policy.endDate).toLocaleDateString('es-MX', {
                     year: 'numeric', month: 'long', day: 'numeric',
                   })}
@@ -269,22 +269,22 @@ export default function PolicyDetailPage() {
               </div>
             </div>
             {policy.description && (
-              <div className="pt-4 border-t border-gray-100">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Descripción</p>
-                <p className="text-gray-700 text-sm whitespace-pre-wrap">{policy.description}</p>
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Descripción</p>
+                <p className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">{policy.description}</p>
               </div>
             )}
             {policy.notes && (
-              <div className="pt-4 border-t border-gray-100">
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Notas</p>
-                <p className="text-gray-700 text-sm whitespace-pre-wrap">{policy.notes}</p>
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Notas</p>
+                <p className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">{policy.notes}</p>
               </div>
             )}
           </div>
 
           <div className="space-y-6">
             <div className="card space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900">Cliente</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Cliente</h2>
               {policy.customer ? (
                 <div>
                   <Link
@@ -294,35 +294,35 @@ export default function PolicyDetailPage() {
                     <Building2 className="w-4 h-4" />
                     {policy.customer.companyName || policy.customer.contactName}
                   </Link>
-                  <p className="text-gray-500 text-sm mt-1">{policy.customer.contactName}</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{policy.customer.contactName}</p>
                   {policy.customer.phone && (
-                    <p className="text-gray-500 text-sm mt-1 flex items-center gap-1.5">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center gap-1.5">
                       <User className="w-4 h-4" />
                       {policy.customer.phone}
                     </p>
                   )}
                 </div>
               ) : (
-                <p className="text-gray-500">#{policy.customerId}</p>
+                <p className="text-gray-500 dark:text-gray-400">#{policy.customerId}</p>
               )}
             </div>
 
             <div className="card space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900">Resumen</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Resumen</h2>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div className="flex items-center gap-2 text-gray-600">
                     <ClipboardList className="w-4 h-4" />
                     <span className="text-sm">Órdenes</span>
                   </div>
-                  <span className="font-semibold text-gray-900">{policy.serviceOrders?.length ?? 0}</span>
+                  <span className="font-semibold text-gray-900 dark:text-gray-100">{policy.serviceOrders?.length ?? 0}</span>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div className="flex items-center gap-2 text-gray-600">
                     <CalendarCheck className="w-4 h-4" />
                     <span className="text-sm">Mantenimientos</span>
                   </div>
-                  <span className="font-semibold text-gray-900">{logs.length}</span>
+                  <span className="font-semibold text-gray-900 dark:text-gray-100">{logs.length}</span>
                 </div>
               </div>
             </div>
@@ -343,13 +343,13 @@ export default function PolicyDetailPage() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-semibold text-gray-900">{order.number}</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{order.number}</span>
                         {order.equipment && (
-                          <span className="text-xs text-gray-400">{order.equipment.type}</span>
+                          <span className="text-xs text-gray-400 dark:text-gray-500">{order.equipment.type}</span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-500">{order.description || 'Sin descripción'}</p>
-                      <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{order.description || 'Sin descripción'}</p>
+                      <div className="flex items-center gap-3 mt-2 text-xs text-gray-400 dark:text-gray-500">
                         {order.scheduledDate && (
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
@@ -376,8 +376,8 @@ export default function PolicyDetailPage() {
           ) : (
             <div className="card text-center py-12">
               <ClipboardList className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">Sin órdenes de servicio</h3>
-              <p className="text-gray-500 mb-6">No hay órdenes vinculadas a esta póliza</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Sin órdenes de servicio</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">No hay órdenes vinculadas a esta póliza</p>
               <Link
                 to={`/service-orders/new?policyId=${policy.id}`}
                 className="btn-primary inline-flex items-center gap-2"
@@ -398,8 +398,8 @@ export default function PolicyDetailPage() {
                 <div key={log.id} className="card">
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-medium text-gray-900">{log.description}</h3>
-                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-gray-400">
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100">{log.description}</h3>
+                      <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-gray-400 dark:text-gray-500">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
                           Programado: {new Date(log.scheduledDate).toLocaleDateString('es-MX')}
@@ -424,7 +424,7 @@ export default function PolicyDetailPage() {
                         )}
                       </div>
                       {log.notes && (
-                        <p className="text-sm text-gray-500 mt-2">{log.notes}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">{log.notes}</p>
                       )}
                     </div>
                     <div className="shrink-0">{logStatusBadge(log.status)}</div>
@@ -435,8 +435,8 @@ export default function PolicyDetailPage() {
           ) : (
             <div className="card text-center py-12">
               <CalendarCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-1">Sin mantenimientos programados</h3>
-              <p className="text-gray-500 mb-6">No hay visitas de mantenimiento registradas para esta póliza</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Sin mantenimientos programados</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">No hay visitas de mantenimiento registradas para esta póliza</p>
               <Link
                 to={`/maintenance/new?policyId=${policy.id}`}
                 className="btn-primary inline-flex items-center gap-2"

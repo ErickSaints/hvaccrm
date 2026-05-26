@@ -87,8 +87,8 @@ export default function UserFormPage() {
   if (!isSuperAdmin) {
     return (
       <div className="card text-center py-12">
-        <h3 className="text-lg font-medium text-gray-900">Acceso restringido</h3>
-        <p className="text-gray-500 mt-1">Solo el Super Administrador puede gestionar usuarios</p>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Acceso restringido</h3>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo el Super Administrador puede gestionar usuarios</p>
       </div>
     );
   }
@@ -106,15 +106,15 @@ export default function UserFormPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/users')}
-          className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {isEditing ? 'Editar Usuario' : 'Nuevo Usuario'}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {isEditing ? 'Modifica los datos del usuario' : 'Registra un nuevo usuario en el sistema'}
           </p>
         </div>
@@ -123,19 +123,19 @@ export default function UserFormPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="card space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nombre *</label>
             <input {...register('name')} className="input-field" placeholder="Nombre completo" />
             {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email *</label>
             <input {...register('email')} type="email" className="input-field" placeholder="correo@ejemplo.com" />
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
               Contraseña {isEditing ? '(dejar vacío para mantener)' : '*'}
             </label>
             <input
@@ -149,7 +149,7 @@ export default function UserFormPage() {
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Rol *</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Rol *</label>
             <select {...register('role')} className="input-field">
               <option value="ADMIN">Administrador</option>
               <option value="TECHNICIAN">Técnico</option>
@@ -162,12 +162,12 @@ export default function UserFormPage() {
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Teléfono</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Teléfono</label>
             <input {...register('phone')} className="input-field" placeholder="55 1234 5678" />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <button type="button" onClick={() => navigate('/users')} className="btn-secondary">
             Cancelar
           </button>

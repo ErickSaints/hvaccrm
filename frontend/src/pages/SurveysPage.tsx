@@ -61,8 +61,8 @@ export default function SurveysPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Levantamientos</h1>
-          <p className="text-gray-500 mt-1">Inspecciones técnicas, dibujos isométricos y listas de materiales</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Levantamientos</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Inspecciones técnicas, dibujos isométricos y listas de materiales</p>
         </div>
         <Link to="/surveys/new" className="btn-primary inline-flex items-center gap-2">
           <Plus className="w-4 h-4" />
@@ -71,7 +71,7 @@ export default function SurveysPage() {
       </div>
 
       <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -87,7 +87,7 @@ export default function SurveysPage() {
       ) : filtered?.length === 0 ? (
         <div className="card text-center py-12">
           <Ruler className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-500">No hay levantamientos registrados</p>
+          <p className="text-gray-500 dark:text-gray-400">No hay levantamientos registrados</p>
           <Link to="/surveys/new" className="btn-primary inline-flex items-center gap-2 mt-4">
             <Plus className="w-4 h-4" />
             Crear primer levantamiento
@@ -104,18 +104,18 @@ export default function SurveysPage() {
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-gray-900 truncate">{survey.title}</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">{survey.title}</h3>
                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0 ${statusColor[survey.status] || 'bg-gray-100 text-gray-600'}`}>
                       {statusLabel[survey.status] || survey.status}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-500 mt-0.5">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                     {survey.customer.companyName || survey.customer.contactName}
                   </p>
                   {survey.location && (
-                    <p className="text-xs text-gray-400 mt-1">{survey.location}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{survey.location}</p>
                   )}
-                  <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                  <div className="flex items-center gap-3 mt-2 text-xs text-gray-400 dark:text-gray-500">
                     <span className="flex items-center gap-1">
                       <Camera className="w-3 h-3" />
                       {survey.photos.length}
@@ -129,7 +129,7 @@ export default function SurveysPage() {
                       {survey.drawings.length}
                     </span>
                   </div>
-                  <p className="text-[10px] text-gray-400 mt-1">
+                  <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">
                     {survey.createdBy.name} · {new Date(survey.createdAt).toLocaleDateString('es-MX')}
                   </p>
                 </div>

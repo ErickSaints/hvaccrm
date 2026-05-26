@@ -113,7 +113,7 @@ export default function ServiceOrderDetailPage() {
   if (!order) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-500">Orden de servicio no encontrada</p>
+        <p className="text-gray-500 dark:text-gray-400">Orden de servicio no encontrada</p>
         <Link to="/service-orders" className="text-primary-600 hover:text-primary-700 font-medium mt-2 inline-block">
           Volver a ordenes
         </Link>
@@ -125,15 +125,15 @@ export default function ServiceOrderDetailPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/service-orders')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+          <button onClick={() => navigate('/service-orders')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <div className="flex items-center gap-2 mb-1">
               {statusBadge(order.status)}
-              <span className="text-xs text-gray-400">#{order.number}</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">#{order.number}</span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Orden de Servicio {order.number}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Orden de Servicio {order.number}</h1>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -150,14 +150,14 @@ export default function ServiceOrderDetailPage() {
               {statusDropdown && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setStatusDropdown(false)} />
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-20 py-1">
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20 py-1">
                     {statusOptions
                       .filter((s) => s.value !== order.status)
                       .map((opt) => (
                         <button
                           key={opt.value}
                           onClick={() => statusMutation.mutate(opt.value)}
-                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                         >
                           {opt.label}
                         </button>
@@ -191,8 +191,8 @@ export default function ServiceOrderDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <div className="card space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Descripción</h2>
-            <p className="text-gray-700 whitespace-pre-wrap">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Descripción</h2>
+            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
               {order.description || 'Sin descripción'}
             </p>
           </div>
@@ -267,14 +267,14 @@ export default function ServiceOrderDetailPage() {
 
           {order.notes && (
             <div className="card space-y-3">
-              <h2 className="text-lg font-semibold text-gray-900">Notas</h2>
-              <p className="text-gray-700 whitespace-pre-wrap">{order.notes}</p>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Notas</h2>
+              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{order.notes}</p>
             </div>
           )}
 
           {order.photos && order.photos.length > 0 && (
             <div className="card space-y-3">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                 <Camera className="w-5 h-5 text-primary-600" />
                 Fotografías ({order.photos.length})
               </h2>
@@ -284,7 +284,7 @@ export default function ServiceOrderDetailPage() {
                     <img
                       src={photo.url}
                       alt={photo.caption || 'Foto'}
-                      className="w-full h-32 object-cover rounded-xl border border-gray-200"
+                      className="w-full h-32 object-cover rounded-xl border border-gray-200 dark:border-gray-700"
                       onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/400x300?text=Error'; }}
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-2 rounded-b-xl">
@@ -304,25 +304,25 @@ export default function ServiceOrderDetailPage() {
 
         <div className="space-y-6">
           <div className="card space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Información</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Información</h2>
 
             <div>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Cliente</p>
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Cliente</p>
               {order.customer ? (
                 <Link to={`/customers/${order.customerId}`} className="text-primary-600 hover:text-primary-700 flex items-center gap-1.5 text-sm font-medium">
                   <Building2 className="w-4 h-4" />
                   {order.customer.companyName || order.customer.contactName}
                 </Link>
               ) : (
-                <p className="text-gray-900 text-sm">#{order.customerId}</p>
+                <p className="text-gray-900 dark:text-gray-100 text-sm">#{order.customerId}</p>
               )}
             </div>
 
             {order.equipment && (
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Equipo</p>
-                <p className="text-gray-900 text-sm flex items-center gap-1.5">
-                  <Wrench className="w-4 h-4 text-gray-400" />
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Equipo</p>
+                <p className="text-gray-900 dark:text-gray-100 text-sm flex items-center gap-1.5">
+                  <Wrench className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                   {order.equipment.type}{order.equipment.brand ? ` - ${order.equipment.brand}` : ''}
                   {order.equipment.model ? ` (${order.equipment.model})` : ''}
                 </p>
@@ -330,17 +330,17 @@ export default function ServiceOrderDetailPage() {
             )}
 
             <div>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Técnico Asignado</p>
-              <p className="text-gray-900 text-sm flex items-center gap-1.5">
-                <User className="w-4 h-4 text-gray-400" />
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Técnico Asignado</p>
+              <p className="text-gray-900 dark:text-gray-100 text-sm flex items-center gap-1.5">
+                <User className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                 {order.assignedUser?.name || 'Sin asignar'}
               </p>
             </div>
 
             <div>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Fecha Programada</p>
-              <p className="text-gray-900 text-sm flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-gray-400" />
+              <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Fecha Programada</p>
+              <p className="text-gray-900 dark:text-gray-100 text-sm flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                 {order.scheduledDate
                   ? new Date(order.scheduledDate).toLocaleDateString('es-MX', {
                       year: 'numeric',
@@ -353,8 +353,8 @@ export default function ServiceOrderDetailPage() {
 
             {order.completedDate && (
               <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Fecha Completado</p>
-                <p className="text-gray-900 text-sm flex items-center gap-1.5">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Fecha Completado</p>
+                <p className="text-gray-900 dark:text-gray-100 text-sm flex items-center gap-1.5">
                   <Clock className="w-4 h-4 text-green-500" />
                   {new Date(order.completedDate).toLocaleDateString('es-MX', {
                     year: 'numeric',
@@ -367,29 +367,29 @@ export default function ServiceOrderDetailPage() {
           </div>
 
           <div className="card space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <DollarSign className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               Costos
             </h2>
 
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Horas de Trabajo</span>
-                <span className="font-medium text-gray-900">
+                <span className="font-medium text-gray-900 dark:text-gray-100">
                   {order.laborHours ? `${order.laborHours} hrs` : '—'}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Costo Mano de Obra</span>
-                <span className="font-medium text-gray-900">${order.laborCost.toFixed(2)}</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">${order.laborCost.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Costo Materiales</span>
-                <span className="font-medium text-gray-900">${order.materialsCost.toFixed(2)}</span>
+                <span className="font-medium text-gray-900 dark:text-gray-100">${order.materialsCost.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-base font-bold border-t border-gray-200 pt-3">
-                <span className="text-gray-900">Total</span>
-                <span className="text-gray-900">${order.totalCost.toFixed(2)}</span>
+              <div className="flex justify-between text-base font-bold border-t border-gray-200 dark:border-gray-700 pt-3">
+                <span className="text-gray-900 dark:text-gray-100">Total</span>
+                <span className="text-gray-900 dark:text-gray-100">${order.totalCost.toFixed(2)}</span>
               </div>
             </div>
           </div>

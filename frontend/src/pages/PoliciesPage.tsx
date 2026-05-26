@@ -68,8 +68,8 @@ export default function PoliciesPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Pólizas de Mantenimiento</h1>
-          <p className="text-gray-500 mt-1">Gestión de pólizas de mantenimiento preventivo</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Pólizas de Mantenimiento</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Gestión de pólizas de mantenimiento preventivo</p>
         </div>
         <Link to="/policies/new" className="btn-primary inline-flex items-center gap-2 w-fit">
           <Plus className="w-4 h-4" />
@@ -86,7 +86,7 @@ export default function PoliciesPage() {
               className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
                 statusFilter === f.key
                   ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 hover:bg-gray-200'
               }`}
             >
               {f.label}
@@ -95,7 +95,7 @@ export default function PoliciesPage() {
         </div>
         <div className="flex-1">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Buscar por nombre, número o cliente..."
@@ -128,7 +128,7 @@ export default function PoliciesPage() {
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100">
+              <tr className="border-b border-gray-100 dark:border-gray-800">
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Número</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Nombre</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Cliente</th>
@@ -142,27 +142,27 @@ export default function PoliciesPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {filtered.map((policy) => (
-                <tr key={policy.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={policy.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                   <td className="px-6 py-4">
                     <Link to={`/policies/${policy.id}`} className="font-medium text-primary-600 hover:text-primary-700">
                       {policy.number}
                     </Link>
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900">{policy.name}</td>
+                  <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">{policy.name}</td>
                   <td className="px-6 py-4 text-gray-600">
                     {policy.customer?.contactName || policy.customer?.companyName || `#${policy.customerId}`}
                   </td>
                   <td className="px-6 py-4 text-gray-600">{frequencyLabels[policy.frequency] || policy.frequency}</td>
                   <td className="px-6 py-4 text-center text-gray-600">{policy.visitCount}</td>
-                  <td className="px-6 py-4 text-right font-medium text-gray-900">${policy.totalPrice.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-right font-medium text-gray-900 dark:text-gray-100">${policy.totalPrice.toFixed(2)}</td>
                   <td className="px-6 py-4 text-center">{statusBadge(policy.status)}</td>
-                  <td className="px-6 py-4 text-gray-500">
+                  <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                     {policy.endDate ? new Date(policy.endDate).toLocaleDateString('es-MX') : '—'}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <Link
                       to={`/policies/${policy.id}`}
-                      className="p-2 text-gray-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
+                      className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
                       title="Ver detalle"
                     >
                       <Eye className="w-4 h-4" />
@@ -176,10 +176,10 @@ export default function PoliciesPage() {
       ) : (
         <div className="card text-center py-12">
           <ShieldCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-1">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
             {search || statusFilter ? 'Sin resultados' : 'No hay pólizas'}
           </h3>
-          <p className="text-gray-500 mb-6">
+          <p className="text-gray-500 dark:text-gray-400 mb-6">
             {search || statusFilter
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza creando la primera póliza de mantenimiento'}

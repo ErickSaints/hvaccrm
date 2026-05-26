@@ -92,8 +92,8 @@ export default function DispatchPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Calendario de Servicios</h1>
-          <p className="text-gray-500 mt-1">Arrastra y suelta para reprogramar órdenes</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Calendario de Servicios</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Arrastra y suelta para reprogramar órdenes</p>
         </div>
         <Link
           to="/service-orders/new"
@@ -136,7 +136,7 @@ export default function DispatchPage() {
         <div className="space-y-4">
           {/* Legend */}
           <div className="card">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Leyenda</h3>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Leyenda</h3>
             <div className="space-y-2">
               {Object.entries(statusLabels).map(([status, label]) => (
                 <div key={status} className="flex items-center gap-2">
@@ -153,7 +153,7 @@ export default function DispatchPage() {
           {/* Selected Order Details */}
           {selectedEvent && (
             <div className="card">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
                 {selectedEvent.number}
               </h3>
               <div className="space-y-2 text-sm text-gray-600">
@@ -186,17 +186,17 @@ export default function DispatchPage() {
 
           {/* Summary */}
           <div className="card">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Resumen</h3>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Resumen</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500">Total programadas</span>
+                <span className="text-gray-500 dark:text-gray-400">Total programadas</span>
                 <span className="font-medium">{events.length}</span>
               </div>
               {Object.entries(statusLabels).map(([status, label]) => {
                 const count = (orders || []).filter((o) => o.status === status).length;
                 return (
                   <div key={status} className="flex justify-between">
-                    <span className="text-gray-500">{label}</span>
+                    <span className="text-gray-500 dark:text-gray-400">{label}</span>
                     <span className="font-medium">{count}</span>
                   </div>
                 );

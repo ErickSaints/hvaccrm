@@ -68,7 +68,7 @@ export default function PaymentPage() {
 
   if (subLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-800 flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
       </div>
     );
@@ -77,7 +77,7 @@ export default function PaymentPage() {
   const isActive = subscription?.status === 'ACTIVA';
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 flex flex-col">
       <div className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-800">
         <div className="max-w-3xl mx-auto px-4 py-8">
           <button onClick={() => navigate('/')} className="text-white/80 hover:text-white flex items-center gap-2 mb-4">
@@ -119,8 +119,8 @@ export default function PaymentPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">¡Suscripción Activa!</h2>
-            <p className="text-gray-500 mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">¡Suscripción Activa!</h2>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">
               Tu plan <strong>{subscription.plan.name}</strong> está vigente hasta{' '}
               {new Date(subscription.endDate).toLocaleDateString('es-MX')}
             </p>
@@ -132,24 +132,24 @@ export default function PaymentPage() {
           <div className="space-y-6">
             <div className="card">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Resumen de tu Plan</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Resumen de tu Plan</h2>
                 <span className="px-3 py-1 bg-amber-100 text-amber-800 text-sm font-medium rounded-full">
                   Pendiente de pago
                 </span>
               </div>
               <div className="border-t border-gray-100 pt-4 space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Plan</span>
-                  <span className="font-medium text-gray-900">{subscription.plan.name}</span>
+                  <span className="text-gray-500 dark:text-gray-400">Plan</span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100">{subscription.plan.name}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Duración</span>
-                  <span className="font-medium text-gray-900">
+                  <span className="text-gray-500 dark:text-gray-400">Duración</span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
                     {subscription.plan.duration === 'MENSUAL' ? '30 días' : '1 año'}
                   </span>
                 </div>
                 <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-100">
-                  <span className="text-gray-900">Total</span>
+                  <span className="text-gray-900 dark:text-gray-100">Total</span>
                   <span className="text-primary-600">${subscription.plan.price.toLocaleString('es-MX')} MXN</span>
                 </div>
               </div>
@@ -161,7 +161,7 @@ export default function PaymentPage() {
                   <CreditCard className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">Pago 100% Seguro</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Pago 100% Seguro</h3>
                   <p className="text-sm text-gray-600 mb-3">
                     Procesado por Mercado Pago. Aceptamos tarjetas de crédito, débito, OXXO y SPEI.
                   </p>
@@ -186,9 +186,9 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            <div className="card border-dashed border-2 border-gray-200">
+            <div className="card border-dashed border-2 border-gray-200 dark:border-gray-700">
               <div className="text-center">
-                <p className="text-sm text-gray-500 mb-2">¿No puedes pagar ahora?</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">¿No puedes pagar ahora?</p>
                 <button
                   onClick={activateWithoutPayment}
                   className="btn-secondary text-sm"
@@ -199,7 +199,7 @@ export default function PaymentPage() {
             </div>
 
             {preference && (
-              <div className="text-center text-sm text-gray-500">
+              <div className="text-center text-sm text-gray-500 dark:text-gray-400">
                 ¿No se abrió la ventana de pago?{' '}
                 <a
                   href={preference.initPoint || preference.sandboxInitPoint}
@@ -217,8 +217,8 @@ export default function PaymentPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
               <AlertCircle className="w-8 h-8 text-red-600" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Suscripción Cancelada</h2>
-            <p className="text-gray-500 mb-6">Tu suscripción ha sido cancelada. Puedes contratar un nuevo plan.</p>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Suscripción Cancelada</h2>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">Tu suscripción ha sido cancelada. Puedes contratar un nuevo plan.</p>
             <button onClick={() => navigate('/subscriptions')} className="btn-primary">
               Ver Planes
             </button>
@@ -226,10 +226,10 @@ export default function PaymentPage() {
         ) : (
           <div className="card text-center py-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-              <AlertCircle className="w-8 h-8 text-gray-400" />
+              <AlertCircle className="w-8 h-8 text-gray-400 dark:text-gray-500" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Sin Suscripción</h2>
-            <p className="text-gray-500 mb-6">No tienes ninguna suscripción activa.</p>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Sin Suscripción</h2>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">No tienes ninguna suscripción activa.</p>
             <button onClick={() => navigate('/register')} className="btn-primary">
               Ver Planes
             </button>

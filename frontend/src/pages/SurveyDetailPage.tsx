@@ -48,7 +48,7 @@ export default function SurveyDetailPage() {
   if (!survey) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-500">Levantamiento no encontrado</p>
+        <p className="text-gray-500 dark:text-gray-400">Levantamiento no encontrado</p>
         <Link to="/surveys" className="text-primary-600 hover:underline mt-2 inline-block">Volver a levantamientos</Link>
       </div>
     );
@@ -58,17 +58,17 @@ export default function SurveyDetailPage() {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
-          <Link to="/surveys" className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg">
+          <Link to="/surveys" className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:bg-gray-800 rounded-lg">
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-gray-900">{survey.title}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{survey.title}</h1>
               <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColor[survey.status] || 'bg-gray-100 text-gray-600'}`}>
                 {statusLabel[survey.status] || survey.status}
               </span>
             </div>
-            <p className="text-gray-500 mt-1">{survey.customer.companyName || survey.customer.contactName}</p>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">{survey.customer.companyName || survey.customer.contactName}</p>
           </div>
         </div>
         <Link to={`/surveys/${survey.id}/edit`} className="btn-primary inline-flex items-center gap-2">
@@ -81,7 +81,7 @@ export default function SurveyDetailPage() {
         {/* Info sidebar */}
         <div className="lg:col-span-1 space-y-4">
           <div className="card space-y-3 text-sm">
-            <h3 className="font-semibold text-gray-900">Detalles</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100">Detalles</h3>
             <div className="flex items-center gap-2 text-gray-600">
               <MapPin className="w-4 h-4 shrink-0" />
               <span>{survey.location || 'Sin ubicación'}</span>
@@ -95,31 +95,31 @@ export default function SurveyDetailPage() {
               <span>{new Date(survey.createdAt).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
             </div>
             {survey.description && (
-              <p className="text-gray-600 pt-2 border-t border-gray-100">{survey.description}</p>
+              <p className="text-gray-600 pt-2 border-t border-gray-100 dark:border-gray-800">{survey.description}</p>
             )}
           </div>
 
           <div className="card text-sm space-y-2">
-            <h3 className="font-semibold text-gray-900">Cliente</h3>
-            <p className="text-gray-700">{survey.customer.companyName || survey.customer.contactName}</p>
-            <p className="text-gray-500">{survey.customer.contactName}</p>
-            {survey.customer.phone && <p className="text-gray-500">{survey.customer.phone}</p>}
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100">Cliente</h3>
+            <p className="text-gray-700 dark:text-gray-300">{survey.customer.companyName || survey.customer.contactName}</p>
+            <p className="text-gray-500 dark:text-gray-400">{survey.customer.contactName}</p>
+            {survey.customer.phone && <p className="text-gray-500 dark:text-gray-400">{survey.customer.phone}</p>}
           </div>
 
           <div className="card text-sm space-y-2">
-            <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-              <Package className="w-4 h-4 text-gray-400" />
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <Package className="w-4 h-4 text-gray-400 dark:text-gray-500" />
               Materiales ({survey.materials.length})
             </h3>
             {survey.materials.length === 0 ? (
-              <p className="text-gray-400">Sin materiales registrados</p>
+              <p className="text-gray-400 dark:text-gray-500">Sin materiales registrados</p>
             ) : (
               <div className="space-y-1 max-h-64 overflow-y-auto">
                 {survey.materials.map((m) => (
                   <div key={m.id} className="flex items-center justify-between py-1.5 border-b border-gray-50 last:border-0">
                     <div>
-                      <p className="text-gray-700">{m.description}</p>
-                      <span className="text-[10px] text-gray-400">{m.category}</span>
+                      <p className="text-gray-700 dark:text-gray-300">{m.description}</p>
+                      <span className="text-[10px] text-gray-400 dark:text-gray-500">{m.category}</span>
                     </div>
                     <span className="text-sm font-medium text-gray-800 shrink-0 ml-2">
                       {m.quantity} {m.unit}
@@ -135,12 +135,12 @@ export default function SurveyDetailPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Photos */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
-              <Camera className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2 mb-4">
+              <Camera className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               Fotos ({survey.photos.length})
             </h2>
             {survey.photos.length === 0 ? (
-              <p className="text-gray-400 text-sm text-center py-6">Sin fotos</p>
+              <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-6">Sin fotos</p>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {survey.photos.map((photo) => (
@@ -148,11 +148,11 @@ export default function SurveyDetailPage() {
                     <img
                       src={photo.url}
                       alt={photo.caption || ''}
-                      className="w-full h-36 object-cover rounded-lg border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity"
+                      className="w-full h-36 object-cover rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:opacity-90 transition-opacity"
                       onClick={() => window.open(photo.url, '_blank')}
                     />
                     {photo.caption && (
-                      <p className="text-xs text-gray-500 mt-1">{photo.caption}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{photo.caption}</p>
                     )}
                   </div>
                 ))}
@@ -162,12 +162,12 @@ export default function SurveyDetailPage() {
 
           {/* Drawings */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
-              <Layers className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2 mb-4">
+              <Layers className="w-5 h-5 text-gray-400 dark:text-gray-500" />
               Dibujos y Croquis ({survey.drawings.length})
             </h2>
             {survey.drawings.length === 0 ? (
-              <p className="text-gray-400 text-sm text-center py-6">Sin dibujos</p>
+              <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-6">Sin dibujos</p>
             ) : (
               <div className="space-y-4">
                 {survey.drawings.map((drawing) => (
@@ -180,14 +180,14 @@ export default function SurveyDetailPage() {
           {/* Materials table */}
           {survey.materials.length > 0 && (
             <div className="card">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-4">
-                <Package className="w-5 h-5 text-gray-400" />
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2 mb-4">
+                <Package className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 Lista de Materiales
               </h2>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                    <tr className="text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-200 dark:border-gray-700">
                       <th className="pb-2 pr-4">Descripción</th>
                       <th className="pb-2 pr-4">Cant</th>
                       <th className="pb-2 pr-4">Unidad</th>
@@ -198,15 +198,15 @@ export default function SurveyDetailPage() {
                   <tbody>
                     {survey.materials.map((m) => (
                       <tr key={m.id} className="border-b border-gray-50 last:border-0">
-                        <td className="py-2 pr-4 text-gray-900">{m.description}</td>
-                        <td className="py-2 pr-4 text-gray-700">{m.quantity}</td>
-                        <td className="py-2 pr-4 text-gray-700">{m.unit}</td>
+                        <td className="py-2 pr-4 text-gray-900 dark:text-gray-100">{m.description}</td>
+                        <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">{m.quantity}</td>
+                        <td className="py-2 pr-4 text-gray-700 dark:text-gray-300">{m.unit}</td>
                         <td className="py-2 pr-4">
-                          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                          <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 px-2 py-0.5 rounded-full">
                             {m.category || 'Otros'}
                           </span>
                         </td>
-                        <td className="py-2 text-gray-500">{m.notes}</td>
+                        <td className="py-2 text-gray-500 dark:text-gray-400">{m.notes}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -245,8 +245,8 @@ function DrawingViewer({ drawing }: { drawing: { id: number; name: string | null
 
   return (
     <div>
-      <h4 className="text-sm font-medium text-gray-700 mb-2">{drawing.name || 'Dibujo'}</h4>
-      <div className="border border-gray-200 rounded-xl overflow-hidden bg-[#f8fafc]">
+      <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{drawing.name || 'Dibujo'}</h4>
+      <div className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-[#f8fafc]">
         <canvas ref={canvasRef} className="w-full max-h-[400px]" />
       </div>
     </div>

@@ -173,8 +173,8 @@ export default function UsersPage() {
     return (
       <div className="card text-center py-12">
         <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900">Acceso restringido</h3>
-        <p className="text-gray-500 mt-1">Solo el Super Administrador puede gestionar usuarios</p>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Acceso restringido</h3>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo el Super Administrador puede gestionar usuarios</p>
       </div>
     );
   }
@@ -183,8 +183,8 @@ export default function UsersPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Usuarios</h1>
-          <p className="text-gray-500 mt-1">Gestión de usuarios del sistema</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Usuarios</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Gestión de usuarios del sistema</p>
         </div>
         <button onClick={openCreateModal} className="btn-primary inline-flex items-center gap-2 w-fit">
           <Plus className="w-4 h-4" />
@@ -194,7 +194,7 @@ export default function UsersPage() {
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Buscar por nombre o email..."
@@ -237,7 +237,7 @@ export default function UsersPage() {
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100">
+              <tr className="border-b border-gray-100 dark:border-gray-800">
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Nombre</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Email</th>
                 <th className="text-center px-6 py-4 font-semibold text-gray-600">Rol</th>
@@ -249,13 +249,13 @@ export default function UsersPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {filtered.map((u) => (
-                <tr key={u.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center font-semibold text-sm">
                         {u.name.charAt(0).toUpperCase()}
                       </div>
-                      <span className="font-medium text-gray-900">{u.name}</span>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">{u.name}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-gray-600">{u.email}</td>
@@ -279,7 +279,7 @@ export default function UsersPage() {
                       {u.active ? 'Sí' : 'No'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-500">
+                  <td className="px-6 py-4 text-gray-500 dark:text-gray-400">
                     {'createdAt' in u && u.createdAt
                       ? new Date((u as any).createdAt).toLocaleDateString('es-MX')
                       : '—'}
@@ -288,7 +288,7 @@ export default function UsersPage() {
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => openEditModal(u)}
-                        className="p-2 text-gray-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                         title="Editar"
                       >
                         <Edit2 className="w-4 h-4" />
@@ -299,8 +299,8 @@ export default function UsersPage() {
                         }
                         className={`p-2 rounded-lg transition-colors ${
                           u.active
-                            ? 'text-gray-500 hover:text-red-600 hover:bg-red-50'
-                            : 'text-gray-500 hover:text-green-600 hover:bg-green-50'
+                            ? 'text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50'
                         }`}
                         title={u.active ? 'Desactivar' : 'Activar'}
                       >
@@ -312,7 +312,7 @@ export default function UsersPage() {
                       </button>
                       <button
                         onClick={() => resetPasswordMutation.mutate(u.id)}
-                        className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                         title="Restablecer contraseña"
                       >
                         <Key className="w-4 h-4" />
@@ -327,10 +327,10 @@ export default function UsersPage() {
       ) : (
         <div className="card text-center py-12">
           <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-1">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
             {search || roleFilter ? 'Sin resultados' : 'No hay usuarios'}
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400">
             {search || roleFilter
               ? 'Intenta con otros filtros'
               : 'Crea el primer usuario del sistema'}
@@ -342,30 +342,30 @@ export default function UsersPage() {
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={closeModal} />
-          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+          <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {editingUser ? 'Editar Usuario' : 'Nuevo Usuario'}
               </h2>
-              <button onClick={closeModal} className="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100">
+              <button onClick={closeModal} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nombre *</label>
                 <input {...register('name')} className="input-field" placeholder="Nombre completo" />
                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Email *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email *</label>
                 <input {...register('email')} type="email" className="input-field" placeholder="correo@ejemplo.com" />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
               </div>
               {!editingUser && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Contraseña *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Contraseña *</label>
                   <input
                     {...register('password')}
                     type="password"
@@ -376,7 +376,7 @@ export default function UsersPage() {
                 </div>
               )}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Rol *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Rol *</label>
                 <select {...register('role')} className="input-field">
                   <option value="ADMIN">Administrador</option>
                   <option value="TECHNICIAN">Técnico</option>
@@ -388,10 +388,10 @@ export default function UsersPage() {
                 {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Teléfono</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Teléfono</label>
                 <input {...register('phone')} className="input-field" placeholder="55 1234 5678" />
               </div>
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
                 <button type="button" onClick={closeModal} className="btn-secondary">
                   Cancelar
                 </button>

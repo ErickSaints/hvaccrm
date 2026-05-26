@@ -57,12 +57,12 @@ export default function LoginPage() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Iniciar Sesión</h2>
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Iniciar Sesión</h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Correo Electrónico
               </label>
               <input
@@ -78,7 +78,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 Contraseña
               </label>
               <input
@@ -108,7 +108,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-            <p className="text-center text-sm text-gray-500 mt-6">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
               ¿No tienes cuenta?{' '}
               <a href="/register" className="text-primary-600 hover:text-primary-700 font-medium">
                 Regístrate aquí

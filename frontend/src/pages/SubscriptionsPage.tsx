@@ -138,8 +138,8 @@ export default function SubscriptionsPage() {
     return (
       <div className="card text-center py-12">
         <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900">Acceso restringido</h3>
-        <p className="text-gray-500 mt-1">Solo administradores pueden gestionar suscripciones</p>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Acceso restringido</h3>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo administradores pueden gestionar suscripciones</p>
       </div>
     );
   }
@@ -148,8 +148,8 @@ export default function SubscriptionsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Planes de Suscripción</h1>
-          <p className="text-gray-500 mt-1">Gestiona los planes disponibles para registro</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Planes de Suscripción</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Gestiona los planes disponibles para registro</p>
         </div>
         <button onClick={openCreateModal} className="btn-primary inline-flex items-center gap-2 w-fit">
           <Plus className="w-4 h-4" />
@@ -175,7 +175,7 @@ export default function SubscriptionsPage() {
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100">
+              <tr className="border-b border-gray-100 dark:border-gray-800">
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Nombre</th>
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Descripción</th>
                 <th className="text-right px-6 py-4 font-semibold text-gray-600">Precio</th>
@@ -187,12 +187,12 @@ export default function SubscriptionsPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {plans.map((plan) => (
-                <tr key={plan.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-gray-900">{plan.name}</td>
+                <tr key={plan.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                  <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">{plan.name}</td>
                   <td className="px-6 py-4 text-gray-600 max-w-xs truncate">
                     {plan.description || '—'}
                   </td>
-                  <td className="px-6 py-4 text-right font-medium text-gray-900">
+                  <td className="px-6 py-4 text-right font-medium text-gray-900 dark:text-gray-100">
                     ${plan.price.toLocaleString('es-MX')}
                   </td>
                   <td className="px-6 py-4 text-center">
@@ -211,14 +211,14 @@ export default function SubscriptionsPage() {
                       {plan.active ? 'Sí' : 'No'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-center text-gray-500">
+                  <td className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                     {                    (plan.features ? plan.features.split(',').filter(Boolean).length : 0)}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => openEditModal(plan)}
-                        className="p-2 text-gray-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                         title="Editar"
                       >
                         <Edit2 className="w-4 h-4" />
@@ -229,8 +229,8 @@ export default function SubscriptionsPage() {
                         }
                         className={`p-2 rounded-lg transition-colors ${
                           plan.active
-                            ? 'text-gray-500 hover:text-red-600 hover:bg-red-50'
-                            : 'text-gray-500 hover:text-green-600 hover:bg-green-50'
+                            ? 'text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50'
                         }`}
                         title={plan.active ? 'Desactivar' : 'Activar'}
                       >
@@ -250,8 +250,8 @@ export default function SubscriptionsPage() {
       ) : (
         <div className="card text-center py-12">
           <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900">No hay planes</h3>
-          <p className="text-gray-500 mt-1">Crea el primer plan de suscripción</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">No hay planes</h3>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Crea el primer plan de suscripción</p>
         </div>
       )}
 
@@ -259,14 +259,14 @@ export default function SubscriptionsPage() {
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={closeModal} />
-          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
+          <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-lg p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {editingPlan ? 'Editar Plan' : 'Nuevo Plan'}
               </h2>
               <button
                 onClick={closeModal}
-                className="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100"
+                className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -274,13 +274,13 @@ export default function SubscriptionsPage() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nombre *</label>
                 <input {...register('name')} className="input-field" placeholder="Plan Básico" />
                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Descripción</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>
                 <input
                   {...register('description')}
                   className="input-field"
@@ -290,7 +290,7 @@ export default function SubscriptionsPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Precio *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Precio *</label>
                   <input
                     {...register('price')}
                     type="number"
@@ -303,7 +303,7 @@ export default function SubscriptionsPage() {
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Duración *</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Duración *</label>
                   <select {...register('duration')} className="input-field">
                     <option value="MENSUAL">Mensual</option>
                     <option value="ANUAL">Anual</option>
@@ -315,7 +315,7 @@ export default function SubscriptionsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   Características (una por línea)
                 </label>
                 <textarea
@@ -326,7 +326,7 @@ export default function SubscriptionsPage() {
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
                 <button type="button" onClick={closeModal} className="btn-secondary">
                   Cancelar
                 </button>

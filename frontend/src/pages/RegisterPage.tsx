@@ -134,26 +134,26 @@ export default function RegisterPage() {
                 onClick={() => { setSelectedRole('CLIENT'); setSelectedPlanId(null); }}
                 className={`p-4 rounded-xl text-center transition-all ${
                   selectedRole === 'CLIENT'
-                    ? 'bg-white shadow-lg ring-2 ring-primary-400'
+                    ? 'bg-white dark:bg-gray-900 shadow-lg ring-2 ring-primary-400'
                     : 'bg-white/10 backdrop-blur hover:bg-white/20'
                 }`}
               >
                 <Building2 className={`w-8 h-8 mx-auto mb-2 ${selectedRole === 'CLIENT' ? 'text-primary-600' : 'text-white'}`} />
-                <p className={`text-sm font-semibold ${selectedRole === 'CLIENT' ? 'text-gray-900' : 'text-white'}`}>Cliente</p>
-                <p className={`text-xs mt-1 ${selectedRole === 'CLIENT' ? 'text-gray-500' : 'text-white/60'}`}>Empresa o corporativo que requiere servicio</p>
+                <p className={`text-sm font-semibold ${selectedRole === 'CLIENT' ? 'text-gray-900 dark:text-gray-100' : 'text-white'}`}>Cliente</p>
+                <p className={`text-xs mt-1 ${selectedRole === 'CLIENT' ? 'text-gray-500 dark:text-gray-400' : 'text-white/60'}`}>Empresa o corporativo que requiere servicio</p>
               </button>
               <button
                 type="button"
                 onClick={() => { setSelectedRole('PROFESIONAL'); setSelectedPlanId(null); }}
                 className={`p-4 rounded-xl text-center transition-all ${
                   selectedRole === 'PROFESIONAL'
-                    ? 'bg-white shadow-lg ring-2 ring-primary-400'
+                    ? 'bg-white dark:bg-gray-900 shadow-lg ring-2 ring-primary-400'
                     : 'bg-white/10 backdrop-blur hover:bg-white/20'
                 }`}
               >
                 <Wrench className={`w-8 h-8 mx-auto mb-2 ${selectedRole === 'PROFESIONAL' ? 'text-primary-600' : 'text-white'}`} />
-                <p className={`text-sm font-semibold ${selectedRole === 'PROFESIONAL' ? 'text-gray-900' : 'text-white'}`}>Profesional</p>
-                <p className={`text-xs mt-1 ${selectedRole === 'PROFESIONAL' ? 'text-gray-500' : 'text-white/60'}`}>Técnico, ventas, compras o proyectos</p>
+                <p className={`text-sm font-semibold ${selectedRole === 'PROFESIONAL' ? 'text-gray-900 dark:text-gray-100' : 'text-white'}`}>Profesional</p>
+                <p className={`text-xs mt-1 ${selectedRole === 'PROFESIONAL' ? 'text-gray-500 dark:text-gray-400' : 'text-white/60'}`}>Técnico, ventas, compras o proyectos</p>
               </button>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function RegisterPage() {
                     onClick={() => setSelectedPlanId(plan.id)}
                     className={`relative text-left p-6 rounded-2xl transition-all duration-200 ${
                       isSelected
-                        ? 'bg-white shadow-2xl scale-105 ring-2 ring-primary-400'
+                        ? 'bg-white dark:bg-gray-900 shadow-2xl scale-105 ring-2 ring-primary-400'
                         : 'bg-white/10 backdrop-blur hover:bg-white/20'
                     }`}
                   >
@@ -191,7 +191,7 @@ export default function RegisterPage() {
                     )}
                     <h3
                       className={`text-lg font-bold ${
-                        isSelected ? 'text-gray-900' : 'text-white'
+                        isSelected ? 'text-gray-900 dark:text-gray-100' : 'text-white'
                       }`}
                     >
                       {plan.name}
@@ -199,14 +199,14 @@ export default function RegisterPage() {
                     <div className="mt-2 flex items-baseline gap-1">
                       <span
                         className={`text-3xl font-bold ${
-                          isSelected ? 'text-gray-900' : 'text-white'
+                          isSelected ? 'text-gray-900 dark:text-gray-100' : 'text-white'
                         }`}
                       >
                         ${plan.price.toLocaleString('es-MX')}
                       </span>
                       <span
                         className={`text-sm ${
-                          isSelected ? 'text-gray-500' : 'text-white/70'
+                          isSelected ? 'text-gray-500 dark:text-gray-400' : 'text-white/70'
                         }`}
                       >
                         /{plan.duration === 'ANUAL' ? 'año' : 'mes'}
@@ -255,12 +255,12 @@ export default function RegisterPage() {
           )}
 
           {/* Registration Form */}
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-lg mx-auto">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Crear Cuenta</h2>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8 max-w-lg mx-auto">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Crear Cuenta</h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   Nombre Completo *
                 </label>
                 <input
@@ -273,7 +273,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   Correo Electrónico *
                 </label>
                 <input
@@ -288,7 +288,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   Contraseña *
                 </label>
                 <input
@@ -303,7 +303,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   Confirmar Contraseña *
                 </label>
                 <input
@@ -333,7 +333,7 @@ export default function RegisterPage() {
               </button>
             </form>
 
-            <p className="text-center text-sm text-gray-500 mt-6">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
               ¿Ya tienes cuenta?{' '}
               <a href="/login" className="text-primary-600 hover:text-primary-700 font-medium">
                 Iniciar Sesión

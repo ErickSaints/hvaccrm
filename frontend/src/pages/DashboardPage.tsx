@@ -191,8 +191,8 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-500 mt-1">Resumen general del sistema</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Dashboard</h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Resumen general del sistema</p>
       </div>
 
       {/* Stats Cards */}
@@ -208,8 +208,8 @@ export default function DashboardPage() {
                     <div className={`w-8 h-8 ${card.color} rounded-lg flex items-center justify-center`}>
                       <Icon className="w-4 h-4 text-white" />
                     </div>
-                    <p className="text-xs text-gray-500">{card.label}</p>
-                    <p className="text-lg font-bold text-gray-900">{value}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{card.label}</p>
+                    <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{value}</p>
                   </div>
                 </div>
               );
@@ -222,7 +222,7 @@ export default function DashboardPage() {
         <div className="card">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="w-5 h-5 text-emerald-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Ingresos Mensuales</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Ingresos Mensuales</h2>
           </div>
           {chartLoading ? (
             <div className="h-64 bg-gray-100 rounded-lg animate-pulse" />
@@ -243,7 +243,7 @@ export default function DashboardPage() {
         <div className="card">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="w-5 h-5 text-blue-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Tendencia de Tickets</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Tendencia de Tickets</h2>
           </div>
           {chartLoading ? (
             <div className="h-64 bg-gray-100 rounded-lg animate-pulse" />
@@ -265,7 +265,7 @@ export default function DashboardPage() {
         <div className="card">
           <div className="flex items-center gap-2 mb-4">
             <TicketCheck className="w-5 h-5 text-amber-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Tickets por Nivel</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Tickets por Nivel</h2>
           </div>
           {chartLoading ? (
             <div className="h-64 bg-gray-100 rounded-lg animate-pulse" />
@@ -296,7 +296,7 @@ export default function DashboardPage() {
         <div className="card">
           <div className="flex items-center gap-2 mb-4">
             <BarChart3 className="w-5 h-5 text-violet-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Tickets por Estado</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Tickets por Estado</h2>
           </div>
           {chartLoading ? (
             <div className="h-64 bg-gray-100 rounded-lg animate-pulse" />
@@ -327,7 +327,7 @@ export default function DashboardPage() {
           ) : (
             <div className="card">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Tickets Recientes</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Tickets Recientes</h2>
                 <Link
                   to="/tickets"
                   className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 font-medium"
@@ -341,16 +341,16 @@ export default function DashboardPage() {
                     <Link
                       key={ticket.id}
                       to={`/tickets/${ticket.id}`}
-                      className="block p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3"
+                      className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             {levelBadge(ticket.level)}
-                            <span className="text-xs text-gray-400 truncate">#{ticket.id}</span>
+                            <span className="text-xs text-gray-400 dark:text-gray-500 truncate">#{ticket.id}</span>
                           </div>
-                          <p className="text-sm font-medium text-gray-900 truncate">{ticket.title}</p>
-                          <p className="text-xs text-gray-500 truncate mt-0.5">
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{ticket.title}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">
                             {ticket.customer?.contactName || ticket.customer?.companyName || `Cliente #${ticket.customerId}`}
                           </p>
                         </div>
@@ -359,7 +359,7 @@ export default function DashboardPage() {
                     </Link>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-400 text-center py-4">Sin tickets recientes</p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin tickets recientes</p>
                 )}
               </div>
             </div>
@@ -373,7 +373,7 @@ export default function DashboardPage() {
           ) : (
             <div className="card">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Órdenes Recientes</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Órdenes Recientes</h2>
                 <Link
                   to="/service-orders"
                   className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 font-medium"
@@ -387,12 +387,12 @@ export default function DashboardPage() {
                     <Link
                       key={order.id}
                       to={`/service-orders/${order.id}`}
-                      className="block p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3"
+                      className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900 truncate">{order.number}</p>
-                          <p className="text-xs text-gray-500 truncate mt-0.5">
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{order.number}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">
                             {order.description || order.customer?.contactName || `Cliente #${order.customerId}`}
                           </p>
                         </div>
@@ -401,7 +401,7 @@ export default function DashboardPage() {
                     </Link>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-400 text-center py-4">Sin órdenes recientes</p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin órdenes recientes</p>
                 )}
               </div>
             </div>
@@ -415,7 +415,7 @@ export default function DashboardPage() {
           ) : (
             <div className="card">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Próximos Mantenimientos</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Próximos Mantenimientos</h2>
                 <Link
                   to="/maintenance"
                   className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 font-medium"
@@ -426,11 +426,11 @@ export default function DashboardPage() {
               <div className="space-y-3">
                 {upcomingMaintenance && upcomingMaintenance.length > 0 ? (
                   upcomingMaintenance.map((log) => (
-                    <div key={log.id} className="p-3 rounded-lg hover:bg-gray-50 transition-colors -mx-3">
+                    <div key={log.id} className="p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900 truncate">{log.description}</p>
-                          <p className="text-xs text-gray-500 truncate mt-0.5">
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{log.description}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">
                             {log.scheduledDate
                               ? new Date(log.scheduledDate).toLocaleDateString('es-MX', {
                                   year: 'numeric', month: 'short', day: 'numeric',
@@ -445,7 +445,7 @@ export default function DashboardPage() {
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-400 text-center py-4">Sin mantenimientos programados</p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin mantenimientos programados</p>
                 )}
               </div>
             </div>

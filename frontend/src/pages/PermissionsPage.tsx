@@ -88,8 +88,8 @@ export default function PermissionsPage() {
     return (
       <div className="card text-center py-12">
         <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900">Acceso restringido</h3>
-        <p className="text-gray-500 mt-1">Solo el Super Administrador puede gestionar permisos</p>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Acceso restringido</h3>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo el Super Administrador puede gestionar permisos</p>
       </div>
     );
   }
@@ -98,11 +98,11 @@ export default function PermissionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             <Shield className="w-6 h-6 text-amber-600" />
             Permisos por Rol
           </h1>
-          <p className="text-gray-500 mt-1">Define qué puede hacer cada tipo de usuario en el sistema</p>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Define qué puede hacer cada tipo de usuario en el sistema</p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -133,7 +133,7 @@ export default function PermissionsPage() {
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               selectedRole === role
                 ? 'bg-primary-600 text-white shadow-md'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-300 hover:text-primary-600'
+                : 'bg-white dark:bg-gray-900 text-gray-600 border border-gray-200 dark:border-gray-700 hover:border-primary-300 hover:text-primary-600'
             }`}
           >
             {label}
@@ -143,7 +143,7 @@ export default function PermissionsPage() {
 
       {/* Quick actions */}
       <div className="flex items-center gap-3 text-sm">
-        <span className="text-gray-500">Acciones rápidas:</span>
+        <span className="text-gray-500 dark:text-gray-400">Acciones rápidas:</span>
         <button onClick={selectAll} className="text-primary-600 hover:text-primary-700 font-medium">
           Seleccionar todos
         </button>
@@ -157,7 +157,7 @@ export default function PermissionsPage() {
       {isLoading ? (
         <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-primary-600" /></div>
       ) : !data ? (
-        <div className="card text-center py-8 text-gray-400">No se pudieron cargar los permisos</div>
+        <div className="card text-center py-8 text-gray-400 dark:text-gray-500">No se pudieron cargar los permisos</div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {Object.entries(data.categories).map(([key, category]) => {
@@ -166,7 +166,7 @@ export default function PermissionsPage() {
             if (key === 'subscriptions' && selectedRole !== 'ADMIN') return null;
             return (
               <div key={key} className="card">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3 pb-2 border-b border-gray-100">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3 pb-2 border-b border-gray-100 dark:border-gray-800">
                   {category.label}
                 </h3>
                 <div className="space-y-2">
@@ -176,7 +176,7 @@ export default function PermissionsPage() {
                       <label
                         key={perm}
                         className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors ${
-                          enabled ? 'bg-primary-50/50' : 'hover:bg-gray-50'
+                          enabled ? 'bg-primary-50/50' : 'hover:bg-gray-50 dark:hover:bg-gray-800'
                         }`}
                       >
                         <button
@@ -189,7 +189,7 @@ export default function PermissionsPage() {
                         >
                           {enabled && <Check className="w-3.5 h-3.5" />}
                         </button>
-                        <span className={`text-sm flex-1 ${enabled ? 'text-gray-900 font-medium' : 'text-gray-500'}`}>
+                        <span className={`text-sm flex-1 ${enabled ? 'text-gray-900 dark:text-gray-100 font-medium' : 'text-gray-500 dark:text-gray-400'}`}>
                           {data.labels[perm] || perm}
                         </span>
                         <span className={`text-[10px] font-mono ${enabled ? 'text-primary-600' : 'text-gray-300'}`}>
@@ -205,7 +205,7 @@ export default function PermissionsPage() {
         </div>
       )}
 
-      <div className="text-xs text-gray-400 text-center">
+      <div className="text-xs text-gray-400 dark:text-gray-500 text-center">
         Los cambios aplican inmediatamente después de guardar. Los permisos del Super Administrador (tú) no se pueden modificar.
       </div>
     </div>

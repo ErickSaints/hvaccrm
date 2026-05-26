@@ -70,12 +70,12 @@ export default function InvoiceFormPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/invoices')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={() => navigate('/invoices')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 hover:bg-gray-100 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Nueva Factura</h1>
-          <p className="text-gray-500 mt-1">Crea una nueva factura para un cliente</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Nueva Factura</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Crea una nueva factura para un cliente</p>
         </div>
       </div>
 
@@ -134,11 +134,11 @@ export default function InvoiceFormPage() {
                   min={0}
                   step={0.01}
                 />
-                <div className="w-20 text-right pt-2 text-sm text-gray-700 font-medium">
+                <div className="w-20 text-right pt-2 text-sm text-gray-700 dark:text-gray-300 font-medium">
                   ${(item.quantity * item.unitPrice).toLocaleString('es-MX')}
                 </div>
                 {items.length > 1 && (
-                  <button type="button" onClick={() => removeItem(i)} className="p-2 text-gray-400 hover:text-red-500 mt-1">
+                  <button type="button" onClick={() => removeItem(i)} className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 mt-1">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 )}
@@ -148,11 +148,11 @@ export default function InvoiceFormPage() {
         </div>
 
         {/* Totals */}
-        <div className="border-t border-gray-200 pt-4">
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
           <div className="max-w-xs ml-auto space-y-1 text-sm">
-            <div className="flex justify-between"><span className="text-gray-500">Subtotal</span><span className="text-gray-900 font-medium">${subtotal.toLocaleString('es-MX')}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">IVA (16%)</span><span className="text-gray-900 font-medium">${tax.toLocaleString('es-MX')}</span></div>
-            <div className="flex justify-between text-base font-bold border-t border-gray-200 pt-1"><span className="text-gray-900">Total</span><span className="text-gray-900">${total.toLocaleString('es-MX')}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500 dark:text-gray-400">Subtotal</span><span className="text-gray-900 dark:text-gray-100 font-medium">${subtotal.toLocaleString('es-MX')}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500 dark:text-gray-400">IVA (16%)</span><span className="text-gray-900 dark:text-gray-100 font-medium">${tax.toLocaleString('es-MX')}</span></div>
+            <div className="flex justify-between text-base font-bold border-t border-gray-200 dark:border-gray-700 pt-1"><span className="text-gray-900 dark:text-gray-100">Total</span><span className="text-gray-900 dark:text-gray-100">${total.toLocaleString('es-MX')}</span></div>
           </div>
         </div>
 

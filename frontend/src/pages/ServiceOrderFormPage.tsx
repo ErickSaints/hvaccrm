@@ -194,14 +194,14 @@ export default function ServiceOrderFormPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <button onClick={() => navigate('/service-orders')} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+        <button onClick={() => navigate('/service-orders')} className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {isEditing ? 'Editar Orden de Servicio' : 'Nueva Orden de Servicio'}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 dark:text-gray-400 mt-1">
             {isEditing ? 'Modifica los datos de la orden' : 'Registra una nueva orden de servicio'}
           </p>
         </div>
@@ -241,7 +241,7 @@ export default function ServiceOrderFormPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="card space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Cliente *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
           <select
             {...register('customerId', { valueAsNumber: true })}
             className="input-field"
@@ -264,7 +264,7 @@ export default function ServiceOrderFormPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Equipo (opcional)</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Equipo (opcional)</label>
           <select
             {...register('equipmentId', { valueAsNumber: true })}
             className="input-field"
@@ -280,7 +280,7 @@ export default function ServiceOrderFormPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Descripción</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>
           <textarea
             {...register('description')}
             rows={3}
@@ -292,11 +292,11 @@ export default function ServiceOrderFormPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Fecha Programada</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Fecha Programada</label>
             <input type="date" {...register('scheduledDate')} className="input-field" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Asignar a</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Asignar a</label>
             <Controller
               name="assignedTo"
               control={control}
@@ -319,7 +319,7 @@ export default function ServiceOrderFormPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">Notas</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notas</label>
           <textarea
             {...register('notes')}
             rows={2}
@@ -338,7 +338,7 @@ export default function ServiceOrderFormPage() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <Camera className="w-5 h-5 text-primary-600" />
-                  <h3 className="text-lg font-semibold text-gray-900">Fotografías</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Fotografías</h3>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {photos.map((photo, index) => (
@@ -388,10 +388,10 @@ export default function ServiceOrderFormPage() {
                   <button
                     type="button"
                     onClick={() => field.onChange([...photos, { url: '', caption: '', type: '' }])}
-                    className="border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center gap-1 p-4 hover:border-primary-300 hover:bg-primary-50/30 transition-all cursor-pointer min-h-[120px]"
+                    className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl flex flex-col items-center justify-center gap-1 p-4 hover:border-primary-300 hover:bg-primary-50/30 transition-all cursor-pointer min-h-[120px]"
                   >
                     <Plus className="w-6 h-6 text-gray-300" />
-                    <span className="text-xs text-gray-400">Agregar foto</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">Agregar foto</span>
                   </button>
                 </div>
               </div>
@@ -399,7 +399,7 @@ export default function ServiceOrderFormPage() {
           }}
         />
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <button type="button" onClick={() => navigate('/service-orders')} className="btn-secondary">
             Cancelar
           </button>
