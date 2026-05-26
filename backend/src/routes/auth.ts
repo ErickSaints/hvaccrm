@@ -17,7 +17,7 @@ const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   name: z.string().min(1),
-  role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES']).optional(),
+  role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES', 'PROYECTOS', 'COMPRAS']).optional(),
   phone: z.string().optional(),
 });
 
@@ -52,6 +52,7 @@ router.post('/register', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'El email ya está registrado' });
     }
     const hashedPassword = await bcrypt.hash(data.password, 10);
+    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     const user = await prisma.user.create({
       data: {
         email: data.email,
@@ -59,6 +60,7 @@ router.post('/register', async (req: Request, res: Response) => {
         name: data.name,
         role: data.role || 'CLIENT',
         phone: data.phone || null,
+        trialEndsAt,
       },
     });
     const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '24h' });

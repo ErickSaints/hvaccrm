@@ -1,18 +1,17 @@
 import { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { User, Camera, Save, Loader2, Mail, Phone, Shield, Calendar, CreditCard } from 'lucide-react';
+import { User, Camera, Save, Loader2, Mail, Phone, Shield, Calendar, CreditCard, Clock } from 'lucide-react';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 import type { User as UserType } from '../types';
 
 interface SubscriptionInfo {
   id: number;
-  planName: string;
   status: string;
   startDate: string;
   endDate: string;
-  price: number;
+  plan: { id: number; name: string; price: number };
 }
 
 interface ProfileData {
@@ -25,12 +24,18 @@ const roleLabels: Record<string, string> = {
   ADMIN: 'Administrador',
   TECHNICIAN: 'Técnico',
   SALES: 'Ventas',
+  CLIENT: 'Cliente',
+  PROYECTOS: 'Proyectos',
+  COMPRAS: 'Compras',
 };
 
 const roleColors: Record<string, string> = {
   ADMIN: 'bg-purple-100 text-purple-700',
   TECHNICIAN: 'bg-blue-100 text-blue-700',
   SALES: 'bg-green-100 text-green-700',
+  CLIENT: 'bg-amber-100 text-amber-700',
+  PROYECTOS: 'bg-indigo-100 text-indigo-700',
+  COMPRAS: 'bg-pink-100 text-pink-700',
 };
 
 export default function ProfilePage() {
@@ -53,14 +58,17 @@ export default function ProfilePage() {
     enabled: !!user,
   });
 
-  const { data: subscription } = useQuery<SubscriptionInfo>({
+  const { data: subData } = useQuery<{ subscription: SubscriptionInfo | null; trialEndsAt: string | null }>({
     queryKey: ['subscription-my'],
     queryFn: async () => {
-      const { data } = await api.get<SubscriptionInfo>('/subscriptions/my');
+      const { data } = await api.get('/subscriptions/my');
       return data;
     },
     enabled: !!user,
   });
+  const subscription = subData?.subscription;
+  const trialEndsAt = subData?.trialEndsAt ? new Date(subData.trialEndsAt) : null;
+  const isOnTrial = trialEndsAt && trialEndsAt > new Date();
 
   const updateMutation = useMutation({
     mutationFn: async (data: ProfileData) => {
@@ -252,6 +260,21 @@ export default function ProfilePage() {
         </div>
       </div>
 
+      {/* Trial Info */}
+      {isOnTrial && (
+        <div className="card bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+            <Clock className="w-5 h-5 text-cyan-500" />
+            Período de Prueba
+          </h3>
+          <p className="text-gray-600 text-sm">
+            Estás en tu período de prueba gratuito. Tu prueba vence el{' '}
+            <strong>{trialEndsAt?.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}</strong>.
+            Realiza el pago para continuar usando el servicio sin interrupciones.
+          </p>
+        </div>
+      )}
+
       {/* Subscription Info */}
       {subscription && (
         <div className="card">
@@ -262,7 +285,7 @@ export default function ProfilePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">Plan</p>
-              <p className="font-medium text-gray-900 mt-0.5">{subscription.planName}</p>
+              <p className="font-medium text-gray-900 mt-0.5">{subscription.plan.name}</p>
             </div>
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wide">Estado</p>
@@ -271,7 +294,7 @@ export default function ProfilePage() {
                   statusColors[subscription.status] || 'bg-gray-100 text-gray-700'
                 }`}
               >
-                {subscription.status}
+                {subscription.status === 'ACTIVA' ? 'Activa' : subscription.status === 'PENDIENTE' ? 'Pendiente' : subscription.status}
               </span>
             </div>
             <div>

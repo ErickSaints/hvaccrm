@@ -74,6 +74,7 @@ model User {
   phone         String?
   avatar        String?
   active        Boolean   @default(true)
+  trialEndsAt   DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -96,6 +97,7 @@ model SubscriptionPlan {
   duration      String    @default("MENSUAL")
   durationDays  Int       @default(30)
   features      String?
+  targetRole    String    @default("CLIENT")
   active        Boolean   @default(true)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

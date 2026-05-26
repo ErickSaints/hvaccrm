@@ -1,5 +1,6 @@
 import prisma from './prisma';
 import bcrypt from 'bcryptjs';
+import { getCatalogData } from './materialsCatalog';
 
 async function ensureAdmin(): Promise<{ id: number }> {
   let admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
@@ -21,11 +22,13 @@ async function ensureAdmin(): Promise<{ id: number }> {
 async function ensurePlans(adminId: number) {
   const count = await prisma.subscriptionPlan.count();
   if (count > 0) return;
-  console.log('[startup] Creando planes de suscripción...');
+  console.log('[startup] Creando planes de suscripción por rol...');
   await prisma.subscriptionPlan.createMany({
     data: [
-      { name: 'Plan Mensual', description: 'Acceso completo al CRM por mes. Ideal para técnicos independientes.', price: 299, duration: 'MENSUAL', durationDays: 30, features: 'Gestión de clientes, tickets, cotizaciones, reportes, pólizas', active: true, createdById: adminId },
-      { name: 'Plan Anual', description: 'Acceso completo al CRM por un año. Ahorra 2 meses vs el plan mensual.', price: 2990, duration: 'ANUAL', durationDays: 365, features: 'Todo lo del plan mensual + soporte prioritario + respaldo en la nube', active: true, createdById: adminId },
+      { name: 'Plan Cliente Mensual', description: 'Para empresas que requieren servicio de atención HVAC. Gestión de tickets, reportes y más.', price: 299, duration: 'MENSUAL', durationDays: 30, targetRole: 'CLIENT', features: 'Gestión de tickets, reportes de servicio, historial de equipos, cotizaciones', active: true, createdById: adminId },
+      { name: 'Plan Cliente Anual', description: 'Ahorra 2 meses vs el plan mensual. Ideal para corporativos.', price: 2990, duration: 'ANUAL', durationDays: 365, targetRole: 'CLIENT', features: 'Todo lo del plan mensual + soporte prioritario + respaldo en la nube', active: true, createdById: adminId },
+      { name: 'Plan Profesional Mensual', description: 'Para técnicos, ventas, compras y proyectos. Gestión completa del CRM.', price: 199, duration: 'MENSUAL', durationDays: 30, targetRole: 'PROFESIONAL', features: 'Gestión de clientes, tickets, cotizaciones, reportes, pólizas, órdenes de servicio', active: true, createdById: adminId },
+      { name: 'Plan Profesional Anual', description: 'Ahorra 2 meses vs el plan mensual. Para uso profesional continuo.', price: 1990, duration: 'ANUAL', durationDays: 365, targetRole: 'PROFESIONAL', features: 'Todo lo del plan mensual + soporte prioritario + respaldo en la nube', active: true, createdById: adminId },
     ],
   });
   console.log('[startup] Planes creados.');
@@ -119,10 +122,11 @@ async function startup() {
       { email: 'proyectos@hvaccrm.com', name: 'Ana Proyectos', role: 'PROYECTOS' as const, phone: '555-0104' },
       { email: 'compras@hvaccrm.com', name: 'Luis Compras', role: 'COMPRAS' as const, phone: '555-0105' },
     ];
+    const trialEndsAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
     for (const u of needed) {
       const exists = existingUsers.find((eu) => eu.email === u.email);
       if (!exists) {
-        await prisma.user.create({ data: { ...u, password: techPassword } });
+        await prisma.user.create({ data: { ...u, password: techPassword, trialEndsAt } });
         console.log(`[startup] Usuario creado: ${u.email}`);
       }
     }
@@ -135,202 +139,19 @@ async function startup() {
   const catalogCount = await prisma.catalogMaterial.count();
   if (catalogCount === 0) {
     console.log('[startup] Sembrando catálogo de materiales HVAC...');
-    await prisma.catalogMaterial.createMany({
-      data: [
-        // SOPORTERÍA
-        { description: 'Canaleta galvanizada 2x2 m', category: 'Soportería', unit: 'pza' },
-        { description: 'Canaleta galvanizada 3x3 m', category: 'Soportería', unit: 'pza' },
-        { description: 'Perfil angular 1/4" x 6m', category: 'Soportería', unit: 'pza' },
-        { description: 'Perfil angular 3/8" x 6m', category: 'Soportería', unit: 'pza' },
-        { description: 'Solera galvanizada 1/8" x 6m', category: 'Soportería', unit: 'pza' },
-        { description: 'Viga IPR 6" x 6m', category: 'Soportería', unit: 'pza' },
-        { description: 'Abrazadera para ducto redondo 6"', category: 'Soportería', unit: 'pza' },
-        { description: 'Abrazadera para ducto redondo 8"', category: 'Soportería', unit: 'pza' },
-        { description: 'Abrazadera para ducto redondo 10"', category: 'Soportería', unit: 'pza' },
-        { description: 'Abrazadera para ducto redondo 12"', category: 'Soportería', unit: 'pza' },
-        { description: 'Anclaje expansivo 3/8"', category: 'Soportería', unit: 'pza' },
-        { description: 'Anclaje expansivo 1/2"', category: 'Soportería', unit: 'pza' },
-        { description: 'Tornillo galvanizado 1/4" x 1"', category: 'Soportería', unit: 'pza' },
-        { description: 'Tornillo galvanizado 3/8" x 1.5"', category: 'Soportería', unit: 'pza' },
-        { description: 'Rondana plana 1/4"', category: 'Soportería', unit: 'pza' },
-        { description: 'Rondana de presión 3/8"', category: 'Soportería', unit: 'pza' },
-        { description: 'Taquete plástico 1/4" con tornillo', category: 'Soportería', unit: 'pza' },
-        { description: 'Soporte tipo "L" para minisplit', category: 'Soportería', unit: 'pza' },
-        { description: 'Base antivibración para condensadora', category: 'Soportería', unit: 'pza' },
-        { description: 'Aislante de caucho para tubería 1/2"', category: 'Soportería', unit: 'm' },
-        // DUCTERÍA
-        { description: 'Ducto rectangular galvanizado cal. 24', category: 'Ductería', unit: 'm²' },
-        { description: 'Ducto rectangular galvanizado cal. 26', category: 'Ductería', unit: 'm²' },
-        { description: 'Ducto rectangular galvanizado cal. 22', category: 'Ductería', unit: 'm²' },
-        { description: 'Ducto redondo helicoidal 6"', category: 'Ductería', unit: 'm' },
-        { description: 'Ducto redondo helicoidal 8"', category: 'Ductería', unit: 'm' },
-        { description: 'Ducto redondo helicoidal 10"', category: 'Ductería', unit: 'm' },
-        { description: 'Ducto redondo helicoidal 12"', category: 'Ductería', unit: 'm' },
-        { description: 'Ducto redondo helicoidal 14"', category: 'Ductería', unit: 'm' },
-        { description: 'Codo ducto rectangular 90°', category: 'Ductería', unit: 'pza' },
-        { description: 'Codo ducto redondo 90° 6"', category: 'Ductería', unit: 'pza' },
-        { description: 'Codo ducto redondo 90° 8"', category: 'Ductería', unit: 'pza' },
-        { description: 'Codo ducto redondo 90° 10"', category: 'Ductería', unit: 'pza' },
-        { description: 'Codo ducto redondo 90° 12"', category: 'Ductería', unit: 'pza' },
-        { description: 'Reducción concéntrica ducto 8"-6"', category: 'Ductería', unit: 'pza' },
-        { description: 'Reducción excéntrica ducto 10"-8"', category: 'Ductería', unit: 'pza' },
-        { description: 'Yee ducto rectangular', category: 'Ductería', unit: 'pza' },
-        { description: 'Compuerta de regulación manual 8"', category: 'Ductería', unit: 'pza' },
-        { description: 'Compuerta cortafuego 12"', category: 'Ductería', unit: 'pza' },
-        { description: 'Tornillo autorroscante #8 x 1/2"', category: 'Ductería', unit: 'pza' },
-        { description: 'Remache pop 1/8"', category: 'Ductería', unit: 'pza' },
-        { description: 'Cinta de aluminio para ductos 50m', category: 'Ductería', unit: 'rollo' },
-        { description: 'Cemento PVC para ductería 1/4"', category: 'Ductería', unit: 'lt' },
-        // REJILLAS Y DIFUSORES
-        { description: 'Rejilla de retorno 12x12"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Rejilla de retorno 16x16"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Rejilla de retorno 20x20"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Rejilla de suministro 12x6"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Rejilla de suministro 16x8"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Rejilla de suministro 20x10"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Rejilla de piso 24x6"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Difusor circular 8"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Difusor circular 10"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Difusor circular 12"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Difusor cuadrado 12x12"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Difusor cuadrado 16x16"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Difusor lineal 24x2"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Difusor lineal 48x4"', category: 'Rejillas y Difusores', unit: 'pza' },
-        { description: 'Tornillo para rejilla 1/4"', category: 'Rejillas y Difusores', unit: 'pza' },
-        // AISLAMIENTOS
-        { description: 'Aislante térmico fibra de vidrio 1/2"', category: 'Aislamientos', unit: 'm²' },
-        { description: 'Aislante térmico fibra de vidrio 1"', category: 'Aislamientos', unit: 'm²' },
-        { description: 'Aislante térmico fibra de vidrio 2"', category: 'Aislamientos', unit: 'm²' },
-        { description: 'Aislante tubular elastomérico 1/2" x 3/8"', category: 'Aislamientos', unit: 'm' },
-        { description: 'Aislante tubular elastomérico 3/4" x 1/2"', category: 'Aislamientos', unit: 'm' },
-        { description: 'Aislante tubular elastomérico 1" x 3/4"', category: 'Aislamientos', unit: 'm' },
-        { description: 'Aislante tubular elastomérico 1.5" x 1"', category: 'Aislamientos', unit: 'm' },
-        { description: 'Aislante en rollo polietileno 1/4"', category: 'Aislamientos', unit: 'm²' },
-        { description: 'Aislante en rollo polietileno 3/8"', category: 'Aislamientos', unit: 'm²' },
-        { description: 'Adhesivo para aislante elastomérico 1L', category: 'Aislamientos', unit: 'lt' },
-        { description: 'Adhesivo para fibra de vidrio 1L', category: 'Aislamientos', unit: 'lt' },
-        { description: 'Cinta para aislamiento 50m', category: 'Aislamientos', unit: 'rollo' },
-        { description: 'Recubrimiento aluminio para ducto exterior', category: 'Aislamientos', unit: 'm²' },
-        { description: 'Malla de fibra de vidrio para recubrimiento', category: 'Aislamientos', unit: 'm²' },
-        // HERRAMIENTAS
-        { description: 'Juego de llaves Allen métricas', category: 'Herramientas', unit: 'juego' },
-        { description: 'Juego de dados 1/4" a 1"', category: 'Herramientas', unit: 'juego' },
-        { description: 'Llave combinada 1/2"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Llave combinada 9/16"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Llave combinada 5/8"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Llave combinada 3/4"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Llave Stillson 14"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Llave Stillson 18"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Desarmador plano 1/4" x 6"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Desarmador Phillips #2 x 6"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Pin de corte 8"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Pin de electricista 8"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Alicate de presión 10"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Martillo de bola 16 oz', category: 'Herramientas', unit: 'pza' },
-        { description: 'Marro 8 lb', category: 'Herramientas', unit: 'pza' },
-        { description: 'Taladro percutor 1/2"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Broca para metal 1/4"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Broca para metal 3/8"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Broca para metal 1/2"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Broca para concreto 1/4"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Broca para concreto 3/8"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Esmeril angular 4.5"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Disco de corte para metal 4.5"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Disco de desbaste 4.5"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Nivel de mano 24"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Cinta métrica 5m', category: 'Herramientas', unit: 'pza' },
-        { description: 'Manómetro de refrigeración (juego)', category: 'Herramientas', unit: 'juego' },
-        { description: 'Detector de fugas de refrigerante', category: 'Herramientas', unit: 'pza' },
-        { description: 'Termómetro infrarrojo', category: 'Herramientas', unit: 'pza' },
-        { description: 'Pinza amperimétrica', category: 'Herramientas', unit: 'pza' },
-        { description: 'Multímetro digital', category: 'Herramientas', unit: 'pza' },
-        { description: 'Bomba de vacío 4 CFM', category: 'Herramientas', unit: 'pza' },
-        { description: 'Manguera de carga de refrigerante 60"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Válvula de servicio para refrigerante', category: 'Herramientas', unit: 'pza' },
-        { description: 'Cortador de tubo de cobre 1/8"-1.5"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Expansor de tubo de cobre 3/8"-7/8"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Doblador de tubo de cobre 1/4"-5/8"', category: 'Herramientas', unit: 'pza' },
-        { description: 'Soldadura estaño-plata para cobre', category: 'Herramientas', unit: 'pza' },
-        { description: 'Flux para soldadura de cobre 1/4L', category: 'Herramientas', unit: 'lt' },
-        { description: 'Soplete de gas propano', category: 'Herramientas', unit: 'pza' },
-        { description: 'Tanque de nitrógeno para prueba', category: 'Herramientas', unit: 'pza' },
-        { description: 'Regulador de nitrógeno', category: 'Herramientas', unit: 'pza' },
-        // REFRIGERANTES
-        { description: 'Refrigerante R-22 (kg)', category: 'Refrigerantes', unit: 'kg' },
-        { description: 'Refrigerante R-410A (kg)', category: 'Refrigerantes', unit: 'kg' },
-        { description: 'Refrigerante R-32 (kg)', category: 'Refrigerantes', unit: 'kg' },
-        { description: 'Refrigerante R-134a (kg)', category: 'Refrigerantes', unit: 'kg' },
-        { description: 'Refrigerante R-404A (kg)', category: 'Refrigerantes', unit: 'kg' },
-        { description: 'Refrigerante R-507 (kg)', category: 'Refrigerantes', unit: 'kg' },
-        { description: 'Refrigerante R-407C (kg)', category: 'Refrigerantes', unit: 'kg' },
-        { description: 'Refrigerante R-1234yf (kg)', category: 'Refrigerantes', unit: 'kg' },
-        { description: 'Aceite para compresor POE 1L', category: 'Refrigerantes', unit: 'lt' },
-        { description: 'Aceite para compresor mineral 1L', category: 'Refrigerantes', unit: 'lt' },
-        { description: 'Colorante para detección de fugas', category: 'Refrigerantes', unit: 'pza' },
-        // TUBERÍA Y CONEXIONES
-        { description: 'Tubería de cobre recocido 1/4" x 15m', category: 'Tubería y Conexiones', unit: 'rollo' },
-        { description: 'Tubería de cobre recocido 3/8" x 15m', category: 'Tubería y Conexiones', unit: 'rollo' },
-        { description: 'Tubería de cobre recocido 1/2" x 15m', category: 'Tubería y Conexiones', unit: 'rollo' },
-        { description: 'Tubería de cobre recocido 5/8" x 15m', category: 'Tubería y Conexiones', unit: 'rollo' },
-        { description: 'Tubería de cobre recocido 3/4" x 15m', category: 'Tubería y Conexiones', unit: 'rollo' },
-        { description: 'Tubería de cobre rígido 1/2" x 6m', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tubería de cobre rígido 3/4" x 6m', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tubería de cobre rígido 1" x 6m', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tubería PVC 1/2" x 6m', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tubería PVC 3/4" x 6m', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tubería PVC 1" x 6m', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tubería PVC 2" x 6m', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Codo de cobre 1/4"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Codo de cobre 3/8"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Codo de cobre 1/2"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Codo de cobre 5/8"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Codo de cobre 3/4"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tuerca unión de cobre 1/4"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tuerca unión de cobre 3/8"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Tuerca unión de cobre 1/2"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Válvula de bola de cobre 1/4"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Válvula de bola de cobre 3/8"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Válvula de bola de cobre 1/2"', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Válvula de expansión termostática', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Filtro secador de línea', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Mirilla de refrigerante', category: 'Tubería y Conexiones', unit: 'pza' },
-        { description: 'Silenciador de línea de succión', category: 'Tubería y Conexiones', unit: 'pza' },
-        // EQUIPO DE PROTECCIÓN
-        { description: 'Casco de seguridad', category: 'Equipo de Protección', unit: 'pza' },
-        { description: 'Lentes de seguridad', category: 'Equipo de Protección', unit: 'pza' },
-        { description: 'Guantes de carnaza', category: 'Equipo de Protección', unit: 'par' },
-        { description: 'Guantes de hule', category: 'Equipo de Protección', unit: 'par' },
-        { description: 'Guantes dieléctricos', category: 'Equipo de Protección', unit: 'par' },
-        { description: 'Arnés de seguridad', category: 'Equipo de Protección', unit: 'pza' },
-        { description: 'Línea de vida retráctil', category: 'Equipo de Protección', unit: 'pza' },
-        { description: 'Respirador para vapores', category: 'Equipo de Protección', unit: 'pza' },
-        { description: 'Mascarilla N95', category: 'Equipo de Protección', unit: 'caja' },
-        { description: 'Tapones auditivos', category: 'Equipo de Protección', unit: 'caja' },
-        // ELÉCTRICO
-        { description: 'Cable THW #10 (100m)', category: 'Eléctrico', unit: 'rollo' },
-        { description: 'Cable THW #12 (100m)', category: 'Eléctrico', unit: 'rollo' },
-        { description: 'Cable THW #14 (100m)', category: 'Eléctrico', unit: 'rollo' },
-        { description: 'Cable THW #8 (100m)', category: 'Eléctrico', unit: 'rollo' },
-        { description: 'Breaker 1 polo 20A', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Breaker 2 polos 30A', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Breaker 2 polos 60A', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Arrancador magnético 1-3 HP', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Contactor 25A 3 polos', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Capacitor de arranque 35/5 uF', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Capacitor de arranque 45/5 uF', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Capacitor permanente 5 uF', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Capacitor permanente 7.5 uF', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Interruptor termomagnético 3 polos 30A', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Interruptor termomagnético 3 polos 60A', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Relevador de estado sólido SSR', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Sensor de temperatura (termopar)', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Sensor de presión de refrigerante', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Tablero eléctrico metálico 12 espacios', category: 'Eléctrico', unit: 'pza' },
-        { description: 'Canaleta ranurada 1"', category: 'Eléctrico', unit: 'm' },
-        { description: 'Cable de control 18 AWG (100m)', category: 'Eléctrico', unit: 'rollo' },
-      ],
-    });
-    console.log('[startup] Catálogo de materiales creado.');
+    const catalogData = getCatalogData();
+    await prisma.catalogMaterial.createMany({ data: catalogData });
+    console.log(`[startup] Catálogo de materiales creado (${catalogData.length} items).`);
+  }
+
+  // 6. Backfill trialEndsAt for existing users without trial period
+  const usersWithoutTrial = await prisma.user.findMany({ where: { trialEndsAt: null } });
+  if (usersWithoutTrial.length > 0) {
+    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    for (const u of usersWithoutTrial) {
+      await prisma.user.update({ where: { id: u.id }, data: { trialEndsAt } });
+    }
+    console.log(`[startup] Período de prueba asignado a ${usersWithoutTrial.length} usuarios existentes.`);
   }
 
   await prisma.$disconnect();

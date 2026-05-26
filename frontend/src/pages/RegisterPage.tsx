@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
-import { Snowflake, Check, Loader2 } from 'lucide-react';
+import { Snowflake, Check, Loader2, Building2, Wrench, Clock } from 'lucide-react';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 
@@ -16,6 +16,7 @@ interface SubscriptionPlan {
   price: number;
   duration: 'MENSUAL' | 'ANUAL';
   features: string;
+  targetRole: 'CLIENT' | 'PROFESIONAL';
   active: boolean;
 }
 
@@ -38,6 +39,7 @@ export default function RegisterPage() {
   const { login, user, isLoading: authLoading } = useAuth();
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<'CLIENT' | 'PROFESIONAL'>('CLIENT');
 
   const {
     register,
@@ -48,9 +50,9 @@ export default function RegisterPage() {
   });
 
   const { data: plans, isLoading: plansLoading } = useQuery<SubscriptionPlan[]>({
-    queryKey: ['subscription-plans'],
+    queryKey: ['subscription-plans', selectedRole],
     queryFn: async () => {
-      const { data } = await api.get<SubscriptionPlan[]>('/subscriptions/plans');
+      const { data } = await api.get<SubscriptionPlan[]>(`/subscriptions/plans?role=${selectedRole}`);
       return data;
     },
   });
@@ -62,8 +64,12 @@ export default function RegisterPage() {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    if (plans && plans.length > 0 && !selectedPlanId) {
-      setSelectedPlanId(plans[0].id);
+    if (plans && plans.length > 0) {
+      if (!selectedPlanId || !plans.find(p => p.id === selectedPlanId)) {
+        setSelectedPlanId(plans[0].id);
+      }
+    } else {
+      setSelectedPlanId(null);
     }
   }, [plans, selectedPlanId]);
 
@@ -80,6 +86,7 @@ export default function RegisterPage() {
         email: formData.email,
         password: formData.password,
         planId: selectedPlanId,
+        role: selectedRole === 'PROFESIONAL' ? 'TECHNICIAN' : 'CLIENT',
       });
 
       localStorage.setItem('token', data.token);
@@ -118,6 +125,45 @@ export default function RegisterPage() {
 
       <div className="flex-1 flex items-start justify-center px-4 pb-12">
         <div className="w-full max-w-4xl space-y-6">
+          {/* Role Selection */}
+          <div className="max-w-md mx-auto">
+            <p className="text-center text-white/80 text-sm mb-3">Selecciona tu tipo de cuenta</p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => { setSelectedRole('CLIENT'); setSelectedPlanId(null); }}
+                className={`p-4 rounded-xl text-center transition-all ${
+                  selectedRole === 'CLIENT'
+                    ? 'bg-white shadow-lg ring-2 ring-primary-400'
+                    : 'bg-white/10 backdrop-blur hover:bg-white/20'
+                }`}
+              >
+                <Building2 className={`w-8 h-8 mx-auto mb-2 ${selectedRole === 'CLIENT' ? 'text-primary-600' : 'text-white'}`} />
+                <p className={`text-sm font-semibold ${selectedRole === 'CLIENT' ? 'text-gray-900' : 'text-white'}`}>Cliente</p>
+                <p className={`text-xs mt-1 ${selectedRole === 'CLIENT' ? 'text-gray-500' : 'text-white/60'}`}>Empresa o corporativo que requiere servicio</p>
+              </button>
+              <button
+                type="button"
+                onClick={() => { setSelectedRole('PROFESIONAL'); setSelectedPlanId(null); }}
+                className={`p-4 rounded-xl text-center transition-all ${
+                  selectedRole === 'PROFESIONAL'
+                    ? 'bg-white shadow-lg ring-2 ring-primary-400'
+                    : 'bg-white/10 backdrop-blur hover:bg-white/20'
+                }`}
+              >
+                <Wrench className={`w-8 h-8 mx-auto mb-2 ${selectedRole === 'PROFESIONAL' ? 'text-primary-600' : 'text-white'}`} />
+                <p className={`text-sm font-semibold ${selectedRole === 'PROFESIONAL' ? 'text-gray-900' : 'text-white'}`}>Profesional</p>
+                <p className={`text-xs mt-1 ${selectedRole === 'PROFESIONAL' ? 'text-gray-500' : 'text-white/60'}`}>Técnico, ventas, compras o proyectos</p>
+              </button>
+            </div>
+          </div>
+
+          {/* Trial Badge */}
+          <div className="flex items-center justify-center gap-2 max-w-md mx-auto bg-white/10 backdrop-blur rounded-full px-4 py-2">
+            <Clock className="w-4 h-4 text-white" />
+            <span className="text-white/90 text-sm">Prueba gratuita por 7 días — sin compromiso</span>
+          </div>
+
           {/* Plan Selection */}
           {plansLoading ? (
             <div className="flex justify-center py-8">
@@ -200,6 +246,13 @@ export default function RegisterPage() {
               })}
             </div>
           ) : null}
+
+          {/* Trial reminder */}
+          {plans && plans.length > 0 && (
+            <p className="text-center text-white/70 text-xs">
+              Empieza tu prueba gratuita de 7 días. Al finalizar, podrás elegir si continuar con el plan seleccionado.
+            </p>
+          )}
 
           {/* Registration Form */}
           <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-lg mx-auto">

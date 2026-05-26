@@ -20,21 +20,39 @@ const planSchema = z.object({
   duration: z.enum(['MENSUAL', 'ANUAL']).optional(),
   durationDays: z.number().int().positive().optional(),
   features: z.string().optional(),
+  targetRole: z.enum(['CLIENT', 'PROFESIONAL']).optional().default('CLIENT'),
 });
 
-const planUpdateSchema = planSchema.partial();
+const planUpdateSchema = z.object({
+  name: z.string().min(1).optional(),
+  description: z.string().optional(),
+  price: z.number().positive().optional(),
+  duration: z.enum(['MENSUAL', 'ANUAL']).optional(),
+  durationDays: z.number().int().positive().optional(),
+  features: z.string().optional(),
+  targetRole: z.enum(['CLIENT', 'PROFESIONAL']).optional(),
+  active: z.boolean().optional(),
+});
 
 const registerSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(6),
+  role: z.enum(['CLIENT', 'TECHNICIAN', 'SALES', 'COMPRAS', 'PROYECTOS']).optional().default('CLIENT'),
   planId: z.number().int().positive(),
 });
 
-router.get('/plans', async (_req: Request, res: Response) => {
+router.get('/plans', async (req: Request, res: Response) => {
   try {
+    const role = req.query.role as string || undefined;
+    const where: any = { active: true };
+    if (role === 'CLIENT') {
+      where.targetRole = 'CLIENT';
+    } else if (role === 'PROFESIONAL') {
+      where.targetRole = 'PROFESIONAL';
+    }
     const plans = await prisma.subscriptionPlan.findMany({
-      where: { active: true },
+      where,
       orderBy: { price: 'asc' },
     });
     res.json(plans);
@@ -55,6 +73,7 @@ router.post('/plans', authenticate, requireRole(['ADMIN']), async (req: Request,
         duration: data.duration || 'MENSUAL',
         durationDays,
         features: data.features || null,
+        targetRole: data.targetRole,
         createdById: req.user!.id,
       },
     });
@@ -117,12 +136,14 @@ router.post('/register', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Plan no encontrado o inactivo' });
     }
     const hashedPassword = await bcrypt.hash(data.password, 10);
+    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     const user = await prisma.user.create({
       data: {
         name: data.name,
         email: data.email,
         password: hashedPassword,
-        role: 'CLIENT',
+        role: data.role,
+        trialEndsAt,
       },
     });
     const startDate = new Date();
@@ -138,7 +159,7 @@ router.post('/register', async (req: Request, res: Response) => {
     });
     const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
     const { password: _, ...userData } = user;
-    res.status(201).json({ token, user: userData, subscription });
+    res.status(201).json({ token, user: { ...userData, trialEndsAt }, subscription });
   } catch (err) {
     if (err instanceof z.ZodError) {
       return res.status(400).json({ error: err.errors });
@@ -265,10 +286,11 @@ router.get('/my', authenticate, async (req: Request, res: Response) => {
       where: { userId: req.user!.id },
       include: { plan: true },
     });
-    if (!subscription) {
-      return res.status(404).json({ error: 'No tienes una suscripción activa' });
-    }
-    res.json(subscription);
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: { trialEndsAt: true },
+    });
+    res.json({ subscription, trialEndsAt: user?.trialEndsAt || null });
   } catch {
     res.status(500).json({ error: 'Error al obtener suscripción' });
   }
@@ -276,11 +298,26 @@ router.get('/my', authenticate, async (req: Request, res: Response) => {
 
 router.post('/activate', authenticate, async (req: Request, res: Response) => {
   try {
-    const subscription = await prisma.userSubscription.findUnique({
+    let subscription = await prisma.userSubscription.findUnique({
       where: { userId: req.user!.id },
     });
     if (!subscription) {
-      return res.status(404).json({ error: 'No tienes una suscripción pendiente' });
+      const defaultPlan = await prisma.subscriptionPlan.findFirst({ where: { active: true }, orderBy: { price: 'asc' } });
+      if (!defaultPlan) {
+        return res.status(400).json({ error: 'No hay planes disponibles' });
+      }
+      const startDate = new Date();
+      const endDate = new Date(Date.now() + defaultPlan.durationDays * 24 * 60 * 60 * 1000);
+      subscription = await prisma.userSubscription.create({
+        data: {
+          userId: req.user!.id,
+          planId: defaultPlan.id,
+          startDate,
+          endDate,
+          status: 'ACTIVA',
+        },
+      });
+      return res.json(subscription);
     }
     if (subscription.status === 'ACTIVA') {
       return res.json({ message: 'Ya está activa' });

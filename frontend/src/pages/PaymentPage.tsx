@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Snowflake, Loader2, CreditCard, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Snowflake, Loader2, CreditCard, CheckCircle, AlertCircle, ArrowLeft, Clock } from 'lucide-react';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 
@@ -13,16 +13,21 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const { data: subscription, isLoading: subLoading } = useQuery({
+  const { data: subData, isLoading: subLoading } = useQuery({
     queryKey: ['my-subscription'],
     queryFn: () => api.get('/subscriptions/my').then((r) => r.data),
     enabled: !!user,
   });
+  const subscription = subData?.subscription;
 
   const { data: plans } = useQuery({
     queryKey: ['plans'],
     queryFn: () => api.get('/subscriptions/plans').then((r) => r.data),
   });
+
+  const trialEndsAt = subData?.trialEndsAt ? new Date(subData.trialEndsAt) : null;
+  const isOnTrial = trialEndsAt && trialEndsAt > new Date();
+  const trialDaysLeft = trialEndsAt ? Math.ceil((trialEndsAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : 0;
 
   useEffect(() => {
     const status = searchParams.get('status');
@@ -92,6 +97,23 @@ export default function PaymentPage() {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 py-8 w-full">
+        {/* Trial banner */}
+        {isOnTrial && (
+          <div className="mb-6 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl p-4 shadow-lg">
+            <div className="flex items-center gap-3">
+              <Clock className="w-6 h-6 text-white flex-shrink-0" />
+              <div>
+                <p className="text-white font-semibold">
+                  Período de prueba activo — {trialDaysLeft} día{trialDaysLeft !== 1 ? 's' : ''} restante{trialDaysLeft !== 1 ? 's' : ''}
+                </p>
+                <p className="text-white/80 text-sm">
+                  Disfruta de todas las funcionalidades sin costo. Realiza el pago antes de que termine la prueba para no interrumpir el servicio.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {isActive ? (
           <div className="card text-center py-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">

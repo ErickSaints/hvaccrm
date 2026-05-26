@@ -20,6 +20,7 @@ declare global {
         phone: string | null;
         avatar: string | null;
         active: boolean;
+        trialEndsAt: Date | null;
       };
     }
   }
@@ -47,6 +48,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
         phone: user.phone,
         avatar: user.avatar,
         active: user.active,
+        trialEndsAt: user.trialEndsAt,
       };
       next();
     });
@@ -73,13 +75,22 @@ export function requireSubscription(req: Request, res: Response, next: NextFunct
   if (!req.user) {
     return res.status(401).json({ error: 'No autenticado' });
   }
-  if (req.user.role !== 'CLIENT') {
+  // Admin always has access
+  if (req.user.role === 'ADMIN') {
     return next();
   }
+  // Check trial period
+  if (req.user.trialEndsAt && new Date(req.user.trialEndsAt) > new Date()) {
+    return next();
+  }
+  // Check active subscription
   prisma.userSubscription.findUnique({ where: { userId: req.user.id } }).then((sub) => {
-    if (!sub || sub.status !== 'ACTIVA') {
-      return res.status(403).json({ error: 'Suscripción requerida para usar la aplicación. Realiza el pago para activar tu cuenta.' });
+    if (sub && sub.status === 'ACTIVA') {
+      return next();
     }
-    next();
+    return res.status(403).json({
+      error: 'Tu período de prueba ha expirado. Realiza el pago para seguir usando la aplicación.',
+      code: 'SUBSCRIPTION_REQUIRED',
+    });
   });
 }
