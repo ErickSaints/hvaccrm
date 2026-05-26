@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
-import * as fabric from 'fabric';
+import { useEffect, useRef, useState } from 'react';
 
 interface DrawingCanvasProps {
   canvasData?: string;
@@ -11,153 +10,170 @@ const SIZES = [2, 4, 6, 10, 16];
 
 export default function DrawingCanvas({ canvasData, onSave }: DrawingCanvasProps) {
   const canvasEl = useRef<HTMLCanvasElement>(null);
-  const canvasRef = useRef<fabric.Canvas | null>(null);
   const [tool, setTool] = useState<'select' | 'pencil' | 'line' | 'rect' | 'circle' | 'text' | 'eraser'>('pencil');
   const [color, setColor] = useState('#1e293b');
   const [brushSize, setBrushSize] = useState(4);
+  const [isReady, setIsReady] = useState(false);
+  const fabricRef = useRef<any>(null);
+  const canvasRef = useRef<any>(null);
 
-  const initCanvas = useCallback(() => {
-    if (!canvasEl.current || canvasRef.current) return;
+  useEffect(() => {
+    let disposed = false;
+    async function init() {
+      const mod = await import('fabric');
+      const fabric = mod;
+      if (disposed || !canvasEl.current) return;
 
-    const c = new fabric.Canvas(canvasEl.current, {
-      width: 800,
-      height: 600,
-      backgroundColor: '#f8fafc',
-      isDrawingMode: true,
-      selection: tool === 'select',
-    });
+      const c = new fabric.Canvas(canvasEl.current, {
+        width: 800,
+        height: 600,
+        backgroundColor: '#f8fafc',
+        selection: false,
+      });
 
-    const gridLines: fabric.Line[] = [];
-    const gridColor = '#e2e8f0';
-    for (let x = -200; x <= 1000; x += 20) {
-      gridLines.push(new fabric.Line([x, 0, x, 600], { stroke: gridColor, selectable: false, evented: false }));
-    }
-    for (let y = -200; y <= 800; y += 20) {
-      gridLines.push(new fabric.Line([0, y, 800, y], { stroke: gridColor, selectable: false, evented: false }));
-    }
-    const isoAngle = Math.PI / 6;
-    for (let x = -200; x < 1000; x += 40) {
-      const yOffset = Math.tan(isoAngle) * x;
-      gridLines.push(new fabric.Line([x, 0, x + 100, yOffset + 50], { stroke: '#dbeafe', strokeWidth: 0.5, selectable: false, evented: false }));
-      gridLines.push(new fabric.Line([x, 600, x + 100, 600 - yOffset - 50], { stroke: '#dbeafe', strokeWidth: 0.5, selectable: false, evented: false }));
-    }
+      drawGrid(fabric, c);
 
-    const gridGroup = new fabric.Group(gridLines, { selectable: false, evented: false });
-    c.add(gridGroup);
-    c.sendObjectToBack(gridGroup);
-
-    if (c.freeDrawingBrush) {
+      c.freeDrawingBrush = new fabric.PencilBrush(c);
       c.freeDrawingBrush.color = color;
       c.freeDrawingBrush.width = brushSize;
+      c.isDrawingMode = true;
+
+      if (canvasData) {
+        try {
+          c.loadFromJSON(JSON.parse(canvasData), () => c.renderAll());
+        } catch { /* ignore */ }
+      }
+
+      fabricRef.current = fabric;
+      canvasRef.current = c;
+      setIsReady(true);
     }
-
-    canvasRef.current = c;
-
-    if (canvasData) {
-      c.loadFromJSON(canvasData, () => {
-        c.renderAll();
-        c.isDrawingMode = tool === 'pencil' || tool === 'eraser';
-      });
-    }
-
-    return () => {
-      c.dispose();
-      canvasRef.current = null;
-    };
+    init();
+    return () => { disposed = true; if (canvasRef.current) canvasRef.current.dispose(); };
   }, []);
 
-  useEffect(() => {
-    initCanvas();
-  }, []);
+  function drawGrid(fabric: any, c: any) {
+    const lines: any[] = [];
+    for (let x = 0; x <= 800; x += 20) {
+      lines.push(new fabric.Line([x, 0, x, 600], { stroke: '#e2e8f0', selectable: false, evented: false }));
+    }
+    for (let y = 0; y <= 600; y += 20) {
+      lines.push(new fabric.Line([0, y, 800, y], { stroke: '#e2e8f0', selectable: false, evented: false }));
+    }
+    const grid = new fabric.Group(lines, { selectable: false, evented: false });
+    c.add(grid);
+    c.sendObjectToBack(grid);
+    c.renderAll();
+  }
 
-  useEffect(() => {
+  function setDrawingMode(mode: boolean) {
     const c = canvasRef.current;
-    if (!c || !c.freeDrawingBrush) return;
-    c.isDrawingMode = tool === 'pencil' || tool === 'eraser';
-    c.selection = tool === 'select';
+    const fabric = fabricRef.current;
+    if (!c || !fabric) return;
+    c.isDrawingMode = mode;
+    c.selection = !mode;
+    c.defaultCursor = mode ? 'crosshair' : 'default';
+  }
 
-    if (tool === 'eraser') {
+  function handleToolChange(newTool: string) {
+    const c = canvasRef.current;
+    const fabric = fabricRef.current;
+    if (!c || !fabric) return;
+    setTool(newTool as any);
+    setDrawingMode(newTool === 'pencil' || newTool === 'eraser');
+    if (newTool === 'eraser' && c.freeDrawingBrush) {
       c.freeDrawingBrush.color = '#f8fafc';
       c.freeDrawingBrush.width = brushSize * 3;
-    } else if (tool === 'pencil') {
+    } else if (newTool === 'pencil' && c.freeDrawingBrush) {
       c.freeDrawingBrush.color = color;
       c.freeDrawingBrush.width = brushSize;
     }
-  }, [tool, color, brushSize]);
+  }
 
-  const addShape = (type: string) => {
+  function handleColorChange(newColor: string) {
+    setColor(newColor);
     const c = canvasRef.current;
-    if (!c) return;
-    const center = { x: 400, y: 300 };
+    if (c?.freeDrawingBrush && tool === 'pencil') {
+      c.freeDrawingBrush.color = newColor;
+    }
+  }
 
-    let obj: fabric.FabricObject;
+  function handleSizeChange(newSize: number) {
+    setBrushSize(newSize);
+    const c = canvasRef.current;
+    if (c?.freeDrawingBrush) {
+      c.freeDrawingBrush.width = tool === 'eraser' ? newSize * 3 : newSize;
+    }
+  }
+
+  function addShape(type: string) {
+    const c = canvasRef.current;
+    const fabric = fabricRef.current;
+    if (!c || !fabric) return;
+    setDrawingMode(false);
+    setTool('select');
+
+    let obj: any;
     switch (type) {
       case 'line':
-        obj = new fabric.Line([center.x - 50, center.y, center.x + 50, center.y], {
-          stroke: color, strokeWidth: brushSize, selectable: true,
-        });
+        obj = new fabric.Line([350, 300, 450, 300], { stroke: color, strokeWidth: brushSize });
         break;
       case 'rect':
-        obj = new fabric.Rect({
-          left: center.x - 40, top: center.y - 40, width: 80, height: 80,
-          fill: 'transparent', stroke: color, strokeWidth: brushSize, selectable: true,
-        });
+        obj = new fabric.Rect({ left: 340, top: 260, width: 120, height: 80, fill: 'transparent', stroke: color, strokeWidth: brushSize });
         break;
       case 'circle':
-        obj = new fabric.Ellipse({
-          left: center.x - 40, top: center.y - 40, rx: 50, ry: 50,
-          fill: 'transparent', stroke: color, strokeWidth: brushSize, selectable: true,
-        });
+        obj = new fabric.Ellipse({ left: 340, top: 260, rx: 60, ry: 60, fill: 'transparent', stroke: color, strokeWidth: brushSize });
         break;
       default:
         return;
     }
     c.add(obj);
+    c.setActiveObject(obj);
     c.renderAll();
-  };
+  }
 
-  const addText = () => {
+  function addText() {
     const c = canvasRef.current;
-    if (!c) return;
-    const textbox = new fabric.IText('Escribe aquí', {
-      left: 350, top: 280, fontSize: 20, fill: color,
-      fontFamily: 'Arial', editable: true,
-    });
-    c.add(textbox);
-    c.setActiveObject(textbox);
+    const fabric = fabricRef.current;
+    if (!c || !fabric) return;
+    setDrawingMode(false);
+    setTool('select');
+    const t = new fabric.IText('Texto', { left: 350, top: 280, fontSize: 20, fill: color, fontFamily: 'Arial' });
+    c.add(t);
+    c.setActiveObject(t);
     c.renderAll();
-  };
+  }
 
-  const addImage = (file: File) => {
+  function addImage(file: File) {
     const c = canvasRef.current;
-    if (!c) return;
+    const fabric = fabricRef.current;
+    if (!c || !fabric) return;
     const reader = new FileReader();
-    reader.onload = (e) => {
-      fabric.FabricImage.fromURL(e.target?.result as string).then((img) => {
+    reader.onload = (e: any) => {
+      fabric.FabricImage.fromURL(e.target.result).then((img: any) => {
         img.set({ left: 100, top: 100, scaleX: 0.5, scaleY: 0.5 });
         c.add(img);
         c.renderAll();
       });
     };
     reader.readAsDataURL(file);
-  };
+  }
 
-  const clearCanvas = () => {
+  function clearAll() {
     const c = canvasRef.current;
-    if (!c) return;
-    const grid = c.item(0);
+    const fabric = fabricRef.current;
+    if (!c || !fabric) return;
     c.clear();
     c.backgroundColor = '#f8fafc';
-    if (grid) c.add(grid);
+    drawGrid(fabric, c);
     c.renderAll();
-  };
+  }
 
-  const handleSave = () => {
+  function handleSave() {
     const c = canvasRef.current;
     if (!c) return;
-    const json = JSON.stringify(c.toJSON());
-    onSave(json);
-  };
+    onSave(JSON.stringify(c.toJSON()));
+  }
 
   return (
     <div className="space-y-3">
@@ -167,7 +183,7 @@ export default function DrawingCanvas({ canvasData, onSave }: DrawingCanvasProps
             <button
               key={t}
               type="button"
-              onClick={() => setTool(t)}
+              onClick={() => handleToolChange(t)}
               className={`px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 tool === t ? 'bg-primary-100 text-primary-700' : 'text-gray-500 hover:bg-gray-100'
               }`}
@@ -184,7 +200,7 @@ export default function DrawingCanvas({ canvasData, onSave }: DrawingCanvasProps
             <button
               key={c}
               type="button"
-              onClick={() => setColor(c)}
+              onClick={() => handleColorChange(c)}
               className={`w-5 h-5 rounded-full border-2 transition-all ${color === c ? 'border-gray-800 scale-110' : 'border-transparent'}`}
               style={{ backgroundColor: c }}
             />
@@ -198,7 +214,7 @@ export default function DrawingCanvas({ canvasData, onSave }: DrawingCanvasProps
             <button
               key={s}
               type="button"
-              onClick={() => setBrushSize(s)}
+              onClick={() => handleSizeChange(s)}
               className={`px-2 py-1.5 text-xs font-medium rounded-md transition-colors ${
                 brushSize === s ? 'bg-gray-200 text-gray-800' : 'text-gray-500 hover:bg-gray-100'
               }`}
@@ -210,26 +226,20 @@ export default function DrawingCanvas({ canvasData, onSave }: DrawingCanvasProps
 
         <div className="w-px h-6 bg-gray-200 mx-1" />
 
-        <button type="button" onClick={() => addText()} className="btn-secondary text-xs py-1.5 px-2">
-          + Texto
-        </button>
+        <button type="button" onClick={() => addText()} className="btn-secondary text-xs py-1.5 px-2">+ Texto</button>
 
         <label className="btn-secondary text-xs py-1.5 px-2 cursor-pointer">
           + Imagen
           <input type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) addImage(f); }} />
         </label>
 
-        <button type="button" onClick={clearCanvas} className="btn-secondary text-xs py-1.5 px-2 text-red-600 hover:bg-red-50">
-          Limpiar
-        </button>
+        <button type="button" onClick={clearAll} className="btn-secondary text-xs py-1.5 px-2 text-red-600 hover:bg-red-50">Limpiar</button>
 
-        <button type="button" onClick={handleSave} className="btn-primary text-xs py-1.5 px-3 ml-auto">
-          Guardar Dibujo
-        </button>
+        <button type="button" onClick={handleSave} className="btn-primary text-xs py-1.5 px-3 ml-auto">Guardar Dibujo</button>
       </div>
 
-      <div className="border border-gray-200 rounded-xl overflow-hidden bg-[#f8fafc]">
-        <canvas ref={canvasEl} width={800} height={600} className="w-full" />
+      <div className="border border-gray-200 rounded-xl overflow-hidden bg-[#f8fafc]" style={{ cursor: tool === 'pencil' || tool === 'eraser' ? 'crosshair' : 'default' }}>
+        <canvas ref={canvasEl} width={800} height={600} className="w-full" style={{ touchAction: 'none' }} />
       </div>
     </div>
   );

@@ -104,7 +104,7 @@ export default function TicketDetailPage() {
 
   const statusMutation = useMutation({
     mutationFn: async ({ status, resolution: res }: { status: string; resolution?: string }) => {
-      await api.patch(`/tickets/${id}`, { status, ...(res ? { resolution: res } : {}) });
+      await api.put(`/tickets/${id}`, { status, ...(res ? { resolution: res } : {}) });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', id] });
@@ -114,14 +114,14 @@ export default function TicketDetailPage() {
       setShowResolutionInput(false);
       setResolution('');
     },
-    onError: () => {
-      toast.error('Error al actualizar estado');
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al actualizar estado');
     },
   });
 
   const assignMutation = useMutation({
     mutationFn: async (assignedTo: number | null) => {
-      await api.patch(`/tickets/${id}`, { assignedTo });
+      await api.put(`/tickets/${id}`, { assignedTo });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', id] });
@@ -129,8 +129,8 @@ export default function TicketDetailPage() {
       toast.success('Técnico asignado');
       setAssignDropdown(false);
     },
-    onError: () => {
-      toast.error('Error al asignar técnico');
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al asignar técnico');
     },
   });
 

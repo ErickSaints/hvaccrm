@@ -12,7 +12,7 @@ const ticketSchema = z.object({
   status: z.enum(['ABIERTO', 'EN_PROCESO', 'RESUELTO', 'CERRADO']).optional(),
   customerId: z.number().optional(),
   equipmentId: z.number().optional(),
-  assignedTo: z.number().optional(),
+  assignedTo: z.number().optional().nullable(),
   resolution: z.string().optional(),
 });
 

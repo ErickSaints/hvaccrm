@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Save, Loader2, Plus, Trash2, Camera, Package } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Plus, Trash2, Camera, Package, Search } from 'lucide-react';
 import api from '../lib/api';
 import DrawingCanvas from '../components/DrawingCanvas';
 import type { Customer } from '../types';
@@ -62,6 +62,31 @@ export default function SurveyFormPage() {
   const [drawings, setDrawings] = useState<DrawingEntry[]>([{ name: 'Dibujo 1', canvasData: '' }]);
   const [currentDrawing, setCurrentDrawing] = useState(0);
   const [materials, setMaterials] = useState<MaterialEntry[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searching, setSearching] = useState(false);
+  const searchTimer = useRef<any>(null);
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    if (searchTimer.current) clearTimeout(searchTimer.current);
+    if (!val.trim()) { setSearchResults([]); return; }
+    setSearching(true);
+    searchTimer.current = setTimeout(async () => {
+      try {
+        const { data } = await api.get('/catalog-materials', { params: { search: val } });
+        setSearchResults(data);
+      } catch { /* ignore */ }
+      setSearching(false);
+    }, 300);
+  }, []);
+
+  const selectCatalogMaterial = (mat: any) => {
+    setMaterials(prev => [...prev, { description: mat.description, quantity: 1, unit: mat.unit, category: mat.category, notes: '' }]);
+    setSearchQuery('');
+    setSearchResults([]);
+  };
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<SurveyFormData>({
     resolver: zodResolver(surveySchema),
@@ -299,8 +324,35 @@ export default function SurveyFormPage() {
             </h2>
             <button type="button" onClick={addMaterial} className="btn-secondary text-sm">
               <Plus className="w-4 h-4 inline mr-1" />
-              Agregar Material
+              Agregar Manual
             </button>
+          </div>
+
+          {/* Search catalog */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="input-field pl-10"
+              placeholder="Buscar material en el catálogo HVAC..."
+            />
+            {searchResults.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto">
+                {searchResults.map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => selectCatalogMaterial(m)}
+                    className="w-full text-left px-4 py-2.5 text-sm hover:bg-primary-50 transition-colors border-b border-gray-50 last:border-0"
+                  >
+                    <span className="text-gray-900">{m.description}</span>
+                    <span className="ml-2 text-xs text-gray-400">{m.category}</span>
+                    <span className="ml-1 text-xs text-gray-400">({m.unit})</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {materials.length === 0 ? (

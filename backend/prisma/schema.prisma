@@ -341,6 +341,14 @@ model SurveyMaterial {
   survey        Survey    @relation(fields: [surveyId], references: [id])
 }
 
+model CatalogMaterial {
+  id            Int       @id @default(autoincrement())
+  description   String
+  category      String
+  unit          String    @default("pza")
+  createdAt     DateTime  @default(now())
+}
+
 model ServiceReport {
   id              Int       @id @default(autoincrement())
   title           String
