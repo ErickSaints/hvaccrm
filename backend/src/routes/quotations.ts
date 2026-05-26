@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { notifyQuotationStatusChange } from '../notifications/notifier';
 
 const router = Router();
 
@@ -187,10 +188,24 @@ router.put('/:id/status', requirePermission('quotations:edit'), async (req: Requ
   try {
     const id = parseInt(String(req.params.id));
     const { status } = statusSchema.parse(req.body);
+    const old = await prisma.quotation.findUnique({
+      where: { id },
+      include: { customer: { select: { contactName: true, email: true } } },
+    });
+    if (!old) return res.status(404).json({ error: 'Cotización no encontrada' });
     const quotation = await prisma.quotation.update({
       where: { id },
       data: { status },
     });
+    notifyQuotationStatusChange({
+      quotationId: id,
+      quotationNumber: old.number,
+      quotationTitle: quotation.title || 'Cotización',
+      customerId: old.customerId,
+      customerEmail: old.customer.email,
+      customerName: old.customer.contactName,
+      newStatus: status,
+    }).catch((err) => console.error('[quotations] notify error:', err));
     res.json(quotation);
   } catch (err) {
     if (err instanceof z.ZodError) {

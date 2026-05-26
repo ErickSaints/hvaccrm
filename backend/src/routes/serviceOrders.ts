@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { notifyServiceOrderStatusChange } from '../notifications/notifier';
 
 const router = Router();
 
@@ -120,16 +121,19 @@ router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
     const { photos, ...fields } = data;
     const updateData: any = { ...fields };
     if (data.scheduledDate) updateData.scheduledDate = new Date(data.scheduledDate);
+    const old = await prisma.serviceOrder.findUnique({
+      where: { id },
+      include: { customer: { select: { contactName: true, email: true } } },
+    });
+    if (!old) return res.status(404).json({ error: 'Orden no encontrada' });
 
     if (photos !== undefined) {
-      // Only delete and replace if new photos are provided and non-empty
       if (photos.length > 0) {
         await prisma.photo.deleteMany({ where: { serviceOrderId: id } });
         updateData.photos = {
           create: photos.map(p => ({ url: p.url, caption: p.caption, type: p.type })),
         };
       } else {
-        // Empty array means clear all photos
         await prisma.photo.deleteMany({ where: { serviceOrderId: id } });
       }
     }
@@ -139,6 +143,19 @@ router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
       data: updateData,
       include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
     });
+    if (data.status && data.status !== old.status) {
+      notifyServiceOrderStatusChange({
+        orderId: id,
+        orderNumber: old.number,
+        customerId: old.customerId,
+        customerEmail: old.customer.email,
+        customerName: old.customer.contactName,
+        assignedTo: order.assignedTo,
+        oldStatus: old.status,
+        newStatus: data.status,
+        scheduledDate: order.scheduledDate,
+      }).catch((err) => console.error('[service-orders] notify error:', err));
+    }
     res.json(order);
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -155,11 +172,61 @@ router.patch('/:id', requireSubscription, async (req: Request, res: Response) =>
     if (!status) {
       return res.status(400).json({ error: 'Estado requerido' });
     }
+    const old = await prisma.serviceOrder.findUnique({
+      where: { id },
+      include: { customer: { select: { contactName: true, email: true } } },
+    });
+    if (!old) return res.status(404).json({ error: 'Orden no encontrada' });
     const order = await prisma.serviceOrder.update({
       where: { id },
       data: { status, ...(status === 'COMPLETADO' ? { completedDate: new Date() } : {}) },
       include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
     });
+    notifyServiceOrderStatusChange({
+      orderId: id,
+      orderNumber: old.number,
+      customerId: old.customerId,
+      customerEmail: old.customer.email,
+      customerName: old.customer.contactName,
+      assignedTo: order.assignedTo,
+      oldStatus: old.status,
+      newStatus: status,
+      scheduledDate: order.scheduledDate,
+    }).catch((err) => console.error('[service-orders] notify error:', err));
+    res.json(stripCosts(order, req.user!.role));
+  } catch {
+    res.status(500).json({ error: 'Error al actualizar estado' });
+  }
+});
+
+router.patch('/:id', requireSubscription, async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const { status } = req.body;
+    if (!status) {
+      return res.status(400).json({ error: 'Estado requerido' });
+    }
+    const old = await prisma.serviceOrder.findUnique({
+      where: { id },
+      include: { customer: { select: { contactName: true, email: true } } },
+    });
+    if (!old) return res.status(404).json({ error: 'Orden no encontrada' });
+    const order = await prisma.serviceOrder.update({
+      where: { id },
+      data: { status, ...(status === 'COMPLETADO' ? { completedDate: new Date() } : {}) },
+      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
+    });
+    notifyServiceOrderStatusChange({
+      orderId: id,
+      orderNumber: old.number,
+      customerId: old.customerId,
+      customerEmail: old.customer.email,
+      customerName: old.customer.contactName,
+      assignedTo: order.assignedTo,
+      oldStatus: old.status,
+      newStatus: status,
+      scheduledDate: order.scheduledDate,
+    }).catch((err) => console.error('[service-orders] notify error:', err));
     res.json(stripCosts(order, req.user!.role));
   } catch {
     res.status(500).json({ error: 'Error al actualizar estado' });

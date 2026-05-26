@@ -90,6 +90,7 @@ model User {
   createdPlans  SubscriptionPlan[] @relation("PlanCreator")
   surveys       Survey[]
   rolePermissions RolePermission[]
+  invoices      Invoice[]
 }
 
 model RolePermission {
@@ -166,6 +167,7 @@ model Customer {
   policies      MaintenancePolicy[]
   assets        Asset[]
   surveys       Survey[]
+  invoices      Invoice[]
 }
 
 model Equipment {
@@ -235,6 +237,7 @@ model Quotation {
   createdBy       User              @relation(fields: [createdById], references: [id])
 
   items           QuotationItem[]
+  invoices        Invoice[]
 }
 
 model QuotationItem {
@@ -303,6 +306,7 @@ model ServiceOrder {
 
   report          ServiceReport?
   photos          Photo[]             @relation("OrderPhotos")
+  invoices        Invoice[]
 }
 
 model Survey {
@@ -465,4 +469,32 @@ model MaintenanceLog {
 
   assignedTo      Int?
   assignedUser    User?      @relation(fields: [assignedTo], references: [id])
+}
+
+model Invoice {
+  id              Int       @id @default(autoincrement())
+  number          String    @unique
+  title           String
+  subtotal        Float     @default(0)
+  tax             Float     @default(0)
+  discount        Float     @default(0)
+  total           Float     @default(0)
+  status          String    @default("BORRADOR")
+  notes           String?
+  dueDate         DateTime?
+  paidAt          DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  customerId      Int
+  customer        Customer  @relation(fields: [customerId], references: [id])
+
+  quotationId     Int?
+  quotation       Quotation? @relation(fields: [quotationId], references: [id])
+
+  serviceOrderId  Int?
+  serviceOrder    ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+
+  createdById     Int
+  createdBy       User      @relation(fields: [createdById], references: [id])
 }

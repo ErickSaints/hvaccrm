@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { notifyTicketStatusChange } from '../notifications/notifier';
 
 const router = Router();
 
@@ -114,7 +115,24 @@ router.put('/:id', requirePermission('tickets:edit'), async (req: Request, res: 
   try {
     const id = parseInt(String(req.params.id));
     const data = ticketSchema.partial().parse(req.body);
+    const old = await prisma.ticket.findUnique({
+      where: { id },
+      include: { customer: { select: { contactName: true, email: true } } },
+    });
+    if (!old) return res.status(404).json({ error: 'Ticket no encontrado' });
     const ticket = await prisma.ticket.update({ where: { id }, data });
+    if (data.status && data.status !== old.status) {
+      notifyTicketStatusChange({
+        ticketId: id,
+        ticketTitle: ticket.title,
+        customerId: old.customerId,
+        customerEmail: old.customer.email,
+        customerName: old.customer.contactName,
+        assignedTo: ticket.assignedTo,
+        oldStatus: old.status,
+        newStatus: data.status,
+      }).catch((err) => console.error('[tickets] notify error:', err));
+    }
     res.json(ticket);
   } catch (err) {
     if (err instanceof z.ZodError) {

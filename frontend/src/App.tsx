@@ -42,6 +42,11 @@ import SurveyFormPage from './pages/SurveyFormPage';
 import SurveyDetailPage from './pages/SurveyDetailPage';
 import AdminPage from './pages/AdminPage';
 import PermissionsPage from './pages/PermissionsPage';
+import ClientDashboard from './pages/ClientDashboard';
+import DispatchPage from './pages/DispatchPage';
+import InvoicesPage from './pages/InvoicesPage';
+import InvoiceFormPage from './pages/InvoiceFormPage';
+import InvoiceDetailPage from './pages/InvoiceDetailPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -74,7 +79,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 function ClientDashboardRedirect() {
   const { user } = useAuth();
   if (user?.role === 'CLIENT') {
-    return <Navigate to="/tickets" replace />;
+    return <ClientDashboard />;
   }
   return <DashboardPage />;
 }
@@ -118,6 +123,10 @@ export default function App() {
               <Route path="service-orders" element={<ServiceOrdersPage />} />
               <Route path="service-orders/new" element={<ServiceOrderFormPage />} />
               <Route path="service-orders/:id" element={<ServiceOrderDetailPage />} />
+              <Route path="dispatch" element={<DispatchPage />} />
+              <Route path="invoices" element={<InvoicesPage />} />
+              <Route path="invoices/new" element={<InvoiceFormPage />} />
+              <Route path="invoices/:id" element={<InvoiceDetailPage />} />
               <Route path="service-reports" element={<ServiceReportsPage />} />
               <Route path="service-reports/new" element={<ServiceReportFormPage />} />
               <Route path="service-reports/:id" element={<ServiceReportDetailPage />} />

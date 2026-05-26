@@ -191,6 +191,29 @@ export interface MaintenanceLog {
   assignedUser?: User;
 }
 
+export interface Invoice {
+  id: number;
+  number: string;
+  title: string;
+  subtotal: number;
+  tax: number;
+  discount: number;
+  total: number;
+  status: 'BORRADOR' | 'EMITIDA' | 'PAGADA' | 'CANCELADA' | 'VENCIDA';
+  notes?: string;
+  dueDate?: string;
+  paidAt?: string;
+  customerId: number;
+  customer?: Customer;
+  quotationId?: number;
+  quotation?: Quotation;
+  serviceOrderId?: number;
+  serviceOrder?: ServiceOrder;
+  createdById: number;
+  createdBy?: User;
+  createdAt: string;
+}
+
 export interface DashboardStats {
   totalCustomers: number;
   activeTickets: number;

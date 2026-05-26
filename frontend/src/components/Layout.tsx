@@ -47,6 +47,8 @@ const mainNav = [
   { section: 'Mantenimiento', items: [
     { name: 'Pólizas', href: '/policies', icon: ShieldCheck },
     { name: 'Mantenimientos', href: '/maintenance', icon: CalendarCheck },
+  { name: 'Calendario', href: '/dispatch', icon: CalendarCheck },
+  { name: 'Facturas', href: '/invoices', icon: FileText },
   ]},
   { section: 'Proyectos', items: [
     { name: 'Levantamientos', href: '/surveys', icon: Ruler },
@@ -58,7 +60,11 @@ const mainNav = [
 ];
 
 const clientNav = [
+  { name: 'Panel de Cliente', href: '/', icon: LayoutDashboard },
   { name: 'Tickets', href: '/tickets', icon: TicketCheck },
+  { name: 'Órdenes de Servicio', href: '/service-orders', icon: ClipboardList },
+  { name: 'Cotizaciones', href: '/quotations', icon: FileText },
+  { name: 'Equipos', href: '/equipment', icon: Wrench },
   { name: 'Refacciones e Insumos', href: '/refacciones', icon: PackageSearch },
 ];
 

@@ -21,3 +21,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </QueryClientProvider>
   </React.StrictMode>,
 )
+
+// Register PWA service worker via vite-plugin-pwa
+// VitePWA with registerType: 'autoUpdate' handles registration automatically

@@ -24,8 +24,11 @@ import notificationRoutes from './routes/notifications';
 import assetRoutes from './routes/assets';
 import surveyRoutes from './routes/surveys';
 import catalogMaterialRoutes from './routes/catalogMaterials';
+import invoiceRoutes from './routes/invoices';
 import adminRoutes from './routes/admin';
 import { spectator } from './middleware/spectator';
+import { startReminderScheduler } from './notifications/scheduler';
+import { startMaintenanceScheduler } from './notifications/maintenanceScheduler';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -98,10 +101,13 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/assets', assetRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/catalog-materials', catalogMaterialRoutes);
+app.use('/api/invoices', invoiceRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`HVAC-R CRM API running on port ${PORT}`);
+  startReminderScheduler();
+  startMaintenanceScheduler();
 });
 
 export default app;
