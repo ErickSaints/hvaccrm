@@ -1,4 +1,6 @@
 import express from 'express';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import path from 'path';
 import prisma from './prisma';
@@ -22,11 +24,31 @@ import notificationRoutes from './routes/notifications';
 import assetRoutes from './routes/assets';
 import surveyRoutes from './routes/surveys';
 import catalogMaterialRoutes from './routes/catalogMaterials';
+import adminRoutes from './routes/admin';
+import { spectator } from './middleware/spectator';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// Security
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false,
+}));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1000,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiadas solicitudes. Intenta de nuevo más tarde.' },
+});
+app.use('/api/', limiter);
+
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || ['http://localhost:5173', 'http://localhost:3001'],
+  credentials: true,
+}));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
@@ -38,36 +60,8 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.get('/debug', async (_req, res) => {
-  let userCount = 0;
-  let customerCount = 0;
-  let dbStatus = 'error';
-  let dbError = '';
-  try {
-    userCount = await prisma.user.count();
-    customerCount = await prisma.customer.count();
-    dbStatus = 'connected';
-  } catch (err: any) {
-    dbStatus = 'error';
-    dbError = err.message;
-  }
-  res.json({
-    database: dbStatus,
-    dbError,
-    users: userCount,
-    customers: customerCount,
-    env: {
-      node: process.version,
-      jwt: process.env.JWT_SECRET ? 'set' : 'not set',
-      jwt_value: process.env.JWT_SECRET ? `...${process.env.JWT_SECRET.slice(-4)}` : 'not set',
-      database_url: process.env.DATABASE_URL ? 'set' : 'not set',
-      database_url_preview: process.env.DATABASE_URL ? `${process.env.DATABASE_URL.substring(0, 20)}...` : 'not set',
-      mp_token: process.env.MP_ACCESS_TOKEN ? 'set' : 'not set',
-      port: process.env.PORT || 'not set',
-      railway_env: process.env.RAILWAY_ENVIRONMENT || 'not set',
-    },
-  });
-});
+// Spectator middleware — allows ADMIN to view as any user via ?__user=<id>
+app.use('/api/', spectator);
 
 app.get(/^\/(?!api\/).*/, (_req, res) => {
   const indexPath = path.join(publicPath, 'index.html');
@@ -104,6 +98,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/assets', assetRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/catalog-materials', catalogMaterialRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`HVAC-R CRM API running on port ${PORT}`);

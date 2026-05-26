@@ -13,7 +13,13 @@ async function ensureAdmin(): Promise<{ id: number }> {
         name: 'Admin Principal',
         role: 'ADMIN',
         phone: '555-0100',
+        isSuperAdmin: true,
       },
+    });
+  } else if (!admin.isSuperAdmin) {
+    admin = await prisma.user.update({
+      where: { id: admin.id },
+      data: { isSuperAdmin: true },
     });
   }
   return admin;

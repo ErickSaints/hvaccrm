@@ -14,26 +14,32 @@ const roleLabels: Record<string, string> = {
   ADMIN: 'Administrador',
   TECHNICIAN: 'Técnico',
   SALES: 'Ventas',
+  CLIENT: 'Cliente',
+  PROYECTOS: 'Proyectos',
+  COMPRAS: 'Compras',
 };
 
 const roleColors: Record<string, string> = {
   ADMIN: 'bg-purple-100 text-purple-700',
   TECHNICIAN: 'bg-blue-100 text-blue-700',
   SALES: 'bg-green-100 text-green-700',
+  CLIENT: 'bg-gray-100 text-gray-700',
+  PROYECTOS: 'bg-amber-100 text-amber-700',
+  COMPRAS: 'bg-rose-100 text-rose-700',
 };
 
 const userSchema = z.object({
   name: z.string().min(1, 'El nombre es obligatorio'),
   email: z.string().email('Email inválido'),
   password: z.string().min(6, 'Mínimo 6 caracteres').optional().or(z.literal('')),
-  role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES', 'CLIENT']),
+  role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES', 'CLIENT', 'PROYECTOS', 'COMPRAS']),
   phone: z.string().optional(),
 });
 
 type UserFormData = z.infer<typeof userSchema>;
 
 export default function UsersPage() {
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, isSuperAdmin } = useAuth();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('');
@@ -55,7 +61,7 @@ export default function UsersPage() {
       const { data } = await api.get<User[]>('/users');
       return data;
     },
-    enabled: currentUser?.role === 'ADMIN',
+    enabled: isSuperAdmin,
   });
 
   const createMutation = useMutation({
@@ -163,12 +169,12 @@ export default function UsersPage() {
     return matchesSearch && matchesRole;
   });
 
-  if (currentUser?.role !== 'ADMIN') {
+  if (!isSuperAdmin) {
     return (
       <div className="card text-center py-12">
         <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
         <h3 className="text-lg font-medium text-gray-900">Acceso restringido</h3>
-        <p className="text-gray-500 mt-1">Solo los administradores pueden gestionar usuarios</p>
+        <p className="text-gray-500 mt-1">Solo el Super Administrador puede gestionar usuarios</p>
       </div>
     );
   }
@@ -206,6 +212,9 @@ export default function UsersPage() {
           <option value="ADMIN">Administrador</option>
           <option value="TECHNICIAN">Técnico</option>
           <option value="SALES">Ventas</option>
+          <option value="PROYECTOS">Proyectos</option>
+          <option value="COMPRAS">Compras</option>
+          <option value="CLIENT">Cliente</option>
         </select>
       </div>
 
@@ -372,6 +381,9 @@ export default function UsersPage() {
                   <option value="ADMIN">Administrador</option>
                   <option value="TECHNICIAN">Técnico</option>
                   <option value="SALES">Ventas</option>
+                  <option value="PROYECTOS">Proyectos</option>
+                  <option value="COMPRAS">Compras</option>
+                  <option value="CLIENT">Cliente</option>
                 </select>
                 {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
               </div>

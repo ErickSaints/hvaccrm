@@ -14,6 +14,7 @@ import {
   UserCircle,
   UserCog,
   CreditCard,
+  Shield,
   Menu,
   X,
   LogOut,
@@ -98,12 +99,26 @@ export default function Layout() {
   const location = useLocation();
   const role = user?.role as string || '';
   const isClient = role === 'CLIENT';
+  const isSuperAdmin = user?.isSuperAdmin === true && role === 'ADMIN';
 
   const visibleMainNav = mainNav.filter(section =>
     section.section !== 'Proyectos' || (role === 'ADMIN' || role === 'SALES' || role === 'PROYECTOS' || role === 'COMPRAS')
   );
 
-  const bottomNav = isClient ? clientBottomNav : adminBottomNav;
+  const adminOnlyNav = isSuperAdmin
+    ? [
+        { name: 'Panel Admin', href: '/admin', icon: Shield },
+        { name: 'Permisos', href: '/permissions', icon: Shield },
+      ]
+    : [];
+
+  const userMgmtNav = isSuperAdmin
+    ? [{ name: 'Usuarios', href: '/users', icon: UserCog }]
+    : [];
+
+  const bottomNav = isClient
+    ? clientBottomNav
+    : [...adminOnlyNav, ...userMgmtNav, ...adminBottomNav.filter(item => item.name !== 'Usuarios')];
 
   useEffect(() => {
     setSidebarOpen(false);

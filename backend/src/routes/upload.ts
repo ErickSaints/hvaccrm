@@ -3,7 +3,8 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -66,9 +67,8 @@ function fileToDataUrl(file: Express.Multer.File): string {
 }
 
 router.use(authenticate);
-router.use(requireBackoffice);
 
-router.post('/photo', (req: Request, res: Response) => {
+router.post('/photo', requirePermission('upload:files'), (req: Request, res: Response) => {
   // Accept base64 data URLs directly
   if (req.body?.dataUrl) {
     const dataUrl = req.body.dataUrl as string;
@@ -104,7 +104,7 @@ router.post('/photo', (req: Request, res: Response) => {
   });
 });
 
-router.post('/avatar', (req: Request, res: Response) => {
+router.post('/avatar', requirePermission('upload:files'), (req: Request, res: Response) => {
   avatarUpload.single('avatar')(req, res, async (err) => {
     if (err) {
       if (err instanceof multer.MulterError) {

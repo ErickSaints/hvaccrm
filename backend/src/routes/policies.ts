@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -35,9 +36,8 @@ async function generatePolicyNumber(): Promise<string> {
 }
 
 router.use(authenticate);
-router.use(requireBackoffice);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('policies:view'), async (req: Request, res: Response) => {
   try {
     const policies = await prisma.maintenancePolicy.findMany({
       include: { customer: true },
@@ -49,7 +49,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('policies:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const policy = await prisma.maintenancePolicy.findUnique({
@@ -65,7 +65,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', requirePermission('policies:create'), async (req: Request, res: Response) => {
   try {
     const data = policySchema.parse(req.body);
     const number = await generatePolicyNumber();
@@ -95,7 +95,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('policies:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = policySchema.partial().parse(req.body);
@@ -109,6 +109,16 @@ router.put('/:id', async (req: Request, res: Response) => {
       return res.status(400).json({ error: err.errors });
     }
     res.status(500).json({ error: 'Error al actualizar política' });
+  }
+});
+
+router.delete('/:id', requirePermission('policies:delete'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    await prisma.maintenancePolicy.delete({ where: { id } });
+    res.status(204).send();
+  } catch {
+    res.status(500).json({ error: 'Error al eliminar póliza' });
   }
 });
 

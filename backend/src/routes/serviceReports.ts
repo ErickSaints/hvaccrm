@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice, requireSubscription } from '../middleware/auth';
+import { authenticate, requireSubscription } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -126,7 +127,7 @@ router.post('/', requireSubscription, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('service-reports:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = reportSchema.partial().parse(req.body);
@@ -162,6 +163,16 @@ router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
       return res.status(400).json({ error: err.errors });
     }
     res.status(500).json({ error: 'Error al actualizar reporte' });
+  }
+});
+
+router.delete('/:id', requirePermission('service-reports:delete'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    await prisma.serviceReport.delete({ where: { id } });
+    res.status(204).send();
+  } catch {
+    res.status(500).json({ error: 'Error al eliminar reporte' });
   }
 });
 

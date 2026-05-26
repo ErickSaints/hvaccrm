@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -54,7 +55,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', requirePermission('surveys:create'), async (req: Request, res: Response) => {
   try {
     const data = surveySchema.parse(req.body);
     const survey = await prisma.survey.create({
@@ -77,7 +78,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('surveys:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = surveySchema.partial().parse(req.body);
@@ -116,7 +117,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', requirePermission('surveys:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await Promise.all([

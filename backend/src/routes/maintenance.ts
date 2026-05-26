@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -15,9 +16,8 @@ const scheduleSchema = z.object({
 });
 
 router.use(authenticate);
-router.use(requireBackoffice);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('maintenance:view'), async (req: Request, res: Response) => {
   try {
     const logs = await prisma.maintenanceLog.findMany({
       include: { policy: true, equipment: true, assignedUser: true },
@@ -29,7 +29,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', requirePermission('maintenance:create'), async (req: Request, res: Response) => {
   try {
     const data = scheduleSchema.parse(req.body);
     const log = await prisma.maintenanceLog.create({
@@ -52,7 +52,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id/complete', async (req: Request, res: Response) => {
+router.put('/:id/complete', requirePermission('maintenance:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const log = await prisma.maintenanceLog.update({
@@ -65,6 +65,16 @@ router.put('/:id/complete', async (req: Request, res: Response) => {
     res.json(log);
   } catch {
     res.status(500).json({ error: 'Error al completar mantenimiento' });
+  }
+});
+
+router.delete('/:id', requirePermission('maintenance:delete'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    await prisma.maintenanceLog.delete({ where: { id } });
+    res.status(204).send();
+  } catch {
+    res.status(500).json({ error: 'Error al eliminar mantenimiento' });
   }
 });
 

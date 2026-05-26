@@ -1,5 +1,6 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import {
   ArrowLeft,
   Loader2,
@@ -13,6 +14,7 @@ import {
   Package,
   Image,
   PenLine,
+  Trash2,
 } from 'lucide-react';
 import api from '../lib/api';
 import type { ServiceReport } from '../types';
@@ -20,6 +22,7 @@ import type { ServiceReport } from '../types';
 export default function ServiceReportDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data: report, isLoading } = useQuery<ServiceReport>({
     queryKey: ['service-report', id],
@@ -32,6 +35,26 @@ export default function ServiceReportDetailPage() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      await api.delete(`/service-reports/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['service-reports'] });
+      toast.success('Reporte eliminado');
+      navigate('/service-reports');
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al eliminar reporte');
+    },
+  });
+
+  const handleDelete = () => {
+    if (window.confirm('¿Estás seguro de eliminar este reporte?')) {
+      deleteMutation.mutate();
+    }
   };
 
   if (isLoading) {
@@ -65,13 +88,19 @@ export default function ServiceReportDetailPage() {
             <p className="text-gray-500 mt-1">#{report.id} - {report.title}</p>
           </div>
         </div>
-        <button
-          onClick={handlePrint}
-          className="btn-primary inline-flex items-center gap-2"
-        >
-          <Printer className="w-4 h-4" />
-          Imprimir
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrint}
+            className="btn-primary inline-flex items-center gap-2"
+          >
+            <Printer className="w-4 h-4" />
+            Imprimir
+          </button>
+          <button onClick={handleDelete} className="btn-danger inline-flex items-center gap-2">
+            <Trash2 className="w-4 h-4" />
+            Eliminar
+          </button>
+        </div>
       </div>
 
       <div className="card print:shadow-none print:border-gray-300" id="report-content">

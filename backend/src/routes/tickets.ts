@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireRole, requireSubscription } from '../middleware/auth';
+import { authenticate, requireSubscription } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -109,12 +110,9 @@ router.post('/', requireSubscription, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('tickets:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
-    if (req.user!.role === 'CLIENT') {
-      return res.status(403).json({ error: 'No tienes permiso para modificar tickets' });
-    }
     const data = ticketSchema.partial().parse(req.body);
     const ticket = await prisma.ticket.update({ where: { id }, data });
     res.json(ticket);
@@ -123,6 +121,16 @@ router.put('/:id', async (req: Request, res: Response) => {
       return res.status(400).json({ error: err.errors });
     }
     res.status(500).json({ error: 'Error al actualizar ticket' });
+  }
+});
+
+router.delete('/:id', requirePermission('tickets:delete'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    await prisma.ticket.delete({ where: { id } });
+    res.status(204).send();
+  } catch {
+    res.status(500).json({ error: 'Error al eliminar ticket' });
   }
 });
 

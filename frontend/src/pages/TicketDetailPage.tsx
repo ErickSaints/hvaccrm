@@ -17,6 +17,7 @@ import {
   MessageSquare,
   ChevronDown,
   Plus,
+  Trash2,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
@@ -118,6 +119,26 @@ export default function TicketDetailPage() {
       toast.error(err?.response?.data?.error || 'Error al actualizar estado');
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      await api.delete(`/tickets/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      toast.success('Ticket eliminado');
+      navigate('/tickets');
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al eliminar ticket');
+    },
+  });
+
+  const handleDelete = () => {
+    if (window.confirm('¿Estás seguro de eliminar este ticket?')) {
+      deleteMutation.mutate();
+    }
+  };
 
   const assignMutation = useMutation({
     mutationFn: async (assignedTo: number | null) => {
@@ -266,6 +287,10 @@ export default function TicketDetailPage() {
             <ClipboardList className="w-4 h-4" />
             Crear OS
           </Link>
+          <button onClick={handleDelete} className="btn-danger inline-flex items-center gap-2">
+            <Trash2 className="w-4 h-4" />
+            Eliminar
+          </button>
         </div>
       </div>
 

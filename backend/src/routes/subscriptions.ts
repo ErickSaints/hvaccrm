@@ -157,7 +157,7 @@ router.post('/register', async (req: Request, res: Response) => {
         status: 'PENDIENTE',
       },
     });
-    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: false }, JWT_SECRET, { expiresIn: '24h' });
     const { password: _, ...userData } = user;
     res.status(201).json({ token, user: { ...userData, trialEndsAt }, subscription });
   } catch (err) {

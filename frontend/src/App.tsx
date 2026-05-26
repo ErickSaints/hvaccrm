@@ -40,6 +40,8 @@ import HvacCalculatorPage from './pages/HvacCalculatorPage';
 import SurveysPage from './pages/SurveysPage';
 import SurveyFormPage from './pages/SurveyFormPage';
 import SurveyDetailPage from './pages/SurveyDetailPage';
+import AdminPage from './pages/AdminPage';
+import PermissionsPage from './pages/PermissionsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -134,6 +136,8 @@ export default function App() {
               <Route path="surveys/new" element={<SurveyFormPage />} />
               <Route path="surveys/:id" element={<SurveyDetailPage />} />
               <Route path="surveys/:id/edit" element={<SurveyFormPage />} />
+              <Route path="admin" element={<AdminPage />} />
+              <Route path="permissions" element={<PermissionsPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

@@ -18,6 +18,7 @@ import {
   DollarSign,
   ChevronDown,
   Camera,
+  Trash2,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
@@ -80,6 +81,26 @@ export default function ServiceOrderDetailPage() {
       toast.error('Error al actualizar estado');
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      await api.delete(`/service-orders/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['service-orders'] });
+      toast.success('Orden de servicio eliminada');
+      navigate('/service-orders');
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al eliminar orden de servicio');
+    },
+  });
+
+  const handleDelete = () => {
+    if (window.confirm('¿Estás seguro de eliminar esta orden de servicio?')) {
+      deleteMutation.mutate();
+    }
+  };
 
   if (isLoading) {
     return (
@@ -160,6 +181,10 @@ export default function ServiceOrderDetailPage() {
             <FileText className="w-4 h-4" />
             Crear Reporte
           </Link>
+          <button onClick={handleDelete} className="btn-danger inline-flex items-center gap-2">
+            <Trash2 className="w-4 h-4" />
+            Eliminar
+          </button>
         </div>
       </div>
 

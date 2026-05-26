@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireSubscription } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -81,7 +82,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireSubscription, async (req: Request, res: Response) => {
+router.post('/', requirePermission('assets:create'), async (req: Request, res: Response) => {
   try {
     const data = assetSchema.parse(req.body);
     const asset = await prisma.asset.create({ data, include: { customer: true } });
@@ -94,7 +95,7 @@ router.post('/', requireSubscription, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('assets:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = assetSchema.partial().parse(req.body);
@@ -108,7 +109,7 @@ router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', requirePermission('assets:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.asset.delete({ where: { id } });

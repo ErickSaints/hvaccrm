@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice, requireSubscription } from '../middleware/auth';
+import { authenticate, requireSubscription } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -165,7 +166,7 @@ router.patch('/:id', requireSubscription, async (req: Request, res: Response) =>
   }
 });
 
-router.delete('/:id', requireBackoffice, async (req: Request, res: Response) => {
+router.delete('/:id', requirePermission('service-orders:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.serviceOrder.delete({ where: { id } });

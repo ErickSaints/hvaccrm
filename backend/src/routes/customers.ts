@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireRole } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -124,7 +125,7 @@ router.get('/:id/timeline', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireRole(['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS']), async (req: Request, res: Response) => {
+router.post('/', requirePermission('customers:create'), async (req: Request, res: Response) => {
   try {
     const data = customerSchema.parse(req.body);
     const customer = await prisma.customer.create({ data });
@@ -137,7 +138,7 @@ router.post('/', requireRole(['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS']), async 
   }
 });
 
-router.put('/:id', requireRole(['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS']), async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('customers:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = customerSchema.partial().parse(req.body);
@@ -151,7 +152,7 @@ router.put('/:id', requireRole(['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS']), asyn
   }
 });
 
-router.delete('/:id', requireRole(['ADMIN', 'SALES', 'PROYECTOS', 'COMPRAS']), async (req: Request, res: Response) => {
+router.delete('/:id', requirePermission('customers:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.customer.delete({ where: { id } });

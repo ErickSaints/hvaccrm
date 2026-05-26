@@ -14,7 +14,7 @@ const userSchema = z.object({
   name: z.string().min(1, 'El nombre es obligatorio'),
   email: z.string().email('Email inválido'),
   password: z.string().optional().or(z.literal('')),
-  role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES', 'CLIENT']),
+  role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES', 'CLIENT', 'PROYECTOS', 'COMPRAS']),
   phone: z.string().optional(),
 });
 
@@ -24,7 +24,7 @@ export default function UserFormPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { user: currentUser } = useAuth();
+  const { isSuperAdmin } = useAuth();
   const isEditing = Boolean(id);
 
   const {
@@ -84,11 +84,11 @@ export default function UserFormPage() {
     mutation.mutate(data);
   };
 
-  if (currentUser?.role !== 'ADMIN') {
+  if (!isSuperAdmin) {
     return (
       <div className="card text-center py-12">
         <h3 className="text-lg font-medium text-gray-900">Acceso restringido</h3>
-        <p className="text-gray-500 mt-1">Solo administradores pueden gestionar usuarios</p>
+        <p className="text-gray-500 mt-1">Solo el Super Administrador puede gestionar usuarios</p>
       </div>
     );
   }
@@ -154,6 +154,9 @@ export default function UserFormPage() {
               <option value="ADMIN">Administrador</option>
               <option value="TECHNICIAN">Técnico</option>
               <option value="SALES">Ventas</option>
+              <option value="PROYECTOS">Proyectos</option>
+              <option value="COMPRAS">Compras</option>
+              <option value="CLIENT">Cliente</option>
             </select>
             {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
           </div>

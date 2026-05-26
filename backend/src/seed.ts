@@ -30,6 +30,7 @@ async function main() {
       name: 'Admin Principal',
       role: 'ADMIN',
       phone: '555-0100',
+      isSuperAdmin: true,
     },
   });
 

@@ -2,13 +2,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Para Railway (producción) — usa PostgreSQL:
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// Para desarrollo local con SQLite, descomenta las 3 líneas de abajo
-// y comenta las 3 líneas de arriba:
+// Para desarrollo local con SQLite, comenta las 3 líneas de arriba
+// y descomenta las 3 líneas de abajo:
 // datasource db {
 //   provider = "sqlite"
 //   url      = "file:./dev.db"
@@ -74,6 +75,7 @@ model User {
   phone         String?
   avatar        String?
   active        Boolean   @default(true)
+  isSuperAdmin  Boolean   @default(false)
   trialEndsAt   DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -87,6 +89,20 @@ model User {
   subscription  UserSubscription?
   createdPlans  SubscriptionPlan[] @relation("PlanCreator")
   surveys       Survey[]
+  rolePermissions RolePermission[]
+}
+
+model RolePermission {
+  id            Int       @id @default(autoincrement())
+  role          UserRole
+  permission    String
+  allowed       Boolean   @default(true)
+  updatedAt     DateTime  @updatedAt
+
+  updatedById   Int
+  updatedBy     User      @relation(fields: [updatedById], references: [id])
+
+  @@unique([role, permission])
 }
 
 model SubscriptionPlan {

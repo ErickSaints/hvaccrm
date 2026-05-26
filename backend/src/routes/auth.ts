@@ -32,7 +32,7 @@ router.post('/login', async (req: Request, res: Response) => {
     if (!valid) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
-    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: user.isSuperAdmin }, JWT_SECRET, { expiresIn: '24h' });
     const { password: _, ...userData } = user;
     res.json({ token, user: userData });
   } catch (err) {
@@ -63,7 +63,7 @@ router.post('/register', async (req: Request, res: Response) => {
         trialEndsAt,
       },
     });
-    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: false }, JWT_SECRET, { expiresIn: '24h' });
     const { password: _, ...userData } = user;
     res.status(201).json({ token, user: userData });
   } catch (err) {

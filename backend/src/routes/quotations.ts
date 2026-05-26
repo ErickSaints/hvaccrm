@@ -1,7 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice, requireRole, requireSubscription } from '../middleware/auth';
+import { authenticate, requireSubscription } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -182,7 +183,7 @@ router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id/status', requireBackoffice, async (req: Request, res: Response) => {
+router.put('/:id/status', requirePermission('quotations:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const { status } = statusSchema.parse(req.body);
@@ -199,7 +200,7 @@ router.put('/:id/status', requireBackoffice, async (req: Request, res: Response)
   }
 });
 
-router.delete('/:id', requireBackoffice, async (req: Request, res: Response) => {
+router.delete('/:id', requirePermission('quotations:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.quotationItem.deleteMany({ where: { quotationId: id } });

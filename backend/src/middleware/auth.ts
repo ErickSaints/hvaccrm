@@ -7,6 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'hvaccrm-secret-key';
 export interface JwtPayload {
   userId: number;
   role: string;
+  isSuperAdmin: boolean;
 }
 
 declare global {
@@ -20,6 +21,7 @@ declare global {
         phone: string | null;
         avatar: string | null;
         active: boolean;
+        isSuperAdmin: boolean;
         trialEndsAt: Date | null;
       };
     }
@@ -48,6 +50,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
         phone: user.phone,
         avatar: user.avatar,
         active: user.active,
+        isSuperAdmin: user.isSuperAdmin,
         trialEndsAt: user.trialEndsAt,
       };
       next();
@@ -55,6 +58,16 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   } catch {
     return res.status(401).json({ error: 'Token inválido' });
   }
+}
+
+export function requireSuperAdmin(req: Request, res: Response, next: NextFunction) {
+  if (!req.user) {
+    return res.status(401).json({ error: 'No autenticado' });
+  }
+  if (req.user.role !== 'ADMIN' || !req.user.isSuperAdmin) {
+    return res.status(403).json({ error: 'Solo el Super Administrador puede realizar esta acción' });
+  }
+  next();
 }
 
 export const requireBackoffice = requireRole(['ADMIN', 'TECHNICIAN', 'SALES', 'PROYECTOS', 'COMPRAS']);

@@ -2,10 +2,19 @@ export interface User {
   id: number;
   email: string;
   name: string;
-  role: 'ADMIN' | 'TECHNICIAN' | 'SALES' | 'CLIENT';
+  role: 'ADMIN' | 'TECHNICIAN' | 'SALES' | 'CLIENT' | 'PROYECTOS' | 'COMPRAS';
   phone?: string;
   avatar?: string;
   active: boolean;
+  isSuperAdmin?: boolean;
+}
+
+export interface PermissionInfo {
+  defaults: Record<string, string[]>;
+  overrides: Record<string, string[]>;
+  allPermissions: string[];
+  categories: Record<string, { label: string; permissions: string[] }>;
+  labels: Record<string, string>;
 }
 
 export interface Customer {

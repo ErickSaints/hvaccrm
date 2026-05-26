@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
+  Trash2,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
@@ -79,6 +80,26 @@ export default function QuotationDetailPage() {
       toast.error('Error al actualizar estado');
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      await api.delete(`/quotations/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quotations'] });
+      toast.success('Cotización eliminada');
+      navigate('/quotations');
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al eliminar cotización');
+    },
+  });
+
+  const handleDelete = () => {
+    if (window.confirm('¿Estás seguro de eliminar esta cotización?')) {
+      deleteMutation.mutate();
+    }
+  };
 
   const handlePrint = () => {
     window.print();
@@ -163,6 +184,10 @@ export default function QuotationDetailPage() {
           <button onClick={handlePrint} className="btn-secondary inline-flex items-center gap-2">
             <Printer className="w-4 h-4" />
             Imprimir
+          </button>
+          <button onClick={handleDelete} className="btn-danger inline-flex items-center gap-2">
+            <Trash2 className="w-4 h-4" />
+            Eliminar
           </button>
         </div>
       </div>

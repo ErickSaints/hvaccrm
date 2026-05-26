@@ -4,7 +4,8 @@ import path from 'path';
 import fs from 'fs';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
@@ -37,7 +38,6 @@ const upload = multer({
 });
 
 router.use(authenticate);
-router.use(requireBackoffice);
 
 const updateProfileSchema = z.object({
   name: z.string().min(1).optional(),
