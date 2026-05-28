@@ -11,6 +11,7 @@ import {
   Building2,
   Clock,
   FileText,
+  Gauge,
   Package,
   Image,
   PenLine,
@@ -200,6 +201,47 @@ export default function ServiceReportDetailPage() {
             </div>
           </div>
         </div>
+
+        {report.hvacReadings && Object.keys(report.hvacReadings).some(k => k !== 'notes' && report.hvacReadings![k as keyof typeof report.hvacReadings] != null) && (
+          <div className="mb-8">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2 mb-4 flex items-center gap-2">
+              <Gauge className="w-4 h-4" />
+              Lecturas HVAC
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {(() => {
+                const readings: { label: string; value: number | undefined | null; unit: string }[] = [
+                  { label: 'Amperaje R1', value: report.hvacReadings.ampsR1, unit: 'A' },
+                  { label: 'Amperaje R2', value: report.hvacReadings.ampsR2, unit: 'A' },
+                  { label: 'Amperaje R3', value: report.hvacReadings.ampsR3, unit: 'A' },
+                  { label: 'Voltaje Alimentación', value: report.hvacReadings.voltsSupply, unit: 'V' },
+                  { label: 'Presión Succión', value: report.hvacReadings.suctionPressure, unit: 'PSI' },
+                  { label: 'Presión Descarga', value: report.hvacReadings.dischargePressure, unit: 'PSI' },
+                  { label: 'Temp. Succión', value: report.hvacReadings.suctionTemp, unit: '°C' },
+                  { label: 'Temp. Línea Líquido', value: report.hvacReadings.liquidLineTemp, unit: '°C' },
+                  { label: 'Superheat', value: report.hvacReadings.superheat, unit: '°F' },
+                  { label: 'Subcooling', value: report.hvacReadings.subcooling, unit: '°F' },
+                  { label: 'Temp. Suministro', value: report.hvacReadings.supplyTemp, unit: '°C' },
+                  { label: 'Temp. Retorno', value: report.hvacReadings.returnTemp, unit: '°C' },
+                  { label: 'Delta T', value: report.hvacReadings.deltaT, unit: '°C' },
+                  { label: 'Presión Colector', value: report.hvacReadings.gasManifoldPressure, unit: '"WC' },
+                  { label: 'Presión Entrada Gas', value: report.hvacReadings.gasInletPressure, unit: '"WC' },
+                ];
+                return readings.filter(r => r.value != null).map((r, i) => (
+                  <div key={i} className="bg-gray-50 dark:bg-gray-800 rounded-lg px-4 py-3 flex items-center justify-between">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{r.label}</span>
+                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{r.value} {r.unit}</span>
+                  </div>
+                ));
+              })()}
+            </div>
+            {report.hvacReadings.notes && (
+              <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <p className="text-sm text-blue-800 dark:text-blue-200">{report.hvacReadings.notes}</p>
+              </div>
+            )}
+          </div>
+        )}
 
         {report.description && (
           <div className="mb-8">

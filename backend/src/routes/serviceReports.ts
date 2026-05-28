@@ -38,6 +38,25 @@ const photoSchema = z.object({
   type: z.string().optional(),
 });
 
+const hvacReadingsSchema = z.object({
+  ampsR1: z.number().optional(),
+  ampsR2: z.number().optional(),
+  ampsR3: z.number().optional(),
+  voltsSupply: z.number().optional(),
+  suctionPressure: z.number().optional(),
+  dischargePressure: z.number().optional(),
+  suctionTemp: z.number().optional(),
+  liquidLineTemp: z.number().optional(),
+  superheat: z.number().optional(),
+  subcooling: z.number().optional(),
+  supplyTemp: z.number().optional(),
+  returnTemp: z.number().optional(),
+  deltaT: z.number().optional(),
+  gasManifoldPressure: z.number().optional(),
+  gasInletPressure: z.number().optional(),
+  notes: z.string().optional(),
+}).optional();
+
 const reportSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
@@ -51,6 +70,7 @@ const reportSchema = z.object({
   technicianId: z.number(),
   customerId: z.number(),
   equipmentId: z.number().optional(),
+  hvacReadings: hvacReadingsSchema,
   photos: z.array(photoSchema).optional(),
   usedMaterials: z.array(materialSchema).optional(),
 });
@@ -110,6 +130,7 @@ router.post('/', requirePermission('service-reports:create'), requireSubscriptio
         technicianId: data.technicianId,
         customerId: data.customerId,
         equipmentId: data.equipmentId,
+        hvacReadings: data.hvacReadings ?? undefined,
         photos: data.photos && data.photos.length > 0 ? { create: data.photos } : undefined,
         usedMaterials: data.usedMaterials && data.usedMaterials.length > 0 ? { create: data.usedMaterials } : undefined,
       },
@@ -145,6 +166,7 @@ router.put('/:id', requirePermission('service-reports:edit'), async (req: Reques
     if (data.departureTime !== undefined) updateData.departureTime = data.departureTime;
     if (data.signature !== undefined) updateData.signature = data.signature;
     if (data.equipmentId !== undefined) updateData.equipmentId = data.equipmentId;
+    if (data.hvacReadings !== undefined) updateData.hvacReadings = data.hvacReadings;
 
     if (data.photos) {
       await prisma.photo.deleteMany({ where: { reportId: id } });

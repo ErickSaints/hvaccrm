@@ -139,6 +139,25 @@ export interface ServiceOrder {
   photos?: Photo[];
 }
 
+export interface HvacReadings {
+  ampsR1?: number;
+  ampsR2?: number;
+  ampsR3?: number;
+  voltsSupply?: number;
+  suctionPressure?: number;
+  dischargePressure?: number;
+  suctionTemp?: number;
+  liquidLineTemp?: number;
+  superheat?: number;
+  subcooling?: number;
+  supplyTemp?: number;
+  returnTemp?: number;
+  deltaT?: number;
+  gasManifoldPressure?: number;
+  gasInletPressure?: number;
+  notes?: string;
+}
+
 export interface ServiceReport {
   id: number;
   title: string;
@@ -157,6 +176,7 @@ export interface ServiceReport {
   customer?: Customer;
   equipmentId?: number;
   equipment?: Equipment;
+  hvacReadings?: HvacReadings;
   photos?: Photo[];
   usedMaterials?: UsedMaterial[];
 }

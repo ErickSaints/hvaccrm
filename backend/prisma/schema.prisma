@@ -411,6 +411,8 @@ model ServiceReport {
   equipmentId      Int?
   equipment       Equipment? @relation(fields: [equipmentId], references: [id])
 
+  hvacReadings    Json?
+
   photos          Photo[]
   usedMaterials   UsedMaterial[]
   inventoryMovements InventoryMovement[]
