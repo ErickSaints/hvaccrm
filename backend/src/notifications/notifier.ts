@@ -1,5 +1,6 @@
 import prisma from '../prisma';
 import { sendEmail, isEmailConfigured, ticketStatusEmail, serviceOrderStatusEmail, quotationStatusEmail, reminderEmail, surveyEmail } from './email';
+import { emitToUser, emitToBackoffice } from '../websocket';
 
 type NotificationType = 'ticket' | 'service-order' | 'quotation' | 'reminder' | 'survey';
 
@@ -11,7 +12,7 @@ async function createInApp(params: {
   link?: string;
 }) {
   try {
-    await prisma.notification.create({
+    const notification = await prisma.notification.create({
       data: {
         userId: params.userId,
         type: params.type,
@@ -20,6 +21,8 @@ async function createInApp(params: {
         link: params.link,
       },
     });
+    emitToUser(params.userId, 'notification', notification);
+    return notification;
   } catch (err) {
     console.error('[notifier] Error creating in-app notification:', err);
   }
@@ -56,6 +59,7 @@ export async function notifyTicketStatusChange(params: {
       link,
     });
   }
+  emitToBackoffice('ticket:status_change', { ticketId: params.ticketId, newStatus: params.newStatus });
 
   // Send email to customer
   if (params.customerEmail && isEmailConfigured()) {

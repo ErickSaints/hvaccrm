@@ -1,9 +1,12 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireSubscription } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { requireSubscription } from '../middleware/auth';
 import { notifyQuotationStatusChange } from '../notifications/notifier';
+import { emitToBackoffice } from '../websocket';
+import { generateQuotationPdf } from '../services/pdfGenerator';
 
 const router = Router();
 
@@ -206,6 +209,7 @@ router.put('/:id/status', requirePermission('quotations:edit'), async (req: Requ
       customerName: old.customer.contactName,
       newStatus: status,
     }).catch((err) => console.error('[quotations] notify error:', err));
+    emitToBackoffice('quotation:status_change', { quotationId: id, newStatus: status });
     res.json(quotation);
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -223,6 +227,43 @@ router.delete('/:id', requirePermission('quotations:delete'), async (req: Reques
     res.status(204).send();
   } catch {
     res.status(500).json({ error: 'Error al eliminar cotización' });
+  }
+});
+
+router.get('/:id/pdf', requirePermission('quotations:view'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const quotation = await prisma.quotation.findUnique({
+      where: { id },
+      include: { customer: true, items: true },
+    });
+    if (!quotation) return res.status(404).json({ error: 'Cotización no encontrada' });
+    generateQuotationPdf(res, {
+      number: quotation.number,
+      title: quotation.title,
+      subtotal: quotation.subtotal,
+      tax: quotation.tax,
+      discount: quotation.discount,
+      total: quotation.total,
+      validUntil: quotation.validUntil,
+      notes: quotation.notes,
+      terms: quotation.terms,
+      customer: {
+        companyName: quotation.customer.companyName,
+        contactName: quotation.customer.contactName,
+        email: quotation.customer.email,
+        phone: quotation.customer.phone,
+        address: quotation.customer.address,
+      },
+      items: quotation.items.map((item) => ({
+        description: item.description,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        total: item.total,
+      })),
+    });
+  } catch {
+    res.status(500).json({ error: 'Error al generar PDF' });
   }
 });
 

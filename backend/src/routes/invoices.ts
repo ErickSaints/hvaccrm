@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { generateInvoicePdf } from '../services/pdfGenerator';
 
 const router = Router();
 
@@ -152,6 +153,40 @@ router.post('/generate-from-order/:orderId', requirePermission('invoices:create'
     res.status(201).json(invoice);
   } catch {
     res.status(500).json({ error: 'Error al generar factura' });
+  }
+});
+
+router.get('/:id/pdf', requirePermission('invoices:view'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const invoice = await prisma.invoice.findUnique({
+      where: { id },
+      include: { customer: true, createdBy: { select: { name: true } } },
+    });
+    if (!invoice) return res.status(404).json({ error: 'Factura no encontrada' });
+    generateInvoicePdf(res, {
+      number: invoice.number,
+      title: invoice.title,
+      subtotal: invoice.subtotal,
+      tax: invoice.tax,
+      discount: invoice.discount,
+      total: invoice.total,
+      status: invoice.status,
+      dueDate: invoice.dueDate,
+      paidAt: invoice.paidAt,
+      notes: invoice.notes,
+      customer: {
+        companyName: invoice.customer.companyName,
+        contactName: invoice.customer.contactName,
+        email: invoice.customer.email,
+        phone: invoice.customer.phone,
+        address: invoice.customer.address,
+        taxId: invoice.customer.taxId,
+      },
+      createdBy: invoice.createdBy,
+    });
+  } catch {
+    res.status(500).json({ error: 'Error al generar PDF' });
   }
 });
 

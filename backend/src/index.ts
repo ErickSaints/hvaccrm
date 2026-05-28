@@ -1,9 +1,11 @@
 import express from 'express';
+import { createServer } from 'http';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import path from 'path';
 import prisma from './prisma';
+import logger from './logger';
 import authRoutes from './routes/auth';
 import customerRoutes from './routes/customers';
 import equipmentRoutes from './routes/equipment';
@@ -26,12 +28,17 @@ import surveyRoutes from './routes/surveys';
 import catalogMaterialRoutes from './routes/catalogMaterials';
 import invoiceRoutes from './routes/invoices';
 import adminRoutes from './routes/admin';
-
+import inventoryRoutes from './routes/inventory';
+import { initWebSocket } from './websocket';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { startReminderScheduler } from './notifications/scheduler';
 import { startMaintenanceScheduler } from './notifications/maintenanceScheduler';
 
 const app = express();
+const httpServer = createServer(app);
 const PORT = process.env.PORT || 3001;
+
+initWebSocket(httpServer);
 
 // Security
 app.use(helmet({
@@ -59,8 +66,14 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 const publicPath = path.join(__dirname, '../public');
 app.use(express.static(publicPath));
 
+// Request logging
+app.use((req, _res, next) => {
+  logger.info(`${req.method} ${req.path}`, { query: req.query });
+  next();
+});
+
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', timestamp: new Date().toISOString(), uptime: process.uptime() });
 });
 
 app.get(/^\/(?!api\/).*/, (_req, res) => {
@@ -72,7 +85,7 @@ app.get(/^\/(?!api\/).*/, (_req, res) => {
       message: 'HVAC-R CRM API',
       version: '1.0.0',
       docs: '/health',
-      endpoints: '/api/auth, /api/customers, /api/tickets, /api/quotations, /api/service-orders, /api/service-reports, /api/policies, /api/maintenance, /api/users, /api/profile, /api/subscriptions, /api/mercadolibre',
+      endpoints: '/api/auth, /api/customers, /api/tickets, /api/quotations, /api/service-orders, /api/service-reports, /api/policies, /api/maintenance, /api/users, /api/profile, /api/subscriptions, /api/mercadolibre, /api/inventory',
       frontend: 'Ejecuta npm run dev en la carpeta frontend/',
     });
   }
@@ -100,9 +113,13 @@ app.use('/api/surveys', surveyRoutes);
 app.use('/api/catalog-materials', catalogMaterialRoutes);
 app.use('/api/invoices', invoiceRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/inventory', inventoryRoutes);
 
-app.listen(PORT, () => {
-  console.log(`HVAC-R CRM API running on port ${PORT}`);
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+httpServer.listen(PORT, () => {
+  logger.info(`HVAC-R CRM API running on port ${PORT}`);
   startReminderScheduler();
   startMaintenanceScheduler();
 });

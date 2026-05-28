@@ -91,6 +91,11 @@ model User {
   surveys       Survey[]
   rolePermissions RolePermission[]
   invoices      Invoice[]
+  branches      UserBranch[]
+  timeEntries   TimeEntry[]
+  locations     TechnicianLocation[]
+  auditLogs     AuditLog[]
+  inventoryMovements InventoryMovement[] @relation("InventoryMovementsByUser")
 }
 
 model RolePermission {
@@ -168,6 +173,9 @@ model Customer {
   assets        Asset[]
   surveys       Survey[]
   invoices      Invoice[]
+
+  branchId      Int?
+  branch        Branch?   @relation(fields: [branchId], references: [id])
 }
 
 model Equipment {
@@ -307,6 +315,9 @@ model ServiceOrder {
   report          ServiceReport?
   photos          Photo[]             @relation("OrderPhotos")
   invoices        Invoice[]
+  inventoryMovements InventoryMovement[]
+  timeEntries     TimeEntry[]
+  locations       TechnicianLocation[]
 }
 
 model Survey {
@@ -398,6 +409,7 @@ model ServiceReport {
 
   photos          Photo[]
   usedMaterials   UsedMaterial[]
+  inventoryMovements InventoryMovement[]
 }
 
 model Photo {
@@ -483,6 +495,7 @@ model Invoice {
   notes           String?
   dueDate         DateTime?
   paidAt          DateTime?
+  cfdiUuid        String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
@@ -497,4 +510,140 @@ model Invoice {
 
   createdById     Int
   createdBy       User      @relation(fields: [createdById], references: [id])
+
+  branchId        Int?
+  branch          Branch?   @relation(fields: [branchId], references: [id])
+}
+
+// === ENTERPRISE MODULES ===
+
+model Branch {
+  id            Int       @id @default(autoincrement())
+  name          String
+  code          String    @unique
+  address       String?
+  city          String?
+  state         String?
+  phone         String?
+  email         String?
+  managerName   String?
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  customers     Customer[]
+  users         UserBranch[]
+  inventory     InventoryItem[]
+  inventoryMovements InventoryMovement[]
+  timeEntries   TimeEntry[]
+  invoices      Invoice[]
+}
+
+model UserBranch {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  branchId      Int
+  branch        Branch    @relation(fields: [branchId], references: [id])
+  isManager     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+
+  @@unique([userId, branchId])
+}
+
+model InventoryItem {
+  id            Int       @id @default(autoincrement())
+  code          String    @unique
+  name          String
+  description   String?
+  category      String    @default("GENERAL")
+  unit          String    @default("pza")
+  minStock      Float     @default(0)
+  currentStock  Float     @default(0)
+  unitPrice     Float     @default(0)
+  location      String?
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  branchId      Int?
+  branch        Branch?   @relation(fields: [branchId], references: [id])
+
+  movements     InventoryMovement[]
+}
+
+model InventoryMovement {
+  id            Int       @id @default(autoincrement())
+  type          String    // ENTRADA, SALIDA, AJUSTE, TRANSFERENCIA
+  quantity      Float
+  unitPrice     Float?
+  total         Float?
+  reference     String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+
+  itemId        Int
+  item          InventoryItem @relation(fields: [itemId], references: [id])
+
+  branchId      Int?
+  branch        Branch?   @relation(fields: [branchId], references: [id])
+
+  performedById Int?
+  performedBy   User?     @relation("InventoryMovementsByUser", fields: [performedById], references: [id])
+
+  serviceOrderId Int?
+  serviceOrder  ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+
+  reportId      Int?
+  report        ServiceReport? @relation(fields: [reportId], references: [id])
+}
+
+model TimeEntry {
+  id            Int       @id @default(autoincrement())
+  date          DateTime  @default(now())
+  startTime     DateTime
+  endTime       DateTime?
+  description   String?
+  entryType     String    @default("TRABAJO") // TRABAJO, VIAJE, DESCANSO
+  billable      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+
+  serviceOrderId Int?
+  serviceOrder  ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+
+  branchId      Int?
+  branch        Branch?   @relation(fields: [branchId], references: [id])
+}
+
+model AuditLog {
+  id            Int       @id @default(autoincrement())
+  action        String    // CREATE, UPDATE, DELETE, LOGIN, EXPORT
+  entity        String    // Customer, Ticket, Invoice, etc.
+  entityId      Int?
+  description   String?
+  metadata      String?   // JSON con detalles adicionales
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime  @default(now())
+
+  userId        Int?
+  user          User?     @relation(fields: [userId], references: [id])
+}
+
+model TechnicianLocation {
+  id            Int       @id @default(autoincrement())
+  latitude      Float
+  longitude     Float
+  accuracy      Float?
+  recordedAt    DateTime  @default(now())
+
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+
+  serviceOrderId Int?
+  serviceOrder  ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
 }
