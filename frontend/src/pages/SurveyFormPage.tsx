@@ -94,7 +94,10 @@ export default function SurveyFormPage() {
 
   const { data: customers } = useQuery<Customer[]>({
     queryKey: ['customers'],
-    queryFn: () => api.get('/customers').then(r => r.data),
+    queryFn: async () => {
+      const { data } = await api.get('/customers?limit=1000');
+      return data.data ?? [];
+    },
   });
 
   const { data: surveyData, isLoading } = useQuery({

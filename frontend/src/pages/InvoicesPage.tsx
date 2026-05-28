@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Plus, FileText, Loader2, ArrowRight } from 'lucide-react';
 import api from '../lib/api';
-import type { Invoice } from '../types';
+import type { Invoice, PaginatedResponse } from '../types';
+import Pagination from '../components/Pagination';
 
 const statusStyles: Record<string, string> = {
   BORRADOR: 'bg-gray-100 text-gray-800',
@@ -21,13 +23,21 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function InvoicesPage() {
-  const { data: invoices, isLoading } = useQuery<Invoice[]>({
-    queryKey: ['invoices'],
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useQuery<PaginatedResponse<Invoice>>({
+    queryKey: ['invoices', page],
     queryFn: async () => {
-      const { data } = await api.get<Invoice[]>('/invoices');
+      const params = new URLSearchParams();
+      params.set('page', String(page));
+      params.set('limit', '20');
+      const { data } = await api.get(`/invoices?${params}`);
       return data;
     },
   });
+
+  const invoices = data?.data ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = data?.totalPages ?? 1;
 
   if (isLoading) {
     return (
@@ -106,6 +116,7 @@ export default function InvoicesPage() {
               )}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={totalPages} total={total} limit={20} onPageChange={setPage} />
         </div>
       </div>
     </div>

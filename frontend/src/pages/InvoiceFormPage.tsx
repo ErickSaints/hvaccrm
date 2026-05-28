@@ -24,8 +24,8 @@ export default function InvoiceFormPage() {
   const { data: customers } = useQuery<Customer[]>({
     queryKey: ['customers'],
     queryFn: async () => {
-      const { data } = await api.get<Customer[]>('/customers');
-      return data;
+      const { data } = await api.get('/customers?limit=1000');
+      return data.data ?? [];
     },
   });
 
