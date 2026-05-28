@@ -28,6 +28,7 @@ import {
   Moon,
   Sun,
   Settings,
+  TrendingUp,
 } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import GlobalSearch from './GlobalSearch';
@@ -47,13 +48,14 @@ const mainNav = [
     { name: 'Tickets', href: '/tickets', icon: TicketCheck },
     { name: 'Cotizaciones', href: '/quotations', icon: FileText },
     { name: 'Órdenes de Servicio', href: '/service-orders', icon: ClipboardList },
-    { name: 'Reportes', href: '/service-reports', icon: Camera },
+    { name: 'Reportes de Servicio', href: '/service-reports', icon: Camera },
+    { name: 'Reportes Ejecutivos', href: '/reports', icon: TrendingUp },
   ]},
   { section: 'Mantenimiento', items: [
     { name: 'Pólizas', href: '/policies', icon: ShieldCheck },
     { name: 'Mantenimientos', href: '/maintenance', icon: CalendarCheck },
-  { name: 'Calendario', href: '/dispatch', icon: CalendarCheck },
-  { name: 'Facturas', href: '/invoices', icon: FileText },
+    { name: 'Calendario', href: '/dispatch', icon: CalendarCheck },
+    { name: 'Facturas', href: '/invoices', icon: FileText },
   ]},
   { section: 'Proyectos', items: [
     { name: 'Levantamientos', href: '/surveys', icon: Ruler },
@@ -101,54 +103,47 @@ const roleColors: Record<string, string> = {
   TECHNICIAN: 'bg-blue-100 text-blue-700',
   SALES: 'bg-emerald-100 text-emerald-700',
   CLIENT: 'bg-gray-100 text-gray-700',
-  PROYECTOS: 'bg-amber-100 text-amber-700',
-  COMPRAS: 'bg-rose-100 text-rose-700',
+  PROYECTOS: 'bg-cyan-100 text-cyan-700',
+  COMPRAS: 'bg-orange-100 text-orange-700',
 };
 
 export default function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
-  const [isDark, toggleDark] = useDarkMode();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const role = user?.role as string || '';
-  const isClient = role === 'CLIENT';
-  const isSuperAdmin = user?.isSuperAdmin === true && role === 'ADMIN';
+  const { isDark, toggle: toggleDark } = useDarkMode();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
-  const visibleMainNav = mainNav.filter(section =>
-    section.section !== 'Proyectos' || (role === 'ADMIN' || role === 'SALES' || role === 'PROYECTOS' || role === 'COMPRAS')
-  );
+  const isClient = user?.role === 'CLIENT';
 
-  const adminOnlyNav = isSuperAdmin
-    ? [
-        { name: 'Panel Admin', href: '/admin', icon: Shield },
-        { name: 'Permisos', href: '/permissions', icon: Shield },
-      ]
-    : [];
+  const visibleMainNav = mainNav.filter((section) => {
+    if (user?.role === 'ADMIN') return true;
+    const adminSections = ['General', 'Herramientas'];
+    const techSections = ['General', 'Clientes', 'Operaciones', 'Mantenimiento', 'Herramientas'];
+    const salesSections = ['General', 'Clientes', 'Operaciones', 'Herramientas'];
+    const proyectosSections = ['General', 'Proyectos', 'Herramientas'];
+    const comprasSections = ['General', 'Herramientas'];
 
-  const userMgmtNav = isSuperAdmin
-    ? [{ name: 'Usuarios', href: '/users', icon: UserCog }]
-    : [];
-
-  const bottomNav = isClient
-    ? clientBottomNav
-    : [...adminOnlyNav, ...userMgmtNav, ...adminBottomNav.filter(item => item.name !== 'Usuarios')];
-
-  useEffect(() => {
-    setSidebarOpen(false);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    setExpandedSections({ 'General': true, 'Clientes': true, 'Operaciones': true, 'Mantenimiento': true, 'Proyectos': true, 'Herramientas': true });
-  }, []);
-
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); setSearchOpen(true); }
-      if (e.key === 'Escape') setSearchOpen(false);
+    switch (user?.role) {
+      case 'TECHNICIAN': return techSections.includes(section.section);
+      case 'SALES': return salesSections.includes(section.section);
+      case 'PROYECTOS': return proyectosSections.includes(section.section);
+      case 'COMPRAS': return comprasSections.includes(section.section);
+      default: return adminSections.includes(section.section);
     }
+  });
+
+  const bottomNav = isClient ? clientBottomNav : adminBottomNav;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
@@ -254,7 +249,7 @@ export default function Layout() {
 
           {/* User info */}
           {user && (
-              <div className="mt-3 pt-3 border-t border-gray-200 px-3 dark:border-gray-700">
+            <div className="mt-3 pt-3 border-t border-gray-200 px-3 dark:border-gray-700">
               <div className="flex items-center gap-3">
                 <div className={`flex items-center justify-center w-9 h-9 rounded-full font-semibold text-sm shrink-0 ${roleColors[user.role] || 'bg-gray-100 text-gray-700'}`}>
                   {user.name.charAt(0).toUpperCase()}

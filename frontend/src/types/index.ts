@@ -279,6 +279,32 @@ export interface PaginatedResponse<T> {
   hasMore: boolean;
 }
 
+export interface ReportsSummary {
+  summary: {
+    totalCustomers: number;
+    activeTickets: number;
+    pendingOrders: number;
+    activePolicies: number;
+    periodQuotations: number;
+    periodCompletedOrders: number;
+    totalEquipment: number;
+    periodRevenue: number;
+    invoicesPaid: number;
+    totalUsers: number;
+    technicians: number;
+    approvalRate: number;
+    completionRate: number;
+  };
+  monthlyRevenue: { month: string; revenue: number; orders: number; quotations: number }[];
+  ticketTrends: { month: string; creados: number; resueltos: number }[];
+  ticketsByStatus: { name: string; value: number }[];
+  ticketsByLevel: { name: string; value: number }[];
+  quotationsByStatus: { name: string; value: number }[];
+  ordersByStatus: { name: string; value: number }[];
+  technicianPerformance: { name: string; completadas: number; pendientes: number; abiertos: number; ingresos: number }[];
+  topCustomers: { id: number; name: string; totalSpent: number; orderCount: number }[];
+}
+
 export interface MLPrediction {
   equipmentId: number;
   equipmentType: string;

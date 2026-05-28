@@ -55,6 +55,7 @@ const InvoiceFormPage = lazy(() => import('./pages/InvoiceFormPage'));
 const InvoiceDetailPage = lazy(() => import('./pages/InvoiceDetailPage'));
 const MLPredictionsPage = lazy(() => import('./pages/MLPredictionsPage'));
 const ClientSettingsPage = lazy(() => import('./pages/ClientSettings'));
+const ReportsPage = lazy(() => import('./pages/ReportsPage'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -170,6 +171,7 @@ export default function App() {
                 <Route path="inventory/:id" element={<InventoryDetailPage />} />
                 <Route path="inventory/:id/edit" element={<InventoryFormPage />} />
                 <Route path="client/settings" element={<ClientSettingsPage />} />
+                <Route path="reports" element={<ReportsPage />} />
               </Route>
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

@@ -30,67 +30,20 @@ import invoiceRoutes from './routes/invoices';
 import adminRoutes from './routes/admin';
 import inventoryRoutes from './routes/inventory';
 import mlRoutes from './routes/ml';
-import { initWebSocket } from './websocket';
-import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import reportRoutes from './routes/reports';
+import { notFoundHandler, errorHandler } from './middleware/errorHandler';
 import { startReminderScheduler } from './notifications/scheduler';
 import { startMaintenanceScheduler } from './notifications/maintenanceScheduler';
+import { initWebSocket } from './websocket';
 
 const app = express();
 const httpServer = createServer(app);
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 
-initWebSocket(httpServer);
-
-// Security
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: 'cross-origin' },
-  contentSecurityPolicy: false,
-}));
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 1000,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'Demasiadas solicitudes. Intenta de nuevo más tarde.' },
-});
-app.use('/api/', limiter);
-
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || ['http://localhost:5173', 'http://localhost:3001'],
-  credentials: true,
-}));
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
+app.use(cors());
+app.use(rateLimit({ windowMs: 60 * 1000, max: 200 }));
 app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
-const publicPath = path.join(__dirname, '../public');
-app.use(express.static(publicPath));
-
-// Request logging
-app.use((req, _res, next) => {
-  logger.info(`${req.method} ${req.path}`, { query: req.query });
-  next();
-});
-
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString(), uptime: process.uptime() });
-});
-
-app.get(/^\/(?!api\/).*/, (_req, res) => {
-  const indexPath = path.join(publicPath, 'index.html');
-  if (require('fs').existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.json({
-      message: 'HVAC-R CRM API',
-      version: '1.0.0',
-      docs: '/health',
-      endpoints: '/api/auth, /api/customers, /api/tickets, /api/quotations, /api/service-orders, /api/service-reports, /api/policies, /api/maintenance, /api/users, /api/profile, /api/subscriptions, /api/mercadolibre, /api/inventory',
-      frontend: 'Ejecuta npm run dev en la carpeta frontend/',
-    });
-  }
-});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
@@ -116,9 +69,17 @@ app.use('/api/invoices', invoiceRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/ml', mlRoutes);
+app.use('/api/reports', reportRoutes);
+
+app.use(express.static(path.join(__dirname, '../public')));
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 app.use(notFoundHandler);
 app.use(errorHandler);
+
+initWebSocket(httpServer);
 
 httpServer.listen(PORT, () => {
   logger.info(`HVAC-R CRM API running on port ${PORT}`);
