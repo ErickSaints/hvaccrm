@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate } from '../middleware/auth';
+import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
-import { requireSubscription } from '../middleware/auth';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 import { notifyQuotationStatusChange } from '../notifications/notifier';
 import { emitToBackoffice } from '../websocket';
@@ -50,14 +50,13 @@ async function generateQuotationNumber(): Promise<string> {
 
 router.use(authenticate);
 
-router.get('/', requirePermission('quotations:view'), paginate, async (req: Request, res: Response) => {
+router.get('/', requirePermission('quotations:view'), scopeToCustomer, paginate, async (req: Request, res: Response) => {
   try {
     const { status, search, dateFrom, dateTo } = req.query;
     const andConditions: any[] = [];
 
-    if (req.user!.role === 'CLIENT') {
-      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
-      andConditions.push({ customerId: { in: userCustomers.map(c => c.id) } });
+    if (req.scopeFilter) {
+      andConditions.push(req.scopeFilter);
     }
 
     if (search) {
@@ -115,7 +114,7 @@ router.get('/:id', requirePermission('quotations:view'), async (req: Request, re
     if (!quotation) {
       return res.status(404).json({ error: 'Cotización no encontrada' });
     }
-    if (req.user!.role === 'CLIENT' && quotation.createdById !== req.user!.id) {
+    if (req.user!.role === 'CLIENT' && quotation.customerId !== req.user!.customerId) {
       return res.status(403).json({ error: 'No tienes permiso para ver esta cotización' });
     }
     if (req.user!.role === 'TECHNICIAN') {

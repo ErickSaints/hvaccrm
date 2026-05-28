@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 
 const router = Router();
 
@@ -16,12 +17,11 @@ const assetSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', requirePermission('assets:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('assets:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
     const where: any = {};
-    if (req.user!.role === 'CLIENT') {
-      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
-      where.customerId = { in: userCustomers.map(c => c.id) };
+    if (req.scopeFilter) {
+      where.customerId = req.scopeFilter.customerId;
     }
     const assets = await prisma.asset.findMany({
       where,
@@ -43,6 +43,9 @@ router.get('/:id', requirePermission('assets:view'), async (req: Request, res: R
     });
     if (!asset) {
       return res.status(404).json({ error: 'Activo no encontrado' });
+    }
+    if (req.user!.role === 'CLIENT' && asset.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver este activo' });
     }
 
     // Get latest maintenance logs for this customer's equipment

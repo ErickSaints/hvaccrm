@@ -77,6 +77,8 @@ model User {
   active        Boolean   @default(true)
   isSuperAdmin  Boolean   @default(false)
   trialEndsAt   DateTime?
+  customerId    Int?
+  customer      Customer? @relation(fields: [customerId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -173,6 +175,8 @@ model Customer {
   assets        Asset[]
   surveys       Survey[]
   invoices      Invoice[]
+
+  users         User[]
 
   branchId      Int?
   branch        Branch?   @relation(fields: [branchId], references: [id])
@@ -511,8 +515,8 @@ model Invoice {
   createdById     Int
   createdBy       User      @relation(fields: [createdById], references: [id])
 
-  branchId        Int?
-  branch          Branch?   @relation(fields: [branchId], references: [id])
+  branchId      Int?
+  branch        Branch?   @relation(fields: [branchId], references: [id])
 }
 
 // === ENTERPRISE MODULES ===

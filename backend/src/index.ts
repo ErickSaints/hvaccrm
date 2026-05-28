@@ -85,6 +85,29 @@ app.use(errorHandler);
 
 initWebSocket(httpServer);
 
+// Backfill customerId for existing CLIENT users
+(async () => {
+  try {
+    const orphans = await prisma.user.findMany({
+      where: { role: 'CLIENT', customerId: null },
+    });
+    for (const orphan of orphans) {
+      const customer = await prisma.customer.findFirst({ where: { email: orphan.email } });
+      if (customer) {
+        await prisma.user.update({
+          where: { id: orphan.id },
+          data: { customerId: customer.id },
+        });
+      }
+    }
+    if (orphans.length > 0) {
+      logger.info(`Backfilled customerId for ${orphans.length} CLIENT users`);
+    }
+  } catch (err) {
+    logger.error('Error backfilling customerId:', err);
+  }
+})();
+
 httpServer.listen(PORT, () => {
   logger.info(`HVAC-R CRM API running on port ${PORT}`);
   startReminderScheduler();

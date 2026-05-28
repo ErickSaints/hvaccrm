@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 
 const router = Router();
 
@@ -21,17 +22,13 @@ const equipmentSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', requirePermission('equipment:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('equipment:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
     const { customerId, search } = req.query;
     const where: any = {};
     if (customerId) where.customerId = parseInt(String(customerId));
-    if (req.user!.role === 'CLIENT') {
-      const customers = await prisma.customer.findMany({
-        where: { email: req.user!.email },
-        select: { id: true },
-      });
-      where.customerId = { in: customers.map(c => c.id) };
+    if (req.scopeFilter) {
+      where.customerId = req.scopeFilter.customerId;
     }
     if (search) {
       where.OR = [
@@ -61,6 +58,9 @@ router.get('/:id', requirePermission('equipment:view'), async (req: Request, res
     });
     if (!equipment) {
       return res.status(404).json({ error: 'Equipo no encontrado' });
+    }
+    if (req.user!.role === 'CLIENT' && equipment.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver este equipo' });
     }
     res.json(equipment);
   } catch {

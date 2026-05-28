@@ -138,7 +138,7 @@ const customerProfileSchema = z.object({
 router.get('/customer', async (req: Request, res: Response) => {
   try {
     const customer = await prisma.customer.findFirst({
-      where: { email: req.user!.email },
+      where: { id: req.user!.customerId ?? undefined },
     });
     if (!customer) return res.json(null);
     res.json(customer);
@@ -151,7 +151,7 @@ router.put('/customer', async (req: Request, res: Response) => {
   try {
     const data = customerProfileSchema.parse(req.body);
     const existing = await prisma.customer.findFirst({
-      where: { email: req.user!.email },
+      where: { id: req.user!.customerId ?? undefined },
     });
     if (!existing) return res.status(404).json({ error: 'Cliente no encontrado' });
     const customer = await prisma.customer.update({

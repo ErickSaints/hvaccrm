@@ -23,7 +23,10 @@ export async function spectator(req: Request, _res: Response, next: NextFunction
     }
     const targetId = parseInt(spectateUserId, 10);
     if (!isNaN(targetId) && targetId !== req.user!.id) {
-      const targetUser = await prisma.user.findUnique({ where: { id: targetId } });
+      const targetUser = await prisma.user.findUnique({
+        where: { id: targetId },
+        include: { customer: { select: { id: true } } },
+      });
       if (targetUser) {
         req.isSpectating = true;
         req.spectatedUserId = targetUser.id;
@@ -37,6 +40,7 @@ export async function spectator(req: Request, _res: Response, next: NextFunction
           active: targetUser.active,
           isSuperAdmin: targetUser.isSuperAdmin,
           trialEndsAt: targetUser.trialEndsAt,
+          customerId: targetUser.customer?.id ?? null,
         };
       }
     }

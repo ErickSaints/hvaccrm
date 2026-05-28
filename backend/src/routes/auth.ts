@@ -64,13 +64,17 @@ router.post('/register', async (req: Request, res: Response) => {
       },
     });
     if (user.role === 'CLIENT') {
-      await prisma.customer.create({
+      const newCustomer = await prisma.customer.create({
         data: {
           contactName: data.name,
           email: data.email,
           phone: data.phone || '',
           address: '',
         },
+      });
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { customerId: newCustomer.id },
       });
       const freePlan = await prisma.subscriptionPlan.findFirst({
         where: { active: true },
@@ -88,8 +92,9 @@ router.post('/register', async (req: Request, res: Response) => {
         });
       }
     }
+    const updatedUser = await prisma.user.findUnique({ where: { id: user.id } });
     const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: user.isSuperAdmin }, JWT_SECRET, { expiresIn: '24h' });
-    const { password: _, ...userData } = user;
+    const { password: _, ...userData } = updatedUser!;
     res.status(201).json({ token, user: userData });
   } catch (err) {
     if (err instanceof z.ZodError) {

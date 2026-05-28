@@ -23,7 +23,9 @@ declare global {
         active: boolean;
         isSuperAdmin: boolean;
         trialEndsAt: Date | null;
+        customerId: number | null;
       };
+      scopeFilter?: any;
       isSpectating?: boolean;
       spectatedUserId?: number;
     }
@@ -40,7 +42,10 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-    const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+      include: { customer: { select: { id: true } } },
+    });
     if (!user || !user.active) {
       return res.status(401).json({ error: 'Usuario no encontrado o inactivo' });
     }
@@ -54,11 +59,15 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
       active: user.active,
       isSuperAdmin: user.isSuperAdmin,
       trialEndsAt: user.trialEndsAt,
+      customerId: user.customer?.id ?? null,
     };
     if (req.query.__user && user.isSuperAdmin) {
       const targetId = parseInt(req.query.__user as string, 10);
       if (!isNaN(targetId) && targetId !== user.id) {
-        const targetUser = await prisma.user.findUnique({ where: { id: targetId } });
+        const targetUser = await prisma.user.findUnique({
+          where: { id: targetId },
+          include: { customer: { select: { id: true } } },
+        });
         if (targetUser) {
           (req as any).isSpectating = true;
           (req as any).spectatedUserId = targetUser.id;
@@ -72,6 +81,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
             active: targetUser.active,
             isSuperAdmin: targetUser.isSuperAdmin,
             trialEndsAt: targetUser.trialEndsAt,
+            customerId: targetUser.customer?.id ?? null,
           };
         }
       }

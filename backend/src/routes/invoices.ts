@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 import { generateInvoicePdf } from '../services/pdfGenerator';
 
@@ -32,12 +33,11 @@ function generateInvoiceNumber(): string {
 
 router.use(authenticate);
 
-router.get('/', requirePermission('invoices:view'), paginate, async (req: Request, res: Response) => {
+router.get('/', requirePermission('invoices:view'), scopeToCustomer, paginate, async (req: Request, res: Response) => {
   try {
     const where: any = {};
-    if (req.user!.role === 'CLIENT') {
-      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
-      where.customerId = { in: userCustomers.map(c => c.id) };
+    if (req.scopeFilter) {
+      where.customerId = req.scopeFilter.customerId;
     }
     const [invoices, total] = await Promise.all([
       prisma.invoice.findMany({
@@ -63,6 +63,9 @@ router.get('/:id', requirePermission('invoices:view'), async (req: Request, res:
       include: { customer: true, quotation: true, serviceOrder: true, createdBy: { select: { name: true } } },
     });
     if (!invoice) return res.status(404).json({ error: 'Factura no encontrada' });
+    if (req.user!.role === 'CLIENT' && invoice.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver esta factura' });
+    }
     res.json(invoice);
   } catch {
     res.status(500).json({ error: 'Error al obtener factura' });

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 import { notifyTicketStatusChange } from '../notifications/notifier';
 
@@ -21,17 +22,16 @@ const ticketSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', requirePermission('tickets:view'), paginate, async (req: Request, res: Response) => {
+router.get('/', requirePermission('tickets:view'), scopeToCustomer, paginate, async (req: Request, res: Response) => {
   try {
     const { level, status, search, dateFrom, dateTo } = req.query;
     const andConditions: any[] = [];
 
-    if (req.user!.role === 'CLIENT') {
-      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
+    if (req.scopeFilter) {
       andConditions.push({
         OR: [
           { assignedTo: req.user!.id },
-          { customerId: { in: userCustomers.map(c => c.id) } },
+          req.scopeFilter,
         ],
       });
     }
@@ -84,7 +84,7 @@ router.get('/:id', requirePermission('tickets:view'), async (req: Request, res: 
     if (!ticket) {
       return res.status(404).json({ error: 'Ticket no encontrado' });
     }
-    if (req.user!.role === 'CLIENT' && ticket.assignedTo !== req.user!.id) {
+    if (req.user!.role === 'CLIENT' && ticket.customerId !== req.user!.customerId) {
       return res.status(403).json({ error: 'No tienes permiso para ver este ticket' });
     }
     res.json(ticket);

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 
 const router = Router();
 
@@ -18,17 +19,13 @@ const surveySchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', requirePermission('surveys:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('surveys:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
     const { customerId } = req.query;
     const where: any = {};
     if (customerId) where.customerId = parseInt(String(customerId));
-    if (req.user?.role === 'CLIENT') {
-      const user = await prisma.user.findUnique({ where: { id: req.user.id } });
-      if (user) {
-        const customers = await prisma.customer.findMany({ where: { email: user.email }, select: { id: true } });
-        where.customerId = { in: customers.map(c => c.id) };
-      }
+    if (req.scopeFilter) {
+      where.customerId = req.scopeFilter.customerId;
     }
     const surveys = await prisma.survey.findMany({
       where,
@@ -49,6 +46,9 @@ router.get('/:id', requirePermission('surveys:view'), async (req: Request, res: 
       include: { customer: true, createdBy: { select: { name: true, email: true } }, photos: true, materials: true, drawings: true },
     });
     if (!survey) return res.status(404).json({ error: 'Levantamiento no encontrado' });
+    if (req.user!.role === 'CLIENT' && survey.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver este levantamiento' });
+    }
     res.json(survey);
   } catch {
     res.status(500).json({ error: 'Error al obtener levantamiento' });

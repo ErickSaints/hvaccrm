@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 import { notifyServiceOrderStatusChange } from '../notifications/notifier';
 
@@ -49,14 +50,13 @@ async function generateOrderNumber(): Promise<string> {
 
 router.use(authenticate);
 
-router.get('/', requirePermission('service-orders:view'), paginate, async (req: Request, res: Response) => {
+router.get('/', requirePermission('service-orders:view'), scopeToCustomer, paginate, async (req: Request, res: Response) => {
   try {
     const { status, search, dateFrom, dateTo } = req.query;
     const andConditions: any[] = [];
 
-    if (req.user!.role === 'CLIENT') {
-      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
-      andConditions.push({ customerId: { in: userCustomers.map(c => c.id) } });
+    if (req.scopeFilter) {
+      andConditions.push(req.scopeFilter);
     }
 
     if (search) {
@@ -105,6 +105,9 @@ router.get('/:id', requirePermission('service-orders:view'), async (req: Request
     });
     if (!order) {
       return res.status(404).json({ error: 'Orden de servicio no encontrada' });
+    }
+    if (req.user!.role === 'CLIENT' && order.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver esta orden' });
     }
     res.json(stripCosts(order, req.user!.role));
   } catch {

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 
 const router = Router();
 
@@ -56,12 +57,11 @@ const reportSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', requirePermission('service-reports:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('service-reports:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
     const where: any = {};
-    if (req.user!.role === 'CLIENT') {
-      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
-      where.customerId = { in: userCustomers.map(c => c.id) };
+    if (req.scopeFilter) {
+      where.customerId = req.scopeFilter.customerId;
     }
     const reports = await prisma.serviceReport.findMany({
       where,
@@ -83,6 +83,9 @@ router.get('/:id', requirePermission('service-reports:view'), async (req: Reques
     });
     if (!report) {
       return res.status(404).json({ error: 'Reporte no encontrado' });
+    }
+    if (req.user!.role === 'CLIENT' && report.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver este reporte' });
     }
     res.json(stripReportCosts(report, req.user!.role));
   } catch {

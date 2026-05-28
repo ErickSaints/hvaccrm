@@ -1,11 +1,12 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 import { requireAnyPermission } from '../middleware/permission';
 
 const router = Router();
 
-router.get('/', authenticate, requireAnyPermission(
+router.get('/', authenticate, scopeToCustomer, requireAnyPermission(
   'customers:view', 'tickets:view', 'service-orders:view', 'quotations:view', 'equipment:view', 'policies:view'
 ), async (req: Request, res: Response) => {
   try {
@@ -16,9 +17,13 @@ router.get('/', authenticate, requireAnyPermission(
 
     const searchFields = { contains: q, ...(process.env.DATABASE_URL?.includes('postgres') ? { mode: 'insensitive' as const } : {}) };
 
+    const customerFilter = req.scopeFilter ? { customerId: req.scopeFilter.customerId } : undefined;
+    const customerOrFilter = req.scopeFilter ? { customerId: req.scopeFilter.customerId } : {};
+
     const [customers, tickets, orders, quotations, equipment, policies] = await Promise.all([
       prisma.customer.findMany({
         where: {
+          ...customerFilter,
           OR: [
             { contactName: searchFields },
             { companyName: searchFields },
@@ -31,6 +36,7 @@ router.get('/', authenticate, requireAnyPermission(
       }),
       prisma.ticket.findMany({
         where: {
+          ...customerOrFilter,
           OR: [
             { title: searchFields },
             { description: searchFields },
@@ -41,6 +47,7 @@ router.get('/', authenticate, requireAnyPermission(
       }),
       prisma.serviceOrder.findMany({
         where: {
+          ...customerOrFilter,
           OR: [
             { number: searchFields },
             { description: searchFields },
@@ -51,6 +58,7 @@ router.get('/', authenticate, requireAnyPermission(
       }),
       prisma.quotation.findMany({
         where: {
+          ...customerOrFilter,
           OR: [
             { number: searchFields },
             { title: searchFields },
@@ -61,6 +69,7 @@ router.get('/', authenticate, requireAnyPermission(
       }),
       prisma.equipment.findMany({
         where: {
+          ...customerOrFilter,
           OR: [
             { type: searchFields },
             { brand: searchFields },
@@ -73,6 +82,7 @@ router.get('/', authenticate, requireAnyPermission(
       }),
       prisma.maintenancePolicy.findMany({
         where: {
+          ...customerOrFilter,
           OR: [
             { name: searchFields },
             { number: searchFields },

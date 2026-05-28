@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 import { requirePermission } from '../middleware/permission';
 
 const router = Router();
@@ -104,6 +105,10 @@ router.get('/predictions/:equipmentId', requirePermission('equipment:view'), asy
       return res.status(404).json({ error: 'Equipo no encontrado' });
     }
 
+    if (req.user!.role === 'CLIENT' && equipment.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver este equipo' });
+    }
+
     const eq = equipment as any;
     const now = Date.now();
     const lastServiceDate = eq.lastService
@@ -136,9 +141,14 @@ router.get('/predictions/:equipmentId', requirePermission('equipment:view'), asy
   }
 });
 
-router.get('/predictions', requirePermission('equipment:view'), async (_req: Request, res: Response) => {
+router.get('/predictions', requirePermission('equipment:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
+    const where: any = {};
+    if (req.scopeFilter) {
+      where.customerId = req.scopeFilter.customerId;
+    }
     const allEquipment = await prisma.equipment.findMany({
+      where,
       include: {
         serviceOrders: {
           where: { status: 'COMPLETADO' },
