@@ -26,6 +26,13 @@ router.get('/', requirePermission('equipment:view'), async (req: Request, res: R
     const { customerId, search } = req.query;
     const where: any = {};
     if (customerId) where.customerId = parseInt(String(customerId));
+    if (req.user!.role === 'CLIENT') {
+      const customers = await prisma.customer.findMany({
+        where: { email: req.user!.email },
+        select: { id: true },
+      });
+      where.customerId = { in: customers.map(c => c.id) };
+    }
     if (search) {
       where.OR = [
         { type: { contains: search as string } },

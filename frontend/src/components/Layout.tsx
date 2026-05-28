@@ -27,6 +27,7 @@ import {
   Ruler,
   Moon,
   Sun,
+  Settings,
 } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import GlobalSearch from './GlobalSearch';
@@ -72,6 +73,7 @@ const clientNav = [
   { name: 'Cotizaciones', href: '/quotations', icon: FileText },
   { name: 'Equipos', href: '/equipment', icon: Wrench },
   { name: 'Refacciones e Insumos', href: '/refacciones', icon: PackageSearch },
+  { name: 'Configuración', href: '/client/settings', icon: Settings },
 ];
 
 const adminBottomNav = [
@@ -82,6 +84,7 @@ const adminBottomNav = [
 
 const clientBottomNav = [
   { name: 'Mi Perfil', href: '/profile', icon: UserCircle },
+  { name: 'Configuración', href: '/client/settings', icon: Settings },
 ];
 
 const roleLabels: Record<string, string> = {

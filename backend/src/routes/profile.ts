@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
@@ -43,6 +44,11 @@ const updateProfileSchema = z.object({
   name: z.string().min(1).optional(),
   phone: z.string().optional(),
   email: z.string().email().optional(),
+});
+
+const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(6),
 });
 
 router.get('/', async (req: Request, res: Response) => {
@@ -97,6 +103,65 @@ router.put('/avatar', async (req: Request, res: Response) => {
     res.json(userData);
   } catch {
     res.status(500).json({ error: 'Error al actualizar avatar' });
+  }
+});
+
+router.put('/password', async (req: Request, res: Response) => {
+  try {
+    const data = changePasswordSchema.parse(req.body);
+    const user = await prisma.user.findUnique({ where: { id: req.user!.id } });
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+    const valid = await bcrypt.compare(data.currentPassword, user.password);
+    if (!valid) return res.status(400).json({ error: 'Contraseña actual incorrecta' });
+    const hashed = await bcrypt.hash(data.newPassword, 10);
+    await prisma.user.update({ where: { id: user.id }, data: { password: hashed } });
+    res.json({ success: true });
+  } catch (err) {
+    if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
+    res.status(500).json({ error: 'Error al cambiar contraseña' });
+  }
+});
+
+const customerProfileSchema = z.object({
+  companyName: z.string().optional(),
+  contactName: z.string().min(1).optional(),
+  phone: z.string().optional(),
+  phone2: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  zipCode: z.string().optional(),
+  taxId: z.string().optional(),
+  notes: z.string().optional(),
+});
+
+router.get('/customer', async (req: Request, res: Response) => {
+  try {
+    const customer = await prisma.customer.findFirst({
+      where: { email: req.user!.email },
+    });
+    if (!customer) return res.json(null);
+    res.json(customer);
+  } catch {
+    res.status(500).json({ error: 'Error al obtener datos de cliente' });
+  }
+});
+
+router.put('/customer', async (req: Request, res: Response) => {
+  try {
+    const data = customerProfileSchema.parse(req.body);
+    const existing = await prisma.customer.findFirst({
+      where: { email: req.user!.email },
+    });
+    if (!existing) return res.status(404).json({ error: 'Cliente no encontrado' });
+    const customer = await prisma.customer.update({
+      where: { id: existing.id },
+      data,
+    });
+    res.json(customer);
+  } catch (err) {
+    if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
+    res.status(500).json({ error: 'Error al actualizar datos de cliente' });
   }
 });
 
