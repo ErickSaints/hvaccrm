@@ -32,10 +32,12 @@ export default function TicketsPage() {
   const [search, setSearch] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery<PaginatedResponse<Ticket>>({
-    queryKey: ['tickets', page, search, levelFilter, statusFilter],
+    queryKey: ['tickets', page, search, levelFilter, statusFilter, dateFrom, dateTo],
     queryFn: async () => {
       const params = new URLSearchParams();
       params.set('page', String(page));
@@ -43,6 +45,8 @@ export default function TicketsPage() {
       if (search) params.set('search', search);
       if (levelFilter) params.set('level', levelFilter);
       if (statusFilter) params.set('status', statusFilter);
+      if (dateFrom) params.set('dateFrom', dateFrom);
+      if (dateTo) params.set('dateTo', dateTo);
       const { data } = await api.get(`/tickets?${params}`);
       return data;
     },
@@ -120,6 +124,35 @@ export default function TicketsPage() {
             </select>
           </div>
         </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">Desde</label>
+          <input
+            type="date"
+            value={dateFrom}
+            onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
+            className="input-field text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">Hasta</label>
+          <input
+            type="date"
+            value={dateTo}
+            onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
+            className="input-field text-sm"
+          />
+        </div>
+        {(dateFrom || dateTo) && (
+          <button
+            onClick={() => { setDateFrom(''); setDateTo(''); setPage(1); }}
+            className="btn-secondary text-sm mt-5"
+          >
+            Limpiar fechas
+          </button>
+        )}
       </div>
 
       {isLoading ? (
@@ -200,14 +233,14 @@ export default function TicketsPage() {
         <div className="card text-center py-12">
           <TicketCheck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
-            {search || levelFilter || statusFilter ? 'Sin resultados' : 'No hay tickets'}
+            {search || levelFilter || statusFilter || dateFrom || dateTo ? 'Sin resultados' : 'No hay tickets'}
           </h3>
           <p className="text-gray-500 dark:text-gray-400 mb-6">
-            {search || levelFilter || statusFilter
+            {search || levelFilter || statusFilter || dateFrom || dateTo
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza creando el primer ticket'}
           </p>
-          {!search && !levelFilter && !statusFilter && (
+          {!search && !levelFilter && !statusFilter && !dateFrom && !dateTo && (
             <Link to="/tickets/new" className="btn-primary inline-flex items-center gap-2">
               <Plus className="w-4 h-4" />
               Nuevo Ticket

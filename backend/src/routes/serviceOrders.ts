@@ -51,11 +51,35 @@ router.use(authenticate);
 
 router.get('/', requirePermission('service-orders:view'), paginate, async (req: Request, res: Response) => {
   try {
-    const where: any = {};
+    const { status, search, dateFrom, dateTo } = req.query;
+    const andConditions: any[] = [];
+
     if (req.user!.role === 'CLIENT') {
       const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
-      where.customerId = { in: userCustomers.map(c => c.id) };
+      andConditions.push({ customerId: { in: userCustomers.map(c => c.id) } });
     }
+
+    if (search) {
+      andConditions.push({
+        OR: [
+          { number: { contains: search as string } },
+          { description: { contains: search as string } },
+          { customer: { contactName: { contains: search as string } } },
+          { customer: { companyName: { contains: search as string } } },
+        ],
+      });
+    }
+
+    if (status) andConditions.push({ status });
+    if (dateFrom || dateTo) {
+      const dateFilter: any = {};
+      if (dateFrom) dateFilter.gte = new Date(dateFrom as string);
+      if (dateTo) dateFilter.lte = new Date(dateTo as string + 'T23:59:59.999Z');
+      andConditions.push({ createdAt: dateFilter });
+    }
+
+    const where: any = andConditions.length > 0 ? { AND: andConditions } : {};
+
     const [orders, total] = await Promise.all([
       prisma.serviceOrder.findMany({
         where,

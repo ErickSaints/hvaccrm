@@ -23,19 +23,40 @@ router.use(authenticate);
 
 router.get('/', requirePermission('tickets:view'), paginate, async (req: Request, res: Response) => {
   try {
-    const { level, status } = req.query;
-    const where: any = {};
+    const { level, status, search, dateFrom, dateTo } = req.query;
+    const andConditions: any[] = [];
 
     if (req.user!.role === 'CLIENT') {
       const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
-      where.OR = [
-        { assignedTo: req.user!.id },
-        { customerId: { in: userCustomers.map(c => c.id) } },
-      ];
+      andConditions.push({
+        OR: [
+          { assignedTo: req.user!.id },
+          { customerId: { in: userCustomers.map(c => c.id) } },
+        ],
+      });
     }
 
-    if (level) where.level = level;
-    if (status) where.status = status;
+    if (search) {
+      andConditions.push({
+        OR: [
+          { title: { contains: search as string } },
+          { description: { contains: search as string } },
+          { customer: { contactName: { contains: search as string } } },
+          { customer: { companyName: { contains: search as string } } },
+        ],
+      });
+    }
+
+    if (level) andConditions.push({ level });
+    if (status) andConditions.push({ status });
+    if (dateFrom || dateTo) {
+      const dateFilter: any = {};
+      if (dateFrom) dateFilter.gte = new Date(dateFrom as string);
+      if (dateTo) dateFilter.lte = new Date(dateTo as string + 'T23:59:59.999Z');
+      andConditions.push({ createdAt: dateFilter });
+    }
+
+    const where: any = andConditions.length > 0 ? { AND: andConditions } : {};
 
     const [tickets, total] = await Promise.all([
       prisma.ticket.findMany({

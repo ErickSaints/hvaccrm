@@ -42,16 +42,20 @@ function statusBadge(status: string) {
 export default function QuotationsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery<PaginatedResponse<Quotation>>({
-    queryKey: ['quotations', page, search, statusFilter],
+    queryKey: ['quotations', page, search, statusFilter, dateFrom, dateTo],
     queryFn: async () => {
       const params = new URLSearchParams();
       params.set('page', String(page));
       params.set('limit', '20');
       if (search) params.set('search', search);
       if (statusFilter) params.set('status', statusFilter);
+      if (dateFrom) params.set('dateFrom', dateFrom);
+      if (dateTo) params.set('dateTo', dateTo);
       const { data } = await api.get(`/quotations?${params}`);
       return data;
     },
@@ -102,6 +106,35 @@ export default function QuotationsPage() {
             ))}
           </select>
         </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">Desde</label>
+          <input
+            type="date"
+            value={dateFrom}
+            onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
+            className="input-field text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">Hasta</label>
+          <input
+            type="date"
+            value={dateTo}
+            onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
+            className="input-field text-sm"
+          />
+        </div>
+        {(dateFrom || dateTo) && (
+          <button
+            onClick={() => { setDateFrom(''); setDateTo(''); setPage(1); }}
+            className="btn-secondary text-sm mt-5"
+          >
+            Limpiar fechas
+          </button>
+        )}
       </div>
 
       {isLoading ? (
@@ -183,14 +216,14 @@ export default function QuotationsPage() {
         <div className="card text-center py-12">
           <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
-            {search || statusFilter ? 'Sin resultados' : 'No hay cotizaciones'}
+            {search || statusFilter || dateFrom || dateTo ? 'Sin resultados' : 'No hay cotizaciones'}
           </h3>
           <p className="text-gray-500 dark:text-gray-400 mb-6">
-            {search || statusFilter
+            {search || statusFilter || dateFrom || dateTo
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza creando la primera cotización'}
           </p>
-          {!search && !statusFilter && (
+          {!search && !statusFilter && !dateFrom && !dateTo && (
             <Link to="/quotations/new" className="btn-primary inline-flex items-center gap-2">
               <Plus className="w-4 h-4" />
               Nueva Cotización
