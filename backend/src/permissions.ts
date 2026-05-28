@@ -3,6 +3,7 @@ export type PermissionAction =
   | 'customers:view' | 'customers:create' | 'customers:edit' | 'customers:delete'
   | 'tickets:view' | 'tickets:create' | 'tickets:edit' | 'tickets:delete' | 'tickets:assign'
   | 'equipment:view' | 'equipment:create' | 'equipment:edit' | 'equipment:delete'
+  | 'invoices:view' | 'invoices:create' | 'invoices:edit' | 'invoices:delete'
   | 'quotations:view' | 'quotations:create' | 'quotations:edit' | 'quotations:delete'
   | 'service-orders:view' | 'service-orders:create' | 'service-orders:edit' | 'service-orders:delete'
   | 'service-reports:view' | 'service-reports:create' | 'service-reports:edit' | 'service-reports:delete'
@@ -23,6 +24,7 @@ export const ALL_PERMISSIONS: PermissionAction[] = [
   'customers:view', 'customers:create', 'customers:edit', 'customers:delete',
   'tickets:view', 'tickets:create', 'tickets:edit', 'tickets:delete', 'tickets:assign',
   'equipment:view', 'equipment:create', 'equipment:edit', 'equipment:delete',
+  'invoices:view', 'invoices:create', 'invoices:edit', 'invoices:delete',
   'quotations:view', 'quotations:create', 'quotations:edit', 'quotations:delete',
   'service-orders:view', 'service-orders:create', 'service-orders:edit', 'service-orders:delete',
   'service-reports:view', 'service-reports:create', 'service-reports:edit', 'service-reports:delete',
@@ -55,6 +57,10 @@ export const PERMISSION_CATEGORIES: Record<string, { label: string; permissions:
   equipment: {
     label: 'Equipos',
     permissions: ['equipment:view', 'equipment:create', 'equipment:edit', 'equipment:delete'],
+  },
+  invoices: {
+    label: 'Facturas',
+    permissions: ['invoices:view', 'invoices:create', 'invoices:edit', 'invoices:delete'],
   },
   quotations: {
     label: 'Cotizaciones',
@@ -185,6 +191,10 @@ export const LABELS: Record<string, string> = {
   'equipment:create': 'Crear equipos',
   'equipment:edit': 'Editar equipos',
   'equipment:delete': 'Eliminar equipos',
+  'invoices:view': 'Ver facturas',
+  'invoices:create': 'Crear facturas',
+  'invoices:edit': 'Editar facturas',
+  'invoices:delete': 'Eliminar facturas',
   'quotations:view': 'Ver cotizaciones',
   'quotations:create': 'Crear cotizaciones',
   'quotations:edit': 'Editar cotizaciones',

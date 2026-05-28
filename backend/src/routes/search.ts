@@ -1,10 +1,13 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
+import { requireAnyPermission } from '../middleware/permission';
 
 const router = Router();
 
-router.get('/', authenticate, async (req: Request, res: Response) => {
+router.get('/', authenticate, requireAnyPermission(
+  'customers:view', 'tickets:view', 'service-orders:view', 'quotations:view', 'equipment:view', 'policies:view'
+), async (req: Request, res: Response) => {
   try {
     const q = (req.query.q as string || '').trim();
     if (!q || q.length < 2) {

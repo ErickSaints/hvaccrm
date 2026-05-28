@@ -16,7 +16,7 @@ const assetSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('assets:view'), async (req: Request, res: Response) => {
   try {
     const where: any = {};
     if (req.user!.role === 'CLIENT') {
@@ -34,7 +34,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('assets:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const asset = await prisma.asset.findUnique({

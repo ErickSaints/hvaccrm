@@ -42,7 +42,7 @@ export default function TicketsPage() {
 
   const statusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: number; status: string }) => {
-      await api.patch(`/tickets/${id}`, { status });
+      await api.put(`/tickets/${id}`, { status });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tickets'] });

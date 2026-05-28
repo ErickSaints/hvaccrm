@@ -56,7 +56,7 @@ const reportSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('service-reports:view'), async (req: Request, res: Response) => {
   try {
     const where: any = {};
     if (req.user!.role === 'CLIENT') {
@@ -74,7 +74,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('service-reports:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const report = await prisma.serviceReport.findUnique({
@@ -90,7 +90,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireSubscription, async (req: Request, res: Response) => {
+router.post('/', requirePermission('service-reports:create'), requireSubscription, async (req: Request, res: Response) => {
   try {
     const data = reportSchema.parse(req.body);
     const report = await prisma.serviceReport.create({

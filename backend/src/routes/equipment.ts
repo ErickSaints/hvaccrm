@@ -107,6 +107,10 @@ router.put('/:id', requirePermission('equipment:edit'), async (req: Request, res
 router.delete('/:id', requirePermission('equipment:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
+    await prisma.ticket.updateMany({ where: { equipmentId: id }, data: { equipmentId: null } });
+    await prisma.serviceOrder.updateMany({ where: { equipmentId: id }, data: { equipmentId: null } });
+    await prisma.serviceReport.updateMany({ where: { equipmentId: id }, data: { equipmentId: null } });
+    await prisma.maintenanceLog.updateMany({ where: { equipmentId: id }, data: { equipmentId: null } });
     await prisma.equipment.delete({ where: { id } });
     res.status(204).send();
   } catch {

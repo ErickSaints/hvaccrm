@@ -1,10 +1,13 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
+import { requirePermission } from '../middleware/permission';
 
 const router = Router();
 
 router.use(authenticate);
+
+router.use(requirePermission('notifications:view'));
 
 router.get('/', async (req: Request, res: Response) => {
   try {

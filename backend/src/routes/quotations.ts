@@ -46,7 +46,7 @@ async function generateQuotationNumber(): Promise<string> {
 
 router.use(authenticate);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('quotations:view'), async (req: Request, res: Response) => {
   try {
     const where: any = {};
     if (req.user!.role === 'CLIENT') {
@@ -72,7 +72,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('quotations:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const quotation = await prisma.quotation.findUnique({
@@ -101,7 +101,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireSubscription, async (req: Request, res: Response) => {
+router.post('/', requirePermission('quotations:create'), requireSubscription, async (req: Request, res: Response) => {
   try {
     const data = quotationSchema.parse(req.body);
     const number = await generateQuotationNumber();
@@ -139,7 +139,7 @@ router.post('/', requireSubscription, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('quotations:edit'), requireSubscription, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = quotationSchema.partial().parse(req.body);

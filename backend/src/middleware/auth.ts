@@ -24,11 +24,13 @@ declare global {
         isSuperAdmin: boolean;
         trialEndsAt: Date | null;
       };
+      isSpectating?: boolean;
+      spectatedUserId?: number;
     }
   }
 }
 
-export function authenticate(req: Request, res: Response, next: NextFunction) {
+export async function authenticate(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Token no proporcionado' });
@@ -38,23 +40,43 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-    prisma.user.findUnique({ where: { id: decoded.userId } }).then((user) => {
-      if (!user || !user.active) {
-        return res.status(401).json({ error: 'Usuario no encontrado o inactivo' });
+    const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+    if (!user || !user.active) {
+      return res.status(401).json({ error: 'Usuario no encontrado o inactivo' });
+    }
+    req.user = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      phone: user.phone,
+      avatar: user.avatar,
+      active: user.active,
+      isSuperAdmin: user.isSuperAdmin,
+      trialEndsAt: user.trialEndsAt,
+    };
+    if (req.query.__user && user.isSuperAdmin) {
+      const targetId = parseInt(req.query.__user as string, 10);
+      if (!isNaN(targetId) && targetId !== user.id) {
+        const targetUser = await prisma.user.findUnique({ where: { id: targetId } });
+        if (targetUser) {
+          (req as any).isSpectating = true;
+          (req as any).spectatedUserId = targetUser.id;
+          req.user = {
+            id: targetUser.id,
+            email: targetUser.email,
+            name: targetUser.name,
+            role: targetUser.role,
+            phone: targetUser.phone,
+            avatar: targetUser.avatar,
+            active: targetUser.active,
+            isSuperAdmin: targetUser.isSuperAdmin,
+            trialEndsAt: targetUser.trialEndsAt,
+          };
+        }
       }
-      req.user = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        phone: user.phone,
-        avatar: user.avatar,
-        active: user.active,
-        isSuperAdmin: user.isSuperAdmin,
-        trialEndsAt: user.trialEndsAt,
-      };
-      next();
-    });
+    }
+    next();
   } catch {
     return res.status(401).json({ error: 'Token inválido' });
   }

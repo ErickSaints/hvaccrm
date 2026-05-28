@@ -74,7 +74,7 @@ export default function PolicyFormPage() {
   const { data: policyData, isLoading: loadingPolicy } = useQuery<MaintenancePolicy>({
     queryKey: ['maintenance-policy', id],
     queryFn: async () => {
-      const { data } = await api.get<MaintenancePolicy>(`/maintenance-policies/${id}`);
+      const { data } = await api.get<MaintenancePolicy>(`/policies/${id}`);
       return data;
     },
     enabled: isEditing,
@@ -104,7 +104,7 @@ export default function PolicyFormPage() {
         totalPrice: (Number(data.visitCount) || 0) * (Number(data.pricePerVisit) || 0),
       };
       if (isEditing) {
-        await api.put(`/maintenance-policies/${id}`, payload);
+        await api.put(`/policies/${id}`, payload);
       } else {
         await api.post('/maintenance-policies', payload);
       }

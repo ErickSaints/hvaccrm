@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Plus, Search, Edit2, Shield, ToggleLeft, ToggleRight, Key, X, Save, Loader2 } from 'lucide-react';
+import { Plus, Search, Edit2, Shield, ToggleLeft, ToggleRight, X, Save, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -113,18 +113,6 @@ export default function UsersPage() {
     },
     onError: () => {
       toast.error('Error al actualizar estado');
-    },
-  });
-
-  const resetPasswordMutation = useMutation({
-    mutationFn: async (id: number) => {
-      await api.post(`/users/${id}/reset-password`);
-    },
-    onSuccess: () => {
-      toast.success('Contraseña restablecida');
-    },
-    onError: () => {
-      toast.error('Error al restablecer contraseña');
     },
   });
 
@@ -309,13 +297,6 @@ export default function UsersPage() {
                         ) : (
                           <ToggleLeft className="w-4 h-4" />
                         )}
-                      </button>
-                      <button
-                        onClick={() => resetPasswordMutation.mutate(u.id)}
-                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Restablecer contraseña"
-                      >
-                        <Key className="w-4 h-4" />
                       </button>
                     </div>
                   </td>

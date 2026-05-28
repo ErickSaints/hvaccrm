@@ -17,7 +17,7 @@ const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   name: z.string().min(1),
-  role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES', 'PROYECTOS', 'COMPRAS']).optional(),
+  role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES', 'CLIENT', 'PROYECTOS', 'COMPRAS']).optional(),
   phone: z.string().optional(),
 });
 
@@ -63,7 +63,32 @@ router.post('/register', async (req: Request, res: Response) => {
         trialEndsAt,
       },
     });
-    const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: false }, JWT_SECRET, { expiresIn: '24h' });
+    if (user.role === 'CLIENT') {
+      await prisma.customer.create({
+        data: {
+          contactName: data.name,
+          email: data.email,
+          phone: data.phone || '',
+          address: '',
+        },
+      });
+      const freePlan = await prisma.subscriptionPlan.findFirst({
+        where: { active: true },
+        orderBy: { price: 'asc' },
+      });
+      if (freePlan) {
+        await prisma.userSubscription.create({
+          data: {
+            userId: user.id,
+            planId: freePlan.id,
+            startDate: new Date(),
+            endDate: new Date(Date.now() + freePlan.durationDays * 24 * 60 * 60 * 1000),
+            status: 'ACTIVA',
+          },
+        });
+      }
+    }
+    const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: user.isSuperAdmin }, JWT_SECRET, { expiresIn: '24h' });
     const { password: _, ...userData } = user;
     res.status(201).json({ token, user: userData });
   } catch (err) {

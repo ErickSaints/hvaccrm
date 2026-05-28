@@ -26,7 +26,7 @@ import surveyRoutes from './routes/surveys';
 import catalogMaterialRoutes from './routes/catalogMaterials';
 import invoiceRoutes from './routes/invoices';
 import adminRoutes from './routes/admin';
-import { spectator } from './middleware/spectator';
+
 import { startReminderScheduler } from './notifications/scheduler';
 import { startMaintenanceScheduler } from './notifications/maintenanceScheduler';
 
@@ -62,9 +62,6 @@ app.use(express.static(publicPath));
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
-
-// Spectator middleware — allows ADMIN to view as any user via ?__user=<id>
-app.use('/api/', spectator);
 
 app.get(/^\/(?!api\/).*/, (_req, res) => {
   const indexPath = path.join(publicPath, 'index.html');

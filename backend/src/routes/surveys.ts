@@ -18,7 +18,7 @@ const surveySchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('surveys:view'), async (req: Request, res: Response) => {
   try {
     const { customerId } = req.query;
     const where: any = {};
@@ -41,7 +41,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('surveys:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const survey = await prisma.survey.findUnique({

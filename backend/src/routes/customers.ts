@@ -22,7 +22,7 @@ const customerSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('customers:view'), async (req: Request, res: Response) => {
   try {
     const { search } = req.query;
     const where: any = {};
@@ -44,7 +44,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('customers:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const customer = await prisma.customer.findUnique({
@@ -60,7 +60,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id/equipment', async (req: Request, res: Response) => {
+router.get('/:id/equipment', requirePermission('equipment:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const equipment = await prisma.equipment.findMany({
@@ -73,7 +73,7 @@ router.get('/:id/equipment', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id/timeline', async (req: Request, res: Response) => {
+router.get('/:id/timeline', requirePermission('customers:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const [tickets, orders, quotations, reports, policies] = await Promise.all([
@@ -155,6 +155,23 @@ router.put('/:id', requirePermission('customers:edit'), async (req: Request, res
 router.delete('/:id', requirePermission('customers:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
+    await prisma.surveyPhoto.deleteMany({ where: { survey: { customerId: id } } });
+    await prisma.surveyDrawing.deleteMany({ where: { survey: { customerId: id } } });
+    await prisma.surveyMaterial.deleteMany({ where: { survey: { customerId: id } } });
+    await prisma.survey.deleteMany({ where: { customerId: id } });
+    await prisma.asset.deleteMany({ where: { customerId: id } });
+    await prisma.invoice.deleteMany({ where: { customerId: id } });
+    await prisma.usedMaterial.deleteMany({ where: { report: { customerId: id } } });
+    await prisma.photo.deleteMany({ where: { report: { customerId: id } } });
+    await prisma.photo.deleteMany({ where: { serviceOrder: { customerId: id } } });
+    await prisma.serviceReport.deleteMany({ where: { customerId: id } });
+    await prisma.serviceOrder.deleteMany({ where: { customerId: id } });
+    await prisma.quotationItem.deleteMany({ where: { quotation: { customerId: id } } });
+    await prisma.quotation.deleteMany({ where: { customerId: id } });
+    await prisma.maintenanceLog.deleteMany({ where: { policy: { customerId: id } } });
+    await prisma.maintenancePolicy.deleteMany({ where: { customerId: id } });
+    await prisma.ticket.deleteMany({ where: { customerId: id } });
+    await prisma.equipment.deleteMany({ where: { customerId: id } });
     await prisma.customer.delete({ where: { id } });
     res.status(204).send();
   } catch {

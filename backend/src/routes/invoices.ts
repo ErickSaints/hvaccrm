@@ -30,7 +30,7 @@ function generateInvoiceNumber(): string {
 
 router.use(authenticate);
 
-router.get('/', requirePermission('quotations:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('invoices:view'), async (req: Request, res: Response) => {
   try {
     const invoices = await prisma.invoice.findMany({
       include: { customer: true, createdBy: { select: { name: true } } },
@@ -42,7 +42,7 @@ router.get('/', requirePermission('quotations:view'), async (req: Request, res: 
   }
 });
 
-router.get('/:id', requirePermission('quotations:view'), async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('invoices:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const invoice = await prisma.invoice.findUnique({
@@ -56,7 +56,7 @@ router.get('/:id', requirePermission('quotations:view'), async (req: Request, re
   }
 });
 
-router.post('/', requirePermission('quotations:create'), async (req: Request, res: Response) => {
+router.post('/', requirePermission('invoices:create'), async (req: Request, res: Response) => {
   try {
     const data = invoiceSchema.parse(req.body);
     const invoice = await prisma.invoice.create({
@@ -83,7 +83,7 @@ router.post('/', requirePermission('quotations:create'), async (req: Request, re
   }
 });
 
-router.put('/:id/status', requirePermission('quotations:edit'), async (req: Request, res: Response) => {
+router.put('/:id/status', requirePermission('invoices:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const { status } = z.object({ status: z.enum(['BORRADOR', 'EMITIDA', 'PAGADA', 'CANCELADA', 'VENCIDA']) }).parse(req.body);
@@ -97,7 +97,7 @@ router.put('/:id/status', requirePermission('quotations:edit'), async (req: Requ
   }
 });
 
-router.post('/generate-from-quotation/:quotationId', requirePermission('quotations:create'), async (req: Request, res: Response) => {
+router.post('/generate-from-quotation/:quotationId', requirePermission('invoices:create'), async (req: Request, res: Response) => {
   try {
     const quotationId = parseInt(String(req.params.quotationId));
     const quotation = await prisma.quotation.findUnique({
@@ -126,7 +126,7 @@ router.post('/generate-from-quotation/:quotationId', requirePermission('quotatio
   }
 });
 
-router.post('/generate-from-order/:orderId', requirePermission('quotations:create'), async (req: Request, res: Response) => {
+router.post('/generate-from-order/:orderId', requirePermission('invoices:create'), async (req: Request, res: Response) => {
   try {
     const orderId = parseInt(String(req.params.orderId));
     const order = await prisma.serviceOrder.findUnique({

@@ -20,7 +20,7 @@ const ticketSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('tickets:view'), async (req: Request, res: Response) => {
   try {
     const { level, status } = req.query;
     const where: any = {};
@@ -47,7 +47,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('tickets:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const ticket = await prisma.ticket.findUnique({
@@ -66,7 +66,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireSubscription, async (req: Request, res: Response) => {
+router.post('/', requirePermission('tickets:create'), requireSubscription, async (req: Request, res: Response) => {
   try {
     const data = ticketSchema.parse(req.body);
 
@@ -139,6 +139,38 @@ router.put('/:id', requirePermission('tickets:edit'), async (req: Request, res: 
       return res.status(400).json({ error: err.errors });
     }
     res.status(500).json({ error: 'Error al actualizar ticket' });
+  }
+});
+
+router.patch('/:id', requirePermission('tickets:edit'), requireSubscription, async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const { status } = req.body;
+    if (!status) {
+      return res.status(400).json({ error: 'Estado requerido' });
+    }
+    const old = await prisma.ticket.findUnique({
+      where: { id },
+      include: { customer: { select: { contactName: true, email: true } } },
+    });
+    if (!old) return res.status(404).json({ error: 'Ticket no encontrado' });
+    const ticket = await prisma.ticket.update({
+      where: { id },
+      data: { status },
+    });
+    notifyTicketStatusChange({
+      ticketId: id,
+      ticketTitle: old.title,
+      customerId: old.customerId,
+      customerEmail: old.customer.email,
+      customerName: old.customer.contactName,
+      assignedTo: ticket.assignedTo,
+      oldStatus: old.status,
+      newStatus: status,
+    }).catch((err) => console.error('[tickets] notify error:', err));
+    res.json(ticket);
+  } catch {
+    res.status(500).json({ error: 'Error al actualizar estado' });
   }
 });
 

@@ -48,7 +48,7 @@ async function generateOrderNumber(): Promise<string> {
 
 router.use(authenticate);
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', requirePermission('service-orders:view'), async (req: Request, res: Response) => {
   try {
     const where: any = {};
     if (req.user!.role === 'CLIENT') {
@@ -66,7 +66,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', requirePermission('service-orders:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const order = await prisma.serviceOrder.findUnique({
@@ -82,7 +82,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', requireSubscription, async (req: Request, res: Response) => {
+router.post('/', requirePermission('service-orders:create'), requireSubscription, async (req: Request, res: Response) => {
   try {
     const data = serviceOrderSchema.parse(req.body);
     const number = await generateOrderNumber();
@@ -114,7 +114,7 @@ router.post('/', requireSubscription, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('service-orders:edit'), requireSubscription, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = serviceOrderSchema.partial().parse(req.body);
@@ -165,7 +165,7 @@ router.put('/:id', requireSubscription, async (req: Request, res: Response) => {
   }
 });
 
-router.patch('/:id', requireSubscription, async (req: Request, res: Response) => {
+router.patch('/:id', requirePermission('service-orders:edit'), requireSubscription, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const { status } = req.body;
@@ -202,6 +202,14 @@ router.patch('/:id', requireSubscription, async (req: Request, res: Response) =>
 router.delete('/:id', requirePermission('service-orders:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
+    await prisma.photo.deleteMany({ where: { serviceOrderId: id } });
+    const report = await prisma.serviceReport.findUnique({ where: { serviceOrderId: id } });
+    if (report) {
+      await prisma.usedMaterial.deleteMany({ where: { reportId: report.id } });
+      await prisma.photo.deleteMany({ where: { reportId: report.id } });
+      await prisma.serviceReport.delete({ where: { id: report.id } });
+    }
+    await prisma.invoice.deleteMany({ where: { serviceOrderId: id } });
     await prisma.serviceOrder.delete({ where: { id } });
     res.status(204).send();
   } catch {
