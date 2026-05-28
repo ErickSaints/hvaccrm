@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import compression from 'compression';
 import cors from 'cors';
 import path from 'path';
 import prisma from './prisma';
@@ -42,6 +43,7 @@ const PORT = parseInt(process.env.PORT || '3000', 10);
 
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(cors());
+app.use(compression());
 app.use(rateLimit({ windowMs: 60 * 1000, max: 200 }));
 app.use(express.json({ limit: '50mb' }));
 
