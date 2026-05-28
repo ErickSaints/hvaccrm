@@ -53,6 +53,7 @@ const InventoryFormPage = lazy(() => import('./pages/InventoryFormPage'));
 const InventoryDetailPage = lazy(() => import('./pages/InventoryDetailPage'));
 const InvoiceFormPage = lazy(() => import('./pages/InvoiceFormPage'));
 const InvoiceDetailPage = lazy(() => import('./pages/InvoiceDetailPage'));
+const MLPredictionsPage = lazy(() => import('./pages/MLPredictionsPage'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -154,6 +155,7 @@ export default function App() {
                 <Route path="subscriptions" element={<SubscriptionsPage />} />
                 <Route path="refacciones" element={<RefaccionesPage />} />
                 <Route path="calculos-hvac" element={<HvacCalculatorPage />} />
+                <Route path="ml-predictions" element={<MLPredictionsPage />} />
                 <Route path="surveys" element={<SurveysPage />} />
                 <Route path="surveys/new" element={<SurveyFormPage />} />
                 <Route path="surveys/:id" element={<SurveyDetailPage />} />

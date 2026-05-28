@@ -281,10 +281,22 @@ export interface PaginatedResponse<T> {
 
 export interface MLPrediction {
   equipmentId: number;
-  equipmentName: string;
+  equipmentType: string;
+  equipmentBrand?: string;
+  equipmentModel?: string;
+  lastService?: string;
   failureProbability: number;
   estimatedDaysToFailure: number;
-  riskLevel: 'bajo' | 'medio' | 'alto' | 'critico';
+  riskLevel: 'BAJO' | 'MEDIO' | 'ALTO';
   recommendedAction: string;
   nextServiceRecommended: string;
+}
+
+export interface MLPredictionsResponse {
+  generatedAt: string;
+  total: number;
+  highRisk: number;
+  mediumRisk: number;
+  lowRisk: number;
+  predictions: MLPrediction[];
 }

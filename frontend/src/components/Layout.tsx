@@ -20,6 +20,7 @@ import {
   LogOut,
   PackageSearch,
   Calculator,
+  Brain,
   Search,
   ChevronDown,
   Building2,
@@ -60,6 +61,7 @@ const mainNav = [
     { name: 'Inventario', href: '/inventory', icon: PackageSearch },
     { name: 'Refacciones e Insumos', href: '/refacciones', icon: PackageSearch },
     { name: 'Cálculos HVAC', href: '/calculos-hvac', icon: Calculator },
+    { name: 'ML Predictions', href: '/ml-predictions', icon: Brain },
   ]},
 ];
 
