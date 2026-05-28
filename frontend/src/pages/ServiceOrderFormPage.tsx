@@ -8,7 +8,8 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, Save, Loader2, Ticket, Shield, Camera, Plus, Trash2 } from 'lucide-react';
 import api from '../lib/api';
 import PhotoUploader from '../components/PhotoUploader';
-import type { ServiceOrder, Customer, User, Equipment, Ticket as TicketType, MaintenancePolicy } from '../types';
+import type { ServiceOrder, User, Equipment, Ticket as TicketType, MaintenancePolicy } from '../types';
+import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
 const photoSchema = z.object({
   url: z.string().min(1),
@@ -51,14 +52,6 @@ export default function ServiceOrderFormPage() {
     defaultValues: {
       equipmentId: null,
       assignedTo: null,
-    },
-  });
-
-  const { data: customers } = useQuery<Customer[]>({
-    queryKey: ['customers'],
-    queryFn: async () => {
-      const { data } = await api.get('/customers?limit=1000');
-      return data.data ?? [];
     },
   });
 
@@ -242,25 +235,22 @@ export default function ServiceOrderFormPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="card space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
-          <select
-            {...register('customerId', { valueAsNumber: true })}
-            className="input-field"
-            disabled={Boolean(linkedPolicy || (linkedTicket && !isEditing))}
-            onChange={(e) => {
-              const val = e.target.value ? Number(e.target.value) : null;
-              setSelectedCustomerId(val);
-              setValue('customerId', val ?? undefined as unknown as number);
-              setValue('equipmentId', null);
-            }}
-          >
-            <option value="">Seleccionar cliente...</option>
-            {customers?.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.companyName ? `${c.companyName} - ${c.contactName}` : c.contactName}
-              </option>
-            ))}
-          </select>
-          {errors.customerId && <p className="text-red-500 text-xs mt-1">{errors.customerId.message}</p>}
+          <Controller
+            name="customerId"
+            control={control}
+            render={({ field }) => (
+              <AsyncCustomerSelect
+                value={field.value}
+                onChange={(val) => {
+                  field.onChange(val);
+                  setSelectedCustomerId(val);
+                  setValue('equipmentId', null);
+                }}
+                disabled={Boolean(linkedPolicy || (linkedTicket && !isEditing))}
+                error={errors.customerId?.message}
+              />
+            )}
+          />
         </div>
 
         <div>

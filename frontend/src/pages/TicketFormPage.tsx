@@ -7,7 +7,8 @@ import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Save, Loader2, AlertTriangle } from 'lucide-react';
 import api from '../lib/api';
-import type { Ticket, Customer, User, Equipment } from '../types';
+import type { Ticket, User, Equipment } from '../types';
+import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
 const ticketSchema = z.object({
   title: z.string().min(1, 'El título es obligatorio'),
@@ -50,14 +51,6 @@ export default function TicketFormPage() {
   });
 
   const watchedLevel = watch('level');
-
-  const { data: customers } = useQuery<Customer[]>({
-    queryKey: ['customers'],
-    queryFn: async () => {
-      const { data } = await api.get('/customers?limit=1000');
-      return data.data ?? [];
-    },
-  });
 
   const { data: users } = useQuery<User[]>({
     queryKey: ['users'],
@@ -203,24 +196,21 @@ export default function TicketFormPage() {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
-          <select
-            {...register('customerId', { valueAsNumber: true })}
-            className="input-field"
-              onChange={(e) => {
-                const val = e.target.value ? Number(e.target.value) : null;
-                setSelectedCustomerId(val);
-                setValue('customerId', val ?? (undefined as unknown as number));
-                setValue('equipmentId', null);
-              }}
-          >
-            <option value="">Seleccionar cliente...</option>
-            {customers?.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.companyName ? `${c.companyName} - ${c.contactName}` : c.contactName}
-              </option>
-            ))}
-          </select>
-          {errors.customerId && <p className="text-red-500 text-xs mt-1">{errors.customerId.message}</p>}
+          <Controller
+            name="customerId"
+            control={control}
+            render={({ field }) => (
+              <AsyncCustomerSelect
+                value={field.value}
+                onChange={(val) => {
+                  field.onChange(val);
+                  setSelectedCustomerId(val);
+                  setValue('equipmentId', null);
+                }}
+                error={errors.customerId?.message}
+              />
+            )}
+          />
         </div>
 
         <div>

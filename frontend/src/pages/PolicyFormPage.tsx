@@ -1,13 +1,14 @@
 import { useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Save, Loader2, Calculator } from 'lucide-react';
 import api from '../lib/api';
-import type { Customer, MaintenancePolicy } from '../types';
+import type { MaintenancePolicy } from '../types';
+import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
 const frequencies = [
   { value: 'MENSUAL', label: 'Mensual' },
@@ -44,6 +45,7 @@ export default function PolicyFormPage() {
     register,
     handleSubmit,
     reset,
+    control,
     watch,
     setValue,
     formState: { errors, isSubmitting },
@@ -63,13 +65,6 @@ export default function PolicyFormPage() {
     setValue('totalPrice', total);
   }, [visitCount, pricePerVisit, setValue]);
 
-  const { data: customers } = useQuery<Customer[]>({
-    queryKey: ['customers'],
-    queryFn: async () => {
-      const { data } = await api.get('/customers?limit=1000');
-      return data.data ?? [];
-    },
-  });
 
   const { data: policyData, isLoading: loadingPolicy } = useQuery<MaintenancePolicy>({
     queryKey: ['maintenance-policy', id],
@@ -154,15 +149,17 @@ export default function PolicyFormPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="card space-y-5">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
-          <select {...register('customerId', { valueAsNumber: true })} className="input-field">
-            <option value="">Seleccionar cliente...</option>
-            {customers?.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.companyName ? `${c.companyName} - ${c.contactName}` : c.contactName}
-              </option>
-            ))}
-          </select>
-          {errors.customerId && <p className="text-red-500 text-xs mt-1">{errors.customerId.message}</p>}
+          <Controller
+            name="customerId"
+            control={control}
+            render={({ field }) => (
+              <AsyncCustomerSelect
+                value={field.value}
+                onChange={(val) => field.onChange(val)}
+                error={errors.customerId?.message}
+              />
+            )}
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

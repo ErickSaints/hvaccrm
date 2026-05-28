@@ -4,7 +4,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Loader2, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
-import type { Customer, Invoice } from '../types';
+import type { Invoice } from '../types';
+import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
 interface InvoiceItemForm {
   description: string;
@@ -20,14 +21,6 @@ export default function InvoiceFormPage() {
   const [notes, setNotes] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [items, setItems] = useState<InvoiceItemForm[]>([{ description: '', quantity: 1, unitPrice: 0 }]);
-
-  const { data: customers } = useQuery<Customer[]>({
-    queryKey: ['customers'],
-    queryFn: async () => {
-      const { data } = await api.get('/customers?limit=1000');
-      return data.data ?? [];
-    },
-  });
 
   const subtotal = items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
   const tax = subtotal * 0.16;
@@ -87,12 +80,10 @@ export default function InvoiceFormPage() {
           </div>
           <div>
             <label className="label">Cliente</label>
-            <select value={customerId} onChange={(e) => setCustomerId(e.target.value)} className="input-field">
-              <option value="">Seleccionar cliente</option>
-              {customers?.map((c) => (
-                <option key={c.id} value={c.id}>{c.contactName} {c.companyName ? `- ${c.companyName}` : ''}</option>
-              ))}
-            </select>
+            <AsyncCustomerSelect
+              value={customerId ? Number(customerId) : null}
+              onChange={(val) => setCustomerId(val ? String(val) : '')}
+            />
           </div>
           <div>
             <label className="label">Fecha de vencimiento</label>

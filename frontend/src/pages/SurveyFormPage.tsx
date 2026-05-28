@@ -1,14 +1,14 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Save, Loader2, Plus, Trash2, Camera, Package, Search } from 'lucide-react';
 import api from '../lib/api';
 import DrawingCanvas from '../components/DrawingCanvas';
-import type { Customer } from '../types';
+import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
 const surveySchema = z.object({
   title: z.string().min(1, 'El título es obligatorio'),
@@ -88,16 +88,8 @@ export default function SurveyFormPage() {
     setSearchResults([]);
   };
 
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<SurveyFormData>({
+  const { register, handleSubmit, reset, control, formState: { errors, isSubmitting } } = useForm<SurveyFormData>({
     resolver: zodResolver(surveySchema),
-  });
-
-  const { data: customers } = useQuery<Customer[]>({
-    queryKey: ['customers'],
-    queryFn: async () => {
-      const { data } = await api.get('/customers?limit=1000');
-      return data.data ?? [];
-    },
   });
 
   const { data: surveyData, isLoading } = useQuery({
@@ -219,15 +211,17 @@ export default function SurveyFormPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
-              <select {...register('customerId', { valueAsNumber: true })} className="input-field">
-                <option value="">Seleccionar cliente...</option>
-                {customers?.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.companyName ? `${c.companyName} - ${c.contactName}` : c.contactName}
-                  </option>
-                ))}
-              </select>
-              {errors.customerId && <p className="text-red-500 text-xs mt-1">{errors.customerId.message}</p>}
+              <Controller
+                name="customerId"
+                control={control}
+                render={({ field }) => (
+                  <AsyncCustomerSelect
+                    value={field.value}
+                    onChange={(val) => field.onChange(val)}
+                    error={errors.customerId?.message}
+                  />
+                )}
+              />
             </div>
           </div>
         </div>

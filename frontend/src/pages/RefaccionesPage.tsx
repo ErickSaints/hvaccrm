@@ -5,12 +5,7 @@ import toast from 'react-hot-toast';
 import api from '../lib/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
-
-interface Customer {
-  id: number;
-  companyName?: string;
-  contactName: string;
-}
+import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
 interface PartProduct {
   id: string;
@@ -45,14 +40,6 @@ export default function RefaccionesPage() {
     }
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
   }, [query]);
-
-  const { data: customers } = useQuery<Customer[]>({
-    queryKey: ['customers'],
-    queryFn: async () => {
-      const { data } = await api.get('/customers?limit=1000');
-      return data.data ?? [];
-    },
-  });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['ml-search', searchTerm],
@@ -114,18 +101,10 @@ export default function RefaccionesPage() {
             <User className="w-3 h-3 inline mr-1" />
             Cliente
           </label>
-          <select
-            value={selectedCustomerId ?? ''}
-            onChange={(e) => setSelectedCustomerId(e.target.value ? Number(e.target.value) : null)}
-            className="input-field"
-          >
-            <option value="">Seleccionar cliente...</option>
-            {customers?.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.companyName ? `${c.companyName} - ${c.contactName}` : c.contactName}
-              </option>
-            ))}
-          </select>
+          <AsyncCustomerSelect
+            value={selectedCustomerId}
+            onChange={(val) => setSelectedCustomerId(val)}
+          />
         </div>
       </div>
 

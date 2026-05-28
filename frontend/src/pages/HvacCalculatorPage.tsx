@@ -10,31 +10,26 @@ import toast from 'react-hot-toast';
 import api from '../lib/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
-
-// ─── Types ───────────────────────────────────────────────────────────────────
+import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
 type CalcMode = 'confort' | 'refrigeracion' | 'congelacion' | 'calefaccion' | 'ventilacion' | 'bombeo' | 'intercambiador';
 type ClimateZone = 'template' | 'calido' | 'muy-calido' | 'extremo';
 type UsageType = 'residencial' | 'comercial' | 'restaurante' | 'industrial';
+type SpaceType = 'almacen' | 'residencial' | 'oficina' | 'bano' | 'cocina-ligera' | 'cocina-comercial' | 'cocina-industrial' | 'estacionamiento' | 'taller' | 'gimnasio';
+type ProductType = 'carnes' | 'lacteos' | 'verduras' | 'frutas' | 'precocinados' | 'pescados' | 'helados';
+type FreezingType = 'estandar' | 'ultra' | 'iqf';
 type InsulationLevel = 'pobre' | 'media' | 'buena' | 'excelente';
 type WallMaterial = 'ladrillo' | 'block' | 'panel' | 'concreto';
 type RoofType = 'concreto' | 'lamina' | 'teja' | 'terraza';
 type GlassType = 'sencillo' | 'doble' | 'polarizado';
-type FanType = 'axial' | 'centrifugo' | 'cortina' | 'extractor-techo';
-type PumpType = 'linea' | 'centrifuga' | 'multietapa' | 'sumergible';
-type HxType = 'placas' | 'tubular';
 type HeatingSystem = 'agua-caliente' | 'electrico' | 'bomba-calor';
 type FuelType = 'gas-lp' | 'gas-natural' | 'electricidad' | 'diesel' | 'solar';
-type ProductType = 'carnes' | 'lacteos' | 'verduras' | 'frutas' | 'precocinados' | 'pescados' | 'helados';
-type FreezingType = 'estandar' | 'ultra' | 'iqf';
 type EvaporatorType = 'aire-forzado' | 'estatico';
-type SpaceType = 'almacen' | 'residencial' | 'oficina' | 'bano' | 'cocina-ligera' | 'cocina-comercial' | 'cocina-industrial' | 'estacionamiento' | 'taller' | 'gimnasio';
 type PumpSystem = 'chiller' | 'condensacion' | 'hidroneumatico' | 'calefaccion';
 type FluidType = 'agua' | 'glicol-30' | 'glicol-50' | 'agua-condensacion';
 type HxFluidPair = 'agua-agua' | 'agua-glicol' | 'agua-refrigerante' | 'vapor-agua' | 'aceite-agua';
-type HxMaterial = 'acero-inox' | 'titanio' | 'aleacion-cobre' | 'acero-carbono';
-
-interface Customer { id: number; companyName?: string; contactName: string; }
+type HxMaterial = 'acero-inox' | 'acero-carbono' | 'titanio' | 'aleacion-cobre';
+type HxType = 'placas' | 'tubular' | 'doble-tubo' | 'coraza';
 
 interface CatalogItem {
   id: string; name: string; category: string;
@@ -771,11 +766,6 @@ export default function HvacCalculatorPage() {
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(null);
   const [selectedType, setSelectedType] = useState('minisplit');
 
-  const { data: customers } = useQuery<Customer[]>({
-    queryKey: ['customers'],
-    queryFn: async () => { const { data } = await api.get('/customers?limit=1000'); return data.data ?? []; },
-  });
-
   function calculate() {
     setResult(null);
     setRecommended([]);
@@ -1339,10 +1329,10 @@ export default function HvacCalculatorPage() {
                     <div className="flex-1" />
                     <div className="w-full sm:w-56">
                       <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block"><User className="w-3 h-3 inline mr-1" />Cliente</label>
-                      <select value={selectedCustomerId ?? ''} onChange={e => setSelectedCustomerId(e.target.value ? Number(e.target.value) : null)} className="input-field text-sm">
-                        <option value="">Seleccionar cliente...</option>
-                        {customers?.map(c => <option key={c.id} value={c.id}>{c.companyName ? `${c.companyName} - ${c.contactName}` : c.contactName}</option>)}
-                      </select>
+                      <AsyncCustomerSelect
+                        value={selectedCustomerId}
+                        onChange={(val) => setSelectedCustomerId(val)}
+                      />
                     </div>
                   </div>
 
