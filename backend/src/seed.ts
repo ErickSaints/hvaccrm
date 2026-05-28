@@ -386,6 +386,7 @@ async function main() {
       duration: 'MENSUAL',
       durationDays: 30,
       features: 'Gestión de clientes, tickets, cotizaciones, reportes, pólizas',
+      targetRole: 'CLIENT',
       active: true,
       createdById: admin.id,
     },
@@ -399,6 +400,35 @@ async function main() {
       duration: 'ANUAL',
       durationDays: 365,
       features: 'Todo lo del plan mensual + soporte prioritario + respaldo en la nube',
+      targetRole: 'CLIENT',
+      active: true,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.subscriptionPlan.create({
+    data: {
+      name: 'Plan Mensual Profesional',
+      description: 'Acceso completo al CRM para profesionales. Ideal para técnicos y contratistas.',
+      price: 499,
+      duration: 'MENSUAL',
+      durationDays: 30,
+      features: 'Gestión de clientes, tickets, cotizaciones, reportes, pólizas, equipos, dashboard',
+      targetRole: 'PROFESIONAL',
+      active: true,
+      createdById: admin.id,
+    },
+  });
+
+  await prisma.subscriptionPlan.create({
+    data: {
+      name: 'Plan Anual Profesional',
+      description: 'Acceso completo al CRM por un año. Ahorra 2 meses vs el plan mensual profesional.',
+      price: 4990,
+      duration: 'ANUAL',
+      durationDays: 365,
+      features: 'Todo lo del plan mensual profesional + soporte prioritario + respaldo en la nube + reportes avanzados',
+      targetRole: 'PROFESIONAL',
       active: true,
       createdById: admin.id,
     },
@@ -409,7 +439,7 @@ async function main() {
   console.log('  Admin:     admin@hvaccrm.com / admin123');
   console.log('  Technician: tecnico1@hvaccrm.com / tecnic0123');
   console.log('  Sales:     ventas@hvaccrm.com / tecnic0123');
-  console.log('  Plans:     Mensual ($299/mes), Anual ($2990/año)');
+  console.log('  Plans:     Cliente (Mensual $299/mes, Anual $2990/año), Profesional (Mensual $499/mes, Anual $4990/año)');
 }
 
 main()
