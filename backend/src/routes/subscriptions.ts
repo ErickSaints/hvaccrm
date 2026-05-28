@@ -187,7 +187,7 @@ router.post('/create-preference', authenticate, async (req: Request, res: Respon
     if (subscription.status !== 'PENDIENTE') {
       return res.status(400).json({ error: 'La suscripción ya está procesada' });
     }
-    const preference = new Preference(mpClient);
+    const preference = new Preference(mpClient!);
     const result = await preference.create({
       body: {
         items: [
@@ -262,6 +262,7 @@ router.post('/webhook', async (req: Request, res: Response) => {
   try {
     const { type, data } = req.body;
     if (type === 'payment') {
+      if (!mpClient) return res.status(503).json({ error: 'MP no configurado' });
       const payment = await new Payment(mpClient).get({ id: data.id });
       const externalRef = payment.external_reference;
       if (externalRef) {

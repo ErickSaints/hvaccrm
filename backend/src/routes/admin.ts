@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSuperAdmin } from '../middleware/auth';
+import { DEFAULT_ROLE_PERMISSIONS, ALL_PERMISSIONS, PERMISSION_CATEGORIES, LABELS } from '../permissions';
 
 const router = Router();
 
@@ -159,11 +160,11 @@ router.get('/permissions', async (_req: Request, res: Response) => {
       grouped[rp.role].push(rp.permission);
     }
     res.json({
-      defaults: (await import('../permissions')).DEFAULT_ROLE_PERMISSIONS,
+      defaults: DEFAULT_ROLE_PERMISSIONS,
       overrides: grouped,
-      allPermissions: (await import('../permissions')).ALL_PERMISSIONS,
-      categories: (await import('../permissions')).PERMISSION_CATEGORIES,
-      labels: (await import('../permissions')).LABELS,
+      allPermissions: ALL_PERMISSIONS,
+      categories: PERMISSION_CATEGORIES,
+      labels: LABELS,
     });
   } catch (err) {
     res.status(500).json({ error: 'Error al obtener permisos' });

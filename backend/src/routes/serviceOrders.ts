@@ -199,40 +199,6 @@ router.patch('/:id', requireSubscription, async (req: Request, res: Response) =>
   }
 });
 
-router.patch('/:id', requireSubscription, async (req: Request, res: Response) => {
-  try {
-    const id = parseInt(String(req.params.id));
-    const { status } = req.body;
-    if (!status) {
-      return res.status(400).json({ error: 'Estado requerido' });
-    }
-    const old = await prisma.serviceOrder.findUnique({
-      where: { id },
-      include: { customer: { select: { contactName: true, email: true } } },
-    });
-    if (!old) return res.status(404).json({ error: 'Orden no encontrada' });
-    const order = await prisma.serviceOrder.update({
-      where: { id },
-      data: { status, ...(status === 'COMPLETADO' ? { completedDate: new Date() } : {}) },
-      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
-    });
-    notifyServiceOrderStatusChange({
-      orderId: id,
-      orderNumber: old.number,
-      customerId: old.customerId,
-      customerEmail: old.customer.email,
-      customerName: old.customer.contactName,
-      assignedTo: order.assignedTo,
-      oldStatus: old.status,
-      newStatus: status,
-      scheduledDate: order.scheduledDate,
-    }).catch((err) => console.error('[service-orders] notify error:', err));
-    res.json(stripCosts(order, req.user!.role));
-  } catch {
-    res.status(500).json({ error: 'Error al actualizar estado' });
-  }
-});
-
 router.delete('/:id', requirePermission('service-orders:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));

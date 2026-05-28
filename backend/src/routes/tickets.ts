@@ -98,7 +98,7 @@ router.post('/', requireSubscription, async (req: Request, res: Response) => {
         status: data.status || 'ABIERTO',
         customerId: customer.id,
         equipmentId: data.equipmentId,
-        assignedTo: data.assignedTo ?? (req.user!.role === 'CLIENT' ? customer.id : req.user!.id),
+        assignedTo: data.assignedTo ?? req.user!.id,
         resolution: data.resolution,
       },
     });

@@ -13,7 +13,7 @@ router.get('/', requirePermission('catalog:view'), async (req: Request, res: Res
     const { search } = req.query;
     const where: any = {};
     if (search) {
-      where.description = { contains: search as string, mode: 'insensitive' };
+      where.description = { contains: search as string, ...(process.env.DATABASE_URL?.includes('postgres') ? { mode: 'insensitive' as const } : {}) };
     }
     const materials = await prisma.catalogMaterial.findMany({
       where,

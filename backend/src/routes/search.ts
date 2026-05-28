@@ -11,7 +11,7 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
       return res.json({ customers: [], tickets: [], orders: [], quotations: [], equipment: [], policies: [] });
     }
 
-    const searchFields = { contains: q, mode: 'insensitive' as const };
+    const searchFields = { contains: q, ...(process.env.DATABASE_URL?.includes('postgres') ? { mode: 'insensitive' as const } : {}) };
 
     const [customers, tickets, orders, quotations, equipment, policies] = await Promise.all([
       prisma.customer.findMany({

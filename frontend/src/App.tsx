@@ -31,6 +31,7 @@ const PoliciesPage = lazy(() => import('./pages/PoliciesPage'));
 const PolicyFormPage = lazy(() => import('./pages/PolicyFormPage'));
 const PolicyDetailPage = lazy(() => import('./pages/PolicyDetailPage'));
 const MaintenancePage = lazy(() => import('./pages/MaintenancePage'));
+const MaintenanceFormPage = lazy(() => import('./pages/MaintenanceFormPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const UsersPage = lazy(() => import('./pages/UsersPage'));
 const UserFormPage = lazy(() => import('./pages/UserFormPage'));
@@ -141,6 +142,8 @@ export default function App() {
                 <Route path="policies/new" element={<PolicyFormPage />} />
                 <Route path="policies/:id" element={<PolicyDetailPage />} />
                 <Route path="maintenance" element={<MaintenancePage />} />
+                <Route path="maintenance/new" element={<MaintenanceFormPage />} />
+                <Route path="maintenance/:id/edit" element={<MaintenanceFormPage />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="users" element={<UsersPage />} />
                 <Route path="users/new" element={<UserFormPage />} />
