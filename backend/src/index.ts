@@ -71,6 +71,10 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/api/ml', mlRoutes);
 app.use('/api/reports', reportRoutes);
 
+app.get('/health', (_req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.use(express.static(path.join(__dirname, '../public')));
 app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
