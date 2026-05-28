@@ -29,6 +29,7 @@ import catalogMaterialRoutes from './routes/catalogMaterials';
 import invoiceRoutes from './routes/invoices';
 import adminRoutes from './routes/admin';
 import inventoryRoutes from './routes/inventory';
+import mlRoutes from './routes/ml';
 import { initWebSocket } from './websocket';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { startReminderScheduler } from './notifications/scheduler';
@@ -114,6 +115,7 @@ app.use('/api/catalog-materials', catalogMaterialRoutes);
 app.use('/api/invoices', invoiceRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/ml', mlRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

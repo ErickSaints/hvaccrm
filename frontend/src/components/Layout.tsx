@@ -57,6 +57,7 @@ const mainNav = [
     { name: 'Levantamientos', href: '/surveys', icon: Ruler },
   ]},
   { section: 'Herramientas', items: [
+    { name: 'Inventario', href: '/inventory', icon: PackageSearch },
     { name: 'Refacciones e Insumos', href: '/refacciones', icon: PackageSearch },
     { name: 'Cálculos HVAC', href: '/calculos-hvac', icon: Calculator },
   ]},

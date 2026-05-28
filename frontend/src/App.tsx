@@ -48,6 +48,9 @@ const PermissionsPage = lazy(() => import('./pages/PermissionsPage'));
 const ClientDashboard = lazy(() => import('./pages/ClientDashboard'));
 const DispatchPage = lazy(() => import('./pages/DispatchPage'));
 const InvoicesPage = lazy(() => import('./pages/InvoicesPage'));
+const InventoryPage = lazy(() => import('./pages/InventoryPage'));
+const InventoryFormPage = lazy(() => import('./pages/InventoryFormPage'));
+const InventoryDetailPage = lazy(() => import('./pages/InventoryDetailPage'));
 const InvoiceFormPage = lazy(() => import('./pages/InvoiceFormPage'));
 const InvoiceDetailPage = lazy(() => import('./pages/InvoiceDetailPage'));
 
@@ -157,6 +160,10 @@ export default function App() {
                 <Route path="surveys/:id/edit" element={<SurveyFormPage />} />
                 <Route path="admin" element={<AdminPage />} />
                 <Route path="permissions" element={<PermissionsPage />} />
+                <Route path="inventory" element={<InventoryPage />} />
+                <Route path="inventory/new" element={<InventoryFormPage />} />
+                <Route path="inventory/:id" element={<InventoryDetailPage />} />
+                <Route path="inventory/:id/edit" element={<InventoryFormPage />} />
               </Route>
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

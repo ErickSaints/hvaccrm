@@ -4,6 +4,7 @@ import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
 import { requireSubscription } from '../middleware/auth';
+import { paginate, paginatedResponse } from '../middleware/pagination';
 import { notifyQuotationStatusChange } from '../notifications/notifier';
 import { emitToBackoffice } from '../websocket';
 import { generateQuotationPdf } from '../services/pdfGenerator';
@@ -49,27 +50,32 @@ async function generateQuotationNumber(): Promise<string> {
 
 router.use(authenticate);
 
-router.get('/', requirePermission('quotations:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('quotations:view'), paginate, async (req: Request, res: Response) => {
   try {
     const where: any = {};
     if (req.user!.role === 'CLIENT') {
       const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
       where.customerId = { in: userCustomers.map(c => c.id) };
     }
-    const quotations = await prisma.quotation.findMany({
-      where,
-      include: { customer: true, createdBy: true, items: true },
-      orderBy: { createdAt: 'desc' },
-    });
+    const [quotations, total] = await Promise.all([
+      prisma.quotation.findMany({
+        where,
+        skip: req.pagination!.skip,
+        take: req.pagination!.limit,
+        include: { customer: true, createdBy: true, items: true },
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.quotation.count({ where }),
+    ]);
     if (req.user!.role === 'TECHNICIAN') {
       const sanitized = quotations.map(({ subtotal, tax, discount, total, items, ...rest }) => ({
         ...rest,
         subtotal: 0, tax: 0, discount: 0, total: 0,
         items: items.map(({ unitPrice, total: it, ...ir }: any) => ({ ...ir, unitPrice: 0, total: 0 })),
       }));
-      return res.json(sanitized);
+      return res.json(paginatedResponse(sanitized, total, req.pagination!.page, req.pagination!.limit));
     }
-    res.json(quotations);
+    res.json(paginatedResponse(quotations, total, req.pagination!.page, req.pagination!.limit));
   } catch {
     res.status(500).json({ error: 'Error al obtener cotizaciones' });
   }

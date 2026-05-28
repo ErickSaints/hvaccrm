@@ -3,30 +3,28 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Eye, Edit2, Building2, Phone, Mail, MapPin } from 'lucide-react';
 import api from '../lib/api';
-import type { Customer } from '../types';
+import type { Customer, PaginatedResponse } from '../types';
+import Pagination from '../components/Pagination';
 
 export default function CustomersPage() {
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
 
-  const { data: customers, isLoading } = useQuery<Customer[]>({
-    queryKey: ['customers'],
+  const { data, isLoading } = useQuery<PaginatedResponse<Customer>>({
+    queryKey: ['customers', page, search],
     queryFn: async () => {
-      const { data } = await api.get<Customer[]>('/customers');
+      const params = new URLSearchParams();
+      params.set('page', String(page));
+      params.set('limit', '20');
+      if (search) params.set('search', search);
+      const { data } = await api.get(`/customers?${params}`);
       return data;
     },
   });
 
-  const filtered = customers?.filter((c) => {
-    if (!search) return true;
-    const q = search.toLowerCase();
-    return (
-      c.contactName?.toLowerCase().includes(q) ||
-      c.companyName?.toLowerCase().includes(q) ||
-      c.email?.toLowerCase().includes(q) ||
-      c.phone?.includes(q) ||
-      c.city?.toLowerCase().includes(q)
-    );
-  });
+  const customers = data?.data ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = data?.totalPages ?? 1;
 
   return (
     <div className="space-y-6">
@@ -47,7 +45,7 @@ export default function CustomersPage() {
           type="text"
           placeholder="Buscar por nombre, empresa, email, teléfono o ciudad..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           className="input-field pl-10"
         />
       </div>
@@ -67,7 +65,7 @@ export default function CustomersPage() {
             ))}
           </div>
         </div>
-      ) : filtered && filtered.length > 0 ? (
+      ) : customers.length > 0 ? (
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
@@ -82,7 +80,7 @@ export default function CustomersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {filtered.map((customer) => (
+              {customers.map((customer) => (
                 <tr key={customer.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
@@ -143,6 +141,7 @@ export default function CustomersPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={totalPages} total={total} limit={20} onPageChange={setPage} />
         </div>
       ) : (
         <div className="card text-center py-12">

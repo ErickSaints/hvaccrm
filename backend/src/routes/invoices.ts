@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { paginate, paginatedResponse } from '../middleware/pagination';
 import { generateInvoicePdf } from '../services/pdfGenerator';
 
 const router = Router();
@@ -31,13 +32,24 @@ function generateInvoiceNumber(): string {
 
 router.use(authenticate);
 
-router.get('/', requirePermission('invoices:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('invoices:view'), paginate, async (req: Request, res: Response) => {
   try {
-    const invoices = await prisma.invoice.findMany({
-      include: { customer: true, createdBy: { select: { name: true } } },
-      orderBy: { createdAt: 'desc' },
-    });
-    res.json(invoices);
+    const where: any = {};
+    if (req.user!.role === 'CLIENT') {
+      const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
+      where.customerId = { in: userCustomers.map(c => c.id) };
+    }
+    const [invoices, total] = await Promise.all([
+      prisma.invoice.findMany({
+        where,
+        skip: req.pagination!.skip,
+        take: req.pagination!.limit,
+        include: { customer: true, createdBy: { select: { name: true } } },
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.invoice.count({ where }),
+    ]);
+    res.json(paginatedResponse(invoices, total, req.pagination!.page, req.pagination!.limit));
   } catch {
     res.status(500).json({ error: 'Error al obtener facturas' });
   }

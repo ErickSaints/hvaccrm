@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { paginate, paginatedResponse } from '../middleware/pagination';
 import { notifyServiceOrderStatusChange } from '../notifications/notifier';
 
 const router = Router();
@@ -48,19 +49,24 @@ async function generateOrderNumber(): Promise<string> {
 
 router.use(authenticate);
 
-router.get('/', requirePermission('service-orders:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('service-orders:view'), paginate, async (req: Request, res: Response) => {
   try {
     const where: any = {};
     if (req.user!.role === 'CLIENT') {
       const userCustomers = await prisma.customer.findMany({ where: { email: req.user!.email }, select: { id: true } });
       where.customerId = { in: userCustomers.map(c => c.id) };
     }
-    const orders = await prisma.serviceOrder.findMany({
-      where,
-      include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
-      orderBy: { createdAt: 'desc' },
-    });
-    res.json(orders.map((o) => stripCosts(o, req.user!.role)));
+    const [orders, total] = await Promise.all([
+      prisma.serviceOrder.findMany({
+        where,
+        skip: req.pagination!.skip,
+        take: req.pagination!.limit,
+        include: { customer: true, equipment: true, assignedUser: true, ticket: true, policy: true, report: true, photos: true },
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.serviceOrder.count({ where }),
+    ]);
+    res.json(paginatedResponse(orders.map((o) => stripCosts(o, req.user!.role)), total, req.pagination!.page, req.pagination!.limit));
   } catch {
     res.status(500).json({ error: 'Error al obtener órdenes de servicio' });
   }

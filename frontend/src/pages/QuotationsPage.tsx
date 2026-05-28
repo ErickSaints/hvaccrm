@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Eye, FileText, Filter } from 'lucide-react';
 import api from '../lib/api';
-import type { Quotation } from '../types';
+import type { Quotation, PaginatedResponse } from '../types';
+import Pagination from '../components/Pagination';
 
 const statusStyles: Record<string, string> = {
   BORRADOR: 'bg-gray-100 text-gray-800',
@@ -41,27 +42,24 @@ function statusBadge(status: string) {
 export default function QuotationsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [page, setPage] = useState(1);
 
-  const { data: quotations, isLoading } = useQuery<Quotation[]>({
-    queryKey: ['quotations'],
+  const { data, isLoading } = useQuery<PaginatedResponse<Quotation>>({
+    queryKey: ['quotations', page, search, statusFilter],
     queryFn: async () => {
-      const { data } = await api.get<Quotation[]>('/quotations');
+      const params = new URLSearchParams();
+      params.set('page', String(page));
+      params.set('limit', '20');
+      if (search) params.set('search', search);
+      if (statusFilter) params.set('status', statusFilter);
+      const { data } = await api.get(`/quotations?${params}`);
       return data;
     },
   });
 
-  const filtered = quotations?.filter((q) => {
-    if (statusFilter && q.status !== statusFilter) return false;
-    if (search) {
-      const query = search.toLowerCase();
-      return (
-        q.number.toLowerCase().includes(query) ||
-        q.customer?.contactName?.toLowerCase().includes(query) ||
-        q.customer?.companyName?.toLowerCase().includes(query)
-      );
-    }
-    return true;
-  });
+  const quotations = data?.data ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = data?.totalPages ?? 1;
 
   const isExpired = (q: Quotation) => {
     if (!q.validUntil || q.status !== 'ENVIADA') return false;
@@ -88,7 +86,7 @@ export default function QuotationsPage() {
             type="text"
             placeholder="Buscar por número o cliente..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             className="input-field pl-10"
           />
         </div>
@@ -96,7 +94,7 @@ export default function QuotationsPage() {
           <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
             className="input-field pl-9 pr-8 appearance-none cursor-pointer"
           >
             {statusFilters.map((opt) => (
@@ -122,7 +120,7 @@ export default function QuotationsPage() {
             ))}
           </div>
         </div>
-      ) : filtered && filtered.length > 0 ? (
+      ) : quotations.length > 0 ? (
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
@@ -138,7 +136,7 @@ export default function QuotationsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {filtered.map((q) => {
+              {quotations.map((q) => {
                 const expired = isExpired(q);
                 return (
                   <tr key={q.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
@@ -179,6 +177,7 @@ export default function QuotationsPage() {
               })}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={totalPages} total={total} limit={20} onPageChange={setPage} />
         </div>
       ) : (
         <div className="card text-center py-12">

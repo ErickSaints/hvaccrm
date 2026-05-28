@@ -233,3 +233,58 @@ export interface ChartData {
   ticketsByStatus: { name: string; value: number }[];
   technicianPerformance: { name: string; completadas: number; pendientes: number }[];
 }
+
+export interface InventoryItem {
+  id: number;
+  code: string;
+  name: string;
+  description?: string;
+  category: string;
+  unit: string;
+  minStock: number;
+  currentStock: number;
+  unitPrice: number;
+  location?: string;
+  active: boolean;
+  branchId?: number;
+  branch?: { id: number; name: string };
+  movements?: InventoryMovement[];
+  createdAt: string;
+}
+
+export interface InventoryMovement {
+  id: number;
+  type: 'ENTRADA' | 'SALIDA' | 'AJUSTE' | 'TRANSFERENCIA';
+  quantity: number;
+  unitPrice?: number;
+  total?: number;
+  reference?: string;
+  notes?: string;
+  itemId: number;
+  branchId?: number;
+  branch?: { id: number; name: string };
+  performedById?: number;
+  performedBy?: { id: number; name: string };
+  serviceOrderId?: number;
+  reportId?: number;
+  createdAt: string;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
+export interface MLPrediction {
+  equipmentId: number;
+  equipmentName: string;
+  failureProbability: number;
+  estimatedDaysToFailure: number;
+  riskLevel: 'bajo' | 'medio' | 'alto' | 'critico';
+  recommendedAction: string;
+  nextServiceRecommended: string;
+}

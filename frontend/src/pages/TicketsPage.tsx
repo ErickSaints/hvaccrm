@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { Plus, Search, Eye, Filter, TicketCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
-import type { Ticket } from '../types';
+import type { Ticket, PaginatedResponse } from '../types';
+import Pagination from '../components/Pagination';
 
 const levelFilters = [
   { key: '', label: 'Todos', className: '' },
@@ -31,14 +32,25 @@ export default function TicketsPage() {
   const [search, setSearch] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [page, setPage] = useState(1);
 
-  const { data: tickets, isLoading } = useQuery<Ticket[]>({
-    queryKey: ['tickets'],
+  const { data, isLoading } = useQuery<PaginatedResponse<Ticket>>({
+    queryKey: ['tickets', page, search, levelFilter, statusFilter],
     queryFn: async () => {
-      const { data } = await api.get<Ticket[]>('/tickets');
+      const params = new URLSearchParams();
+      params.set('page', String(page));
+      params.set('limit', '20');
+      if (search) params.set('search', search);
+      if (levelFilter) params.set('level', levelFilter);
+      if (statusFilter) params.set('status', statusFilter);
+      const { data } = await api.get(`/tickets?${params}`);
       return data;
     },
   });
+
+  const tickets = data?.data ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = data?.totalPages ?? 1;
 
   const statusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: number; status: string }) => {
@@ -51,20 +63,6 @@ export default function TicketsPage() {
     onError: () => {
       toast.error('Error al actualizar estado');
     },
-  });
-
-  const filtered = tickets?.filter((t) => {
-    if (levelFilter && t.level !== levelFilter) return false;
-    if (statusFilter && t.status !== statusFilter) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      return (
-        t.title.toLowerCase().includes(q) ||
-        t.customer?.contactName?.toLowerCase().includes(q) ||
-        t.customer?.companyName?.toLowerCase().includes(q)
-      );
-    }
-    return true;
   });
 
   return (
@@ -85,7 +83,7 @@ export default function TicketsPage() {
           {levelFilters.map((f) => (
             <button
               key={f.key}
-              onClick={() => setLevelFilter(f.key)}
+              onClick={() => { setLevelFilter(f.key); setPage(1); }}
               className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
                 levelFilter === f.key
                   ? f.className || 'bg-gray-900 text-white'
@@ -103,7 +101,7 @@ export default function TicketsPage() {
               type="text"
               placeholder="Buscar por título o cliente..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               className="input-field pl-10"
             />
           </div>
@@ -111,7 +109,7 @@ export default function TicketsPage() {
             <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
               className="input-field pl-9 pr-8 appearance-none cursor-pointer"
             >
               <option value="">Todos los estados</option>
@@ -139,7 +137,7 @@ export default function TicketsPage() {
             ))}
           </div>
         </div>
-      ) : filtered && filtered.length > 0 ? (
+      ) : tickets.length > 0 ? (
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
@@ -154,7 +152,7 @@ export default function TicketsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {filtered.map((ticket) => (
+              {tickets.map((ticket) => (
                 <tr key={ticket.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                   <td className="px-6 py-4">{levelBadge(ticket.level)}</td>
                   <td className="px-6 py-4">
@@ -196,6 +194,7 @@ export default function TicketsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={totalPages} total={total} limit={20} onPageChange={setPage} />
         </div>
       ) : (
         <div className="card text-center py-12">

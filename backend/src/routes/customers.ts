@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { paginate, paginatedResponse } from '../middleware/pagination';
 
 const router = Router();
 
@@ -22,7 +23,7 @@ const customerSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', requirePermission('customers:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('customers:view'), paginate, async (req: Request, res: Response) => {
   try {
     const { search } = req.query;
     const where: any = {};
@@ -34,11 +35,16 @@ router.get('/', requirePermission('customers:view'), async (req: Request, res: R
         { phone: { contains: search as string } },
       ];
     }
-    const customers = await prisma.customer.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-    });
-    res.json(customers);
+    const [customers, total] = await Promise.all([
+      prisma.customer.findMany({
+        where,
+        skip: req.pagination!.skip,
+        take: req.pagination!.limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.customer.count({ where }),
+    ]);
+    res.json(paginatedResponse(customers, total, req.pagination!.page, req.pagination!.limit));
   } catch {
     res.status(500).json({ error: 'Error al obtener clientes' });
   }

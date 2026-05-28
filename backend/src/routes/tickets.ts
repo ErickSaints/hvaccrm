@@ -3,6 +3,7 @@ import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSubscription } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
+import { paginate, paginatedResponse } from '../middleware/pagination';
 import { notifyTicketStatusChange } from '../notifications/notifier';
 
 const router = Router();
@@ -20,7 +21,7 @@ const ticketSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', requirePermission('tickets:view'), async (req: Request, res: Response) => {
+router.get('/', requirePermission('tickets:view'), paginate, async (req: Request, res: Response) => {
   try {
     const { level, status } = req.query;
     const where: any = {};
@@ -36,12 +37,17 @@ router.get('/', requirePermission('tickets:view'), async (req: Request, res: Res
     if (level) where.level = level;
     if (status) where.status = status;
 
-    const tickets = await prisma.ticket.findMany({
-      where,
-      include: { customer: true, equipment: true, assignedUser: true },
-      orderBy: { createdAt: 'desc' },
-    });
-    res.json(tickets);
+    const [tickets, total] = await Promise.all([
+      prisma.ticket.findMany({
+        where,
+        skip: req.pagination!.skip,
+        take: req.pagination!.limit,
+        include: { customer: true, equipment: true, assignedUser: true },
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.ticket.count({ where }),
+    ]);
+    res.json(paginatedResponse(tickets, total, req.pagination!.page, req.pagination!.limit));
   } catch {
     res.status(500).json({ error: 'Error al obtener tickets' });
   }

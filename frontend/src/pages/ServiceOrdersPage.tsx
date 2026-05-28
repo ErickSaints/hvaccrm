@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { Plus, Search, Eye, Filter, ClipboardList, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
-import type { ServiceOrder } from '../types';
+import type { ServiceOrder, PaginatedResponse } from '../types';
+import Pagination from '../components/Pagination';
 
 const statusFilters = [
   { key: '', label: 'Todos' },
@@ -45,14 +46,24 @@ export default function ServiceOrdersPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [page, setPage] = useState(1);
 
-  const { data: orders, isLoading } = useQuery<ServiceOrder[]>({
-    queryKey: ['service-orders'],
+  const { data, isLoading } = useQuery<PaginatedResponse<ServiceOrder>>({
+    queryKey: ['service-orders', page, search, statusFilter],
     queryFn: async () => {
-      const { data } = await api.get<ServiceOrder[]>('/service-orders');
+      const params = new URLSearchParams();
+      params.set('page', String(page));
+      params.set('limit', '20');
+      if (search) params.set('search', search);
+      if (statusFilter) params.set('status', statusFilter);
+      const { data } = await api.get(`/service-orders?${params}`);
       return data;
     },
   });
+
+  const orders = data?.data ?? [];
+  const total = data?.total ?? 0;
+  const totalPages = data?.totalPages ?? 1;
 
   const statusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: number; status: string }) => {
@@ -65,20 +76,6 @@ export default function ServiceOrdersPage() {
     onError: () => {
       toast.error('Error al actualizar estado');
     },
-  });
-
-  const filtered = orders?.filter((o) => {
-    if (statusFilter && o.status !== statusFilter) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      return (
-        o.number.toLowerCase().includes(q) ||
-        o.customer?.contactName?.toLowerCase().includes(q) ||
-        o.customer?.companyName?.toLowerCase().includes(q) ||
-        o.description?.toLowerCase().includes(q)
-      );
-    }
-    return true;
   });
 
   return (
@@ -99,7 +96,7 @@ export default function ServiceOrdersPage() {
           {statusFilters.map((f) => (
             <button
               key={f.key}
-              onClick={() => setStatusFilter(f.key)}
+              onClick={() => { setStatusFilter(f.key); setPage(1); }}
               className={`px-3 py-1.5 text-sm font-medium rounded-full transition-colors ${
                 statusFilter === f.key
                   ? 'bg-primary-600 text-white'
@@ -117,7 +114,7 @@ export default function ServiceOrdersPage() {
               type="text"
               placeholder="Buscar por número o cliente..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               className="input-field pl-10"
             />
           </div>
@@ -138,7 +135,7 @@ export default function ServiceOrdersPage() {
             ))}
           </div>
         </div>
-      ) : filtered && filtered.length > 0 ? (
+      ) : orders.length > 0 ? (
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-sm">
             <thead>
@@ -153,7 +150,7 @@ export default function ServiceOrdersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {filtered.map((order) => (
+              {orders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                   <td className="px-6 py-4">
                     <Link to={`/service-orders/${order.id}`} className="font-medium text-primary-600 hover:text-primary-700">
@@ -201,6 +198,7 @@ export default function ServiceOrdersPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={totalPages} total={total} limit={20} onPageChange={setPage} />
         </div>
       ) : (
         <div className="card text-center py-12">
