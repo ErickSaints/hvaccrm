@@ -37,7 +37,7 @@ async function checkScheduledServices() {
         },
       },
       include: {
-        customer: { select: { contactName: true, email: true } },
+        customer: { select: { contactName: true, email: true, phone: true } },
       },
     });
 
@@ -47,6 +47,7 @@ async function checkScheduledServices() {
         orderId: order.id,
         orderNumber: order.number,
         customerEmail: order.customer.email,
+        customerPhone: order.customer.phone,
         customerName: order.customer.contactName,
         scheduledDate: order.scheduledDate,
       });

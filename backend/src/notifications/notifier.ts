@@ -1,5 +1,6 @@
 import prisma from '../prisma';
 import { sendEmail, isEmailConfigured, ticketStatusEmail, serviceOrderStatusEmail, quotationStatusEmail, reminderEmail, surveyEmail } from './email';
+import { sendWhatsApp, sendSms, isWhatsAppConfigured, isSmsConfigured, formatPhone } from './twilio';
 import { emitToUser, emitToBackoffice } from '../websocket';
 
 type NotificationType = 'ticket' | 'service-order' | 'quotation' | 'reminder' | 'survey';
@@ -37,11 +38,44 @@ function customerNotificationLink(type: NotificationType, id: number): string {
   }
 }
 
+async function sendCustomerMessage(params: {
+  customerPhone?: string | null;
+  customerEmail?: string | null;
+  customerName: string;
+  subject: string;
+  shortMessage: string;
+  emailHtml?: { subject: string; html: string } | null;
+}) {
+  if (params.customerPhone) {
+    const formattedPhone = formatPhone(params.customerPhone);
+    if (isWhatsAppConfigured()) {
+      await sendWhatsApp({ to: formattedPhone, body: params.shortMessage });
+    }
+    if (isSmsConfigured()) {
+      await sendSms({ to: formattedPhone, body: params.shortMessage });
+    }
+  }
+  if (params.customerEmail && isEmailConfigured() && params.emailHtml) {
+    await sendEmail({ to: params.customerEmail, ...params.emailHtml });
+  }
+}
+
+function statusLabel(s: string): string {
+  const labels: Record<string, string> = {
+    ABIERTO: 'Abierto', EN_PROCESO: 'En Proceso', RESUELTO: 'Resuelto',
+    CERRADO: 'Cerrado', PENDIENTE: 'Pendiente', EN_PROGRESO: 'En Progreso',
+    COMPLETADO: 'Completado', CANCELADO: 'Cancelado', BORRADOR: 'Borrador',
+    ENVIADA: 'Enviada', APROBADA: 'Aprobada', RECHAZADA: 'Rechazada', VENCIDA: 'Vencida',
+  };
+  return labels[s] || s;
+}
+
 export async function notifyTicketStatusChange(params: {
   ticketId: number;
   ticketTitle: string;
   customerId: number;
   customerEmail?: string | null;
+  customerPhone?: string | null;
   customerName: string;
   assignedTo?: number | null;
   oldStatus: string;
@@ -49,7 +83,7 @@ export async function notifyTicketStatusChange(params: {
 }) {
   const link = customerNotificationLink('ticket', params.ticketId);
 
-  // Notify assigned user
+  // In-app to assigned user
   if (params.assignedTo) {
     await createInApp({
       userId: params.assignedTo,
@@ -61,19 +95,25 @@ export async function notifyTicketStatusChange(params: {
   }
   emitToBackoffice('ticket:status_change', { ticketId: params.ticketId, newStatus: params.newStatus });
 
-  // Send email to customer
-  if (params.customerEmail && isEmailConfigured()) {
-    const email = ticketStatusEmail({
-      to: params.customerEmail,
-      customerName: params.customerName,
-      ticketId: params.ticketId,
-      ticketTitle: params.ticketTitle,
-      oldStatus: params.oldStatus,
-      newStatus: params.newStatus,
-      link,
-    });
-    await sendEmail({ to: params.customerEmail, ...email });
-  }
+  // Email + WhatsApp + SMS to customer
+  const emailHtml = params.customerEmail ? ticketStatusEmail({
+    to: params.customerEmail,
+    customerName: params.customerName,
+    ticketId: params.ticketId,
+    ticketTitle: params.ticketTitle,
+    oldStatus: params.oldStatus,
+    newStatus: params.newStatus,
+    link,
+  }) : null;
+
+  await sendCustomerMessage({
+    customerPhone: params.customerPhone,
+    customerEmail: params.customerEmail,
+    customerName: params.customerName,
+    subject: `Ticket #${params.ticketId}: ${statusLabel(params.newStatus)}`,
+    shortMessage: `Hola ${params.customerName}, el ticket "${params.ticketTitle}" cambió a ${statusLabel(params.newStatus)}. Ver: https://hvaccrm.production.up.railway.app${link}`,
+    emailHtml,
+  });
 }
 
 export async function notifyServiceOrderStatusChange(params: {
@@ -81,6 +121,7 @@ export async function notifyServiceOrderStatusChange(params: {
   orderNumber: string;
   customerId: number;
   customerEmail?: string | null;
+  customerPhone?: string | null;
   customerName: string;
   assignedTo?: number | null;
   oldStatus: string;
@@ -99,18 +140,24 @@ export async function notifyServiceOrderStatusChange(params: {
     });
   }
 
-  if (params.customerEmail && isEmailConfigured()) {
-    const email = serviceOrderStatusEmail({
-      to: params.customerEmail,
-      customerName: params.customerName,
-      orderNumber: params.orderNumber,
-      oldStatus: params.oldStatus,
-      newStatus: params.newStatus,
-      scheduledDate: params.scheduledDate?.toISOString(),
-      link,
-    });
-    await sendEmail({ to: params.customerEmail, ...email });
-  }
+  const emailHtml = params.customerEmail ? serviceOrderStatusEmail({
+    to: params.customerEmail,
+    customerName: params.customerName,
+    orderNumber: params.orderNumber,
+    oldStatus: params.oldStatus,
+    newStatus: params.newStatus,
+    scheduledDate: params.scheduledDate?.toISOString(),
+    link,
+  }) : null;
+
+  await sendCustomerMessage({
+    customerPhone: params.customerPhone,
+    customerEmail: params.customerEmail,
+    customerName: params.customerName,
+    subject: `OS ${params.orderNumber}: ${statusLabel(params.newStatus)}`,
+    shortMessage: `Hola ${params.customerName}, la orden ${params.orderNumber} cambió a ${statusLabel(params.newStatus)}. Ver: https://hvaccrm.production.up.railway.app${link}`,
+    emailHtml,
+  });
 }
 
 export async function notifyQuotationStatusChange(params: {
@@ -119,57 +166,79 @@ export async function notifyQuotationStatusChange(params: {
   quotationTitle: string;
   customerId: number;
   customerEmail?: string | null;
+  customerPhone?: string | null;
   customerName: string;
   newStatus: string;
 }) {
   const link = customerNotificationLink('quotation', params.quotationId);
 
-  if (params.customerEmail && isEmailConfigured()) {
-    const email = quotationStatusEmail({
-      to: params.customerEmail,
-      customerName: params.customerName,
-      quotationNumber: params.quotationNumber,
-      quotationTitle: params.quotationTitle,
-      newStatus: params.newStatus,
-      link,
-    });
-    await sendEmail({ to: params.customerEmail, ...email });
-  }
+  const emailHtml = params.customerEmail ? quotationStatusEmail({
+    to: params.customerEmail,
+    customerName: params.customerName,
+    quotationNumber: params.quotationNumber,
+    quotationTitle: params.quotationTitle,
+    newStatus: params.newStatus,
+    link,
+  }) : null;
+
+  await sendCustomerMessage({
+    customerPhone: params.customerPhone,
+    customerEmail: params.customerEmail,
+    customerName: params.customerName,
+    subject: `${params.quotationNumber}: ${statusLabel(params.newStatus)}`,
+    shortMessage: `Hola ${params.customerName}, la cotización ${params.quotationNumber} cambió a ${statusLabel(params.newStatus)}. Ver: https://hvaccrm.production.up.railway.app${link}`,
+    emailHtml,
+  });
 }
 
 export async function sendServiceReminder(params: {
   orderId: number;
   orderNumber: string;
   customerEmail?: string | null;
+  customerPhone?: string | null;
   customerName: string;
   scheduledDate: Date;
 }) {
-  if (!params.customerEmail || !isEmailConfigured()) return;
-
   const link = customerNotificationLink('service-order', params.orderId);
-  const email = reminderEmail({
+
+  const emailHtml = params.customerEmail ? reminderEmail({
     to: params.customerEmail,
     customerName: params.customerName,
     orderNumber: params.orderNumber,
     scheduledDate: params.scheduledDate.toISOString(),
     link,
+  }) : null;
+
+  await sendCustomerMessage({
+    customerPhone: params.customerPhone,
+    customerEmail: params.customerEmail,
+    customerName: params.customerName,
+    subject: `Recordatorio: Orden ${params.orderNumber} programada`,
+    shortMessage: `Hola ${params.customerName}, recordatorio: la orden ${params.orderNumber} está programada para ${params.scheduledDate.toLocaleDateString('es-MX')}.`,
+    emailHtml,
   });
-  await sendEmail({ to: params.customerEmail, ...email });
 }
 
 export async function sendSurveyNotification(params: {
   orderNumber: string;
   customerEmail?: string | null;
+  customerPhone?: string | null;
   customerName: string;
   surveyLink: string;
 }) {
-  if (!params.customerEmail || !isEmailConfigured()) return;
-
-  const email = surveyEmail({
+  const emailHtml = params.customerEmail ? surveyEmail({
     to: params.customerEmail,
     customerName: params.customerName,
     orderNumber: params.orderNumber,
     surveyLink: params.surveyLink,
+  }) : null;
+
+  await sendCustomerMessage({
+    customerPhone: params.customerPhone,
+    customerEmail: params.customerEmail,
+    customerName: params.customerName,
+    subject: `¿Cómo fue tu servicio? — Orden ${params.orderNumber}`,
+    shortMessage: `Hola ${params.customerName}, ¿cómo fue el servicio de la orden ${params.orderNumber}? Danos tu opinión: ${params.surveyLink}`,
+    emailHtml,
   });
-  await sendEmail({ to: params.customerEmail, ...email });
 }

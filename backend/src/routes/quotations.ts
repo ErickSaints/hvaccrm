@@ -223,7 +223,7 @@ router.put('/:id/status', requirePermission('quotations:edit'), async (req: Requ
     const { status } = statusSchema.parse(req.body);
     const old = await prisma.quotation.findUnique({
       where: { id },
-      include: { customer: { select: { contactName: true, email: true } } },
+      include: { customer: { select: { contactName: true, email: true, phone: true } } },
     });
     if (!old) return res.status(404).json({ error: 'Cotización no encontrada' });
     const quotation = await prisma.quotation.update({
@@ -236,6 +236,7 @@ router.put('/:id/status', requirePermission('quotations:edit'), async (req: Requ
       quotationTitle: quotation.title || 'Cotización',
       customerId: old.customerId,
       customerEmail: old.customer.email,
+      customerPhone: old.customer.phone,
       customerName: old.customer.contactName,
       newStatus: status,
     }).catch((err) => console.error('[quotations] notify error:', err));

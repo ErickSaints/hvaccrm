@@ -144,7 +144,7 @@ router.put('/:id', requirePermission('tickets:edit'), async (req: Request, res: 
     const data = ticketSchema.partial().parse(req.body);
     const old = await prisma.ticket.findUnique({
       where: { id },
-      include: { customer: { select: { contactName: true, email: true } } },
+      include: { customer: { select: { contactName: true, email: true, phone: true } } },
     });
     if (!old) return res.status(404).json({ error: 'Ticket no encontrado' });
     const ticket = await prisma.ticket.update({ where: { id }, data });
@@ -154,6 +154,7 @@ router.put('/:id', requirePermission('tickets:edit'), async (req: Request, res: 
         ticketTitle: ticket.title,
         customerId: old.customerId,
         customerEmail: old.customer.email,
+        customerPhone: old.customer.phone,
         customerName: old.customer.contactName,
         assignedTo: ticket.assignedTo,
         oldStatus: old.status,
@@ -178,7 +179,7 @@ router.patch('/:id', requirePermission('tickets:edit'), requireSubscription, asy
     }
     const old = await prisma.ticket.findUnique({
       where: { id },
-      include: { customer: { select: { contactName: true, email: true } } },
+      include: { customer: { select: { contactName: true, email: true, phone: true } } },
     });
     if (!old) return res.status(404).json({ error: 'Ticket no encontrado' });
     const ticket = await prisma.ticket.update({
@@ -190,6 +191,7 @@ router.patch('/:id', requirePermission('tickets:edit'), requireSubscription, asy
       ticketTitle: old.title,
       customerId: old.customerId,
       customerEmail: old.customer.email,
+      customerPhone: old.customer.phone,
       customerName: old.customer.contactName,
       assignedTo: ticket.assignedTo,
       oldStatus: old.status,

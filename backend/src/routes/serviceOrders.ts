@@ -153,7 +153,7 @@ router.put('/:id', requirePermission('service-orders:edit'), requireSubscription
     if (data.scheduledDate) updateData.scheduledDate = new Date(data.scheduledDate);
     const old = await prisma.serviceOrder.findUnique({
       where: { id },
-      include: { customer: { select: { contactName: true, email: true } } },
+      include: { customer: { select: { contactName: true, email: true, phone: true } } },
     });
     if (!old) return res.status(404).json({ error: 'Orden no encontrada' });
 
@@ -179,6 +179,7 @@ router.put('/:id', requirePermission('service-orders:edit'), requireSubscription
         orderNumber: old.number,
         customerId: old.customerId,
         customerEmail: old.customer.email,
+        customerPhone: old.customer.phone,
         customerName: old.customer.contactName,
         assignedTo: order.assignedTo,
         oldStatus: old.status,
@@ -204,7 +205,7 @@ router.patch('/:id', requirePermission('service-orders:edit'), requireSubscripti
     }
     const old = await prisma.serviceOrder.findUnique({
       where: { id },
-      include: { customer: { select: { contactName: true, email: true } } },
+      include: { customer: { select: { contactName: true, email: true, phone: true } } },
     });
     if (!old) return res.status(404).json({ error: 'Orden no encontrada' });
     const order = await prisma.serviceOrder.update({
@@ -217,6 +218,7 @@ router.patch('/:id', requirePermission('service-orders:edit'), requireSubscripti
       orderNumber: old.number,
       customerId: old.customerId,
       customerEmail: old.customer.email,
+      customerPhone: old.customer.phone,
       customerName: old.customer.contactName,
       assignedTo: order.assignedTo,
       oldStatus: old.status,
