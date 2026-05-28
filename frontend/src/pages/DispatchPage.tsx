@@ -9,7 +9,7 @@ import type { EventClickArg, DateSelectArg, EventDropArg } from '@fullcalendar/c
 import { ArrowLeft, Calendar as CalendarIcon, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
-import type { ServiceOrder } from '../types';
+import type { ServiceOrder, PaginatedResponse } from '../types';
 
 const statusColors: Record<string, string> = {
   PENDIENTE: '#f59e0b',
@@ -29,13 +29,14 @@ export default function DispatchPage() {
   const queryClient = useQueryClient();
   const [selectedEvent, setSelectedEvent] = useState<ServiceOrder | null>(null);
 
-  const { data: orders, isLoading } = useQuery<ServiceOrder[]>({
+  const { data: responseData, isLoading } = useQuery<PaginatedResponse<ServiceOrder>>({
     queryKey: ['dispatch-orders'],
     queryFn: async () => {
-      const { data } = await api.get<ServiceOrder[]>('/service-orders');
+      const { data } = await api.get<PaginatedResponse<ServiceOrder>>('/service-orders');
       return data;
     },
   });
+  const orders = responseData?.data ?? [];
 
   const updateDateMutation = useMutation({
     mutationFn: async ({ id, scheduledDate }: { id: number; scheduledDate: string }) => {

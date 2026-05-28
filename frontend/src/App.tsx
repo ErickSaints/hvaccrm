@@ -120,9 +120,11 @@ export default function App() {
                 <Route index element={<ClientDashboardRedirect />} />
                 <Route path="customers" element={<CustomersPage />} />
                 <Route path="customers/new" element={<CustomerFormPage />} />
+                <Route path="customers/:id/edit" element={<CustomerFormPage />} />
                 <Route path="customers/:id" element={<CustomerDetailPage />} />
                 <Route path="equipment" element={<EquipmentPage />} />
                 <Route path="equipment/new" element={<EquipmentFormPage />} />
+                <Route path="equipment/:id" element={<EquipmentFormPage />} />
                 <Route path="assets" element={<AssetsPage />} />
                 <Route path="assets/new" element={<AssetFormPage />} />
                 <Route path="assets/:id" element={<AssetDetailPage />} />
