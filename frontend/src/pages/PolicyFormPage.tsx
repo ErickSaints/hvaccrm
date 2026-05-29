@@ -10,6 +10,13 @@ import api from '../lib/api';
 import type { MaintenancePolicy } from '../types';
 import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
+const statusOptions = [
+  { value: 'ACTIVA', label: 'Activa' },
+  { value: 'EXPIRADA', label: 'Expirada' },
+  { value: 'CANCELADA', label: 'Cancelada' },
+  { value: 'EN_PAUSA', label: 'En pausa' },
+] as const;
+
 const frequencies = [
   { value: 'MENSUAL', label: 'Mensual' },
   { value: 'BIMESTRAL', label: 'Bimestral' },
@@ -22,6 +29,7 @@ const policySchema = z.object({
   customerId: z.number({ required_error: 'Selecciona un cliente' }),
   name: z.string().min(1, 'El nombre es obligatorio'),
   description: z.string().optional(),
+  status: z.enum(['ACTIVA', 'EXPIRADA', 'CANCELADA', 'EN_PAUSA']).optional(),
   frequency: z.enum(['MENSUAL', 'BIMESTRAL', 'TRIMESTRAL', 'SEMESTRAL', 'ANUAL'], {
     required_error: 'Selecciona una frecuencia',
   }),
@@ -54,6 +62,7 @@ export default function PolicyFormPage() {
     defaultValues: {
       visitCount: 1,
       pricePerVisit: 0,
+      status: 'ACTIVA',
     },
   });
 
@@ -81,6 +90,7 @@ export default function PolicyFormPage() {
         customerId: policyData.customerId,
         name: policyData.name,
         description: policyData.description || '',
+        status: policyData.status,
         frequency: policyData.frequency,
         visitCount: policyData.visitCount,
         pricePerVisit: policyData.pricePerVisit,
@@ -172,6 +182,15 @@ export default function PolicyFormPage() {
           <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>
             <textarea {...register('description')} rows={3} className="input-field" placeholder="Describe los servicios incluidos en la póliza..." />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Estado</label>
+            <select {...register('status')} className="input-field">
+              {statusOptions.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
           </div>
 
           <div>
