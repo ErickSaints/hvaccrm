@@ -25,6 +25,8 @@ import InvoiceDetailScreen from '../screens/InvoiceDetailScreen';
 import EquipmentScreen from '../screens/EquipmentScreen';
 import EquipmentDetailScreen from '../screens/EquipmentDetailScreen';
 import AssetsScreen from '../screens/AssetsScreen';
+import QrScannerScreen from '../screens/QrScannerScreen';
+import AssetLookupScreen from '../screens/AssetLookupScreen';
 import FleetTrackingScreen from '../screens/FleetTrackingScreen';
 import PoliciesScreen from '../screens/PoliciesScreen';
 import PolicyDetailScreen from '../screens/PolicyDetailScreen';
@@ -139,6 +141,8 @@ export default function AppNavigator() {
             <RootStack.Screen name="Equipment" component={EquipmentScreen} />
             <RootStack.Screen name="EquipmentDetail" component={EquipmentDetailScreen} />
             <RootStack.Screen name="Assets" component={AssetsScreen} />
+            <RootStack.Screen name="QrScanner" component={QrScannerScreen} />
+            <RootStack.Screen name="AssetLookup" component={AssetLookupScreen} />
             <RootStack.Screen name="FleetTracking" component={FleetTrackingScreen} />
             <RootStack.Screen name="Policies" component={PoliciesScreen} />
             <RootStack.Screen name="PolicyDetail" component={PolicyDetailScreen} />

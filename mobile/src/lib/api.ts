@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getCached, setCache } from './cache';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'https://hvaccrm.production.up.railway.app/api';
 
@@ -20,10 +21,21 @@ api.interceptors.request.use(async (config) => {
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response.config.method === 'get' || response.config.method === 'GET') {
+      const key = response.config.url + JSON.stringify(response.config.params || {});
+      setCache(key, response.data);
+    }
+    return response;
+  },
   async (error) => {
     if (error.response?.status === 401) {
       await AsyncStorage.removeItem('token');
+    }
+    if (!error.response && error.config?.method === 'get') {
+      const key = error.config.url + JSON.stringify(error.config.params || {});
+      const cached = await getCached(key);
+      if (cached) return Promise.resolve({ data: cached, cached: true });
     }
     return Promise.reject(error);
   }

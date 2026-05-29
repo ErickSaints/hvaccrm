@@ -155,6 +155,7 @@ function AnimatedRoutes() {
             <Route path="service-orders" element={<PageTransition><ServiceOrdersPage /></PageTransition>} />
             <Route path="service-orders/new" element={<PageTransition><ServiceOrderFormPage /></PageTransition>} />
             <Route path="service-orders/:id" element={<PageTransition><ServiceOrderDetailPage /></PageTransition>} />
+            <Route path="service-orders/:id/edit" element={<PageTransition><ServiceOrderFormPage /></PageTransition>} />
             <Route path="dispatch" element={<PageTransition><DispatchPage /></PageTransition>} />
             <Route path="invoices" element={<PageTransition><InvoicesPage /></PageTransition>} />
             <Route path="invoices/new" element={<PageTransition><InvoiceFormPage /></PageTransition>} />
@@ -165,6 +166,7 @@ function AnimatedRoutes() {
             <Route path="policies" element={<PageTransition><PoliciesPage /></PageTransition>} />
             <Route path="policies/new" element={<PageTransition><PolicyFormPage /></PageTransition>} />
             <Route path="policies/:id" element={<PageTransition><PolicyDetailPage /></PageTransition>} />
+            <Route path="policies/:id/edit" element={<PageTransition><PolicyFormPage /></PageTransition>} />
             <Route path="maintenance" element={<PageTransition><MaintenancePage /></PageTransition>} />
             <Route path="maintenance/new" element={<PageTransition><MaintenanceFormPage /></PageTransition>} />
             <Route path="maintenance/:id/edit" element={<PageTransition><MaintenanceFormPage /></PageTransition>} />

@@ -52,6 +52,54 @@ router.post('/', requirePermission('maintenance:create'), async (req: Request, r
   }
 });
 
+router.get('/:id', requirePermission('maintenance:view'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const log = await prisma.maintenanceLog.findUnique({
+      where: { id },
+      include: { policy: true, equipment: true, assignedUser: true },
+    });
+    if (!log) return res.status(404).json({ error: 'Mantenimiento no encontrado' });
+    res.json(log);
+  } catch {
+    res.status(500).json({ error: 'Error al obtener mantenimiento' });
+  }
+});
+
+const updateSchema = z.object({
+  description: z.string().min(1).optional(),
+  scheduledDate: z.string().optional(),
+  policyId: z.number().optional(),
+  equipmentId: z.number().optional().nullable(),
+  assignedTo: z.number().optional().nullable(),
+  notes: z.string().optional().nullable(),
+  status: z.string().optional(),
+});
+
+router.put('/:id', requirePermission('maintenance:edit'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const data = updateSchema.parse(req.body);
+    const updateData: any = {};
+    if (data.description !== undefined) updateData.description = data.description;
+    if (data.scheduledDate !== undefined) updateData.scheduledDate = new Date(data.scheduledDate);
+    if (data.policyId !== undefined) updateData.policyId = data.policyId;
+    if (data.equipmentId !== undefined) updateData.equipmentId = data.equipmentId;
+    if (data.assignedTo !== undefined) updateData.assignedTo = data.assignedTo;
+    if (data.notes !== undefined) updateData.notes = data.notes;
+    if (data.status !== undefined) updateData.status = data.status;
+    const log = await prisma.maintenanceLog.update({
+      where: { id },
+      data: updateData,
+      include: { policy: true, equipment: true, assignedUser: true },
+    });
+    res.json(log);
+  } catch (err) {
+    if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
+    res.status(500).json({ error: 'Error al actualizar mantenimiento' });
+  }
+});
+
 router.put('/:id/complete', requirePermission('maintenance:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));

@@ -31,6 +31,13 @@
     "plugins": [
       "expo-secure-store",
       [
+        "expo-camera",
+        {
+          "cameraPermission": "Permite a HVAC CRM acceder a tu cámara para escanear códigos QR de activos.",
+          "barcodeScannerEnabled": true
+        }
+      ],
+      [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Usamos tu ubicación para registrar el check-in en órdenes de servicio.",

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, RefreshControl, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import api from '../lib/api';
 import { Loading } from '../components/Loading';
 import type { Asset } from '../types';
@@ -23,7 +24,13 @@ export default function AssetsScreen({ navigation }: any) {
 
   return (
     <View style={s.container}>
-      <View style={s.header}><Text style={s.title}>Activos con QR</Text></View>
+      <View style={s.header}>
+        <Text style={s.title}>Activos con QR</Text>
+        <TouchableOpacity style={s.scanBtn} onPress={() => navigation.navigate('QrScanner')}>
+          <Ionicons name="qr-code" size={22} color="#fff" />
+          <Text style={s.scanText}>Escanear</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList data={items} keyExtractor={i => i.id.toString()}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={load} />}
         renderItem={({ item }) => (
@@ -45,8 +52,10 @@ export default function AssetsScreen({ navigation }: any) {
 
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f8fafc' },
-  header: { padding: 20, paddingTop: 60, backgroundColor: '#2563eb' },
+  header: { padding: 20, paddingTop: 60, backgroundColor: '#2563eb', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   title: { fontSize: 22, fontWeight: '700', color: '#fff' },
+  scanBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.2)', paddingVertical: 6, paddingHorizontal: 12, borderRadius: 8, gap: 4 },
+  scanText: { color: '#fff', fontSize: 14, fontWeight: '600' },
   list: { paddingHorizontal: 16, paddingBottom: 20 },
   card: { backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 10, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
   row: { flexDirection: 'row', alignItems: 'center' },

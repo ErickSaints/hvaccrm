@@ -107,6 +107,7 @@ export default function PricebookPage() {
   });
 
   /* ───────── Item form state ───────── */
+  const [formSku, setFormSku] = useState('');
   const [formName, setFormName] = useState('');
   const [formDescription, setFormDescription] = useState('');
   const [formUnit, setFormUnit] = useState('');
@@ -118,6 +119,7 @@ export default function PricebookPage() {
   const [formCategoryId, setFormCategoryId] = useState<number | null>(null);
 
   function resetItemForm() {
+    setFormSku('');
     setFormName('');
     setFormDescription('');
     setFormUnit('pieza');
@@ -138,6 +140,7 @@ export default function PricebookPage() {
 
   function openEditItem(item: PricebookItem) {
     setEditingItem(item);
+    setFormSku(item.sku || '');
     setFormName(item.name);
     setFormDescription(item.description || '');
     setFormUnit(item.unit);
@@ -158,6 +161,7 @@ export default function PricebookPage() {
   const itemMutation = useMutation({
     mutationFn: async () => {
       const payload = {
+        sku: formSku || undefined,
         name: formName,
         description: formDescription || null,
         unit: formUnit,
@@ -516,6 +520,10 @@ export default function PricebookPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nombre *</label>
                 <input value={formName} onChange={e => setFormName(e.target.value)} className="input-field" placeholder="Nombre del artículo" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">SKU</label>
+                <input value={formSku} onChange={e => setFormSku(e.target.value)} className="input-field" placeholder="Código SKU" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Descripción</label>

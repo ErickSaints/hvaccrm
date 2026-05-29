@@ -64,7 +64,10 @@ export default function MarketingCampaignsPage() {
 
   const { data: campaigns, isLoading } = useQuery<Campaign[]>({
     queryKey: ['campaigns'],
-    queryFn: () => api.get('/campaigns').then(r => r.data),
+    queryFn: () => api.get('/campaigns').then(r => {
+      const d = r.data;
+      return Array.isArray(d) ? d : (d.data || []);
+    }),
   });
 
   const createMutation = useMutation({
