@@ -15,7 +15,7 @@ const policySchema = z.object({
   totalPrice: z.number().min(0),
   startDate: z.string(),
   endDate: z.string(),
-  status: z.enum(['ACTIVA', 'EXPIRADA', 'CANCELADA']).optional(),
+  status: z.enum(['ACTIVA', 'EXPIRADA', 'CANCELADA', 'EN_PAUSA']).optional(),
   notes: z.string().optional(),
   customerId: z.number(),
 });

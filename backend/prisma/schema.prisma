@@ -56,6 +56,7 @@ enum PolicyStatus {
   ACTIVA
   EXPIRADA
   CANCELADA
+  EN_PAUSA
 }
 
 enum PolicyFrequency {

@@ -12,6 +12,7 @@ const statusFilters = [
   { key: 'ACTIVA', label: 'Activa' },
   { key: 'EXPIRADA', label: 'Expirada' },
   { key: 'CANCELADA', label: 'Cancelada' },
+  { key: 'EN_PAUSA', label: 'En pausa' },
 ] as const;
 
 const frequencyLabels: Record<string, string> = {
@@ -27,11 +28,13 @@ function statusBadge(status: string) {
     ACTIVA: 'bg-green-100 text-green-800',
     EXPIRADA: 'bg-red-100 text-red-800',
     CANCELADA: 'bg-gray-100 text-gray-800',
+    EN_PAUSA: 'bg-yellow-100 text-yellow-800',
   };
   const labels: Record<string, string> = {
     ACTIVA: 'Activa',
     EXPIRADA: 'Expirada',
     CANCELADA: 'Cancelada',
+    EN_PAUSA: 'En pausa',
   };
   return (
     <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${styles[status] || 'bg-gray-100 text-gray-800'}`}>
