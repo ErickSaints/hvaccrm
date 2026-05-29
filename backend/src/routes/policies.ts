@@ -115,6 +115,8 @@ router.put('/:id', requirePermission('policies:edit'), async (req: Request, res:
 router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
+    await prisma.maintenanceLog.deleteMany({ where: { policyId: id } });
+    await prisma.serviceOrder.updateMany({ where: { policyId: id }, data: { policyId: null } });
     await prisma.maintenancePolicy.delete({ where: { id } });
     res.status(204).send();
   } catch {
