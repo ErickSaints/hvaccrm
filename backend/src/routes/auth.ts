@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate } from '../middleware/auth';
+import { sendEmail, welcomeEmail } from '../notifications/email';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'hvaccrm-secret-key';
@@ -92,9 +93,20 @@ router.post('/register', async (req: Request, res: Response) => {
         });
       }
     }
-    const updatedUser = await prisma.user.findUnique({ where: { id: user.id } });
+    const updatedUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: { subscription: { include: { plan: true } } },
+    });
     const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: user.isSuperAdmin }, JWT_SECRET, { expiresIn: '24h' });
     const { password: _, ...userData } = updatedUser!;
+    sendEmail({
+      to: user.email,
+      ...welcomeEmail({
+        userName: user.name,
+        planName: (updatedUser as any)?.subscription?.plan?.name,
+        loginUrl: `${process.env.APP_URL || 'https://hvaccrm.production.up.railway.app'}/login`,
+      }),
+    });
     res.status(201).json({ token, user: userData });
   } catch (err) {
     if (err instanceof z.ZodError) {

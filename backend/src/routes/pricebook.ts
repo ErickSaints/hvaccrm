@@ -186,8 +186,8 @@ router.get('/items/:id/catalog-materials', async (req: Request, res: Response) =
     const item = await prisma.pricebookItem.findUnique({ where: { id }, select: { id: true } });
     if (!item) return res.status(404).json({ error: 'Artículo no encontrado' });
     const materials = await prisma.catalogMaterial.findMany({
-      where: { active: true, pricebookItemId: id },
-      orderBy: { name: 'asc' },
+      where: { pricebookItemId: id },
+      orderBy: { description: 'asc' },
     });
     res.json(materials);
   } catch {

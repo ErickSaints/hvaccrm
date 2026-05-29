@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Plus, Search, Edit2, Shield, ToggleLeft, ToggleRight, X, Save, Loader2 } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Shield, ToggleLeft, ToggleRight, X, Save, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -114,6 +114,17 @@ export default function UsersPage() {
     onError: () => {
       toast.error('Error al actualizar estado');
     },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/users/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      toast.success('Usuario desactivado');
+    },
+    onError: () => toast.error('Error al desactivar usuario'),
   });
 
   const openCreateModal = () => {
@@ -297,6 +308,17 @@ export default function UsersPage() {
                         ) : (
                           <ToggleLeft className="w-4 h-4" />
                         )}
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (window.confirm(`¿Desactivar al usuario "${u.name}"?`)) {
+                            deleteMutation.mutate(u.id);
+                          }
+                        }}
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Desactivar usuario"
+                      >
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </td>

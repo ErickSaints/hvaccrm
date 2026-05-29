@@ -17,7 +17,8 @@ export type PermissionAction =
   | 'subscriptions:view' | 'subscriptions:manage'
   | 'admin:panel' | 'admin:users' | 'admin:permissions' | 'admin:spectate' | 'admin:system'
   | 'profile:view' | 'profile:edit'
-  | 'upload:files';
+  | 'upload:files'
+  | 'campaigns:view' | 'campaigns:create' | 'campaigns:edit' | 'campaigns:delete' | 'campaigns:send';
 
 export const ALL_PERMISSIONS: PermissionAction[] = [
   'users:view', 'users:create', 'users:edit', 'users:delete',

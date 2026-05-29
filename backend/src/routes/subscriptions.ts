@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 import prisma from '../prisma';
 import { authenticate, requireRole } from '../middleware/auth';
+import { sendEmail, welcomeEmail } from '../notifications/email';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'hvaccrm-secret-key';
@@ -159,6 +160,14 @@ router.post('/register', async (req: Request, res: Response) => {
     });
     const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: false }, JWT_SECRET, { expiresIn: '24h' });
     const { password: _, ...userData } = user;
+    sendEmail({
+      to: user.email,
+      ...welcomeEmail({
+        userName: user.name,
+        planName: plan.name,
+        loginUrl: `${process.env.APP_URL || 'https://hvaccrm.production.up.railway.app'}/login`,
+      }),
+    });
     res.status(201).json({ token, user: { ...userData, trialEndsAt }, subscription });
   } catch (err) {
     if (err instanceof z.ZodError) {

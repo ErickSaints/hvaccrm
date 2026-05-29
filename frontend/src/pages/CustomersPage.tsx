@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Plus, Search, Eye, Edit2, Building2, Phone, Mail, MapPin } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { Plus, Search, Eye, Edit2, Trash2, Building2, Phone, Mail, MapPin } from 'lucide-react';
 import api from '../lib/api';
 import type { Customer, PaginatedResponse } from '../types';
 import Pagination from '../components/Pagination';
@@ -9,6 +10,18 @@ import Pagination from '../components/Pagination';
 export default function CustomersPage() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/customers/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['customers'] });
+      toast.success('Cliente eliminado');
+    },
+    onError: () => toast.error('Error al eliminar cliente'),
+  });
 
   const { data, isLoading } = useQuery<PaginatedResponse<Customer>>({
     queryKey: ['customers', page, search],
@@ -135,6 +148,17 @@ export default function CustomersPage() {
                       >
                         <Edit2 className="w-4 h-4" />
                       </Link>
+                      <button
+                        onClick={() => {
+                          if (window.confirm('¿Eliminar este cliente? Se borrarán todos sus datos asociados.')) {
+                            deleteMutation.mutate(customer.id);
+                          }
+                        }}
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Eliminar"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </td>
                 </tr>

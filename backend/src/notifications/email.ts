@@ -201,6 +201,22 @@ export function reminderEmail(params: {
   return { subject, html };
 }
 
+export function welcomeEmail(params: {
+  userName: string;
+  planName?: string;
+  loginUrl: string;
+}): { subject: string; html: string } {
+  const subject = `¡Bienvenido a HVAC-R CRM!`;
+  const html = baseHtml(`
+    <h2 style="color:#111827;font-size:18px;margin:0 0 16px">¡Bienvenido, ${params.userName}!</h2>
+    <p style="color:#4b5563;margin:0 0 16px">Gracias por registrarte en <strong>HVAC-R CRM</strong>. Estamos emocionados de tenerte a bordo.</p>
+    ${params.planName ? `<p style="color:#4b5563;margin:0 0 16px">Tu plan: <strong>${params.planName}</strong></p>` : ''}
+    <p style="color:#4b5563;margin:0 0 20px">Ya puedes iniciar sesión y comenzar a gestionar tu negocio.</p>
+    <a href="${params.loginUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:10px 24px;border-radius:8px;font-weight:500;font-size:14px">Iniciar sesión</a>
+  `);
+  return { subject, html };
+}
+
 export function surveyEmail(params: {
   to: string;
   customerName: string;
