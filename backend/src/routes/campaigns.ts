@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate, requireBackoffice, requireSuperAdmin } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 
@@ -144,7 +144,7 @@ router.put('/:id', requirePermission('campaigns:edit'), async (req: Request, res
   }
 });
 
-router.delete('/:id', requirePermission('campaigns:delete'), async (req: Request, res: Response) => {
+router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const existing = await prisma.campaign.findUnique({ where: { id } });

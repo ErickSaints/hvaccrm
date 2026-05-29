@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireSubscription } from '../middleware/auth';
+import { authenticate, requireSubscription, requireSuperAdmin } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
 import { scopeToCustomer } from '../middleware/scopeToCustomer';
 import { paginate, paginatedResponse } from '../middleware/pagination';
@@ -234,7 +234,7 @@ router.patch('/:id', requirePermission('service-orders:edit'), requireSubscripti
   }
 });
 
-router.delete('/:id', requirePermission('service-orders:delete'), async (req: Request, res: Response) => {
+router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.photo.deleteMany({ where: { serviceOrderId: id } });

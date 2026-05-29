@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 import prisma from '../prisma';
-import { authenticate, requireRole } from '../middleware/auth';
+import { authenticate, requireRole, requireSuperAdmin } from '../middleware/auth';
 import { sendEmail, welcomeEmail } from '../notifications/email';
 
 const router = Router();
@@ -108,7 +108,7 @@ router.put('/plans/:id', authenticate, requireRole(['ADMIN']), async (req: Reque
   }
 });
 
-router.delete('/plans/:id', authenticate, requireRole(['ADMIN']), async (req: Request, res: Response) => {
+router.delete('/plans/:id', authenticate, requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const plan = await prisma.subscriptionPlan.findUnique({ where: { id } });

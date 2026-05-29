@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate } from '../middleware/auth';
+import { authenticate, requireSuperAdmin } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 
@@ -227,7 +227,7 @@ router.get('/:id/movements', requirePermission('catalog:view'), paginate, async 
   }
 });
 
-router.delete('/:id', requirePermission('catalog:delete'), async (req: Request, res: Response) => {
+router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.inventoryItem.update({ where: { id }, data: { active: false } });

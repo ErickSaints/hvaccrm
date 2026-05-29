@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate } from '../middleware/auth';
+import { authenticate, requireSuperAdmin } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
 import { scopeToCustomer } from '../middleware/scopeToCustomer';
 
@@ -112,7 +112,7 @@ router.put('/:id', requirePermission('assets:edit'), async (req: Request, res: R
   }
 });
 
-router.delete('/:id', requirePermission('assets:delete'), async (req: Request, res: Response) => {
+router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.asset.delete({ where: { id } });

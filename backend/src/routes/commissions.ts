@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate, requireBackoffice, requireSuperAdmin } from '../middleware/auth';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 
 const router = Router();
@@ -120,7 +120,7 @@ router.put('/plans/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/plans/:id', async (req: Request, res: Response) => {
+router.delete('/plans/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const existing = await prisma.commissionPlan.findUnique({ where: { id } });

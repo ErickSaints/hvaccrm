@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate, requireBackoffice, requireSuperAdmin } from '../middleware/auth';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 
 const router = Router();
@@ -77,7 +77,7 @@ router.put('/categories/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/categories/:id', async (req: Request, res: Response) => {
+router.delete('/categories/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.pricebookCategory.update({ where: { id }, data: { active: false } });
@@ -170,7 +170,7 @@ router.put('/items/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/items/:id', async (req: Request, res: Response) => {
+router.delete('/items/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     await prisma.pricebookItem.update({ where: { id }, data: { active: false } });

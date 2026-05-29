@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireBackoffice } from '../middleware/auth';
+import { authenticate, requireBackoffice, requireSuperAdmin } from '../middleware/auth';
 import { paginate, paginatedResponse } from '../middleware/pagination';
 
 const router = Router();
@@ -98,7 +98,7 @@ router.put('/vendors/:id', requireBackoffice, async (req: Request, res: Response
   }
 });
 
-router.delete('/vendors/:id', requireBackoffice, async (req: Request, res: Response) => {
+router.delete('/vendors/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const vendor = await prisma.vendor.findUnique({ where: { id } });
@@ -314,7 +314,7 @@ router.put('/purchase-orders/:id/status', requireBackoffice, async (req: Request
   }
 });
 
-router.delete('/purchase-orders/:id', requireBackoffice, async (req: Request, res: Response) => {
+router.delete('/purchase-orders/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const existing = await prisma.purchaseOrder.findUnique({ where: { id } });
