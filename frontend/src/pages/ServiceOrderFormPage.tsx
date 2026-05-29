@@ -85,7 +85,7 @@ export default function ServiceOrderFormPage() {
   const { data: linkedPolicy } = useQuery<MaintenancePolicy>({
     queryKey: ['policy', policyId],
     queryFn: async () => {
-      const { data } = await api.get<MaintenancePolicy>(`/maintenance-policies/${policyId}`);
+      const { data } = await api.get<MaintenancePolicy>(`/policies/${policyId}`);
       return data;
     },
     enabled: Boolean(policyId),

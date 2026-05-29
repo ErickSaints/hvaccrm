@@ -56,7 +56,7 @@ const mainNav = [
   ]},
   { section: 'Ventas', items: [
     { name: 'Cotizaciones', href: '/quotations', icon: FileText },
-    { name: 'Precios (Good-Better-Best)', href: '/pricebook', icon: DollarSign },
+    { name: 'Precios', href: '/pricebook', icon: DollarSign },
     { name: 'Campañas Marketing', href: '/campaigns', icon: Megaphone },
   ]},
   { section: 'Mantenimiento', items: [

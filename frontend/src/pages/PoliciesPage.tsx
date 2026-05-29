@@ -45,7 +45,7 @@ export default function PoliciesPage() {
   const { data: policies, isLoading } = useQuery<MaintenancePolicy[]>({
     queryKey: ['maintenance-policies'],
     queryFn: async () => {
-      const { data } = await api.get<MaintenancePolicy[]>('/maintenance-policies');
+      const { data } = await api.get<MaintenancePolicy[]>('/policies');
       return data;
     },
   });

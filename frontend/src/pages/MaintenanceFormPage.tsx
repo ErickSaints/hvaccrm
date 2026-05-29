@@ -54,7 +54,7 @@ export default function MaintenanceFormPage() {
   const { data: policies } = useQuery<MaintenancePolicy[]>({
     queryKey: ['maintenance-policies'],
     queryFn: async () => {
-      const { data } = await api.get<MaintenancePolicy[]>('/maintenance-policies');
+      const { data } = await api.get<MaintenancePolicy[]>('/policies');
       return data;
     },
   });
@@ -88,7 +88,7 @@ export default function MaintenanceFormPage() {
   const { data: linkedPolicy } = useQuery<MaintenancePolicy>({
     queryKey: ['maintenance-policy', policyIdParam],
     queryFn: async () => {
-      const { data } = await api.get<MaintenancePolicy>(`/maintenance-policies/${policyIdParam}`);
+      const { data } = await api.get<MaintenancePolicy>(`/policies/${policyIdParam}`);
       return data;
     },
     enabled: Boolean(policyIdParam && !isEditing),

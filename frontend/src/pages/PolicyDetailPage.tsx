@@ -98,7 +98,7 @@ export default function PolicyDetailPage() {
   const { data: policy, isLoading } = useQuery<PolicyDetail>({
     queryKey: ['maintenance-policy', id],
     queryFn: async () => {
-      const { data } = await api.get<PolicyDetail>(`/maintenance-policies/${id}`);
+      const { data } = await api.get<PolicyDetail>(`/policies/${id}`);
       return data;
     },
     enabled: Boolean(id),

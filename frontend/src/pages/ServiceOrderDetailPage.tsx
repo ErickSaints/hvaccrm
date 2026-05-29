@@ -225,7 +225,7 @@ export default function ServiceOrderDetailPage() {
               </h2>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <Link
-                  to={`/maintenance-policies/${order.policyId}`}
+                  to={`/policies/${order.policyId}`}
                   className="text-green-700 hover:text-green-800 font-medium"
                 >
                   {order.policy.number} - {order.policy.name}

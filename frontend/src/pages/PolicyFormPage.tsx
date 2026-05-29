@@ -101,7 +101,7 @@ export default function PolicyFormPage() {
       if (isEditing) {
         await api.put(`/policies/${id}`, payload);
       } else {
-        await api.post('/maintenance-policies', payload);
+        await api.post('/policies', payload);
       }
     },
     onSuccess: () => {
