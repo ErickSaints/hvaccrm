@@ -23,6 +23,7 @@ import toast from 'react-hot-toast';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 import type { Ticket, User as UserType } from '../types';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 interface TicketDetail extends Ticket {
   changelog?: {
@@ -76,6 +77,7 @@ const statusOptions = [
 ];
 
 export default function TicketDetailPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -135,9 +137,7 @@ export default function TicketDetailPage() {
   });
 
   const handleDelete = () => {
-    if (window.confirm('¿Estás seguro de eliminar este ticket?')) {
-      deleteMutation.mutate();
-    }
+    confirmSuperAdmin(() => deleteMutation.mutate());
   };
 
   const assignMutation = useMutation({

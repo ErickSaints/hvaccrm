@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AuthProvider, useAuth } from './lib/auth';
+import { SuperAdminProvider } from './contexts/SuperAdminContext';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
 
@@ -206,7 +207,9 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <BrowserRouter>
-          <AnimatedRoutes />
+          <SuperAdminProvider>
+            <AnimatedRoutes />
+          </SuperAdminProvider>
         </BrowserRouter>
         <Toaster
           position="top-right"

@@ -4,6 +4,7 @@ import { Plus, Search, Ruler, Trash2, Camera, Package, Layers } from 'lucide-rea
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 interface Survey {
   id: number;
@@ -20,6 +21,7 @@ interface Survey {
 }
 
 export default function SurveysPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const [search, setSearch] = useState('');
   const queryClient = useQueryClient();
 
@@ -134,7 +136,7 @@ export default function SurveysPage() {
                   </p>
                 </div>
                 <button
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (confirm('¿Eliminar levantamiento?')) deleteMutation.mutate(survey.id); }}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmSuperAdmin(() => deleteMutation.mutate(survey.id)); }}
                   className="p-1.5 text-gray-300 hover:text-red-600 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
                 >
                   <Trash2 className="w-4 h-4" />

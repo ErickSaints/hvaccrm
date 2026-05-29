@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search, Tag, FolderOpen, DollarSign, TrendingUp, X, Save, Loader2, Edit2, Package } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 interface PricebookCategory {
   id: number;
@@ -37,6 +38,7 @@ export default function PricebookPage() {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<PricebookItem | null>(null);
   const queryClient = useQueryClient();
+  const confirmSuperAdmin = useSuperAdminConfirm();
 
   const { data: categories, isLoading: catsLoading } = useQuery<PricebookCategory[]>({
     queryKey: ['pricebook-categories'],
@@ -490,9 +492,7 @@ export default function PricebookPage() {
                                 <Edit2 className="w-4 h-4" />
                               </button>
                               <button
-                                onClick={() => {
-                                  if (confirm('¿Eliminar artículo?')) deleteItemMutation.mutate(item.id);
-                                }}
+                                onClick={() => confirmSuperAdmin(() => deleteItemMutation.mutate(item.id))}
                                 className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                                 title="Eliminar"
                               >

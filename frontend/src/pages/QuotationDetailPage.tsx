@@ -19,6 +19,7 @@ import {
 import toast from 'react-hot-toast';
 import api from '../lib/api';
 import type { Quotation } from '../types';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 const statusStyles: Record<string, string> = {
   BORRADOR: 'bg-gray-100 text-gray-800',
@@ -52,6 +53,7 @@ function statusBadge(status: string) {
 }
 
 export default function QuotationDetailPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -96,9 +98,7 @@ export default function QuotationDetailPage() {
   });
 
   const handleDelete = () => {
-    if (window.confirm('¿Estás seguro de eliminar esta cotización?')) {
-      deleteMutation.mutate();
-    }
+    confirmSuperAdmin(() => deleteMutation.mutate());
   };
 
   const handlePrint = () => {

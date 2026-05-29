@@ -19,8 +19,10 @@ import {
 } from 'lucide-react';
 import api from '../lib/api';
 import type { ServiceReport } from '../types';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 export default function ServiceReportDetailPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -53,9 +55,7 @@ export default function ServiceReportDetailPage() {
   });
 
   const handleDelete = () => {
-    if (window.confirm('¿Estás seguro de eliminar este reporte?')) {
-      deleteMutation.mutate();
-    }
+    confirmSuperAdmin(() => deleteMutation.mutate());
   };
 
   if (isLoading) {

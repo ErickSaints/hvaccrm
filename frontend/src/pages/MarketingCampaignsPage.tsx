@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Plus, Search, Send, BarChart3, Mail, MessageSquare, Trash2, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 interface Campaign {
   id: number;
@@ -61,6 +62,7 @@ export default function MarketingCampaignsPage() {
   const [formAudienceFilter, setFormAudienceFilter] = useState('');
   const [formScheduledAt, setFormScheduledAt] = useState('');
   const queryClient = useQueryClient();
+  const confirmSuperAdmin = useSuperAdminConfirm();
 
   const { data: campaigns, isLoading } = useQuery<Campaign[]>({
     queryKey: ['campaigns'],
@@ -148,9 +150,7 @@ export default function MarketingCampaignsPage() {
   };
 
   const handleDelete = (campaign: Campaign) => {
-    if (confirm(`¿Eliminar la campaña "${campaign.name}"? Esta acción no se puede deshacer.`)) {
-      deleteMutation.mutate(campaign.id);
-    }
+    confirmSuperAdmin(() => deleteMutation.mutate(campaign.id));
   };
 
   return (

@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Plus, Search, Wrench, Building2, Hash, Calendar, MapPin } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { Plus, Search, Wrench, Building2, Hash, Calendar, MapPin, Trash2 } from 'lucide-react';
 import api from '../lib/api';
 import type { Equipment } from '../types';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 const equipmentTypes = [
   'Compresor',
@@ -25,9 +27,22 @@ const equipmentTypes = [
 ];
 
 export default function EquipmentPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('');
   const [filterBrand, setFilterBrand] = useState('');
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/equipment/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['equipment'] });
+      toast.success('Equipo eliminado');
+    },
+    onError: () => toast.error('Error al eliminar equipo'),
+  });
 
   const { data: equipment, isLoading } = useQuery<Equipment[]>({
     queryKey: ['equipment'],
@@ -186,12 +201,21 @@ export default function EquipmentPage() {
                     ) : '—'}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Link
-                      to={`/equipment/${eq.id}`}
-                      className="text-primary-600 hover:text-primary-700 font-medium text-sm"
-                    >
-                      Ver
-                    </Link>
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        to={`/equipment/${eq.id}`}
+                        className="text-primary-600 hover:text-primary-700 font-medium text-sm"
+                      >
+                        Ver
+                      </Link>
+                      <button
+                        onClick={() => confirmSuperAdmin(() => deleteMutation.mutate(eq.id))}
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Eliminar"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

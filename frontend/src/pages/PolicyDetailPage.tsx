@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import {
   ArrowLeft,
   Edit2,
@@ -17,9 +18,11 @@ import {
   Wrench,
   Package,
   Plus,
+  Trash2,
 } from 'lucide-react';
 import api from '../lib/api';
 import type { MaintenancePolicy, MaintenanceLog, ServiceOrder } from '../types';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 interface PolicyDetail extends MaintenancePolicy {
   serviceOrders?: ServiceOrder[];
@@ -91,9 +94,23 @@ function logStatusBadge(status: string) {
 }
 
 export default function PolicyDetailPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState('info');
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      await api.delete(`/policies/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['maintenance-policies'] });
+      toast.success('Póliza eliminada');
+      navigate('/policies');
+    },
+    onError: () => toast.error('Error al eliminar póliza'),
+  });
 
   const { data: policy, isLoading } = useQuery<PolicyDetail>({
     queryKey: ['maintenance-policy', id],
@@ -173,6 +190,13 @@ export default function PolicyDetailPage() {
             <CalendarCheck className="w-4 h-4" />
             Programar Visita
           </Link>
+          <button
+            onClick={() => confirmSuperAdmin(() => deleteMutation.mutate())}
+            className="btn-danger inline-flex items-center gap-2"
+          >
+            <Trash2 className="w-4 h-4" />
+            Eliminar
+          </button>
         </div>
       </div>
 

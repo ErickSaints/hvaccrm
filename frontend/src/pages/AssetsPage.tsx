@@ -4,6 +4,7 @@ import { Plus, Search, QrCode, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 interface Asset {
   id: number;
@@ -17,6 +18,7 @@ interface Asset {
 }
 
 export default function AssetsPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const [search, setSearch] = useState('');
   const queryClient = useQueryClient();
 
@@ -101,7 +103,7 @@ export default function AssetsPage() {
                     <QrCode className="w-5 h-5" />
                   </span>
                   <button
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (confirm('¿Eliminar activo?')) deleteMutation.mutate(asset.id); }}
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmSuperAdmin(() => deleteMutation.mutate(asset.id)); }}
                     className="p-1.5 text-gray-300 hover:text-red-600 transition-colors opacity-0 group-hover:opacity-100"
                   >
                     <Trash2 className="w-4 h-4" />

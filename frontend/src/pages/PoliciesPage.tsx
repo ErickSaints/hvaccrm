@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Plus, Search, Eye, ShieldCheck } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { Plus, Search, Eye, ShieldCheck, Trash2 } from 'lucide-react';
 import api from '../lib/api';
 import type { MaintenancePolicy } from '../types';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 const statusFilters = [
   { key: '', label: 'Todas' },
@@ -39,8 +41,21 @@ function statusBadge(status: string) {
 }
 
 export default function PoliciesPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/policies/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['maintenance-policies'] });
+      toast.success('Póliza eliminada');
+    },
+    onError: () => toast.error('Error al eliminar póliza'),
+  });
 
   const { data: policies, isLoading } = useQuery<MaintenancePolicy[]>({
     queryKey: ['maintenance-policies'],
@@ -166,13 +181,22 @@ export default function PoliciesPage() {
                     {policy.endDate ? new Date(policy.endDate).toLocaleDateString('es-MX') : '—'}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Link
-                      to={`/policies/${policy.id}`}
-                      className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
-                      title="Ver detalle"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Link>
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        to={`/policies/${policy.id}`}
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
+                        title="Ver detalle"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Link>
+                      <button
+                        onClick={() => confirmSuperAdmin(() => deleteMutation.mutate(policy.id))}
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Eliminar"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

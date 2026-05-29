@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 import type { User } from '../types';
 
 const roleLabels: Record<string, string> = {
@@ -40,6 +41,7 @@ type UserFormData = z.infer<typeof userSchema>;
 
 export default function UsersPage() {
   const { user: currentUser, isSuperAdmin } = useAuth();
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('');
@@ -376,8 +378,9 @@ export default function UsersPage() {
                 </button>
                 <button
                   onClick={() => {
-                    deleteMutation.mutate(deletingUser.id);
+                    const id = deletingUser.id;
                     setDeletingUser(null);
+                    confirmSuperAdmin(() => deleteMutation.mutate(id));
                   }}
                   disabled={deleteMutation.isPending}
                   className="btn-primary bg-red-600 hover:bg-red-700 border-red-600 inline-flex items-center gap-2"

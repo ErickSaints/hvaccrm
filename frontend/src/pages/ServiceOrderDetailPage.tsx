@@ -23,6 +23,7 @@ import {
 import toast from 'react-hot-toast';
 import api from '../lib/api';
 import type { ServiceOrder } from '../types';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 function statusBadge(status: string) {
   const styles: Record<string, string> = {
@@ -52,6 +53,7 @@ const statusOptions = [
 ];
 
 export default function ServiceOrderDetailPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -97,9 +99,7 @@ export default function ServiceOrderDetailPage() {
   });
 
   const handleDelete = () => {
-    if (window.confirm('¿Estás seguro de eliminar esta orden de servicio?')) {
-      deleteMutation.mutate();
-    }
+    confirmSuperAdmin(() => deleteMutation.mutate());
   };
 
   if (isLoading) {

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Plus, Search, Eye, Filter, TicketCheck } from 'lucide-react';
+import { Plus, Search, Eye, Filter, TicketCheck, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
 import type { Ticket, PaginatedResponse } from '../types';
 import Pagination from '../components/Pagination';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 const levelFilters = [
   { key: '', label: 'Todos', className: '' },
@@ -28,6 +29,7 @@ function levelBadge(level: string) {
 }
 
 export default function TicketsPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
@@ -50,6 +52,17 @@ export default function TicketsPage() {
       const { data } = await api.get(`/tickets?${params}`);
       return data;
     },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/tickets/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      toast.success('Ticket eliminado');
+    },
+    onError: () => toast.error('Error al eliminar ticket'),
   });
 
   const tickets = data?.data ?? [];
@@ -221,13 +234,22 @@ export default function TicketsPage() {
                     {new Date(ticket.createdAt).toLocaleDateString('es-MX')}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Link
-                      to={`/tickets/${ticket.id}`}
-                      className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
-                      title="Ver detalle"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Link>
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        to={`/tickets/${ticket.id}`}
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
+                        title="Ver detalle"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Link>
+                      <button
+                        onClick={() => confirmSuperAdmin(() => deleteMutation.mutate(ticket.id))}
+                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Eliminar"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

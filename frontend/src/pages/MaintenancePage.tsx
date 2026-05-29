@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
   Plus,
   Search,
@@ -11,9 +12,11 @@ import {
   ChevronLeft,
   ChevronRight,
   User,
+  Trash2,
 } from 'lucide-react';
 import api from '../lib/api';
 import type { MaintenanceLog, MaintenancePolicy } from '../types';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 const statusFilters = [
   { key: '', label: 'Todos' },
@@ -57,6 +60,8 @@ function getCalendarDays(year: number, month: number) {
 }
 
 export default function MaintenancePage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
+  const queryClient = useQueryClient();
   const [view, setView] = useState<'list' | 'calendar'>('list');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -72,6 +77,17 @@ export default function MaintenancePage() {
       const { data } = await api.get<MaintenanceLog[]>('/maintenance');
       return data;
     },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/maintenance/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['maintenance'] });
+      toast.success('Mantenimiento eliminado');
+    },
+    onError: () => toast.error('Error al eliminar mantenimiento'),
   });
 
   const { data: policies } = useQuery<MaintenancePolicy[]>({
@@ -300,13 +316,22 @@ export default function MaintenancePage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <Link
-                          to={`/maintenance/${log.id}`}
-                          className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
-                          title="Ver detalle"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Link>
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            to={`/maintenance/${log.id}`}
+                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors inline-block"
+                            title="Ver detalle"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Link>
+                          <button
+                            onClick={() => confirmSuperAdmin(() => deleteMutation.mutate(log.id))}
+                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Eliminar"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

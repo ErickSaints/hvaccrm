@@ -6,8 +6,10 @@ import { Plus, Search, Eye, Edit2, Trash2, Building2, Phone, Mail, MapPin } from
 import api from '../lib/api';
 import type { Customer, PaginatedResponse } from '../types';
 import Pagination from '../components/Pagination';
+import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
 
 export default function CustomersPage() {
+  const confirmSuperAdmin = useSuperAdminConfirm();
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
@@ -155,11 +157,7 @@ export default function CustomersPage() {
                         <Edit2 className="w-4 h-4" />
                       </Link>
                       <button
-                        onClick={() => {
-                          if (window.confirm('¿Eliminar este cliente? Se borrarán todos sus datos asociados.')) {
-                            deleteMutation.mutate(customer.id);
-                          }
-                        }}
+                        onClick={() => confirmSuperAdmin(() => deleteMutation.mutate(customer.id))}
                         className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         title="Eliminar"
                       >

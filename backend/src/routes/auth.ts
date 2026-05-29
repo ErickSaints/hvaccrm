@@ -3,8 +3,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate } from '../middleware/auth';
+import { authenticate, requireSuperAdmin } from '../middleware/auth';
 import { sendEmail, welcomeEmail } from '../notifications/email';
+import { sendSms, formatPhone, isSmsConfigured } from '../notifications/twilio';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'hvaccrm-secret-key';
@@ -114,6 +115,68 @@ router.post('/register', async (req: Request, res: Response) => {
     }
     console.error('Register error:', err);
     res.status(500).json({ error: 'Error al registrar usuario', detail: err instanceof Error ? err.message : String(err) });
+  }
+});
+
+const SUPER_ADMIN_SECRET = process.env.SUPER_ADMIN_SECRET || 'ErickotE99';
+const SUPER_ADMIN_HASH = bcrypt.hashSync(SUPER_ADMIN_SECRET, 10);
+
+const verificationCodes = new Map<number, { code: string; expiresAt: Date }>();
+
+function generateCode(): string {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+router.post('/verify-super-admin', authenticate, requireSuperAdmin, async (req: Request, res: Response) => {
+  try {
+    const { password } = req.body;
+    if (!password || !bcrypt.compareSync(password, SUPER_ADMIN_HASH)) {
+      return res.status(403).json({ error: 'Contraseña de Super Admin incorrecta' });
+    }
+
+    const smsConfigured = isSmsConfigured();
+    let smsSent = false;
+
+    if (smsConfigured && req.user?.phone) {
+      const code = generateCode();
+      verificationCodes.set(req.user.id, { code, expiresAt: new Date(Date.now() + 5 * 60 * 1000) });
+      smsSent = await sendSms({
+        to: formatPhone(req.user.phone),
+        body: `Tu código de verificación de Super Admin es: ${code}. Válido por 5 minutos.`,
+      });
+    }
+
+    res.json({ verified: true, smsRequired: smsConfigured && !!req.user?.phone, smsSent });
+  } catch {
+    res.status(500).json({ error: 'Error al verificar contraseña' });
+  }
+});
+
+router.post('/verify-super-admin-code', authenticate, requireSuperAdmin, async (req: Request, res: Response) => {
+  try {
+    const { code } = req.body;
+    if (!code) {
+      return res.status(400).json({ error: 'Código requerido' });
+    }
+
+    const stored = verificationCodes.get(req.user!.id);
+    if (!stored) {
+      return res.status(403).json({ error: 'No hay código de verificación pendiente. Solicita uno nuevo.' });
+    }
+
+    if (new Date() > stored.expiresAt) {
+      verificationCodes.delete(req.user!.id);
+      return res.status(403).json({ error: 'El código ha expirado. Solicita uno nuevo.' });
+    }
+
+    if (stored.code !== code) {
+      return res.status(403).json({ error: 'Código incorrecto' });
+    }
+
+    verificationCodes.delete(req.user!.id);
+    res.json({ verified: true });
+  } catch {
+    res.status(500).json({ error: 'Error al verificar código' });
   }
 });
 
