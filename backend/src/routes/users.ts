@@ -116,35 +116,35 @@ router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => 
     if (!user) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
-    if (user.isSuperAdmin && user.id !== req.user!.id) {
-      return res.status(403).json({ error: 'No puedes eliminar al Super Administrador' });
-    }
     if (user.id === req.user!.id) {
       return res.status(400).json({ error: 'No puedes eliminar tu propio usuario' });
     }
-    const related: string[] = [];
-    const checks: [string, Promise<number>][] = [
-      ['tickets', prisma.ticket.count({ where: { assignedTo: id } })],
-      ['órdenes de servicio', prisma.serviceOrder.count({ where: { assignedTo: id } })],
-      ['cotizaciones', prisma.quotation.count({ where: { createdById: id } })],
-      ['reportes', prisma.serviceReport.count({ where: { technicianId: id } })],
-      ['mantenimientos', prisma.maintenanceLog.count({ where: { assignedTo: id } })],
-      ['facturas', prisma.invoice.count({ where: { createdById: id } })],
-      ['campañas', prisma.campaign.count({ where: { createdById: id } })],
-      ['certificaciones', prisma.certification.count({ where: { userId: id } })],
-    ];
-    for (const [label, promise] of checks) {
-      const count = await promise;
-      if (count > 0) related.push(`${count} ${label}`);
-    }
-    const sub = await prisma.userSubscription.findUnique({ where: { userId: id } });
-    if (sub) related.push('1 suscripción');
-    if (related.length > 0) {
-      return res.status(400).json({
-        error: `No se puede eliminar: el usuario tiene ${related.join(', ')}. Desactívelo en su lugar.`,
-      });
-    }
-    await prisma.user.delete({ where: { id } });
+    await prisma.$transaction(async (tx) => {
+      await tx.notification.deleteMany({ where: { userId: id } });
+      await tx.userSubscription.deleteMany({ where: { userId: id } });
+      await tx.userBranch.deleteMany({ where: { userId: id } });
+      await tx.technicianLocation.deleteMany({ where: { userId: id } });
+      await tx.timeEntry.deleteMany({ where: { userId: id } });
+      await tx.certification.deleteMany({ where: { userId: id } });
+      await tx.bookingTechnician.deleteMany({ where: { userId: id } });
+      await tx.maintenanceLog.deleteMany({ where: { assignedTo: id } });
+      await tx.ticket.updateMany({ where: { assignedTo: id }, data: { assignedTo: null } });
+      await tx.serviceOrder.updateMany({ where: { assignedTo: id }, data: { assignedTo: null } });
+      await tx.booking.updateMany({ where: { technicianId: id }, data: { technicianId: null } });
+      await tx.inventoryMovement.updateMany({ where: { performedById: id }, data: { performedById: null } });
+      await tx.auditLog.updateMany({ where: { userId: id }, data: { userId: null } });
+      const adminId = req.user!.id;
+      await tx.quotation.updateMany({ where: { createdById: id }, data: { createdById: adminId } });
+      await tx.serviceReport.updateMany({ where: { technicianId: id }, data: { technicianId: adminId } });
+      await tx.survey.updateMany({ where: { createdById: id }, data: { createdById: adminId } });
+      await tx.invoice.updateMany({ where: { createdById: id }, data: { createdById: adminId } });
+      await tx.campaign.updateMany({ where: { createdById: id }, data: { createdById: adminId } });
+      await tx.commissionEarning.updateMany({ where: { userId: id }, data: { userId: adminId } });
+      await tx.purchaseOrder.updateMany({ where: { createdById: id }, data: { createdById: adminId } });
+      await tx.subscriptionPlan.updateMany({ where: { createdById: id }, data: { createdById: adminId } });
+      await tx.rolePermission.updateMany({ where: { updatedById: id }, data: { updatedById: adminId } });
+      await tx.user.delete({ where: { id } });
+    });
     res.json({ message: 'Usuario eliminado permanentemente' });
   } catch (err) {
     console.error('Error al eliminar usuario:', err);
