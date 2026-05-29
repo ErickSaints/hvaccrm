@@ -456,7 +456,7 @@ export default function ServiceReportFormPage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notas de Lecturas</label>
             <Controller
-              name="hvacReadings.notes" as any
+              name="hvacReadings.notes"
               control={control}
               render={({ field: ctrlField }) => (
                 <textarea

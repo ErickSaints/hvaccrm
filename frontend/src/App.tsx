@@ -1,7 +1,8 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
+import { AnimatePresence, motion } from 'framer-motion';
 import { AuthProvider, useAuth } from './lib/auth';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
@@ -67,13 +68,26 @@ const queryClient = new QueryClient({
   },
 });
 
+function PageTransition({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -12 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-[#0b1120]">
+        <div className="w-10 h-10 border-[3px] border-primary-200 border-t-primary-600 rounded-full animate-spin dark:border-primary-800 dark:border-t-primary-400" />
       </div>
     );
   }
@@ -93,98 +107,109 @@ function ClientDashboardRedirect() {
   return <DashboardPage />;
 }
 
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Suspense fallback={
+        <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-[#0b1120]">
+          <div className="w-10 h-10 border-[3px] border-primary-200 border-t-primary-600 rounded-full animate-spin dark:border-primary-800 dark:border-t-primary-400" />
+        </div>
+      }>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
+          <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
+          <Route path="/payment" element={
+            <ProtectedRoute>
+              <PageTransition><PaymentPage /></PageTransition>
+            </ProtectedRoute>
+          } />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<PageTransition><ClientDashboardRedirect /></PageTransition>} />
+            <Route path="customers" element={<PageTransition><CustomersPage /></PageTransition>} />
+            <Route path="customers/new" element={<PageTransition><CustomerFormPage /></PageTransition>} />
+            <Route path="customers/:id/edit" element={<PageTransition><CustomerFormPage /></PageTransition>} />
+            <Route path="customers/:id" element={<PageTransition><CustomerDetailPage /></PageTransition>} />
+            <Route path="equipment" element={<PageTransition><EquipmentPage /></PageTransition>} />
+            <Route path="equipment/new" element={<PageTransition><EquipmentFormPage /></PageTransition>} />
+            <Route path="equipment/:id" element={<PageTransition><EquipmentFormPage /></PageTransition>} />
+            <Route path="assets" element={<PageTransition><AssetsPage /></PageTransition>} />
+            <Route path="assets/new" element={<PageTransition><AssetFormPage /></PageTransition>} />
+            <Route path="assets/:id" element={<PageTransition><AssetDetailPage /></PageTransition>} />
+            <Route path="tickets" element={<PageTransition><TicketsPage /></PageTransition>} />
+            <Route path="tickets/new" element={<PageTransition><TicketFormPage /></PageTransition>} />
+            <Route path="tickets/:id" element={<PageTransition><TicketDetailPage /></PageTransition>} />
+            <Route path="quotations" element={<PageTransition><QuotationsPage /></PageTransition>} />
+            <Route path="quotations/new" element={<PageTransition><QuotationFormPage /></PageTransition>} />
+            <Route path="quotations/:id" element={<PageTransition><QuotationDetailPage /></PageTransition>} />
+            <Route path="service-orders" element={<PageTransition><ServiceOrdersPage /></PageTransition>} />
+            <Route path="service-orders/new" element={<PageTransition><ServiceOrderFormPage /></PageTransition>} />
+            <Route path="service-orders/:id" element={<PageTransition><ServiceOrderDetailPage /></PageTransition>} />
+            <Route path="dispatch" element={<PageTransition><DispatchPage /></PageTransition>} />
+            <Route path="invoices" element={<PageTransition><InvoicesPage /></PageTransition>} />
+            <Route path="invoices/new" element={<PageTransition><InvoiceFormPage /></PageTransition>} />
+            <Route path="invoices/:id" element={<PageTransition><InvoiceDetailPage /></PageTransition>} />
+            <Route path="service-reports" element={<PageTransition><ServiceReportsPage /></PageTransition>} />
+            <Route path="service-reports/new" element={<PageTransition><ServiceReportFormPage /></PageTransition>} />
+            <Route path="service-reports/:id" element={<PageTransition><ServiceReportDetailPage /></PageTransition>} />
+            <Route path="policies" element={<PageTransition><PoliciesPage /></PageTransition>} />
+            <Route path="policies/new" element={<PageTransition><PolicyFormPage /></PageTransition>} />
+            <Route path="policies/:id" element={<PageTransition><PolicyDetailPage /></PageTransition>} />
+            <Route path="maintenance" element={<PageTransition><MaintenancePage /></PageTransition>} />
+            <Route path="maintenance/new" element={<PageTransition><MaintenanceFormPage /></PageTransition>} />
+            <Route path="maintenance/:id/edit" element={<PageTransition><MaintenanceFormPage /></PageTransition>} />
+            <Route path="profile" element={<PageTransition><ProfilePage /></PageTransition>} />
+            <Route path="users" element={<PageTransition><UsersPage /></PageTransition>} />
+            <Route path="users/new" element={<PageTransition><UserFormPage /></PageTransition>} />
+            <Route path="users/:id/edit" element={<PageTransition><UserFormPage /></PageTransition>} />
+            <Route path="subscriptions" element={<PageTransition><SubscriptionsPage /></PageTransition>} />
+            <Route path="refacciones" element={<PageTransition><RefaccionesPage /></PageTransition>} />
+            <Route path="calculos-hvac" element={<PageTransition><HvacCalculatorPage /></PageTransition>} />
+            <Route path="ml-predictions" element={<PageTransition><MLPredictionsPage /></PageTransition>} />
+            <Route path="surveys" element={<PageTransition><SurveysPage /></PageTransition>} />
+            <Route path="surveys/new" element={<PageTransition><SurveyFormPage /></PageTransition>} />
+            <Route path="surveys/:id" element={<PageTransition><SurveyDetailPage /></PageTransition>} />
+            <Route path="surveys/:id/edit" element={<PageTransition><SurveyFormPage /></PageTransition>} />
+            <Route path="admin" element={<PageTransition><AdminPage /></PageTransition>} />
+            <Route path="permissions" element={<PageTransition><PermissionsPage /></PageTransition>} />
+            <Route path="inventory" element={<PageTransition><InventoryPage /></PageTransition>} />
+            <Route path="inventory/new" element={<PageTransition><InventoryFormPage /></PageTransition>} />
+            <Route path="inventory/:id" element={<PageTransition><InventoryDetailPage /></PageTransition>} />
+            <Route path="inventory/:id/edit" element={<PageTransition><InventoryFormPage /></PageTransition>} />
+            <Route path="client/settings" element={<PageTransition><ClientSettingsPage /></PageTransition>} />
+            <Route path="reports" element={<PageTransition><ReportsPage /></PageTransition>} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
+    </AnimatePresence>
+  );
+}
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <BrowserRouter>
-          <Suspense fallback={
-            <div className="flex items-center justify-center min-h-screen">
-              <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
-            </div>
-          }>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/payment" element={
-                <ProtectedRoute>
-                  <PaymentPage />
-                </ProtectedRoute>
-              } />
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <Layout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<ClientDashboardRedirect />} />
-                <Route path="customers" element={<CustomersPage />} />
-                <Route path="customers/new" element={<CustomerFormPage />} />
-                <Route path="customers/:id/edit" element={<CustomerFormPage />} />
-                <Route path="customers/:id" element={<CustomerDetailPage />} />
-                <Route path="equipment" element={<EquipmentPage />} />
-                <Route path="equipment/new" element={<EquipmentFormPage />} />
-                <Route path="equipment/:id" element={<EquipmentFormPage />} />
-                <Route path="assets" element={<AssetsPage />} />
-                <Route path="assets/new" element={<AssetFormPage />} />
-                <Route path="assets/:id" element={<AssetDetailPage />} />
-                <Route path="tickets" element={<TicketsPage />} />
-                <Route path="tickets/new" element={<TicketFormPage />} />
-                <Route path="tickets/:id" element={<TicketDetailPage />} />
-                <Route path="quotations" element={<QuotationsPage />} />
-                <Route path="quotations/new" element={<QuotationFormPage />} />
-                <Route path="quotations/:id" element={<QuotationDetailPage />} />
-                <Route path="service-orders" element={<ServiceOrdersPage />} />
-                <Route path="service-orders/new" element={<ServiceOrderFormPage />} />
-                <Route path="service-orders/:id" element={<ServiceOrderDetailPage />} />
-                <Route path="dispatch" element={<DispatchPage />} />
-                <Route path="invoices" element={<InvoicesPage />} />
-                <Route path="invoices/new" element={<InvoiceFormPage />} />
-                <Route path="invoices/:id" element={<InvoiceDetailPage />} />
-                <Route path="service-reports" element={<ServiceReportsPage />} />
-                <Route path="service-reports/new" element={<ServiceReportFormPage />} />
-                <Route path="service-reports/:id" element={<ServiceReportDetailPage />} />
-                <Route path="policies" element={<PoliciesPage />} />
-                <Route path="policies/new" element={<PolicyFormPage />} />
-                <Route path="policies/:id" element={<PolicyDetailPage />} />
-                <Route path="maintenance" element={<MaintenancePage />} />
-                <Route path="maintenance/new" element={<MaintenanceFormPage />} />
-                <Route path="maintenance/:id/edit" element={<MaintenanceFormPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="users" element={<UsersPage />} />
-                <Route path="users/new" element={<UserFormPage />} />
-                <Route path="users/:id/edit" element={<UserFormPage />} />
-                <Route path="subscriptions" element={<SubscriptionsPage />} />
-                <Route path="refacciones" element={<RefaccionesPage />} />
-                <Route path="calculos-hvac" element={<HvacCalculatorPage />} />
-                <Route path="ml-predictions" element={<MLPredictionsPage />} />
-                <Route path="surveys" element={<SurveysPage />} />
-                <Route path="surveys/new" element={<SurveyFormPage />} />
-                <Route path="surveys/:id" element={<SurveyDetailPage />} />
-                <Route path="surveys/:id/edit" element={<SurveyFormPage />} />
-                <Route path="admin" element={<AdminPage />} />
-                <Route path="permissions" element={<PermissionsPage />} />
-                <Route path="inventory" element={<InventoryPage />} />
-                <Route path="inventory/new" element={<InventoryFormPage />} />
-                <Route path="inventory/:id" element={<InventoryDetailPage />} />
-                <Route path="inventory/:id/edit" element={<InventoryFormPage />} />
-                <Route path="client/settings" element={<ClientSettingsPage />} />
-                <Route path="reports" element={<ReportsPage />} />
-              </Route>
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
+          <AnimatedRoutes />
         </BrowserRouter>
         <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
             style: {
-              borderRadius: '10px',
-              background: '#333',
-              color: '#fff',
+              borderRadius: '12px',
+              background: '#1e293b',
+              color: '#f1f5f9',
+              fontSize: '14px',
+              fontWeight: '500',
             },
           }}
         />
