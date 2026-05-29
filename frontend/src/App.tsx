@@ -57,6 +57,9 @@ const InvoiceDetailPage = lazy(() => import('./pages/InvoiceDetailPage'));
 const MLPredictionsPage = lazy(() => import('./pages/MLPredictionsPage'));
 const ClientSettingsPage = lazy(() => import('./pages/ClientSettings'));
 const ReportsPage = lazy(() => import('./pages/ReportsPage'));
+const FleetTrackingPage = lazy(() => import('./pages/FleetTrackingPage'));
+const MarketingCampaignsPage = lazy(() => import('./pages/MarketingCampaignsPage'));
+const PricebookPage = lazy(() => import('./pages/PricebookPage'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -185,6 +188,9 @@ function AnimatedRoutes() {
             <Route path="inventory/:id/edit" element={<PageTransition><InventoryFormPage /></PageTransition>} />
             <Route path="client/settings" element={<PageTransition><ClientSettingsPage /></PageTransition>} />
             <Route path="reports" element={<PageTransition><ReportsPage /></PageTransition>} />
+            <Route path="fleet" element={<PageTransition><FleetTrackingPage /></PageTransition>} />
+            <Route path="pricebook" element={<PageTransition><PricebookPage /></PageTransition>} />
+            <Route path="campaigns" element={<PageTransition><MarketingCampaignsPage /></PageTransition>} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

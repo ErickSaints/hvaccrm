@@ -29,6 +29,9 @@ import {
   Settings,
   TrendingUp,
   Snowflake,
+  Navigation,
+  DollarSign,
+  Megaphone,
 } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import GlobalSearch from './GlobalSearch';
@@ -46,10 +49,15 @@ const mainNav = [
   ]},
   { section: 'Operaciones', items: [
     { name: 'Tickets', href: '/tickets', icon: TicketCheck },
-    { name: 'Cotizaciones', href: '/quotations', icon: FileText },
     { name: 'Órdenes de Servicio', href: '/service-orders', icon: ClipboardList },
     { name: 'Reportes de Servicio', href: '/service-reports', icon: Camera },
+    { name: 'Flotilla GPS', href: '/fleet', icon: Navigation },
     { name: 'Reportes Ejecutivos', href: '/reports', icon: TrendingUp },
+  ]},
+  { section: 'Ventas', items: [
+    { name: 'Cotizaciones', href: '/quotations', icon: FileText },
+    { name: 'Precios (Good-Better-Best)', href: '/pricebook', icon: DollarSign },
+    { name: 'Campañas Marketing', href: '/campaigns', icon: Megaphone },
   ]},
   { section: 'Mantenimiento', items: [
     { name: 'Pólizas', href: '/policies', icon: ShieldCheck },

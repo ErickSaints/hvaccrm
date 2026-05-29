@@ -98,6 +98,12 @@ model User {
   locations     TechnicianLocation[]
   auditLogs     AuditLog[]
   inventoryMovements InventoryMovement[] @relation("InventoryMovementsByUser")
+  campaigns     Campaign[]              @relation("CampaignCreator")
+  bookingTechnicians BookingTechnician[]
+  bookings      Booking[]              @relation("TechnicianBookings")
+  certifications Certification[]
+  commissionEarnings CommissionEarning[]
+  purchaseOrders PurchaseOrder[]       @relation("POCreator")
 }
 
 model RolePermission {
@@ -175,8 +181,11 @@ model Customer {
   assets        Asset[]
   surveys       Survey[]
   invoices      Invoice[]
+  campaignRecipients CampaignRecipient[]
 
   users         User[]
+  reviews       Review[]
+  bookings      Booking[]
 
   branchId      Int?
   branch        Branch?   @relation(fields: [branchId], references: [id])
@@ -203,6 +212,7 @@ model Equipment {
   serviceOrders ServiceOrder[]
   serviceReports ServiceReport[]
   maintenanceLogs MaintenanceLog[]
+  warranties    Warranty[]
 }
 
 model Ticket {
@@ -245,11 +255,12 @@ model Quotation {
   customerId      Int
   customer        Customer          @relation(fields: [customerId], references: [id])
 
-  createdById     Int
-  createdBy       User              @relation(fields: [createdById], references: [id])
+  createdById   Int
+  createdBy     User      @relation(fields: [createdById], references: [id])
 
   items           QuotationItem[]
   invoices        Invoice[]
+  commissionEarnings CommissionEarning[]
 }
 
 model QuotationItem {
@@ -322,6 +333,10 @@ model ServiceOrder {
   inventoryMovements InventoryMovement[]
   timeEntries     TimeEntry[]
   locations       TechnicianLocation[]
+  booking         Booking?
+  reviews         Review[]
+  warranties      Warranty[]
+  commissionEarnings CommissionEarning[]
 }
 
 model Survey {
@@ -384,6 +399,9 @@ model CatalogMaterial {
   category      String
   unit          String    @default("pza")
   createdAt     DateTime  @default(now())
+
+  pricebookItemId Int?
+  pricebookItem PricebookItem? @relation(fields: [pricebookItemId], references: [id])
 }
 
 model ServiceReport {
@@ -543,6 +561,7 @@ model Branch {
   inventoryMovements InventoryMovement[]
   timeEntries   TimeEntry[]
   invoices      Invoice[]
+  purchaseOrders PurchaseOrder[]
 }
 
 model UserBranch {
@@ -576,6 +595,7 @@ model InventoryItem {
   branch        Branch?   @relation(fields: [branchId], references: [id])
 
   movements     InventoryMovement[]
+  purchaseOrderItems PurchaseOrderItem[]
 }
 
 model InventoryMovement {
@@ -602,6 +622,9 @@ model InventoryMovement {
 
   reportId      Int?
   report        ServiceReport? @relation(fields: [reportId], references: [id])
+
+  purchaseOrderId Int?
+  purchaseOrder PurchaseOrder? @relation(fields: [purchaseOrderId], references: [id])
 }
 
 model TimeEntry {
@@ -645,6 +668,9 @@ model TechnicianLocation {
   latitude      Float
   longitude     Float
   accuracy      Float?
+  heading       Float?
+  speed         Float?
+  isTracking    Boolean   @default(true)
   recordedAt    DateTime  @default(now())
 
   userId        Int
@@ -652,4 +678,291 @@ model TechnicianLocation {
 
   serviceOrderId Int?
   serviceOrder  ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+
+  @@index([userId, recordedAt])
+}
+
+// === MARKETING ===
+model Campaign {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String?
+  type          String    @default("EMAIL") // EMAIL, SMS, BOTH
+  status        String    @default("BORRADOR") // BORRADOR, ACTIVA, PAUSADA, COMPLETADA
+  subject       String?
+  content       String?
+  audienceFilter String?  // JSON: customer filters
+  sentCount     Int       @default(0)
+  openedCount   Int       @default(0)
+  clickedCount  Int       @default(0)
+  revenueAttributed Float  @default(0)
+  scheduledAt   DateTime?
+  sentAt        DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  createdById   Int
+  createdBy     User      @relation("CampaignCreator", fields: [createdById], references: [id])
+
+  recipients    CampaignRecipient[]
+}
+
+model CampaignRecipient {
+  id            Int       @id @default(autoincrement())
+  email         String?
+  phone         String?
+  name          String?
+  sent          Boolean   @default(false)
+  opened        Boolean   @default(false)
+  clicked       Boolean   @default(false)
+  converted     Boolean   @default(false)
+  sentAt        DateTime?
+  openedAt      DateTime?
+  createdAt     DateTime  @default(now())
+
+  campaignId    Int
+  campaign      Campaign  @relation(fields: [campaignId], references: [id])
+
+  customerId    Int?
+  customer      Customer? @relation(fields: [customerId], references: [id])
+}
+
+// === PRICEBOOK ===
+model PricebookCategory {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String?
+  sortOrder     Int       @default(0)
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+
+  items         PricebookItem[]
+}
+
+model PricebookItem {
+  id            Int       @id @default(autoincrement())
+  sku           String?   @unique
+  name          String
+  description   String?
+  unit          String    @default("pza")
+  vendorId      Int?
+  vendor        Vendor?   @relation(fields: [vendorId], references: [id])
+  goodPrice     Float?    // Good tier
+  betterPrice   Float?    // Better tier
+  bestPrice     Float?    // Best tier
+  costPrice     Float?    // Supplier cost
+  supplier      String?
+  categoryId    Int?
+  category      PricebookCategory? @relation(fields: [categoryId], references: [id])
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  materials     CatalogMaterial[]
+}
+
+// Add supplier ref to CatalogMaterial
+// Add bookingCalendarId to existing model
+
+// === ONLINE BOOKING ===
+model BookingCalendar {
+  id            Int       @id @default(autoincrement())
+  name          String    @default("Agenda Principal")
+  timezone      String    @default("America/Mexico_City")
+  weekStart     Int       @default(1) // 0=Sun, 1=Mon
+  workingDays   String    @default("[1,2,3,4,5,6]") // JSON array
+  workingHoursStart String @default("08:00")
+  workingHoursEnd   String @default("18:00")
+  slotDuration  Int       @default(60) // minutes
+  breakBetweenSlots Int  @default(15) // minutes
+  maxDaysAhead  Int       @default(30)
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  technicians   BookingTechnician[]
+  bookings      Booking[]
+}
+
+model BookingTechnician {
+  id            Int       @id @default(autoincrement())
+  calendarId    Int
+  calendar      BookingCalendar @relation(fields: [calendarId], references: [id])
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+
+  @@unique([calendarId, userId])
+}
+
+model Booking {
+  id            Int       @id @default(autoincrement())
+  code          String    @unique // BK-XXXXX
+  customerName  String
+  customerEmail String?
+  customerPhone String
+  address       String?
+  description   String?
+  status        String    @default("CONFIRMADA") // CONFIRMADA, COMPLETADA, CANCELADA, NO_ASISTIO
+  startTime     DateTime
+  endTime       DateTime
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  calendarId    Int
+  calendar      BookingCalendar @relation(fields: [calendarId], references: [id])
+  technicianId  Int?
+  technician    User?     @relation("TechnicianBookings", fields: [technicianId], references: [id])
+  customerId    Int?
+  customer      Customer? @relation(fields: [customerId], references: [id])
+
+  serviceOrderId Int?   @unique
+  serviceOrder  ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+}
+
+// === REVIEWS / SATISFACTION ===
+model Review {
+  id            Int       @id @default(autoincrement())
+  rating        Int       // 1-5
+  comment       String?
+  source        String    @default("EMAIL") // EMAIL, SMS, WEB, MANUAL
+  createdAt     DateTime  @default(now())
+
+  customerId    Int
+  customer      Customer  @relation(fields: [customerId], references: [id])
+  serviceOrderId Int?
+  serviceOrder  ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+}
+
+// === WARRANTIES ===
+model Warranty {
+  id            Int       @id @default(autoincrement())
+  type          String    @default("MANUFACTURER") // MANUFACTURER, LABOR, EXTENDED
+  description   String?
+  startDate     DateTime
+  endDate       DateTime
+  terms         String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  equipmentId   Int
+  equipment     Equipment  @relation(fields: [equipmentId], references: [id])
+  serviceOrderId Int?
+  serviceOrder  ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+}
+
+// === CERTIFICATIONS ===
+model Certification {
+  id            Int       @id @default(autoincrement())
+  name          String    // EPA 608, NATE, etc.
+  issuingBody   String    // EPA, NATE, Manufacturer
+  number        String?
+  expiresAt     DateTime?
+  documentUrl   String?
+  verified      Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+}
+
+// === COMMISSIONS ===
+model CommissionPlan {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String?
+  type          String    @default("PERCENTAGE") // PERCENTAGE, FLAT, TIERED
+  value         Float     @default(0) // percentage or flat amount
+  conditions    String?   // JSON conditions
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  roleTarget    UserRole? // Target role for this plan
+  rules         CommissionRule[]
+  earnings      CommissionEarning[]
+}
+
+model CommissionRule {
+  id            Int       @id @default(autoincrement())
+  planId        Int
+  plan          CommissionPlan @relation(fields: [planId], references: [id])
+  criteria      String    // serviceOrder:completed, quotation:approved, etc.
+  bonusValue    Float     @default(0)
+  bonusType     String    @default("PERCENTAGE") // PERCENTAGE, FLAT
+}
+
+model CommissionEarning {
+  id            Int       @id @default(autoincrement())
+  amount        Float
+  description   String?
+  status        String    @default("PENDING") // PENDING, APPROVED, PAID
+  paidAt        DateTime?
+  createdAt     DateTime  @default(now())
+
+  planId        Int
+  plan          CommissionPlan @relation(fields: [planId], references: [id])
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  serviceOrderId Int?
+  serviceOrder  ServiceOrder? @relation(fields: [serviceOrderId], references: [id])
+  quotationId   Int?
+  quotation     Quotation? @relation(fields: [quotationId], references: [id])
+}
+
+// === PURCHASE ORDERS / VENDOR MANAGEMENT ===
+model Vendor {
+  id            Int       @id @default(autoincrement())
+  name          String
+  contactName   String?
+  email         String?
+  phone         String?
+  address       String?
+  notes         String?
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  purchaseOrders PurchaseOrder[]
+  catalogItems   PricebookItem[]
+}
+
+model PurchaseOrder {
+  id            Int       @id @default(autoincrement())
+  number        String    @unique // PO-YYYYMM-XXXX
+  status        String    @default("BORRADOR") // BORRADOR, ENVIADA, RECIBIDA, CANCELADA
+  subtotal      Float     @default(0)
+  tax           Float     @default(0)
+  total         Float     @default(0)
+  notes         String?
+  orderedAt     DateTime?
+  receivedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  vendorId      Int
+  vendor        Vendor    @relation(fields: [vendorId], references: [id])
+  createdById   Int
+  createdBy     User      @relation("POCreator", fields: [createdById], references: [id])
+  branchId      Int?
+  branch        Branch?   @relation(fields: [branchId], references: [id])
+
+  items         PurchaseOrderItem[]
+  inventoryMovements InventoryMovement[]
+}
+
+model PurchaseOrderItem {
+  id            Int       @id @default(autoincrement())
+  description   String
+  quantity      Float     @default(1)
+  unitPrice     Float     @default(0)
+  total         Float     @default(0)
+  receivedQty   Float     @default(0)
+
+  orderId       Int
+  order         PurchaseOrder @relation(fields: [orderId], references: [id])
+  inventoryItemId Int?
+  inventoryItem InventoryItem? @relation(fields: [inventoryItemId], references: [id])
 }
