@@ -47,7 +47,10 @@ export default function PricebookPage() {
     queryKey: ['pricebook-items', selectedCategoryId],
     queryFn: () => {
       const params = selectedCategoryId ? `?categoryId=${selectedCategoryId}` : '';
-      return api.get(`/pricebook/items${params}`).then(r => r.data);
+      return api.get(`/pricebook/items${params}`).then(r => {
+        const d = r.data;
+        return Array.isArray(d) ? d : (d.data || []);
+      });
     },
   });
 

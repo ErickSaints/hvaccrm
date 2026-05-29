@@ -290,9 +290,9 @@ export default function MarketingCampaignsPage() {
 
       {/* Create Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-12 overflow-y-auto">
           <div className="absolute inset-0 bg-black/50" onClick={closeModal} />
-          <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-xl p-6">
+          <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-xl p-6 mb-8">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Nueva Campaña</h2>
               <button
@@ -396,9 +396,9 @@ export default function MarketingCampaignsPage() {
 
       {/* Detail Modal */}
       {detailOpen && selectedCampaign && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-12 overflow-y-auto">
           <div className="absolute inset-0 bg-black/50" onClick={() => { setDetailOpen(false); setSelectedCampaign(null); }} />
-          <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-2xl p-6">
+          <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-2xl p-6 mb-8">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {selectedCampaign.name}
