@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "HVAC-R CRM",
+    "slug": "hvaccrm-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Usamos tu ubicación para registrar el check-in en órdenes de servicio y rastrear tu flotilla."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Usamos tu ubicación para registrar el check-in en órdenes de servicio.",
+          "locationWhenInUsePermission": "Usamos tu ubicación para registrar el check-in en órdenes de servicio."
+        }
+      ]
+    ],
+    "extra": {
+      "apiUrl": "https://hvaccrm.production.up.railway.app/api"
+    }
+  }
+}
