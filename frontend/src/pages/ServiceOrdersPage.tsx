@@ -84,15 +84,21 @@ export default function ServiceOrdersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Ordenes de Servicio</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Gestión de ordenes de servicio técnico</p>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-800 p-6 lg:p-8">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary-400 rounded-full blur-3xl -translate-x-1/4 translate-y-1/4" />
         </div>
-        <Link to="/service-orders/new" className="btn-primary inline-flex items-center gap-2 w-fit">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-xl lg:text-2xl font-bold text-white">Ordenes de Servicio</h1>
+            <p className="text-primary-200 text-sm mt-1">Gestión de órdenes de servicio</p>
+          </div>
+          <Link to="/service-orders/new" className="btn-primary bg-white/20 border-white/30 text-white hover:bg-white/30 inline-flex items-center gap-2 backdrop-blur-sm">
           <Plus className="w-4 h-4" />
           Nueva Orden
         </Link>
+      </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">

@@ -117,12 +117,38 @@ router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => 
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
     if (user.isSuperAdmin && user.id !== req.user!.id) {
-      return res.status(403).json({ error: 'No puedes desactivar al Super Administrador' });
+      return res.status(403).json({ error: 'No puedes eliminar al Super Administrador' });
     }
-    await prisma.user.update({ where: { id }, data: { active: false } });
-    res.json({ message: 'Usuario desactivado correctamente' });
-  } catch {
-    res.status(500).json({ error: 'Error al desactivar usuario' });
+    if (user.id === req.user!.id) {
+      return res.status(400).json({ error: 'No puedes eliminar tu propio usuario' });
+    }
+    const related: string[] = [];
+    const checks: [string, Promise<number>][] = [
+      ['tickets', prisma.ticket.count({ where: { assignedTo: id } })],
+      ['órdenes de servicio', prisma.serviceOrder.count({ where: { assignedTo: id } })],
+      ['cotizaciones', prisma.quotation.count({ where: { createdById: id } })],
+      ['reportes', prisma.serviceReport.count({ where: { technicianId: id } })],
+      ['mantenimientos', prisma.maintenanceLog.count({ where: { assignedTo: id } })],
+      ['facturas', prisma.invoice.count({ where: { createdById: id } })],
+      ['campañas', prisma.campaign.count({ where: { createdById: id } })],
+      ['certificaciones', prisma.certification.count({ where: { userId: id } })],
+    ];
+    for (const [label, promise] of checks) {
+      const count = await promise;
+      if (count > 0) related.push(`${count} ${label}`);
+    }
+    const sub = await prisma.userSubscription.findUnique({ where: { userId: id } });
+    if (sub) related.push('1 suscripción');
+    if (related.length > 0) {
+      return res.status(400).json({
+        error: `No se puede eliminar: el usuario tiene ${related.join(', ')}. Desactívelo en su lugar.`,
+      });
+    }
+    await prisma.user.delete({ where: { id } });
+    res.json({ message: 'Usuario eliminado permanentemente' });
+  } catch (err) {
+    console.error('Error al eliminar usuario:', err);
+    res.status(500).json({ error: 'Error al eliminar usuario' });
   }
 });
 

@@ -45,6 +45,7 @@ export default function UsersPage() {
   const [roleFilter, setRoleFilter] = useState<string>('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [deletingUser, setDeletingUser] = useState<User | null>(null);
 
   const {
     register,
@@ -122,9 +123,9 @@ export default function UsersPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      toast.success('Usuario desactivado');
+      toast.success('Usuario eliminado permanentemente');
     },
-    onError: () => toast.error('Error al desactivar usuario'),
+    onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al eliminar usuario'),
   });
 
   const openCreateModal = () => {
@@ -180,15 +181,21 @@ export default function UsersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Usuarios</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Gestión de usuarios del sistema</p>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-800 p-6 lg:p-8">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary-400 rounded-full blur-3xl -translate-x-1/4 translate-y-1/4" />
         </div>
-        <button onClick={openCreateModal} className="btn-primary inline-flex items-center gap-2 w-fit">
-          <Plus className="w-4 h-4" />
-          Nuevo Usuario
-        </button>
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-xl lg:text-2xl font-bold text-white">Usuarios</h1>
+            <p className="text-primary-200 text-sm mt-1">Gestión de usuarios del sistema</p>
+          </div>
+          <button onClick={openCreateModal} className="btn-primary bg-white/20 border-white/30 text-white hover:bg-white/30 inline-flex items-center gap-2 backdrop-blur-sm">
+            <Plus className="w-4 h-4" />
+            Nuevo Usuario
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3">
@@ -310,13 +317,9 @@ export default function UsersPage() {
                         )}
                       </button>
                       <button
-                        onClick={() => {
-                          if (window.confirm(`¿Desactivar al usuario "${u.name}"?`)) {
-                            deleteMutation.mutate(u.id);
-                          }
-                        }}
+                        onClick={() => setDeletingUser(u)}
                         className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Desactivar usuario"
+                        title="Eliminar usuario"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -338,6 +341,57 @@ export default function UsersPage() {
               ? 'Intenta con otros filtros'
               : 'Crea el primer usuario del sistema'}
           </p>
+        </div>
+      )}
+
+      {/* Delete confirmation modal */}
+      {deletingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setDeletingUser(null)} />
+          <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-sm p-6">
+            <div className="text-center">
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trash2 className="w-6 h-6 text-red-600" />
+              </div>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                ¿Eliminar usuario?
+              </h2>
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1 mb-6">
+                <p className="font-medium text-gray-900 dark:text-gray-100">{deletingUser.name}</p>
+                <p>{deletingUser.email}</p>
+                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${roleColors[deletingUser.role]}`}>
+                  {roleLabels[deletingUser.role]}
+                </span>
+                <p className="text-red-500 font-medium mt-3">
+                  Esta acción no se puede deshacer.
+                </p>
+              </div>
+              <div className="flex items-center justify-center gap-3">
+                <button
+                  onClick={() => setDeletingUser(null)}
+                  className="btn-secondary"
+                  disabled={deleteMutation.isPending}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => {
+                    deleteMutation.mutate(deletingUser.id);
+                    setDeletingUser(null);
+                  }}
+                  disabled={deleteMutation.isPending}
+                  className="btn-primary bg-red-600 hover:bg-red-700 border-red-600 inline-flex items-center gap-2"
+                >
+                  {deleteMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-4 h-4" />
+                  )}
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

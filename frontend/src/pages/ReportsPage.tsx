@@ -87,17 +87,23 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Reportes Ejecutivos</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Dashboard de indicadores clave de rendimiento</p>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-800 p-6 lg:p-8">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary-400 rounded-full blur-3xl -translate-x-1/4 translate-y-1/4" />
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-sm">
-            <Filter className="w-4 h-4 text-gray-400" />
-            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="input-field text-sm py-1.5 w-36" />
-            <span className="text-gray-400">a</span>
-            <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="input-field text-sm py-1.5 w-36" />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-xl lg:text-2xl font-bold text-white">Reportes Ejecutivos</h1>
+            <p className="text-primary-200 text-sm mt-1">Dashboard de indicadores clave de rendimiento</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-sm">
+              <Filter className="w-4 h-4 text-primary-200" />
+              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="bg-white/15 border-white/20 text-white placeholder-white/50 rounded-xl px-3 py-1.5 text-sm backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/30 w-36" />
+              <span className="text-primary-200">a</span>
+              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="bg-white/15 border-white/20 text-white placeholder-white/50 rounded-xl px-3 py-1.5 text-sm backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/30 w-36" />
+            </div>
           </div>
         </div>
       </div>
