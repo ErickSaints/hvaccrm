@@ -295,7 +295,13 @@ export default function Layout() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex flex-col flex-1 w-0 min-w-0">
+      <div className="relative flex flex-col flex-1 w-0 min-w-0">
+        {/* Subtle background mesh */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl dark:bg-primary-400/5" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary-500/5 rounded-full blur-3xl dark:bg-secondary-400/5" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-accent-500/3 rounded-full blur-3xl dark:bg-accent-400/3" />
+        </div>
         {/* Header */}
         <header className="flex items-center justify-between h-16 px-4 lg:px-6 shrink-0 border-b border-gray-200/50 dark:border-white/5 bg-white/70 dark:bg-[#0b1120]/80 backdrop-blur-xl">
           <div className="flex items-center gap-3">

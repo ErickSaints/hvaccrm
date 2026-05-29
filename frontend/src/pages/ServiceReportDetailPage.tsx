@@ -219,13 +219,8 @@ export default function ServiceReportDetailPage() {
                   { label: 'Presión Descarga', value: report.hvacReadings.dischargePressure, unit: 'PSI' },
                   { label: 'Temp. Succión', value: report.hvacReadings.suctionTemp, unit: '°C' },
                   { label: 'Temp. Línea Líquido', value: report.hvacReadings.liquidLineTemp, unit: '°C' },
-                  { label: 'Superheat', value: report.hvacReadings.superheat, unit: '°F' },
-                  { label: 'Subcooling', value: report.hvacReadings.subcooling, unit: '°F' },
-                  { label: 'Temp. Suministro', value: report.hvacReadings.supplyTemp, unit: '°C' },
-                  { label: 'Temp. Retorno', value: report.hvacReadings.returnTemp, unit: '°C' },
-                  { label: 'Delta T', value: report.hvacReadings.deltaT, unit: '°C' },
-                  { label: 'Presión Colector', value: report.hvacReadings.gasManifoldPressure, unit: '"WC' },
-                  { label: 'Presión Entrada Gas', value: report.hvacReadings.gasInletPressure, unit: '"WC' },
+                  { label: 'Superheat', value: report.hvacReadings.superheat, unit: '°C' },
+                  { label: 'Subcooling', value: report.hvacReadings.subcooling, unit: '°C' },
                 ];
                 return readings.filter(r => r.value != null).map((r, i) => (
                   <div key={i} className="bg-gray-50 dark:bg-gray-800 rounded-lg px-4 py-3 flex items-center justify-between">

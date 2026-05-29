@@ -150,11 +150,6 @@ export interface HvacReadings {
   liquidLineTemp?: number;
   superheat?: number;
   subcooling?: number;
-  supplyTemp?: number;
-  returnTemp?: number;
-  deltaT?: number;
-  gasManifoldPressure?: number;
-  gasInletPressure?: number;
   notes?: string;
 }
 

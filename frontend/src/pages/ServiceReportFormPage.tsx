@@ -35,11 +35,6 @@ const hvacReadingsSchema = z.object({
   liquidLineTemp: z.number().optional(),
   superheat: z.number().optional(),
   subcooling: z.number().optional(),
-  supplyTemp: z.number().optional(),
-  returnTemp: z.number().optional(),
-  deltaT: z.number().optional(),
-  gasManifoldPressure: z.number().optional(),
-  gasInletPressure: z.number().optional(),
   notes: z.string().optional(),
 });
 
@@ -372,65 +367,8 @@ export default function ServiceReportFormPage() {
                 { label: 'Presión Descarga (PSI)', field: 'dischargePressure' },
                 { label: 'Temp. Línea Succión (°C)', field: 'suctionTemp' },
                 { label: 'Temp. Línea Líquido (°C)', field: 'liquidLineTemp' },
-                { label: 'Superheat (°F)', field: 'superheat' },
-                { label: 'Subcooling (°F)', field: 'subcooling' },
-              ].map(({ label, field }) => (
-                <div key={field}>
-                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{label}</label>
-                  <Controller
-                    name={`hvacReadings.${field}` as any}
-                    control={control}
-                    render={({ field: ctrlField }) => (
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={ctrlField.value ?? ''}
-                        onChange={(e) => ctrlField.onChange(e.target.value ? Number(e.target.value) : undefined)}
-                        className="input-field text-sm"
-                        placeholder="—"
-                      />
-                    )}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-3">Aire</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-              {[
-                { label: 'Temp. Aire Suministro (°C)', field: 'supplyTemp' },
-                { label: 'Temp. Aire Retorno (°C)', field: 'returnTemp' },
-                { label: 'Delta T (°C)', field: 'deltaT' },
-              ].map(({ label, field }) => (
-                <div key={field}>
-                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{label}</label>
-                  <Controller
-                    name={`hvacReadings.${field}` as any}
-                    control={control}
-                    render={({ field: ctrlField }) => (
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={ctrlField.value ?? ''}
-                        onChange={(e) => ctrlField.onChange(e.target.value ? Number(e.target.value) : undefined)}
-                        className="input-field text-sm"
-                        placeholder="—"
-                      />
-                    )}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-3">Gas</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-              {[
-                { label: 'Presión Colector ("WC)', field: 'gasManifoldPressure' },
-                { label: 'Presión Entrada ("WC)', field: 'gasInletPressure' },
+                { label: 'Superheat (°C)', field: 'superheat' },
+                { label: 'Subcooling (°C)', field: 'subcooling' },
               ].map(({ label, field }) => (
                 <div key={field}>
                   <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{label}</label>

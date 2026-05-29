@@ -49,11 +49,6 @@ const hvacReadingsSchema = z.object({
   liquidLineTemp: z.number().optional(),
   superheat: z.number().optional(),
   subcooling: z.number().optional(),
-  supplyTemp: z.number().optional(),
-  returnTemp: z.number().optional(),
-  deltaT: z.number().optional(),
-  gasManifoldPressure: z.number().optional(),
-  gasInletPressure: z.number().optional(),
   notes: z.string().optional(),
 }).optional();
 
