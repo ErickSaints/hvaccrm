@@ -45,6 +45,7 @@ export default function UsersPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('');
+  const [showInactive, setShowInactive] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [deletingUser, setDeletingUser] = useState<User | null>(null);
@@ -161,6 +162,7 @@ export default function UsersPage() {
   };
 
   const filtered = users?.filter((u) => {
+    if (!showInactive && u.active === false) return false;
     if (!search && !roleFilter) return true;
     const q = search.toLowerCase();
     const matchesSearch =
@@ -224,6 +226,15 @@ export default function UsersPage() {
           <option value="COMPRAS">Compras</option>
           <option value="CLIENT">Cliente</option>
         </select>
+        <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap cursor-pointer">
+          <input
+            type="checkbox"
+            checked={showInactive}
+            onChange={(e) => setShowInactive(e.target.checked)}
+            className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+          />
+          Mostrar inactivos
+        </label>
       </div>
 
       {isLoading ? (
