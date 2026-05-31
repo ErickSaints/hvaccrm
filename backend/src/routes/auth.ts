@@ -138,16 +138,19 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
     });
     const resetLink = `${process.env.APP_URL || 'https://hvaccrm.production.up.railway.app'}/reset-password?token=${resetToken}`;
     console.log(`[forgot-password] RESET LINK: ${resetLink}`);
+
+    res.json({ message: 'Revisa tu correo electrónico para restablecer tu contraseña' });
+
     if (isEmailConfigured()) {
-      const sent = await sendEmail({
+      sendEmail({
         to: user.email,
         ...resetPasswordEmail({ userName: user.name, resetLink }),
+      }).then(sent => {
+        console.log(`[forgot-password] Email ${sent ? 'sent' : 'FAILED'} to ${user.email}`);
       });
-      console.log(`[forgot-password] Email ${sent ? 'sent' : 'FAILED'} to ${user.email}`);
     } else {
       console.log(`[forgot-password] Email not configured — reset link available in logs only`);
     }
-    res.json({ message: 'Revisa tu correo electrónico para restablecer tu contraseña' });
   } catch (err) {
     console.error('[forgot-password] Error:', err);
     res.status(500).json({ error: 'Error al procesar la solicitud' });

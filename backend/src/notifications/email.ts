@@ -49,7 +49,7 @@ export async function sendEmail(options: {
     return false;
   }
 
-  // Priority 2: SMTP (Gmail, etc.)
+  // Priority 2: SMTP (Gmail, Outlook, etc.)
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT || '587'),
@@ -58,6 +58,9 @@ export async function sendEmail(options: {
       user: process.env.SMTP_USER || '',
       pass: process.env.SMTP_PASS || '',
     },
+    connectionTimeout: 5000,
+    greetingTimeout: 5000,
+    socketTimeout: 10000,
   });
 
   try {
