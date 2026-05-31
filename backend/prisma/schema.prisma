@@ -78,6 +78,8 @@ model User {
   active        Boolean   @default(true)
   isSuperAdmin  Boolean   @default(false)
   trialEndsAt   DateTime?
+  resetToken    String?   @unique
+  resetTokenExpiry DateTime?
   customerId    Int?
   customer      Customer? @relation(fields: [customerId], references: [id])
   createdAt     DateTime  @default(now())

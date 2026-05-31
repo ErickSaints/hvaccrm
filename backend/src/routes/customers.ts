@@ -4,6 +4,7 @@ import prisma from '../prisma';
 import { authenticate, requireSuperAdmin } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
 import { paginate, paginatedResponse } from '../middleware/pagination';
+import { scopeToCustomer } from '../middleware/scopeToCustomer';
 
 const router = Router();
 
@@ -27,6 +28,9 @@ router.get('/', requirePermission('customers:view'), paginate, async (req: Reque
   try {
     const { search } = req.query;
     const where: any = {};
+    if (req.user?.role === 'CLIENT' && req.user.customerId) {
+      where.id = req.user.customerId;
+    }
     if (search) {
       where.OR = [
         { companyName: { contains: search as string } },
@@ -53,6 +57,9 @@ router.get('/', requirePermission('customers:view'), paginate, async (req: Reque
 router.get('/:id', requirePermission('customers:view'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
+    if (req.user?.role === 'CLIENT' && req.user.customerId !== id) {
+      return res.status(403).json({ error: 'No tienes acceso a este cliente' });
+    }
     const customer = await prisma.customer.findUnique({
       where: { id },
       include: { equipment: true, tickets: true, quotations: true },

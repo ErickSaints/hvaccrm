@@ -6,6 +6,8 @@ import prisma from '../prisma';
 import { authenticate, requireSuperAdmin } from '../middleware/auth';
 import { sendEmail, welcomeEmail } from '../notifications/email';
 import { sendSms, formatPhone, isSmsConfigured } from '../notifications/twilio';
+import { resetPasswordEmail } from '../notifications/email';
+import crypto from 'crypto';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'hvaccrm-secret-key';
@@ -116,6 +118,59 @@ router.post('/register', async (req: Request, res: Response) => {
     }
     console.error('Register error:', err);
     res.status(500).json({ error: 'Error al registrar usuario', detail: err instanceof Error ? err.message : String(err) });
+  }
+});
+
+router.post('/forgot-password', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: 'El email es requerido' });
+    }
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      return res.json({ message: 'Si el email existe, recibirás un enlace para restablecer tu contraseña' });
+    }
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000);
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { resetToken, resetTokenExpiry },
+    });
+    const resetLink = `${process.env.APP_URL || 'https://hvaccrm.production.up.railway.app'}/reset-password?token=${resetToken}`;
+    sendEmail({
+      to: user.email,
+      ...resetPasswordEmail({ userName: user.name, resetLink }),
+    });
+    res.json({ message: 'Si el email existe, recibirás un enlace para restablecer tu contraseña' });
+  } catch {
+    res.status(500).json({ error: 'Error al procesar la solicitud' });
+  }
+});
+
+router.post('/reset-password', async (req: Request, res: Response) => {
+  try {
+    const { token, password } = req.body;
+    if (!token || !password) {
+      return res.status(400).json({ error: 'Token y contraseña son requeridos' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+    }
+    const user = await prisma.user.findFirst({
+      where: { resetToken: token, resetTokenExpiry: { gte: new Date() } },
+    });
+    if (!user) {
+      return res.status(400).json({ error: 'Token inválido o expirado' });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedPassword, resetToken: null, resetTokenExpiry: null },
+    });
+    res.json({ message: 'Contraseña restablecida correctamente' });
+  } catch {
+    res.status(500).json({ error: 'Error al restablecer la contraseña' });
   }
 });
 

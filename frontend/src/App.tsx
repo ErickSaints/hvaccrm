@@ -38,6 +38,8 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const UsersPage = lazy(() => import('./pages/UsersPage'));
 const UserFormPage = lazy(() => import('./pages/UserFormPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const SubscriptionsPage = lazy(() => import('./pages/SubscriptionsPage'));
 const RefaccionesPage = lazy(() => import('./pages/RefaccionesPage'));
@@ -123,6 +125,8 @@ function AnimatedRoutes() {
         <Routes location={location} key={location.pathname}>
           <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
           <Route path="/register" element={<PageTransition><RegisterPage /></PageTransition>} />
+          <Route path="/forgot-password" element={<PageTransition><ForgotPasswordPage /></PageTransition>} />
+          <Route path="/reset-password" element={<PageTransition><ResetPasswordPage /></PageTransition>} />
           <Route path="/payment" element={
             <ProtectedRoute>
               <PageTransition><PaymentPage /></PageTransition>

@@ -217,6 +217,21 @@ export function welcomeEmail(params: {
   return { subject, html };
 }
 
+export function resetPasswordEmail(params: {
+  userName: string;
+  resetLink: string;
+}): { subject: string; html: string } {
+  const subject = 'Restablece tu contraseña — HVAC-R CRM';
+  const html = baseHtml(`
+    <h2 style="color:#111827;font-size:18px;margin:0 0 16px">Restablece tu contraseña</h2>
+    <p style="color:#4b5563;margin:0 0 16px">Hola <strong>${params.userName}</strong>, recibimos una solicitud para restablecer tu contraseña.</p>
+    <p style="color:#4b5563;margin:0 0 20px">Haz clic en el siguiente enlace para crear una nueva contraseña. Este enlace expirará en 1 hora.</p>
+    <a href="${params.resetLink}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:10px 24px;border-radius:8px;font-weight:500;font-size:14px">Restablecer contraseña</a>
+    <p style="color:#9ca3af;font-size:12px;margin:20px 0 0">Si no solicitaste esto, ignora este correo.</p>
+  `);
+  return { subject, html };
+}
+
 export function surveyEmail(params: {
   to: string;
   customerName: string;
