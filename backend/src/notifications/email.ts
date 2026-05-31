@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import dns from 'dns';
 
 const FROM = process.env.SMTP_FROM || 'noreply@hvaccrm.com';
 const APP_URL = process.env.APP_URL || 'https://hvaccrm.production.up.railway.app';
@@ -50,8 +51,18 @@ export async function sendEmail(options: {
   }
 
   // Priority 2: SMTP (Gmail, Outlook, etc.)
+  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+  let smtpHostResolved = smtpHost;
+  try {
+    const addresses = await dns.promises.resolve4(smtpHost);
+    if (addresses.length > 0) smtpHostResolved = addresses[0];
+  } catch {
+    console.log(`[email] DNS resolve4 failed for ${smtpHost}, using hostname`);
+  }
+  console.log(`[email] SMTP connecting to ${smtpHostResolved} (${smtpHost})`);
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    host: smtpHostResolved,
+    name: smtpHost,
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: process.env.SMTP_SECURE === 'true',
     auth: {
@@ -61,7 +72,6 @@ export async function sendEmail(options: {
     connectionTimeout: 5000,
     greetingTimeout: 5000,
     socketTimeout: 10000,
-    family: 4,
   });
 
   try {
