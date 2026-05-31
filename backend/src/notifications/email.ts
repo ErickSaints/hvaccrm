@@ -1,20 +1,13 @@
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: process.env.SMTP_SECURE === 'true',
-  auth: {
-    user: process.env.SMTP_USER || '',
-    pass: process.env.SMTP_PASS || '',
-  },
-});
-
 const FROM = process.env.SMTP_FROM || 'noreply@hvaccrm.com';
 const APP_URL = process.env.APP_URL || 'https://hvaccrm.production.up.railway.app';
 
 export function isEmailConfigured(): boolean {
-  return !!(process.env.SMTP_USER && process.env.SMTP_PASS);
+  return !!(
+    process.env.SENDGRID_API_KEY ||
+    (process.env.SMTP_USER && process.env.SMTP_PASS)
+  );
 }
 
 export async function sendEmail(options: {
@@ -26,6 +19,47 @@ export async function sendEmail(options: {
     console.log(`[email] SKIP (not configured): ${options.subject} -> ${options.to}`);
     return false;
   }
+
+  // Priority 1: SendGrid API
+  if (process.env.SENDGRID_API_KEY) {
+    try {
+      const sgKey = process.env.SENDGRID_API_KEY;
+      const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${sgKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          personalizations: [{ to: [{ email: options.to }] }],
+          from: { email: FROM },
+          subject: options.subject,
+          content: [{ type: 'text/html', value: options.html }],
+        }),
+      });
+      if (res.ok) {
+        console.log(`[email] Sent via SendGrid: ${options.subject} -> ${options.to}`);
+        return true;
+      }
+      const body = await res.text();
+      console.error(`[email] SendGrid error ${res.status}: ${body}`);
+    } catch (err) {
+      console.error(`[email] SendGrid error:`, err);
+    }
+    return false;
+  }
+
+  // Priority 2: SMTP (Gmail, etc.)
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_SECURE === 'true',
+    auth: {
+      user: process.env.SMTP_USER || '',
+      pass: process.env.SMTP_PASS || '',
+    },
+  });
+
   try {
     await transporter.sendMail({
       from: FROM,
@@ -33,10 +67,10 @@ export async function sendEmail(options: {
       subject: options.subject,
       html: options.html,
     });
-    console.log(`[email] Sent: ${options.subject} -> ${options.to}`);
+    console.log(`[email] Sent via SMTP: ${options.subject} -> ${options.to}`);
     return true;
   } catch (err) {
-    console.error(`[email] Error sending to ${options.to}:`, err);
+    console.error(`[email] SMTP error sending to ${options.to}:`, err);
     return false;
   }
 }

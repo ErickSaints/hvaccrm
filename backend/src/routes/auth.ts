@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSuperAdmin } from '../middleware/auth';
-import { sendEmail, welcomeEmail } from '../notifications/email';
+import { sendEmail, welcomeEmail, isEmailConfigured } from '../notifications/email';
 import { sendSms, formatPhone, isSmsConfigured } from '../notifications/twilio';
 import { resetPasswordEmail } from '../notifications/email';
 import crypto from 'crypto';
@@ -138,12 +138,14 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
       data: { resetToken, resetTokenExpiry },
     });
     const resetLink = `${process.env.APP_URL || 'https://hvaccrm.production.up.railway.app'}/reset-password?token=${resetToken}`;
-    sendEmail({
+    const sent = await sendEmail({
       to: user.email,
       ...resetPasswordEmail({ userName: user.name, resetLink }),
     });
+    console.log(`[forgot-password] Email ${sent ? 'sent' : 'FAILED'} to ${user.email}, configured: ${isEmailConfigured()}`);
     res.json({ message: 'Si el email existe, recibirás un enlace para restablecer tu contraseña' });
-  } catch {
+  } catch (err) {
+    console.error('[forgot-password] Error:', err);
     res.status(500).json({ error: 'Error al procesar la solicitud' });
   }
 });
