@@ -1,21 +1,24 @@
 import { useState } from 'react';
-import { Snowflake, Mail, ArrowLeft, Loader2, CheckCircle } from 'lucide-react';
+import { Snowflake, Mail, ArrowLeft, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import api from '../lib/api';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setIsSubmitting(true);
+    setError('');
     try {
       await api.post('/auth/forgot-password', { email });
       setSent(true);
-    } catch {
-      setSent(true);
+    } catch (err: any) {
+      const msg = err?.response?.data?.error || 'Error al enviar el correo';
+      setError(msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -40,7 +43,7 @@ export default function ForgotPasswordPage() {
               </div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Revisa tu correo</h2>
               <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-                Si el email está registrado, recibirás un enlace para restablecer tu contraseña.
+                Recibirás un enlace para restablecer tu contraseña.
               </p>
               <a href="/login" className="text-primary-600 hover:text-primary-700 font-medium text-sm">
                 Volver al inicio de sesión
@@ -55,13 +58,19 @@ export default function ForgotPasswordPage() {
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); setError(''); }}
                   className="input-field"
                   placeholder="correo@ejemplo.com"
                   required
                   autoFocus
                 />
               </div>
+              {error && (
+                <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg text-sm">
+                  <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
 
               <button
                 type="submit"

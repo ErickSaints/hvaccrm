@@ -1,14 +1,8 @@
-import nodemailer from 'nodemailer';
-import dns from 'dns';
-
 const FROM = process.env.SMTP_FROM || 'noreply@hvaccrm.com';
 const APP_URL = process.env.APP_URL || 'https://hvaccrm.production.up.railway.app';
 
 export function isEmailConfigured(): boolean {
-  return !!(
-    process.env.SENDGRID_API_KEY ||
-    (process.env.SMTP_USER && process.env.SMTP_PASS)
-  );
+  return !!process.env.SENDGRID_API_KEY;
 }
 
 export async function sendEmail(options: {
@@ -18,78 +12,34 @@ export async function sendEmail(options: {
 }): Promise<boolean> {
   if (!isEmailConfigured()) {
     console.log(`[email] SKIP (not configured): ${options.subject} -> ${options.to}`);
+    console.log(`[email] To enable email, set SENDGRID_API_KEY in Railway dashboard`);
     return false;
   }
 
-  // Priority 1: SendGrid API
-  if (process.env.SENDGRID_API_KEY) {
-    try {
-      const sgKey = process.env.SENDGRID_API_KEY;
-      const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${sgKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          personalizations: [{ to: [{ email: options.to }] }],
-          from: { email: FROM },
-          subject: options.subject,
-          content: [{ type: 'text/html', value: options.html }],
-        }),
-      });
-      if (res.ok) {
-        console.log(`[email] Sent via SendGrid: ${options.subject} -> ${options.to}`);
-        return true;
-      }
-      const body = await res.text();
-      console.error(`[email] SendGrid error ${res.status}: ${body}`);
-    } catch (err) {
-      console.error(`[email] SendGrid error:`, err);
-    }
-    return false;
-  }
-
-  // Priority 2: SMTP (Gmail, Outlook, etc.)
-  const smtpHost = process.env.SMTP_HOST || 'smtp-mail.outlook.com';
-  let smtpHostResolved = smtpHost;
   try {
-    const addresses = await dns.promises.resolve4(smtpHost);
-    if (addresses.length > 0) smtpHostResolved = addresses[0];
-  } catch {
-    console.log(`[email] DNS resolve4 failed for ${smtpHost}, using hostname`);
-  }
-  console.log(`[email] SMTP connecting to ${smtpHostResolved} (${smtpHost})`);
-
-  const ports = [587, 465];
-  for (const port of ports) {
-    try {
-      const transporter = nodemailer.createTransport({
-        host: smtpHostResolved,
-        name: smtpHost,
-        port,
-        secure: port === 465,
-        auth: {
-          user: process.env.SMTP_USER || '',
-          pass: process.env.SMTP_PASS || '',
-        },
-        connectionTimeout: 15000,
-        greetingTimeout: 15000,
-        socketTimeout: 30000,
-      });
-      await transporter.sendMail({
-        from: FROM,
-        to: options.to,
+    const sgKey = process.env.SENDGRID_API_KEY!;
+    const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${sgKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        personalizations: [{ to: [{ email: options.to }] }],
+        from: { email: FROM },
         subject: options.subject,
-        html: options.html,
-      });
-      console.log(`[email] Sent via SMTP (port ${port}): ${options.subject} -> ${options.to}`);
+        content: [{ type: 'text/html', value: options.html }],
+      }),
+    });
+    if (res.ok) {
+      console.log(`[email] Sent via SendGrid: ${options.subject} -> ${options.to}`);
       return true;
-    } catch (err) {
-      console.error(`[email] SMTP error on port ${port} for ${options.to}:`, err instanceof Error ? err.message : err);
     }
+    const body = await res.text();
+    console.error(`[email] SendGrid error ${res.status}: ${body}`);
+  } catch (err) {
+    console.error(`[email] SendGrid error:`, err);
   }
-  console.error(`[email] All SMTP ports failed for ${options.to}`);
   return false;
 }
 
