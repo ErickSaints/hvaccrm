@@ -51,7 +51,7 @@ export async function sendEmail(options: {
   }
 
   // Priority 2: SMTP (Gmail, Outlook, etc.)
-  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const smtpHost = process.env.SMTP_HOST || 'smtp-mail.outlook.com';
   let smtpHostResolved = smtpHost;
   try {
     const addresses = await dns.promises.resolve4(smtpHost);
@@ -60,33 +60,37 @@ export async function sendEmail(options: {
     console.log(`[email] DNS resolve4 failed for ${smtpHost}, using hostname`);
   }
   console.log(`[email] SMTP connecting to ${smtpHostResolved} (${smtpHost})`);
-  const transporter = nodemailer.createTransport({
-    host: smtpHostResolved,
-    name: smtpHost,
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: {
-      user: process.env.SMTP_USER || '',
-      pass: process.env.SMTP_PASS || '',
-    },
-    connectionTimeout: 5000,
-    greetingTimeout: 5000,
-    socketTimeout: 10000,
-  });
 
-  try {
-    await transporter.sendMail({
-      from: FROM,
-      to: options.to,
-      subject: options.subject,
-      html: options.html,
-    });
-    console.log(`[email] Sent via SMTP: ${options.subject} -> ${options.to}`);
-    return true;
-  } catch (err) {
-    console.error(`[email] SMTP error sending to ${options.to}:`, err);
-    return false;
+  const ports = [587, 465];
+  for (const port of ports) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: smtpHostResolved,
+        name: smtpHost,
+        port,
+        secure: port === 465,
+        auth: {
+          user: process.env.SMTP_USER || '',
+          pass: process.env.SMTP_PASS || '',
+        },
+        connectionTimeout: 15000,
+        greetingTimeout: 15000,
+        socketTimeout: 30000,
+      });
+      await transporter.sendMail({
+        from: FROM,
+        to: options.to,
+        subject: options.subject,
+        html: options.html,
+      });
+      console.log(`[email] Sent via SMTP (port ${port}): ${options.subject} -> ${options.to}`);
+      return true;
+    } catch (err) {
+      console.error(`[email] SMTP error on port ${port} for ${options.to}:`, err instanceof Error ? err.message : err);
+    }
   }
+  console.error(`[email] All SMTP ports failed for ${options.to}`);
+  return false;
 }
 
 const colors: Record<string, string> = {
