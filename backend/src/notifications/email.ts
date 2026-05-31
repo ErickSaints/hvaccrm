@@ -61,6 +61,7 @@ export async function sendEmail(options: {
     connectionTimeout: 5000,
     greetingTimeout: 5000,
     socketTimeout: 10000,
+    family: 4,
   });
 
   try {
