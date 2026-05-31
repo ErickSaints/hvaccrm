@@ -54,13 +54,14 @@ router.post('/register', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'El email ya está registrado' });
     }
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const role = data.role || 'CLIENT';
+    const trialEndsAt = role === 'ADMIN' ? null : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     const user = await prisma.user.create({
       data: {
         email: data.email,
         password: hashedPassword,
         name: data.name,
-        role: data.role || 'CLIENT',
+        role,
         phone: data.phone || null,
         trialEndsAt,
       },

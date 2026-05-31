@@ -137,13 +137,14 @@ router.post('/register', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Plan no encontrado o inactivo' });
     }
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const role = data.role;
+    const trialEndsAt = role === 'ADMIN' ? null : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     const user = await prisma.user.create({
       data: {
         name: data.name,
         email: data.email,
         password: hashedPassword,
-        role: data.role,
+        role,
         trialEndsAt,
       },
     });

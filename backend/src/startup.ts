@@ -150,8 +150,8 @@ async function startup() {
     console.log(`[startup] Catálogo de materiales creado (${catalogData.length} items).`);
   }
 
-  // 6. Backfill trialEndsAt for existing users without trial period
-  const usersWithoutTrial = await prisma.user.findMany({ where: { trialEndsAt: null } });
+  // 6. Backfill trialEndsAt for existing users without trial period (skip admins)
+  const usersWithoutTrial = await prisma.user.findMany({ where: { trialEndsAt: null, role: { not: 'ADMIN' } } });
   if (usersWithoutTrial.length > 0) {
     const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     for (const u of usersWithoutTrial) {

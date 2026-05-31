@@ -15,6 +15,7 @@ interface SubscriptionPlan {
   price: number;
   duration: 'MENSUAL' | 'ANUAL';
   features: string;
+  targetRole: 'CLIENT' | 'PROFESIONAL';
   active: boolean;
 }
 
@@ -23,6 +24,7 @@ const planSchema = z.object({
   description: z.string().optional(),
   price: z.coerce.number().min(0, 'El precio debe ser mayor o igual a 0'),
   duration: z.enum(['MENSUAL', 'ANUAL']),
+  targetRole: z.enum(['CLIENT', 'PROFESIONAL']),
   features: z.string().optional(),
 });
 
@@ -105,7 +107,7 @@ export default function SubscriptionsPage() {
 
   const openCreateModal = () => {
     setEditingPlan(null);
-    reset({ name: '', description: '', price: 0, duration: 'MENSUAL', features: '' });
+    reset({ name: '', description: '', price: 0, duration: 'MENSUAL', targetRole: 'CLIENT', features: '' });
     setModalOpen(true);
   };
 
@@ -116,6 +118,7 @@ export default function SubscriptionsPage() {
       description: plan.description || '',
       price: plan.price,
       duration: plan.duration,
+      targetRole: plan.targetRole,
       features: plan.features ? plan.features.split(',').join('\n') : '',
     });
     setModalOpen(true);
@@ -180,6 +183,7 @@ export default function SubscriptionsPage() {
                 <th className="text-left px-6 py-4 font-semibold text-gray-600">Descripción</th>
                 <th className="text-right px-6 py-4 font-semibold text-gray-600">Precio</th>
                 <th className="text-center px-6 py-4 font-semibold text-gray-600">Duración</th>
+                <th className="text-center px-6 py-4 font-semibold text-gray-600">Tipo</th>
                 <th className="text-center px-6 py-4 font-semibold text-gray-600">Activo</th>
                 <th className="text-center px-6 py-4 font-semibold text-gray-600">Características</th>
                 <th className="text-right px-6 py-4 font-semibold text-gray-600">Acciones</th>
@@ -198,6 +202,15 @@ export default function SubscriptionsPage() {
                   <td className="px-6 py-4 text-center">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
                       {plan.duration === 'ANUAL' ? 'Anual' : 'Mensual'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      plan.targetRole === 'CLIENT'
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'bg-amber-100 text-amber-700'
+                    }`}>
+                      {plan.targetRole === 'CLIENT' ? 'Cliente' : 'Profesional'}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-center">
@@ -312,6 +325,15 @@ export default function SubscriptionsPage() {
                     <p className="text-red-500 text-xs mt-1">{errors.duration.message}</p>
                   )}
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tipo *</label>
+                <select {...register('targetRole')} className="input-field">
+                  <option value="CLIENT">Cliente</option>
+                  <option value="PROFESIONAL">Profesional</option>
+                </select>
+                {errors.targetRole && <p className="text-red-500 text-xs mt-1">{errors.targetRole.message}</p>}
               </div>
 
               <div>
