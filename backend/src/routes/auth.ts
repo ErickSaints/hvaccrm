@@ -127,8 +127,8 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'El email es requerido' });
     }
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      return res.json({ message: 'Si el email existe, recibirás un enlace para restablecer tu contraseña' });
+    if (!user || !user.active) {
+      return res.status(404).json({ error: 'No existe una cuenta activa con ese correo electrónico' });
     }
     const resetToken = crypto.randomBytes(32).toString('hex');
     const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000);
@@ -147,7 +147,7 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
     } else {
       console.log(`[forgot-password] Email not configured — reset link available in logs only`);
     }
-    res.json({ message: 'Si el email existe, recibirás un enlace para restablecer tu contraseña' });
+    res.json({ message: 'Revisa tu correo electrónico para restablecer tu contraseña' });
   } catch (err) {
     console.error('[forgot-password] Error:', err);
     res.status(500).json({ error: 'Error al procesar la solicitud' });
