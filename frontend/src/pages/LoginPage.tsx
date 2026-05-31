@@ -164,7 +164,7 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="input-field"
-                    placeholder="admin@ejemplo.com"
+                    placeholder="ejemplo@gmail.com"
                     required
                     autoFocus
                   />
