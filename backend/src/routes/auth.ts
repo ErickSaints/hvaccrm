@@ -4,9 +4,8 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import prisma from '../prisma';
 import { authenticate, requireSuperAdmin } from '../middleware/auth';
-import { sendEmail, welcomeEmail, isEmailConfigured } from '../notifications/email';
+import { sendEmail, welcomeEmail, isEmailConfigured, resetPasswordEmail } from '../notifications/email';
 import { sendSms, formatPhone, isSmsConfigured } from '../notifications/twilio';
-import { resetPasswordEmail } from '../notifications/email';
 import crypto from 'crypto';
 
 const router = Router();
@@ -138,11 +137,16 @@ router.post('/forgot-password', async (req: Request, res: Response) => {
       data: { resetToken, resetTokenExpiry },
     });
     const resetLink = `${process.env.APP_URL || 'https://hvaccrm.production.up.railway.app'}/reset-password?token=${resetToken}`;
-    const sent = await sendEmail({
-      to: user.email,
-      ...resetPasswordEmail({ userName: user.name, resetLink }),
-    });
-    console.log(`[forgot-password] Email ${sent ? 'sent' : 'FAILED'} to ${user.email}, configured: ${isEmailConfigured()}`);
+    console.log(`[forgot-password] RESET LINK: ${resetLink}`);
+    if (isEmailConfigured()) {
+      const sent = await sendEmail({
+        to: user.email,
+        ...resetPasswordEmail({ userName: user.name, resetLink }),
+      });
+      console.log(`[forgot-password] Email ${sent ? 'sent' : 'FAILED'} to ${user.email}`);
+    } else {
+      console.log(`[forgot-password] Email not configured — reset link available in logs only`);
+    }
     res.json({ message: 'Si el email existe, recibirás un enlace para restablecer tu contraseña' });
   } catch (err) {
     console.error('[forgot-password] Error:', err);
