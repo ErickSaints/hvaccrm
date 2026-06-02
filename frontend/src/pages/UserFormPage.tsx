@@ -60,8 +60,13 @@ export default function UserFormPage() {
   const mutation = useMutation({
     mutationFn: async (data: UserFormData) => {
       if (isEditing) {
-        const { password, ...rest } = data;
-        await api.put(`/users/${id}`, rest);
+        const payload: Record<string, unknown> = {};
+        if (data.name) payload.name = data.name;
+        if (data.email) payload.email = data.email;
+        if (data.phone !== undefined) payload.phone = data.phone;
+        if (data.role) payload.role = data.role;
+        if (data.password) payload.password = data.password;
+        await api.put(`/users/${id}`, payload);
       } else {
         await api.post('/users', data);
       }
