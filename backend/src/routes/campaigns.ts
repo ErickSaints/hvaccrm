@@ -4,6 +4,8 @@ import prisma from '../prisma';
 import { authenticate, requireBackoffice, requireSuperAdmin } from '../middleware/auth';
 import { requirePermission } from '../middleware/permission';
 import { paginate, paginatedResponse } from '../middleware/pagination';
+import { sendEmail } from '../notifications/email';
+import { sendSms } from '../notifications/twilio';
 
 const router = Router();
 
@@ -192,14 +194,40 @@ router.post('/:id/send', requirePermission('campaigns:send'), async (req: Reques
       await prisma.campaignRecipient.createMany({ data: recipientData });
     }
 
-    const campaignRecipientsCount = await prisma.campaignRecipient.count({ where: { campaignId: id } });
+    // Send asynchronously — respond immediately
+    const subject = campaign.subject || '';
+    const content = campaign.content || '';
+
+    if (content) {
+      (async () => {
+        if (campaign.type === 'EMAIL' || campaign.type === 'BOTH') {
+          const emailRecipients = customers.filter(c => c.email);
+          for (const c of emailRecipients) {
+            sendEmail({
+              to: c.email!,
+              subject,
+              html: `<div style="font-family:system-ui,-apple-system,sans-serif;padding:20px;max-width:600px;margin:0 auto">
+<h2 style="color:#111827;font-size:18px;margin:0 0 16px">${subject}</h2>
+${content}
+</div>`,
+            }).catch(() => {});
+          }
+        }
+        if (campaign.type === 'SMS' || campaign.type === 'BOTH') {
+          const smsRecipients = customers.filter(c => c.phone);
+          for (const c of smsRecipients) {
+            sendSms({ to: c.phone!, body: content }).catch(() => {});
+          }
+        }
+      })();
+    }
 
     await prisma.campaign.update({
       where: { id },
       data: {
         status: 'ACTIVA',
         sentAt: now,
-        sentCount: campaignRecipientsCount,
+        sentCount: recipientData.length,
       },
     });
 
