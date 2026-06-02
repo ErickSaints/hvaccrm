@@ -18,6 +18,7 @@ const createUserSchema = z.object({
 const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
   email: z.string().email().optional(),
+  password: z.string().min(6).optional(),
   role: z.enum(['ADMIN', 'TECHNICIAN', 'SALES', 'PROYECTOS', 'COMPRAS', 'CLIENT']).optional(),
   phone: z.string().optional(),
   active: z.boolean().optional(),
@@ -52,7 +53,7 @@ router.get('/:id', requirePermission('users:view'), async (req: Request, res: Re
   }
 });
 
-router.post('/', requireSuperAdmin, async (req: Request, res: Response) => {
+router.post('/', requirePermission('users:create'), async (req: Request, res: Response) => {
   try {
     const data = createUserSchema.parse(req.body);
     const exists = await prisma.user.findUnique({ where: { email: data.email } });
@@ -79,7 +80,7 @@ router.post('/', requireSuperAdmin, async (req: Request, res: Response) => {
   }
 });
 
-router.put('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
+router.put('/:id', requirePermission('users:edit'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = updateUserSchema.parse(req.body);
@@ -98,7 +99,17 @@ router.put('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
         return res.status(403).json({ error: 'Solo el Super Admin puede asignar Super Admin' });
       }
     }
-    const user = await prisma.user.update({ where: { id }, data });
+    const updateData: any = {};
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.email !== undefined) updateData.email = data.email;
+    if (data.phone !== undefined) updateData.phone = data.phone;
+    if (data.role !== undefined) updateData.role = data.role;
+    if (data.active !== undefined) updateData.active = data.active;
+    if (data.isSuperAdmin !== undefined) updateData.isSuperAdmin = data.isSuperAdmin;
+    if (data.password) {
+      updateData.password = await bcrypt.hash(data.password, 10);
+    }
+    const user = await prisma.user.update({ where: { id }, data: updateData });
     const { password: _, ...userData } = user;
     res.json(userData);
   } catch (err) {
@@ -109,7 +120,7 @@ router.put('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => {
+router.delete('/:id', requirePermission('users:delete'), async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const user = await prisma.user.findUnique({ where: { id } });

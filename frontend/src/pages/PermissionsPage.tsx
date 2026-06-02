@@ -16,7 +16,8 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 export default function PermissionsPage() {
-  const { isSuperAdmin } = useAuth();
+  const { user, isSuperAdmin } = useAuth();
+  const isAdmin = user?.role === 'ADMIN';
   const queryClient = useQueryClient();
   const [selectedRole, setSelectedRole] = useState<string>('TECHNICIAN');
   const [permissions, setPermissions] = useState<Set<string>>(new Set());
@@ -24,7 +25,7 @@ export default function PermissionsPage() {
   const { data, isLoading } = useQuery<PermissionInfo>({
     queryKey: ['permissions'],
     queryFn: () => api.get('/admin/permissions').then(r => r.data),
-    enabled: isSuperAdmin,
+    enabled: isAdmin,
   });
 
   useEffect(() => {
@@ -84,12 +85,12 @@ export default function PermissionsPage() {
     setPermissions(new Set());
   };
 
-  if (!isSuperAdmin) {
+  if (!isAdmin) {
     return (
       <div className="card text-center py-12">
         <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Acceso restringido</h3>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo el Super Administrador puede gestionar permisos</p>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo los administradores pueden ver permisos</p>
       </div>
     );
   }
@@ -104,24 +105,26 @@ export default function PermissionsPage() {
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">Define qué puede hacer cada tipo de usuario en el sistema</p>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => resetMutation.mutate()}
-            disabled={resetMutation.isPending}
-            className="btn-secondary flex items-center gap-2 text-sm"
-          >
-            {resetMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <RotateCcw className="w-4 h-4" />}
-            Restablecer
-          </button>
-          <button
-            onClick={() => saveMutation.mutate()}
-            disabled={saveMutation.isPending}
-            className="btn-primary flex items-center gap-2"
-          >
-            {saveMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            Guardar
-          </button>
-        </div>
+        {isSuperAdmin && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => resetMutation.mutate()}
+              disabled={resetMutation.isPending}
+              className="btn-secondary flex items-center gap-2 text-sm"
+            >
+              {resetMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <RotateCcw className="w-4 h-4" />}
+              Restablecer
+            </button>
+            <button
+              onClick={() => saveMutation.mutate()}
+              disabled={saveMutation.isPending}
+              className="btn-primary flex items-center gap-2"
+            >
+              {saveMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              Guardar
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Role selector */}
@@ -141,17 +144,18 @@ export default function PermissionsPage() {
         ))}
       </div>
 
-      {/* Quick actions */}
-      <div className="flex items-center gap-3 text-sm">
-        <span className="text-gray-500 dark:text-gray-400">Acciones rápidas:</span>
-        <button onClick={selectAll} className="text-primary-600 hover:text-primary-700 font-medium">
-          Seleccionar todos
-        </button>
-        <span className="text-gray-300">|</span>
-        <button onClick={deselectAll} className="text-red-600 hover:text-red-700 font-medium">
-          Desseleccionar todos
-        </button>
-      </div>
+      {isSuperAdmin && (
+        <div className="flex items-center gap-3 text-sm">
+          <span className="text-gray-500 dark:text-gray-400">Acciones rápidas:</span>
+          <button onClick={selectAll} className="text-primary-600 hover:text-primary-700 font-medium">
+            Seleccionar todos
+          </button>
+          <span className="text-gray-300">|</span>
+          <button onClick={deselectAll} className="text-red-600 hover:text-red-700 font-medium">
+            Desseleccionar todos
+          </button>
+        </div>
+      )}
 
       {/* Categories */}
       {isLoading ? (
@@ -180,7 +184,8 @@ export default function PermissionsPage() {
                         }`}
                       >
                         <button
-                          onClick={() => togglePermission(perm)}
+                          onClick={() => isSuperAdmin && togglePermission(perm)}
+                          disabled={!isSuperAdmin}
                           className={`flex items-center justify-center w-6 h-6 rounded-md border-2 transition-all ${
                             enabled
                               ? 'bg-primary-600 border-primary-600 text-white'
@@ -206,7 +211,9 @@ export default function PermissionsPage() {
       )}
 
       <div className="text-xs text-gray-400 dark:text-gray-500 text-center">
-        Los cambios aplican inmediatamente después de guardar. Los permisos del Super Administrador (tú) no se pueden modificar.
+        {isSuperAdmin
+          ? 'Los cambios aplican inmediatamente después de guardar. Los permisos del Super Administrador no se pueden modificar.'
+          : 'Vista de solo lectura. Solo el Super Administrador puede modificar los permisos.'}
       </div>
     </div>
   );

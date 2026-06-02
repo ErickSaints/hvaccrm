@@ -89,6 +89,7 @@ const clientNav = [
 const adminBottomNav = [
   { name: 'Mi Perfil', href: '/profile', icon: UserCircle },
   { name: 'Usuarios', href: '/users', icon: UserCog },
+  { name: 'Permisos', href: '/permissions', icon: ShieldCheck },
   { name: 'Suscripciones', href: '/subscriptions', icon: CreditCard },
 ];
 

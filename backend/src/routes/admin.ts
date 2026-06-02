@@ -2,13 +2,14 @@ import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import prisma from '../prisma';
-import { authenticate, requireSuperAdmin } from '../middleware/auth';
+import { authenticate, requireSuperAdmin, requireRole } from '../middleware/auth';
 import { DEFAULT_ROLE_PERMISSIONS, ALL_PERMISSIONS, PERMISSION_CATEGORIES, LABELS } from '../permissions';
 
 const router = Router();
 
 // All admin routes require authentication + ADMIN role
-router.use(authenticate, requireSuperAdmin);
+router.use(authenticate);
+router.use(requireRole(['ADMIN']));
 
 const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
@@ -94,12 +95,18 @@ router.put('/users/:id', async (req: Request, res: Response) => {
     const existing = await prisma.user.findUnique({ where: { id } });
     if (!existing) return res.status(404).json({ error: 'Usuario no encontrado' });
 
+    // Only super admin can change isSuperAdmin flag
+    if (data.isSuperAdmin !== undefined && !req.user?.isSuperAdmin) {
+      return res.status(403).json({ error: 'Solo el Super Administrador puede cambiar este campo' });
+    }
+
     const updateData: any = {};
     if (data.name) updateData.name = data.name;
     if (data.email) updateData.email = data.email;
     if (data.phone !== undefined) updateData.phone = data.phone;
     if (data.role) updateData.role = data.role;
     if (data.active !== undefined) updateData.active = data.active;
+    if (data.isSuperAdmin !== undefined) updateData.isSuperAdmin = data.isSuperAdmin;
     if (data.password) {
       updateData.password = await bcrypt.hash(data.password, 10);
     }
@@ -126,7 +133,7 @@ router.put('/users/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/users/:id', async (req: Request, res: Response) => {
+router.delete('/users/:id', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const existing = await prisma.user.findUnique({ where: { id } });
@@ -141,7 +148,7 @@ router.delete('/users/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/shutdown', async (_req: Request, res: Response) => {
+router.post('/shutdown', requireSuperAdmin, async (_req: Request, res: Response) => {
   res.json({ message: 'Apagando sistema...' });
   setTimeout(() => {
     console.log('[ADMIN] Apagando servidor por solicitud de administrador');
@@ -171,7 +178,7 @@ router.get('/permissions', async (_req: Request, res: Response) => {
   }
 });
 
-router.put('/permissions/:role', async (req: Request, res: Response) => {
+router.put('/permissions/:role', requireSuperAdmin, async (req: Request, res: Response) => {
   try {
     const role = String(req.params.role);
     const { permissions } = permissionUpdateSchema.parse({ role, ...req.body });
@@ -203,7 +210,7 @@ router.put('/permissions/:role', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/reset-permissions', async (_req: Request, res: Response) => {
+router.post('/reset-permissions', requireSuperAdmin, async (_req: Request, res: Response) => {
   try {
     await prisma.rolePermission.deleteMany();
     res.json({ message: 'Permisos restablecidos a valores por defecto' });

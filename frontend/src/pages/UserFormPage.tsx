@@ -24,7 +24,8 @@ export default function UserFormPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { isSuperAdmin } = useAuth();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'ADMIN';
   const isEditing = Boolean(id);
 
   const {
@@ -89,11 +90,11 @@ export default function UserFormPage() {
     mutation.mutate(data);
   };
 
-  if (!isSuperAdmin) {
+  if (!isAdmin) {
     return (
       <div className="card text-center py-12">
         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Acceso restringido</h3>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo el Super Administrador puede gestionar usuarios</p>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo los administradores pueden gestionar usuarios</p>
       </div>
     );
   }

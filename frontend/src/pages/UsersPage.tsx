@@ -40,7 +40,8 @@ const userSchema = z.object({
 type UserFormData = z.infer<typeof userSchema>;
 
 export default function UsersPage() {
-  const { user: currentUser, isSuperAdmin } = useAuth();
+  const { user: currentUser } = useAuth();
+  const isAdmin = currentUser?.role === 'ADMIN';
   const confirmSuperAdmin = useSuperAdminConfirm();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
@@ -65,7 +66,7 @@ export default function UsersPage() {
       const { data } = await api.get<User[]>('/users');
       return data;
     },
-    enabled: isSuperAdmin,
+    enabled: isAdmin,
   });
 
   const createMutation = useMutation({
@@ -90,8 +91,13 @@ export default function UsersPage() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: UserFormData }) => {
-      const { password, ...rest } = data;
-      await api.put(`/users/${id}`, rest);
+      const payload: Record<string, unknown> = {};
+      if (data.name) payload.name = data.name;
+      if (data.email) payload.email = data.email;
+      if (data.phone !== undefined) payload.phone = data.phone;
+      if (data.role) payload.role = data.role;
+      if (data.password) payload.password = data.password;
+      await api.put(`/users/${id}`, payload);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -142,6 +148,7 @@ export default function UsersPage() {
     reset({
       name: user.name,
       email: user.email,
+      password: '',
       role: user.role,
       phone: user.phone || '',
     });
@@ -173,12 +180,12 @@ export default function UsersPage() {
     return matchesSearch && matchesRole;
   });
 
-  if (!isSuperAdmin) {
+  if (!isAdmin) {
     return (
       <div className="card text-center py-12">
         <Shield className="w-12 h-12 text-gray-300 mx-auto mb-4" />
         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">Acceso restringido</h3>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo el Super Administrador puede gestionar usuarios</p>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Solo los administradores pueden gestionar usuarios</p>
       </div>
     );
   }
@@ -434,18 +441,19 @@ export default function UsersPage() {
                 <input {...register('email')} type="email" className="input-field" placeholder="correo@ejemplo.com" />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
               </div>
-              {!editingUser && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Contraseña *</label>
-                  <input
-                    {...register('password')}
-                    type="password"
-                    className="input-field"
-                    placeholder="••••••••"
-                  />
-                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-                </div>
-              )}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  Contraseña {editingUser ? '(dejar vacío para mantener)' : '*'}
+                </label>
+                <input
+                  {...register('password')}
+                  type="password"
+                  className="input-field"
+                  placeholder={editingUser ? '••••••••' : '••••••••'}
+                  required={!editingUser}
+                />
+                {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Rol *</label>
                 <select {...register('role')} className="input-field">

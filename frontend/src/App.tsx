@@ -217,6 +217,7 @@ export default function App() {
         </BrowserRouter>
         <Toaster
           position="top-right"
+          containerStyle={{ zIndex: 99999 }}
           toastOptions={{
             duration: 4000,
             style: {
