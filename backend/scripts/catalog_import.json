@@ -1,0 +1,1842 @@
+[
+  {
+    "name": "Minisplit (1 TR (12K BTU))",
+    "description": "Categoría: Minisplits | Capacidad: 1 TR (12K BTU) | Horas: 5.9 hrs | Frecuencia: Cada 6-12 meses | Fuente: HomePro Feb 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 2500.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Minisplit (2 TR (24K BTU))",
+    "description": "Categoría: Minisplits | Capacidad: 2 TR (24K BTU) | Horas: 6.1 hrs | Frecuencia: Cada 6-12 meses | Fuente: HomePro Feb 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 2600.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Minisplit (3 TR (36K BTU))",
+    "description": "Categoría: Minisplits | Capacidad: 3 TR (36K BTU) | Horas: 6.4 hrs | Frecuencia: Cada 6-12 meses | Fuente: HomePro Feb 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 2700.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Minisplit económico (empresa chica) (1-3 TR)",
+    "description": "Categoría: Minisplits | Capacidad: 1-3 TR | Horas: 2-3 hrs | Frecuencia: Cada 6-12 meses | Fuente: AireyClimas 2025-26",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 1100.0,
+    "betterPrice": null,
+    "bestPrice": 1200.0,
+    "costPrice": null
+  },
+  {
+    "name": "Mantenimiento básico (solo filtros) (Cualquier)",
+    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 1 hr | Frecuencia: Cada 2-3 meses | Fuente: Habitissimo 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 600.0,
+    "betterPrice": null,
+    "bestPrice": 950.0,
+    "costPrice": null
+  },
+  {
+    "name": "Mantenimiento completo (limpieza total) (Cualquier)",
+    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 2-3 hrs | Frecuencia: Cada 6 meses | Fuente: Varias fuentes CDMX",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 1000.0,
+    "betterPrice": null,
+    "bestPrice": 1500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Mantenimiento + recarga de gas (Cualquier)",
+    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 3-4 hrs | Frecuencia: Solo si necesario | Fuente: SimpleClima 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 1200.0,
+    "betterPrice": null,
+    "bestPrice": 2800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cassette (2-4 TR)",
+    "description": "Categoría: Cassette | Capacidad: 2-4 TR | Horas: 7-8 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro Feb 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 2700.0,
+    "betterPrice": null,
+    "bestPrice": 3200.0,
+    "costPrice": null
+  },
+  {
+    "name": "Piso-Techo (5 TR)",
+    "description": "Categoría: Piso-Techo | Capacidad: 5 TR | Horas: 6.6 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro Feb 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 2800.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Piso-Techo (8-10 TR)",
+    "description": "Categoría: Piso-Techo | Capacidad: 8-10 TR | Horas: 8-10 hrs | Frecuencia: Cada 4-6 meses | Fuente: Proyección mercado",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 3500.0,
+    "betterPrice": null,
+    "bestPrice": 5000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Fan Coil (4.5 TR)",
+    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 4.5 TR | Horas: 8.5 hrs | Frecuencia: Cada 3-6 meses | Fuente: HomePro Feb 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 3600.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Fan Coil (8-10 TR)",
+    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 8-10 TR | Horas: 10-12 hrs | Frecuencia: Cada 3-6 meses | Fuente: Proyección mercado",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 4500.0,
+    "betterPrice": null,
+    "bestPrice": 6500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Fan Coil (15-20 TR)",
+    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 15-20 TR | Horas: 12-16 hrs | Frecuencia: Cada 3-6 meses | Fuente: Proyección mercado",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 6000.0,
+    "betterPrice": null,
+    "bestPrice": 9000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Unidad interior VRF (por UI) (Cualquier)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: Cualquier | Horas: 3-5 hrs | Frecuencia: Cada 6 meses | Fuente: HomePro Feb 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 2800.0,
+    "betterPrice": null,
+    "bestPrice": 4500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Unidad exterior VRF (8-20 HP)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: 8-20 HP | Horas: 8-12 hrs | Frecuencia: Cada 6 meses | Fuente: Proyección mercado",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 5000.0,
+    "betterPrice": null,
+    "bestPrice": 12000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Sistema VRF completo (20+ UI)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: 20+ UI | Horas: 2-5 días | Frecuencia: Cada 6 meses | Fuente: Proyección mercado",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 25000.0,
+    "betterPrice": null,
+    "bestPrice": 60000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Rooftop (5 TR)",
+    "description": "Categoría: Rooftop / Paquete | Capacidad: 5 TR | Horas: 6-8 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 4000.0,
+    "betterPrice": null,
+    "bestPrice": 5500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Rooftop (10 TR)",
+    "description": "Categoría: Rooftop / Paquete | Capacidad: 10 TR | Horas: 8-10 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 5500.0,
+    "betterPrice": null,
+    "bestPrice": 7500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Rooftop (15-20 TR)",
+    "description": "Categoría: Rooftop / Paquete | Capacidad: 15-20 TR | Horas: 10-14 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 7000.0,
+    "betterPrice": null,
+    "bestPrice": 9000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Chiller (mantenimiento completo) (50-100 TR)",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 50-100 TR | Price: Desde $15,000 | Horas: 1-2 días | Frecuencia: Cada 6 meses | Fuente: HomePro Feb 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Chiller (50-100 TR)",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 50-100 TR | Horas: 1-2 días | Frecuencia: Cada 6 meses | Fuente: HomePro 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 15000.0,
+    "betterPrice": null,
+    "bestPrice": 30000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Chiller (100-300 TR)",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 100-300 TR | Horas: 2-4 días | Frecuencia: Cada 6 meses | Fuente: HomePro Ind. 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 30000.0,
+    "betterPrice": null,
+    "bestPrice": 80000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Chiller (300-800 TR)",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 300-800 TR | Horas: 3-7 días | Frecuencia: Cada 6 meses | Fuente: HomePro Ind. 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 60000.0,
+    "betterPrice": null,
+    "bestPrice": 150000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Torre de enfriamiento (100-500 TR)",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 100-500 TR | Horas: 1-2 días | Frecuencia: Cada 3-6 meses | Fuente: HomePro 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": 8000.0,
+    "betterPrice": null,
+    "bestPrice": 25000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Tratamiento de agua para torre (Por sistema)",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: Por sistema | Price: $5,000 - $15,000/mes | Horas: N/A | Frecuencia: Mensual | Fuente: HomePro Ind. 2026",
+    "unit": "servicio",
+    "category": "Mantto Preventivo",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Diagnóstico / visita técnica",
+    "description": "Categoría: Servicios De Diagnóstico | Tiempo: 30 min - 1 hr | Fuente: AireyClimas, Mercado",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 350.0,
+    "betterPrice": null,
+    "bestPrice": 800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Levantamiento para cotización",
+    "description": "Categoría: Servicios De Diagnóstico | Tiempo: 30 min | Fuente: AireyClimas 2025",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 350.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Reparar fuga en circuito frigorífico",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-3 hrs | Fuente: Habitissimo 2026",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 675.0,
+    "betterPrice": null,
+    "bestPrice": 805.0,
+    "costPrice": null
+  },
+  {
+    "name": "Instalar sifón en desagüe",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Habitissimo 2026",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 610.0,
+    "betterPrice": null,
+    "bestPrice": 725.0,
+    "costPrice": null
+  },
+  {
+    "name": "Eliminar agua condensada de batería",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Habitissimo 2026",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 635.0,
+    "betterPrice": null,
+    "bestPrice": 760.0,
+    "costPrice": null
+  },
+  {
+    "name": "Destapar drenaje de minisplit",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Varias fuentes",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 500.0,
+    "betterPrice": null,
+    "bestPrice": 900.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reparar presión del refrigerante",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Habitissimo 2026",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 845.0,
+    "betterPrice": null,
+    "bestPrice": 1000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reparación menor (cableado, conexiones)",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Varias fuentes",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 500.0,
+    "betterPrice": null,
+    "bestPrice": 1500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reparación mediana (fugas, válvulas)",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 2-4 hrs | Fuente: Varias fuentes",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 1500.0,
+    "betterPrice": null,
+    "bestPrice": 4000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reparación mayor (compresor, PCB)",
+    "description": "Categoría: Reparaciones Menores | Price: $4,000 - $15,000+ | Tiempo: 4-8 hrs | Fuente: Varias fuentes",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Recuperación de nivel de refrigerante (hasta 20%)",
+    "description": "Categoría: Reparaciones Menores | Price: Incluido en mantenimiento preventivo | Tiempo: N/A | Fuente: AireyClimas",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Carga de gas refrigerante (servicio completo)",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 2-3 hrs | Fuente: SimpleClima 2026",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 1200.0,
+    "betterPrice": null,
+    "bestPrice": 2800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Compresor chiller (reemplazo - refacción + mano obra)",
+    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 2-7 días | Fuente: HomePro Ind. 2026",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 80000.0,
+    "betterPrice": null,
+    "bestPrice": 400000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Válvula de expansión chiller",
+    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 1-2 días | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 8000.0,
+    "betterPrice": null,
+    "bestPrice": 25000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo de empaques de cabezal",
+    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 2-3 días | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Mantto Correctivo",
+    "goodPrice": 15000.0,
+    "betterPrice": null,
+    "bestPrice": 40000.0,
+    "costPrice": null
+  },
+  {
+    "name": "CAPACITORES (instalados)",
+    "description": "",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo capacitor ventilador (2-5 µF)",
+    "description": "Notas: Pieza $150-250 + mano obra | Fuente: ClimasMonterrey + servicio",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 400.0,
+    "betterPrice": null,
+    "bestPrice": 800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo capacitor dual (55+5 a 70+5 µF)",
+    "description": "Notas: Pieza $140-200 + mano obra | Fuente: FrioRefacciones + servicio",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 500.0,
+    "betterPrice": null,
+    "bestPrice": 1000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo capacitor compresor (50-80 µF)",
+    "description": "Notas: Pieza $200-400 + mano obra | Fuente: FrioRefacciones + servicio",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 500.0,
+    "betterPrice": null,
+    "bestPrice": 1200.0,
+    "costPrice": null
+  },
+  {
+    "name": "TARJETAS ELECTRÓNICAS (instaladas)",
+    "description": "",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo tarjeta evaporadora minisplit",
+    "description": "Notas: Pieza $800-1,500 + mano obra | Fuente: ClimasMonterrey + servicio",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 1800.0,
+    "betterPrice": null,
+    "bestPrice": 3500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo tarjeta condensadora minisplit",
+    "description": "Notas: Pieza $1,200-1,500 + mano obra | Fuente: ClimasMonterrey + servicio",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 2000.0,
+    "betterPrice": null,
+    "bestPrice": 4000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo tarjeta VRF interior",
+    "description": "Notas: Pieza $2,000-4,000 + mano obra | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 3500.0,
+    "betterPrice": null,
+    "bestPrice": 7000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo tarjeta VRF exterior",
+    "description": "Notas: Pieza $5,000-12,000 + mano obra | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 8000.0,
+    "betterPrice": null,
+    "bestPrice": 18000.0,
+    "costPrice": null
+  },
+  {
+    "name": "MOTORES (instalados)",
+    "description": "",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo motor evaporador minisplit",
+    "description": "Notas: Pieza $980-2,260 + mano obra | Fuente: TotalHogar + servicio",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 1800.0,
+    "betterPrice": null,
+    "bestPrice": 3500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo motor condensador minisplit",
+    "description": "Notas: Pieza $1,050-1,400 + mano obra | Fuente: TotalHogar + servicio",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 1800.0,
+    "betterPrice": null,
+    "bestPrice": 3000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo motor ventilador fan coil",
+    "description": "Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 3500.0,
+    "betterPrice": null,
+    "bestPrice": 7000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo motor ventilador rooftop/paquete",
+    "description": "Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 5000.0,
+    "betterPrice": null,
+    "bestPrice": 15000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo motor ventilador torre enfriamiento",
+    "description": "Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 8000.0,
+    "betterPrice": null,
+    "bestPrice": 25000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo turbina/abanico minisplit",
+    "description": "Notas: Pieza $480-620 + mano obra | Fuente: TotalHogar + servicio",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 1500.0,
+    "betterPrice": null,
+    "bestPrice": 3000.0,
+    "costPrice": null
+  },
+  {
+    "name": "COMPRESORES (instalados)",
+    "description": "",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo compresor minisplit 1T (12K)",
+    "description": "Notas: CD $5,057 - APU detallado | Fuente: analisisdepreciosunitarios 2025",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 4000.0,
+    "betterPrice": null,
+    "bestPrice": 8500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo compresor minisplit 1.5T (18K)",
+    "description": "Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 5000.0,
+    "betterPrice": null,
+    "bestPrice": 10000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo compresor minisplit 2T (24K)",
+    "description": "Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 6000.0,
+    "betterPrice": null,
+    "bestPrice": 12000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo compresor paquete 3T",
+    "description": "Fuente: analisisdepreciosunitarios 2025",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 9500.0,
+    "betterPrice": null,
+    "bestPrice": 16000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo compresor paquete 5T",
+    "description": "Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 14000.0,
+    "betterPrice": null,
+    "bestPrice": 25000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo compresor scroll chiller 50T",
+    "description": "Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 60000.0,
+    "betterPrice": null,
+    "bestPrice": 120000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo compresor tornillo chiller 100T",
+    "description": "Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 120000.0,
+    "betterPrice": null,
+    "bestPrice": 250000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo compresor centrífugo chiller",
+    "description": "Notas: USD 60k-150k | Fuente: InganVF 2026",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 1200000.0,
+    "betterPrice": null,
+    "bestPrice": 3000000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo filtro deshidratador",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 400.0,
+    "betterPrice": null,
+    "bestPrice": 800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo válvula de expansión termostática",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 1200.0,
+    "betterPrice": null,
+    "bestPrice": 3000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo bomba de condensado",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 1800.0,
+    "betterPrice": null,
+    "bestPrice": 3500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo termostato mecánico",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 600.0,
+    "betterPrice": null,
+    "bestPrice": 1500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo termostato digital/programable",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 1500.0,
+    "betterPrice": null,
+    "bestPrice": 4000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo termostato WiFi",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 2000.0,
+    "betterPrice": null,
+    "bestPrice": 4500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo sensor de temperatura",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 600.0,
+    "betterPrice": null,
+    "bestPrice": 1500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo transformador 220/24V",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 600.0,
+    "betterPrice": null,
+    "bestPrice": 1200.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo contactor/arrancador",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 800.0,
+    "betterPrice": null,
+    "bestPrice": 2000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Reemplazo variador de frecuencia (VFD)",
+    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "unit": "pza",
+    "category": "Reemplazo Componentes",
+    "goodPrice": 8000.0,
+    "betterPrice": null,
+    "bestPrice": 35000.0,
+    "costPrice": null
+  },
+  {
+    "name": "R-410A Suva Freon",
+    "description": "Presentacion: Boya 11.35 kg | Price Kg: $279/kg | Fuente: REACSA 2026",
+    "unit": "kg",
+    "category": "Gas Refrigerante",
+    "goodPrice": 3170.72,
+    "betterPrice": null,
+    "bestPrice": 3000.0,
+    "costPrice": null
+  },
+  {
+    "name": "R-410A",
+    "description": "Presentacion: Lata 650g | Price Kg: $412/kg | Fuente: REACSA 2026",
+    "unit": "kg",
+    "category": "Gas Refrigerante",
+    "goodPrice": 267.97,
+    "betterPrice": null,
+    "bestPrice": 3000.0,
+    "costPrice": null
+  },
+  {
+    "name": "R-32 Freon",
+    "description": "Presentacion: Boya 9.5 kg | Price Kg: $526/kg | Fuente: REACSA 2026",
+    "unit": "kg",
+    "category": "Gas Refrigerante",
+    "goodPrice": 5000.0,
+    "betterPrice": null,
+    "bestPrice": 3500.0,
+    "costPrice": null
+  },
+  {
+    "name": "R-22 Freon",
+    "description": "Presentacion: Boya 13.6 kg | Price Kg: $226/kg | Fuente: REACSA 2026",
+    "unit": "kg",
+    "category": "Gas Refrigerante",
+    "goodPrice": 3076.69,
+    "betterPrice": null,
+    "bestPrice": 5000.0,
+    "costPrice": null
+  },
+  {
+    "name": "R-22 Freon",
+    "description": "Presentacion: Lata 1 kg | Price Kg: $263/kg | Fuente: REACSA 2026",
+    "unit": "kg",
+    "category": "Gas Refrigerante",
+    "goodPrice": 262.6,
+    "betterPrice": null,
+    "bestPrice": 5000.0,
+    "costPrice": null
+  },
+  {
+    "name": "R-134a CHEMOURS",
+    "description": "Presentacion: Boya 13.6 kg | Price Kg: ~$235/kg | Fuente: REACSA 2026",
+    "unit": "kg",
+    "category": "Gas Refrigerante",
+    "goodPrice": 3200.0,
+    "betterPrice": null,
+    "bestPrice": 2500.0,
+    "costPrice": null
+  },
+  {
+    "name": "R-404A Freon",
+    "description": "Presentacion: 10.896 kg | Price Kg: ~$532/kg | Fuente: REACSA 2026",
+    "unit": "kg",
+    "category": "Gas Refrigerante",
+    "goodPrice": 5800.0,
+    "betterPrice": null,
+    "bestPrice": 4000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Minisplit (0.5-1T (6K-12K BTU))",
+    "description": "Categoría: Minisplits | Capacidad: 0.5-1T (6K-12K BTU) | Tiempo: 3-4 hrs | Fuente: Genz Clima / HomePro 2026",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 1500.0,
+    "betterPrice": 800.0,
+    "bestPrice": 17000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Minisplit (1.5T (18K BTU))",
+    "description": "Categoría: Minisplits | Capacidad: 1.5T (18K BTU) | Tiempo: 4-5 hrs | Fuente: HomePro 2026",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 1800.0,
+    "betterPrice": 800.0,
+    "bestPrice": 19500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Minisplit (2T (24K BTU))",
+    "description": "Categoría: Minisplits | Capacidad: 2T (24K BTU) | Tiempo: 4-6 hrs | Fuente: HomePro 2026",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 2500.0,
+    "betterPrice": 800.0,
+    "bestPrice": 23500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Minisplit (3T (36K BTU))",
+    "description": "Categoría: Minisplits | Capacidad: 3T (36K BTU) | Tiempo: 5-8 hrs | Fuente: MirageCDMX 2025",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 3000.0,
+    "betterPrice": 1000.0,
+    "bestPrice": 35000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Minisplit inverter 1.5T (instalado real) (1.5T)",
+    "description": "Categoría: Minisplits | Capacidad: 1.5T | Tiempo: 4-6 hrs | Fuente: HomePro (con extras reales)",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 1500.0,
+    "betterPrice": null,
+    "bestPrice": 23000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Multisplit 2x1 (2 UI + 1 UE)",
+    "description": "Categoría: Multisplit | Capacidad: 2 UI + 1 UE | Tiempo: 4-6 hrs | Fuente: Genz Clima 2026",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 3000.0,
+    "betterPrice": 1500.0,
+    "bestPrice": 25000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Multisplit 3x1 (3 UI + 1 UE)",
+    "description": "Categoría: Multisplit | Capacidad: 3 UI + 1 UE | Tiempo: 5-8 hrs | Fuente: Genz Clima 2026",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 4000.0,
+    "betterPrice": 1500.0,
+    "bestPrice": 35000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Multisplit 4x1 (4 UI + 1 UE)",
+    "description": "Categoría: Multisplit | Capacidad: 4 UI + 1 UE | Tiempo: 6-10 hrs | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 5000.0,
+    "betterPrice": 2000.0,
+    "bestPrice": 45000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cassette (1-2T)",
+    "description": "Categoría: Cassette | Capacidad: 1-2T | Tiempo: 4-6 hrs | Fuente: Genz Clima 2026",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 5400.0,
+    "betterPrice": 1500.0,
+    "bestPrice": 28000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cassette (3-4T)",
+    "description": "Categoría: Cassette | Capacidad: 3-4T | Tiempo: 5-8 hrs | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 6000.0,
+    "betterPrice": 2000.0,
+    "bestPrice": 38000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Piso-Techo (3T)",
+    "description": "Categoría: Piso-Techo | Capacidad: 3T | Tiempo: 4-6 hrs | Fuente: Varias",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 3500.0,
+    "betterPrice": null,
+    "bestPrice": 26000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Piso-Techo (5T)",
+    "description": "Categoría: Piso-Techo | Capacidad: 5T | Tiempo: 5-8 hrs | Fuente: Varias",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 4500.0,
+    "betterPrice": null,
+    "bestPrice": 38000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Piso-Techo (8T)",
+    "description": "Categoría: Piso-Techo | Capacidad: 8T | Tiempo: 6-10 hrs | Fuente: Varias",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 6000.0,
+    "betterPrice": null,
+    "bestPrice": 58000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Conductos + equipo (departamento) (—)",
+    "description": "Categoría: Sistema Por Conductos | Tiempo: 4-8 hrs | Fuente: MirageCDMX / Genz Clima 2026",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 12000.0,
+    "betterPrice": null,
+    "bestPrice": 60000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Solo instalación conductos (sin preinst.) (—)",
+    "description": "Categoría: Sistema Por Conductos | Price Equipo: N/A | Tiempo: 4-8 hrs | Fuente: Genz Clima 2026",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 5600.0,
+    "betterPrice": 1500.0,
+    "bestPrice": 11000.0,
+    "costPrice": null
+  },
+  {
+    "name": "PAQUETE / ROOFTOP (incluye maniobra+montaje)",
+    "description": "Categoría: Sistema Por Conductos",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Paquete 5 TR (5 TR)",
+    "description": "Categoría: Sistema Por Conductos | Capacidad: 5 TR | Tiempo: 2-4 días | Fuente: APU analisisdepreciosunitarios",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 22000.0,
+    "betterPrice": null,
+    "bestPrice": 230000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Paquete 10 TR (10 TR)",
+    "description": "Categoría: Sistema Por Conductos | Capacidad: 10 TR | Tiempo: 3-5 días | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 35000.0,
+    "betterPrice": null,
+    "bestPrice": 380000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Paquete 15 TR (15 TR)",
+    "description": "Categoría: Sistema Por Conductos | Capacidad: 15 TR | Tiempo: 4-7 días | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 50000.0,
+    "betterPrice": null,
+    "bestPrice": 560000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Paquete 20 TR (20 TR)",
+    "description": "Categoría: Sistema Por Conductos | Capacidad: 20 TR | Tiempo: 5-8 días | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 70000.0,
+    "betterPrice": null,
+    "bestPrice": 730000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Unidad interior VRF (instalación por UI) (Cualquier)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: Cualquier | Tiempo: 1-2 días c/u | Fuente: CYPE / Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 20000.0,
+    "betterPrice": null,
+    "bestPrice": 125000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Unidad exterior VRF (8-10 HP)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: 8-10 HP | Tiempo: 2-4 días | Fuente: CYPE / Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 30000.0,
+    "betterPrice": null,
+    "bestPrice": 360000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Unidad exterior VRF (16-20 HP)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: 16-20 HP | Tiempo: 3-5 días | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 60000.0,
+    "betterPrice": null,
+    "bestPrice": 620000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Unidad exterior VRF (24-34 HP)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: 24-34 HP | Tiempo: 4-7 días | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 100000.0,
+    "betterPrice": null,
+    "bestPrice": 1000000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Sistema VRF completo 8 HP (Daikin) (8 HP, 8-12 UI)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: 8 HP, 8-12 UI | Price Equipo: $468,988 (CYPE) | Tiempo: 1-2 semanas | Fuente: CYPE Generador Precios",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 80000.0,
+    "betterPrice": null,
+    "bestPrice": 770000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Tubería VRF (cobre aislado) (Por metro)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: Por metro | Price Mo: $800 - $1,500/ml | Price Equipo: Incluido | Price Total: $800 - $1,500/ml | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Kit Refnet (derivación VRF) (Por pieza)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: Por pieza | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 2500.0,
+    "betterPrice": null,
+    "bestPrice": 8000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Control centralizado VRF (Sistema)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: Sistema | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 8000.0,
+    "betterPrice": null,
+    "bestPrice": 65000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Puesta en marcha + programación VRF (Sistema)",
+    "description": "Categoría: Vrf / Vrv | Capacidad: Sistema | Tiempo: 1-3 días | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": 15000.0,
+    "betterPrice": null,
+    "bestPrice": 40000.0,
+    "costPrice": null
+  },
+  {
+    "name": "* Incluye equipo + instalación + maniobra. NO incluye ductería (cotizar aparte ~$25,000-$200,000 según tamaño)",
+    "description": "Categoría: Vrf / Vrv",
+    "unit": "servicio",
+    "category": "Instalación Equipos",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Equipo (material)",
+    "description": "Categoría: Equipo | Chiller 100: No incluido en APU | Chiller 800: No incluido en APU",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": 1103360.0,
+    "betterPrice": null,
+    "bestPrice": 2010486.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cuadrilla AA (mec+2 ayu) - jornales",
+    "description": "Categoría: Mano De Obra | Chiller 100: 6.7 jor × $2,621 = $17,560 | Chiller 130: 12 jor × $1,315 = $15,781 | Chiller 800: 14.5 jor × $2,621 = $38,002 | Sistema Completo: 55 jor × $1,399 = $76,961",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Cuadrilla maniobras (1+6)",
+    "description": "Categoría: Mano De Obra | Chiller 130: 8 jor × $2,272 = $18,176 | Sistema Completo: 12.4 jor × $2,587 = $32,084",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Cuadrilla conexión eléctrica",
+    "description": "Categoría: Mano De Obra | Chiller 130: 11.5 jor × $2,228 = $25,627 | Sistema Completo: 66 jor × $2,981 = $196,776",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Total Mano de Obra",
+    "description": "Categoría: Mano De Obra",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": 17560.0,
+    "betterPrice": 59584.0,
+    "bestPrice": 305821.0,
+    "costPrice": null
+  },
+  {
+    "name": "Grúa",
+    "description": "Categoría: Herramienta Y Equipo | Chiller 100: 2.6 hrs grúa 20T = $1,109 | Chiller 130: 6 hrs grúa 30T = $7,263 | Chiller 800: 22 hrs grúa 20T = $9,382 | Sistema Completo: 32.5 hrs grúa 30T = $39,335",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Pruebas hidrostáticas",
+    "description": "Categoría: Herramienta Y Equipo",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": 22.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Total Equipo",
+    "description": "Categoría: Herramienta Y Equipo",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": 1131.0,
+    "betterPrice": 9404.0,
+    "bestPrice": 39335.0,
+    "costPrice": null
+  },
+  {
+    "name": "Costo Directo Total",
+    "description": "Categoría: Herramienta Y Equipo",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": 18691.0,
+    "betterPrice": 1170207.0,
+    "bestPrice": 2355642.0,
+    "costPrice": null
+  },
+  {
+    "name": "PRECIO AL CLIENTE (con indirectos+utilidad ~30%)",
+    "description": "Categoría: Herramienta Y Equipo",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": 24300.0,
+    "betterPrice": 1520000.0,
+    "bestPrice": 3062000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Fuente",
+    "description": "Categoría: Herramienta Y Equipo | Chiller 100: analisisdepreciosunitarios | Chiller 130: analisisdepreciosunitarios | Chiller 800: analisisdepreciosunitarios | Sistema Completo: analisisdepreciosunitarios",
+    "unit": "servicio",
+    "category": "Chiller (APU Reales)",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Ducto lámina galvanizada cal. 26",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos pequeños residenciales | Fuente: analisisdepreciosunitarios 2025",
+    "unit": "kg instalado",
+    "category": "Ductería",
+    "goodPrice": 95.0,
+    "betterPrice": null,
+    "bestPrice": 115.0,
+    "costPrice": 53.13
+  },
+  {
+    "name": "Ducto lámina galvanizada cal. 24",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos comerciales, troncales | Fuente: analisisdepreciosunitarios 2025",
+    "unit": "kg instalado",
+    "category": "Ductería",
+    "goodPrice": 95.0,
+    "betterPrice": null,
+    "bestPrice": 115.0,
+    "costPrice": 52.9
+  },
+  {
+    "name": "Ducto lámina galvanizada cal. 22",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos industriales, alta presión | Fuente: analisisdepreciosunitarios 2025",
+    "unit": "kg instalado",
+    "category": "Ductería",
+    "goodPrice": 110.0,
+    "betterPrice": null,
+    "bestPrice": 135.0,
+    "costPrice": null
+  },
+  {
+    "name": "DESGLOSE APU DUCTO CAL. 24 (Precio al Cliente /kg)",
+    "description": "Categoría: Ductos De Lámina Galvanizada",
+    "unit": "pza",
+    "category": "Ductería",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Materiales (lámina 1.05kg + consumibles)",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: Lámina $50/kg + 5% desperdicio | Fuente: APU",
+    "unit": "kg",
+    "category": "Ductería",
+    "goodPrice": 58.8,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Mano de obra (cuadrilla 1 Of + 1 Ayte)",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: 0.01 jornal × $1,150 + FASAR | Fuente: APU",
+    "unit": "kg",
+    "category": "Ductería",
+    "goodPrice": 20.7,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Herramienta (dobladora, menor, andamio)",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: 3% de MO | Fuente: APU",
+    "unit": "kg",
+    "category": "Ductería",
+    "goodPrice": 0.62,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Costo Directo Total",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Fuente: APU",
+    "unit": "kg",
+    "category": "Ductería",
+    "goodPrice": 80.12,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Indirectos (15%) + Utilidad (12%)",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Fuente: APU",
+    "unit": "kg",
+    "category": "Ductería",
+    "goodPrice": 21.63,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Precio Unitario Al Cliente",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: Antes de IVA | Fuente: APU",
+    "unit": "kg",
+    "category": "Ductería",
+    "goodPrice": 101.75,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Aislamiento fibra de vidrio para ductos",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² instalado | Notas: Incluye material + instalación | Fuente: Proyección",
+    "unit": "m² instalado",
+    "category": "Ductería",
+    "goodPrice": 150.0,
+    "betterPrice": null,
+    "bestPrice": 350.0,
+    "costPrice": null
+  },
+  {
+    "name": "Aislamiento elastomérico (tuberías)",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² instalado | Notas: Incluye material + instalación | Fuente: Proyección",
+    "unit": "m² instalado",
+    "category": "Ductería",
+    "goodPrice": 200.0,
+    "betterPrice": null,
+    "bestPrice": 450.0,
+    "costPrice": null
+  },
+  {
+    "name": "Ducto flexible aislado",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: metro lineal | Notas: Incluye instalación | Fuente: Proyección",
+    "unit": "metro lineal",
+    "category": "Ductería",
+    "goodPrice": 280.0,
+    "betterPrice": null,
+    "bestPrice": 650.0,
+    "costPrice": null
+  },
+  {
+    "name": "Rejilla de retorno",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación | Fuente: Proyección",
+    "unit": "pieza instalada",
+    "category": "Ductería",
+    "goodPrice": 400.0,
+    "betterPrice": null,
+    "bestPrice": 1200.0,
+    "costPrice": null
+  },
+  {
+    "name": "Difusor de impulsión",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación | Fuente: Proyección",
+    "unit": "pieza instalada",
+    "category": "Ductería",
+    "goodPrice": 500.0,
+    "betterPrice": null,
+    "bestPrice": 1800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Compuerta de regulación",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación | Fuente: Proyección",
+    "unit": "pieza instalada",
+    "category": "Ductería",
+    "goodPrice": 800.0,
+    "betterPrice": null,
+    "bestPrice": 2500.0,
+    "costPrice": null
+  },
+  {
+    "name": "PESO REFERENCIAL POR m² DE LÁMINA",
+    "description": "Categoría: Aislamiento Y Accesorios",
+    "unit": "pza",
+    "category": "Ductería",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Cal. 26 (0.49 mm)",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~3.9 kg/m² | Fuente: Proyección",
+    "unit": "m²",
+    "category": "Ductería",
+    "goodPrice": 370.0,
+    "betterPrice": null,
+    "bestPrice": 450.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cal. 24 (0.61 mm)",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~4.7 kg/m² | Fuente: Proyección",
+    "unit": "m²",
+    "category": "Ductería",
+    "goodPrice": 450.0,
+    "betterPrice": null,
+    "bestPrice": 540.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cal. 22 (0.76 mm)",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~5.9 kg/m² | Fuente: Proyección",
+    "unit": "m²",
+    "category": "Ductería",
+    "goodPrice": 560.0,
+    "betterPrice": null,
+    "bestPrice": 700.0,
+    "costPrice": null
+  },
+  {
+    "name": "INSTALACIÓN DE CONDUCTOS (Habitissimo 2026)",
+    "description": "Categoría: Aislamiento Y Accesorios",
+    "unit": "pza",
+    "category": "Ductería",
+    "goodPrice": null,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Solo conductos en departamento",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Ductería",
+    "goodPrice": 17900.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Solo conductos en oficinas",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Ductería",
+    "goodPrice": 39200.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Solo conductos en local comercial",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Ductería",
+    "goodPrice": 56000.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Solo conductos en almacén",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Ductería",
+    "goodPrice": 44800.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Solo conductos en comunidad residencial",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Ductería",
+    "goodPrice": 168000.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Kit instalación eléctrica 220V 20m cal.10 (material completo)",
+    "description": "Categoría: Materiales Eléctricos | Fuente: MercadoLibre 2026 (precio real)",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 1189.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Cable uso rudo cal.10 (por metro)",
+    "description": "Categoría: Materiales Eléctricos | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 50.0,
+    "betterPrice": null,
+    "bestPrice": 80.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cable uso rudo cal.8 (por metro)",
+    "description": "Categoría: Materiales Eléctricos | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 80.0,
+    "betterPrice": null,
+    "bestPrice": 120.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cable uso rudo cal.6 (por metro)",
+    "description": "Categoría: Materiales Eléctricos | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 120.0,
+    "betterPrice": null,
+    "bestPrice": 150.0,
+    "costPrice": null
+  },
+  {
+    "name": "Instalación eléctrica completa (tablero → equipo)",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: HomePro 2026",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 1500.0,
+    "betterPrice": null,
+    "bestPrice": 4000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Breaker termomagnético 20A 2 polos (instalado)",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 400.0,
+    "betterPrice": null,
+    "bestPrice": 800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Breaker termomagnético 30-50A 2 polos (instalado)",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 600.0,
+    "betterPrice": null,
+    "bestPrice": 1200.0,
+    "costPrice": null
+  },
+  {
+    "name": "Arrancador magnético para compresor (instalado)",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 2500.0,
+    "betterPrice": null,
+    "bestPrice": 6000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Variador de frecuencia (VFD) (instalado)",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 8000.0,
+    "betterPrice": null,
+    "bestPrice": 35000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Centro de carga 2-4 polos (instalado)",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 800.0,
+    "betterPrice": null,
+    "bestPrice": 2000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Contacto 220V con tierra (instalado)",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 400.0,
+    "betterPrice": null,
+    "bestPrice": 800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Adaptación eléctrica 110V/220V",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Genz Clima 2026",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 500.0,
+    "betterPrice": null,
+    "bestPrice": 1500.0,
+    "costPrice": null
+  },
+  {
+    "name": "Alimentador trifásico (tablero a equipo industrial)",
+    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "unit": "servicio",
+    "category": "Instalación Eléctrica",
+    "goodPrice": 5000.0,
+    "betterPrice": null,
+    "bestPrice": 25000.0,
+    "costPrice": null
+  },
+  {
+    "name": "1-5 minisplits (residencial/pequeña oficina)",
+    "description": "Notas: Incluye 1-2 visitas/año",
+    "unit": "servicio",
+    "category": "Igualas y Pólizas",
+    "goodPrice": 800.0,
+    "betterPrice": null,
+    "bestPrice": 12000.0,
+    "costPrice": null
+  },
+  {
+    "name": "6-15 minisplits (oficina/consultorio mediano)",
+    "description": "Notas: Incluye 2-4 visitas/año",
+    "unit": "servicio",
+    "category": "Igualas y Pólizas",
+    "goodPrice": 3000.0,
+    "betterPrice": null,
+    "bestPrice": 60000.0,
+    "costPrice": null
+  },
+  {
+    "name": "16-50 minisplits (edificio corporativo)",
+    "description": "Notas: Incluye 4-6 visitas/año + prioridad",
+    "unit": "servicio",
+    "category": "Igualas y Pólizas",
+    "goodPrice": 8000.0,
+    "betterPrice": null,
+    "bestPrice": 180000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Sistema VRF completo",
+    "description": "Notas: Incluye UI + UE + controles",
+    "unit": "servicio",
+    "category": "Igualas y Pólizas",
+    "goodPrice": 5000.0,
+    "betterPrice": null,
+    "bestPrice": 140000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Chiller 100-300 TR + sistema fan coils",
+    "description": "Notas: Incluye SLA 4-8 hrs",
+    "unit": "servicio",
+    "category": "Igualas y Pólizas",
+    "goodPrice": 12000.0,
+    "betterPrice": null,
+    "bestPrice": 350000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Rooftop/Paquete 5-20 TR",
+    "description": "Notas: Incluye 2-4 visitas/año",
+    "unit": "servicio",
+    "category": "Igualas y Pólizas",
+    "goodPrice": 3000.0,
+    "betterPrice": null,
+    "bestPrice": 70000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Sistema mixto (varios tipos)",
+    "description": "Notas: Según censo de equipos",
+    "unit": "servicio",
+    "category": "Igualas y Pólizas",
+    "goodPrice": 10000.0,
+    "betterPrice": null,
+    "bestPrice": 450000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Ayudante general",
+    "description": "",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 550.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Oficial hojalatero / ductero",
+    "description": "Cuadrilla: 1 Of + 1 Ayte",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 750.0,
+    "betterPrice": null,
+    "bestPrice": 1650.0,
+    "costPrice": null
+  },
+  {
+    "name": "Oficial HVAC (mecánico AA)",
+    "description": "Cuadrilla: 1 Of + 2 Ayte",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 800.0,
+    "betterPrice": null,
+    "bestPrice": 2600.0,
+    "costPrice": null
+  },
+  {
+    "name": "Oficial electricista",
+    "description": "Cuadrilla: 1 Of + 1 Ayte",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 800.0,
+    "betterPrice": null,
+    "bestPrice": 1800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Técnico certificado refrigeración",
+    "description": "Cuadrilla: 1 Tec + 1 Ayte",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 1100.0,
+    "betterPrice": null,
+    "bestPrice": 2300.0,
+    "costPrice": null
+  },
+  {
+    "name": "Ingeniero residente / supervisor",
+    "description": "",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 2500.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Oficial maniobrista",
+    "description": "Cuadrilla: 1 Of + 6 Ayte",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 800.0,
+    "betterPrice": null,
+    "bestPrice": 2800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Cuadrilla especial conexión eléctrica",
+    "description": "Cuadrilla: 1 Of + 2 Ayte",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 1500.0,
+    "betterPrice": null,
+    "bestPrice": 2981.0,
+    "costPrice": null
+  },
+  {
+    "name": "Jefe de cuadrilla HVAC",
+    "description": "",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 1500.0,
+    "betterPrice": null,
+    "bestPrice": null,
+    "costPrice": null
+  },
+  {
+    "name": "Frente de soldadura (cobre/fierro)",
+    "description": "Cuadrilla: 1 Sold + 1 Ayte",
+    "unit": "jornal",
+    "category": "Jornales y MO",
+    "goodPrice": 1800.0,
+    "betterPrice": null,
+    "bestPrice": 4000.0,
+    "costPrice": null
+  },
+  {
+    "name": "Departamento",
+    "description": "Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Centralizado Completo",
+    "goodPrice": 17900.0,
+    "betterPrice": 30200.0,
+    "bestPrice": 33600.0,
+    "costPrice": null
+  },
+  {
+    "name": "Oficinas",
+    "description": "Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Centralizado Completo",
+    "goodPrice": 39200.0,
+    "betterPrice": 47000.0,
+    "bestPrice": 78400.0,
+    "costPrice": null
+  },
+  {
+    "name": "Local comercial",
+    "description": "Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Centralizado Completo",
+    "goodPrice": 42500.0,
+    "betterPrice": 56000.0,
+    "bestPrice": 100800.0,
+    "costPrice": null
+  },
+  {
+    "name": "Almacén",
+    "description": "Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Centralizado Completo",
+    "goodPrice": 44800.0,
+    "betterPrice": null,
+    "bestPrice": 89600.0,
+    "costPrice": null
+  },
+  {
+    "name": "Comunidad residencial",
+    "description": "Fuente: Habitissimo CDMX 2026",
+    "unit": "obra",
+    "category": "Centralizado Completo",
+    "goodPrice": 56000.0,
+    "betterPrice": 168000.0,
+    "bestPrice": 280000.0,
+    "costPrice": null
+  }
+]

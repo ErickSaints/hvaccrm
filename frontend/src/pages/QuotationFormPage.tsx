@@ -5,11 +5,12 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Save, Loader2, Plus, Trash2, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Plus, Trash2, ShoppingCart, Package } from 'lucide-react';
 import api from '../lib/api';
 import type { Quotation, QuotationItem } from '../types';
 import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 import MercadoLibreSearch from '../components/MercadoLibreSearch';
+import PricebookSearch from '../components/PricebookSearch';
 
 const quotationItemSchema = z.object({
   description: z.string().min(1, 'Requerido'),
@@ -48,6 +49,7 @@ export default function QuotationFormPage() {
   const [taxPercent, setTaxPercent] = useState(16);
   const [discount, setDiscount] = useState(0);
   const [showMLSearch, setShowMLSearch] = useState(false);
+  const [showCatalog, setShowCatalog] = useState(false);
 
   const {
     register,
@@ -105,6 +107,10 @@ export default function QuotationFormPage() {
 
   const handleMLSelect = useCallback((mlItem: { description: string; quantity: number; unitPrice: number; total: number }) => {
     setItems((prev) => [...prev, { description: mlItem.description, quantity: mlItem.quantity, unitPrice: mlItem.unitPrice }]);
+  }, []);
+
+  const handleCatalogSelect = useCallback((catItem: { description: string; quantity: number; unitPrice: number; total: number }) => {
+    setItems((prev) => [...prev, { description: catItem.description, quantity: catItem.quantity, unitPrice: catItem.unitPrice }]);
   }, []);
 
   const removeItem = useCallback((index: number) => {
@@ -249,6 +255,14 @@ export default function QuotationFormPage() {
                 <ShoppingCart className="w-4 h-4" />
                 Buscar en Mercado Libre
               </button>
+              <button
+                type="button"
+                onClick={() => setShowCatalog(true)}
+                className="btn-secondary inline-flex items-center gap-2 text-sm"
+              >
+                <Package className="w-4 h-4" />
+                Del Catálogo
+              </button>
               <button type="button" onClick={addItem} className="btn-secondary inline-flex items-center gap-2 text-sm">
                 <Plus className="w-4 h-4" />
                 Agregar Partida
@@ -379,6 +393,13 @@ export default function QuotationFormPage() {
         <MercadoLibreSearch
           onSelectItem={handleMLSelect}
           onClose={() => setShowMLSearch(false)}
+        />
+      )}
+
+      {showCatalog && (
+        <PricebookSearch
+          onSelectItem={handleCatalogSelect}
+          onClose={() => setShowCatalog(false)}
         />
       )}
     </div>

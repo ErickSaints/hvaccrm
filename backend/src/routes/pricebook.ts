@@ -195,4 +195,64 @@ router.get('/items/:id/catalog-materials', async (req: Request, res: Response) =
   }
 });
 
+// ── Import catalog from JSON on server ───────────────────────────────────────
+
+router.post('/run-import', async (_req: Request, res: Response) => {
+  try {
+    const fs = await import('fs');
+    const path = await import('path');
+    const jsonPath = path.join(__dirname, '..', '..', 'public', 'catalog_import.json');
+
+    if (!fs.existsSync(jsonPath)) {
+      return res.status(404).json({ error: 'Archivo catalog_import.json no encontrado en backend/public/' });
+    }
+
+    const raw = fs.readFileSync(jsonPath, 'utf-8');
+    const items: any[] = JSON.parse(raw);
+    let created = 0;
+    let skipped = 0;
+
+    for (const item of items) {
+      let category = await prisma.pricebookCategory.findFirst({
+        where: { name: item.category, active: true },
+      });
+      if (!category) {
+        category = await prisma.pricebookCategory.create({
+          data: { name: item.category, sortOrder: 0 },
+        });
+      }
+
+      const existing = await prisma.pricebookItem.findFirst({
+        where: { name: item.name, categoryId: category.id, active: true },
+      });
+      if (existing) {
+        skipped++;
+        continue;
+      }
+
+      const sku = `${item.category.substring(0, 3).toUpperCase()}-${Date.now()}-${created}`;
+
+      await prisma.pricebookItem.create({
+        data: {
+          sku,
+          name: item.name,
+          description: item.description || '',
+          unit: item.unit || 'pza',
+          goodPrice: item.goodPrice,
+          betterPrice: item.betterPrice,
+          bestPrice: item.bestPrice,
+          costPrice: item.costPrice,
+          categoryId: category.id,
+        },
+      });
+      created++;
+    }
+
+    res.json({ created, skipped, total: items.length });
+  } catch (err) {
+    console.error('Error al importar catálogo:', err);
+    res.status(500).json({ error: 'Error al importar catálogo' });
+  }
+});
+
 export default router;

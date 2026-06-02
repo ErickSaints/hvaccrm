@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Search, Tag, FolderOpen, DollarSign, TrendingUp, X, Save, Loader2, Edit2, Package } from 'lucide-react';
+import { Plus, Search, Tag, FolderOpen, DollarSign, TrendingUp, X, Save, Loader2, Edit2, Package, Upload } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
 import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
@@ -225,6 +225,19 @@ export default function PricebookPage() {
     onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al crear categoría'),
   });
 
+  const importMutation = useMutation({
+    mutationFn: async () => {
+      const { data } = await api.post('/pricebook/run-import');
+      return data;
+    },
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: ['pricebook-items'] });
+      queryClient.invalidateQueries({ queryKey: ['pricebook-categories'] });
+      toast.success(`Catálogo importado: ${data.created} creados, ${data.skipped} omitidos`);
+    },
+    onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al importar catálogo'),
+  });
+
   return (
     <div className="space-y-6">
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-800 p-6 lg:p-8">
@@ -238,6 +251,14 @@ export default function PricebookPage() {
             <p className="text-primary-200 text-sm mt-1">Lista de precios Good-Better-Best</p>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => importMutation.mutate()}
+              disabled={importMutation.isPending}
+              className="btn-primary bg-emerald-500/20 border-emerald-400/30 text-emerald-100 hover:bg-emerald-500/30 inline-flex items-center gap-2 backdrop-blur-sm"
+            >
+              {importMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+              {importMutation.isPending ? 'Importando...' : 'Importar Catálogo'}
+            </button>
             <button onClick={openCreateCategory} className="btn-primary bg-white/10 border-white/20 text-white hover:bg-white/20 inline-flex items-center gap-2 backdrop-blur-sm">
               <FolderOpen className="w-4 h-4" />
               Nueva Categoría
