@@ -117,6 +117,19 @@ router.get('/items', paginate, async (req: Request, res: Response) => {
   }
 });
 
+router.get('/items/all', async (_req: Request, res: Response) => {
+  try {
+    const items = await prisma.pricebookItem.findMany({
+      where: { active: true },
+      orderBy: { name: 'asc' },
+      select: { id: true, sku: true, name: true, description: true, unit: true, goodPrice: true, betterPrice: true, bestPrice: true, costPrice: true, category: { select: { id: true, name: true } } },
+    });
+    res.json(items);
+  } catch {
+    res.status(500).json({ error: 'Error al listar artículos' });
+  }
+});
+
 router.get('/items/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
@@ -252,6 +265,208 @@ router.post('/run-import', async (_req: Request, res: Response) => {
   } catch (err) {
     console.error('Error al importar catálogo:', err);
     res.status(500).json({ error: 'Error al importar catálogo' });
+  }
+});
+
+// ── Regions & States ─────────────────────────────────────────────────────────
+
+router.get('/regions', async (_req: Request, res: Response) => {
+  try {
+    const regions = await prisma.region.findMany({
+      orderBy: { sortOrder: 'asc' },
+      include: { _count: { select: { states: true } } },
+    });
+    res.json(regions);
+  } catch {
+    res.status(500).json({ error: 'Error al obtener regiones' });
+  }
+});
+
+router.get('/states', async (req: Request, res: Response) => {
+  try {
+    const { regionId } = req.query;
+    const where: any = {};
+    if (regionId) where.regionId = parseInt(regionId as string);
+    const states = await prisma.state.findMany({
+      where,
+      orderBy: { name: 'asc' },
+      include: { region: { select: { id: true, code: true, name: true, adjustmentFactor: true } } },
+    });
+    res.json(states);
+  } catch {
+    res.status(500).json({ error: 'Error al obtener estados' });
+  }
+});
+
+// ── Regional Pricing ─────────────────────────────────────────────────────────
+
+function applyFactor(price: number | null | undefined, factor: number): number | null {
+  if (price == null) return null;
+  return Math.round(price * (1 + factor) * 100) / 100;
+}
+
+router.get('/items/:id/regional-price', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const stateCode = (req.query.stateCode as string) || 'CDMX';
+
+    const [item, state] = await Promise.all([
+      prisma.pricebookItem.findUnique({ where: { id }, select: { id: true, goodPrice: true, betterPrice: true, bestPrice: true, costPrice: true } }),
+      prisma.state.findUnique({ where: { code: stateCode }, include: { region: true } }),
+    ]);
+
+    if (!item) return res.status(404).json({ error: 'Artículo no encontrado' });
+    if (!state) return res.status(404).json({ error: 'Estado no encontrado' });
+
+    const override = await prisma.pricebookRegionPrice.findUnique({
+      where: { itemId_stateId: { itemId: id, stateId: state.id } },
+    });
+
+    if (override) {
+      return res.json({
+        itemId: id,
+        stateCode: state.code,
+        stateName: state.name,
+        regionCode: state.region.code,
+        regionName: state.region.name,
+        adjustmentFactor: override.adjustmentFactor ?? state.region.adjustmentFactor,
+        goodPrice: override.goodPrice ?? applyFactor(item.goodPrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
+        betterPrice: override.betterPrice ?? applyFactor(item.betterPrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
+        bestPrice: override.bestPrice ?? applyFactor(item.bestPrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
+        costPrice: override.costPrice ?? applyFactor(item.costPrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
+        isOverridden: true,
+        updatedAt: override.updatedAt,
+      });
+    }
+
+    const factor = state.region.adjustmentFactor;
+    res.json({
+      itemId: id,
+      stateCode: state.code,
+      stateName: state.name,
+      regionCode: state.region.code,
+      regionName: state.region.name,
+      adjustmentFactor: factor,
+      goodPrice: applyFactor(item.goodPrice, factor),
+      betterPrice: applyFactor(item.betterPrice, factor),
+      bestPrice: applyFactor(item.bestPrice, factor),
+      costPrice: applyFactor(item.costPrice, factor),
+      isOverridden: false,
+    });
+  } catch {
+    res.status(500).json({ error: 'Error al calcular precio regional' });
+  }
+});
+
+router.get('/items/:id/regional-prices', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const item = await prisma.pricebookItem.findUnique({
+      where: { id },
+      select: { id: true, goodPrice: true, betterPrice: true, bestPrice: true, costPrice: true },
+    });
+    if (!item) return res.status(404).json({ error: 'Artículo no encontrado' });
+
+    const states = await prisma.state.findMany({
+      orderBy: { name: 'asc' },
+      include: { region: { select: { code: true, name: true, adjustmentFactor: true } } },
+    });
+
+    const overrides = await prisma.pricebookRegionPrice.findMany({
+      where: { itemId: id },
+    });
+    const overrideMap = new Map(overrides.map(o => [o.stateId, o]));
+
+    const prices = states.map(state => {
+      const override = overrideMap.get(state.id);
+      const factor = override?.adjustmentFactor ?? state.region.adjustmentFactor;
+      return {
+        stateCode: state.code,
+        stateName: state.name,
+        regionCode: state.region.code,
+        regionName: state.region.name,
+        adjustmentFactor: factor,
+        goodPrice: override?.goodPrice ?? applyFactor(item.goodPrice, factor),
+        betterPrice: override?.betterPrice ?? applyFactor(item.betterPrice, factor),
+        bestPrice: override?.bestPrice ?? applyFactor(item.bestPrice, factor),
+        costPrice: override?.costPrice ?? applyFactor(item.costPrice, factor),
+        isOverridden: !!override,
+      };
+    });
+
+    res.json(prices);
+  } catch {
+    res.status(500).json({ error: 'Error al obtener precios regionales' });
+  }
+});
+
+const regionalPriceSchema = z.object({
+  stateCode: z.string().min(1),
+  goodPrice: z.number().nullable().optional(),
+  betterPrice: z.number().nullable().optional(),
+  bestPrice: z.number().nullable().optional(),
+  costPrice: z.number().nullable().optional(),
+  adjustmentFactor: z.number().nullable().optional(),
+});
+
+router.put('/items/:id/regional-price', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const data = regionalPriceSchema.parse(req.body);
+    const userId = (req as any).user?.id;
+
+    const item = await prisma.pricebookItem.findUnique({ where: { id }, select: { id: true } });
+    if (!item) return res.status(404).json({ error: 'Artículo no encontrado' });
+
+    const state = await prisma.state.findUnique({ where: { code: data.stateCode } });
+    if (!state) return res.status(404).json({ error: 'Estado no encontrado' });
+
+    const override = await prisma.pricebookRegionPrice.upsert({
+      where: { itemId_stateId: { itemId: id, stateId: state.id } },
+      update: {
+        goodPrice: data.goodPrice ?? null,
+        betterPrice: data.betterPrice ?? null,
+        bestPrice: data.bestPrice ?? null,
+        costPrice: data.costPrice ?? null,
+        adjustmentFactor: data.adjustmentFactor ?? null,
+        updatedById: userId,
+      },
+      create: {
+        itemId: id,
+        stateId: state.id,
+        goodPrice: data.goodPrice ?? null,
+        betterPrice: data.betterPrice ?? null,
+        bestPrice: data.bestPrice ?? null,
+        costPrice: data.costPrice ?? null,
+        adjustmentFactor: data.adjustmentFactor ?? null,
+        updatedById: userId,
+      },
+    });
+
+    res.json(override);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Datos inválidos', details: err.errors });
+    }
+    res.status(500).json({ error: 'Error al guardar precio regional' });
+  }
+});
+
+router.delete('/items/:id/regional-price/:stateCode', async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const stateCode = req.params.stateCode as string;
+
+    const state = await prisma.state.findUnique({ where: { code: stateCode } });
+    if (!state) return res.status(404).json({ error: 'Estado no encontrado' });
+
+    await prisma.pricebookRegionPrice.deleteMany({
+      where: { itemId: id, stateId: state.id },
+    });
+
+    res.status(204).send();
+  } catch {
+    res.status(500).json({ error: 'Error al eliminar precio regional' });
   }
 });
 

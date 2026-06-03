@@ -434,6 +434,70 @@ async function main() {
     },
   });
 
+  // ═══════════════════════════════════════════════════════════════
+  // Regions & States (Regional Pricing)
+  // ═══════════════════════════════════════════════════════════════
+
+  const existingRegions = await prisma.region.count();
+  if (existingRegions === 0) {
+    const regions = await Promise.all([
+      prisma.region.create({ data: { code: 'NORTE', name: 'Norte', adjustmentFactor: 0.07, description: 'Baja California, Sonora, Chihuahua, Coahuila, Nuevo León, Tamaulipas y estados del norte', sortOrder: 1 } }),
+      prisma.region.create({ data: { code: 'CENTRO-N', name: 'Centro-Norte', adjustmentFactor: 0.02, description: 'Aguascalientes, Guanajuato, Querétaro, San Luis Potosí, Zacatecas', sortOrder: 2 } }),
+      prisma.region.create({ data: { code: 'CENTRO', name: 'Centro', adjustmentFactor: 0, description: 'CDMX, Estado de México, Hidalgo, Morelos, Puebla, Tlaxcala (base)', sortOrder: 3 } }),
+      prisma.region.create({ data: { code: 'BAJIO', name: 'Bajío-Occidente', adjustmentFactor: -0.02, description: 'Colima, Jalisco, Michoacán, Nayarit', sortOrder: 4 } }),
+      prisma.region.create({ data: { code: 'SURESTE', name: 'Sur-Sureste', adjustmentFactor: -0.07, description: 'Campeche, Chiapas, Guerrero, Oaxaca, Quintana Roo, Tabasco, Veracruz, Yucatán', sortOrder: 5 } }),
+    ]);
+
+    const regionMap: Record<string, number> = {};
+    for (const r of regions) regionMap[r.code] = r.id;
+
+    const states = [
+      { code: 'BC',  name: 'Baja California',         regionCode: 'NORTE' },
+      { code: 'BCS', name: 'Baja California Sur',     regionCode: 'NORTE' },
+      { code: 'SON', name: 'Sonora',                  regionCode: 'NORTE' },
+      { code: 'CHIH',name: 'Chihuahua',               regionCode: 'NORTE' },
+      { code: 'COAH',name: 'Coahuila',                regionCode: 'NORTE' },
+      { code: 'NL',  name: 'Nuevo León',              regionCode: 'NORTE' },
+      { code: 'TAMPS',name: 'Tamaulipas',             regionCode: 'NORTE' },
+      { code: 'DGO', name: 'Durango',                 regionCode: 'NORTE' },
+      { code: 'SIN', name: 'Sinaloa',                 regionCode: 'NORTE' },
+      { code: 'AGS', name: 'Aguascalientes',          regionCode: 'CENTRO-N' },
+      { code: 'GTO', name: 'Guanajuato',              regionCode: 'CENTRO-N' },
+      { code: 'QRO', name: 'Querétaro',               regionCode: 'CENTRO-N' },
+      { code: 'SLP', name: 'San Luis Potosí',         regionCode: 'CENTRO-N' },
+      { code: 'ZAC', name: 'Zacatecas',               regionCode: 'CENTRO-N' },
+      { code: 'CDMX',name: 'Ciudad de México',        regionCode: 'CENTRO' },
+      { code: 'EDOMEX',name: 'Estado de México',      regionCode: 'CENTRO' },
+      { code: 'HGO', name: 'Hidalgo',                 regionCode: 'CENTRO' },
+      { code: 'MOR', name: 'Morelos',                 regionCode: 'CENTRO' },
+      { code: 'PUE', name: 'Puebla',                  regionCode: 'CENTRO' },
+      { code: 'TLAX',name: 'Tlaxcala',                regionCode: 'CENTRO' },
+      { code: 'COL', name: 'Colima',                  regionCode: 'BAJIO' },
+      { code: 'JAL', name: 'Jalisco',                 regionCode: 'BAJIO' },
+      { code: 'MICH',name: 'Michoacán',               regionCode: 'BAJIO' },
+      { code: 'NAY', name: 'Nayarit',                 regionCode: 'BAJIO' },
+      { code: 'CAMP',name: 'Campeche',                regionCode: 'SURESTE' },
+      { code: 'CHIS',name: 'Chiapas',                 regionCode: 'SURESTE' },
+      { code: 'GRO', name: 'Guerrero',                regionCode: 'SURESTE' },
+      { code: 'OAX', name: 'Oaxaca',                  regionCode: 'SURESTE' },
+      { code: 'QR',  name: 'Quintana Roo',            regionCode: 'SURESTE' },
+      { code: 'TAB', name: 'Tabasco',                 regionCode: 'SURESTE' },
+      { code: 'VER', name: 'Veracruz',                regionCode: 'SURESTE' },
+      { code: 'YUC', name: 'Yucatán',                 regionCode: 'SURESTE' },
+    ];
+
+    for (const s of states) {
+      await prisma.state.create({
+        data: { code: s.code, name: s.name, regionId: regionMap[s.regionCode] },
+      });
+    }
+
+    console.log(`  Regions: ${regions.length} created`);
+    console.log(`  States:  ${states.length} created`);
+  } else {
+    console.log('  Regions & States already seeded, skipping');
+  }
+
   console.log('');
   console.log('Credentials:');
   console.log('  Admin:     admin@hvaccrm.com / admin123');

@@ -63,6 +63,7 @@ const ReportsPage = lazy(() => import('./pages/ReportsPage'));
 const FleetTrackingPage = lazy(() => import('./pages/FleetTrackingPage'));
 const MarketingCampaignsPage = lazy(() => import('./pages/MarketingCampaignsPage'));
 const PricebookPage = lazy(() => import('./pages/PricebookPage'));
+const PricebookRegionalPage = lazy(() => import('./pages/PricebookRegionalPage'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -197,6 +198,7 @@ function AnimatedRoutes() {
             <Route path="reports" element={<PageTransition><ReportsPage /></PageTransition>} />
             <Route path="fleet" element={<PageTransition><FleetTrackingPage /></PageTransition>} />
             <Route path="pricebook" element={<PageTransition><PricebookPage /></PageTransition>} />
+            <Route path="pricebook/regiones" element={<PageTransition><PricebookRegionalPage /></PageTransition>} />
             <Route path="campaigns" element={<PageTransition><MarketingCampaignsPage /></PageTransition>} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
