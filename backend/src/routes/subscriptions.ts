@@ -138,7 +138,7 @@ router.post('/register', async (req: Request, res: Response) => {
     }
     const hashedPassword = await bcrypt.hash(data.password, 10);
     const role = data.role;
-    const trialEndsAt = role === 'ADMIN' ? null : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const trialEndsAt = (role as string) === 'ADMIN' ? null : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     const user = await prisma.user.create({
       data: {
         name: data.name,

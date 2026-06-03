@@ -36,6 +36,7 @@ export const ALL_PERMISSIONS: PermissionAction[] = [
   'assets:view', 'assets:create', 'assets:edit', 'assets:delete',
   'surveys:view', 'surveys:create', 'surveys:edit', 'surveys:delete',
   'catalog:view', 'catalog:create', 'catalog:edit', 'catalog:delete',
+  'campaigns:view', 'campaigns:create', 'campaigns:edit', 'campaigns:delete', 'campaigns:send',
   'subscriptions:view', 'subscriptions:manage',
   'admin:panel', 'admin:users', 'admin:permissions', 'admin:spectate', 'admin:system',
   'profile:view', 'profile:edit',
@@ -115,6 +116,10 @@ export const PERMISSION_CATEGORIES: Record<string, { label: string; permissions:
     label: 'Perfil',
     permissions: ['profile:view', 'profile:edit'],
   },
+  campaigns: {
+    label: 'Campañas',
+    permissions: ['campaigns:view', 'campaigns:create', 'campaigns:edit', 'campaigns:delete', 'campaigns:send'],
+  },
   upload: {
     label: 'Archivos',
     permissions: ['upload:files'],
@@ -149,6 +154,8 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<string, PermissionAction[]> = {
     'maintenance:view',
     'dashboard:view',
     'notifications:view',
+    'catalog:view',
+    'campaigns:view', 'campaigns:create', 'campaigns:edit', 'campaigns:send',
     'profile:view', 'profile:edit',
     'upload:files',
   ],
@@ -240,6 +247,11 @@ export const LABELS: Record<string, string> = {
   'admin:system': 'Administrar sistema',
   'profile:view': 'Ver perfil',
   'profile:edit': 'Editar perfil',
+  'campaigns:view': 'Ver campañas',
+  'campaigns:create': 'Crear campañas',
+  'campaigns:edit': 'Editar campañas',
+  'campaigns:delete': 'Eliminar campañas',
+  'campaigns:send': 'Enviar campañas',
   'upload:files': 'Subir archivos',
 };
 

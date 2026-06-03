@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import prisma from '../prisma';
+import { getPermissionsForRole } from '../permissions';
 import { authenticate, requireSuperAdmin } from '../middleware/auth';
 import { sendEmail, welcomeEmail, isEmailConfigured, resetPasswordEmail } from '../notifications/email';
 import { sendSms, formatPhone, isSmsConfigured } from '../notifications/twilio';
@@ -255,6 +256,25 @@ router.get('/me', authenticate, async (req: Request, res: Response) => {
     res.json(userData);
   } catch {
     res.status(500).json({ error: 'Error al obtener perfil' });
+  }
+});
+
+router.get('/me/permissions', authenticate, async (req: Request, res: Response) => {
+  try {
+    const effective = new Set<string>(getPermissionsForRole(req.user!.role));
+
+    const overrides = await prisma.rolePermission.findMany({
+      where: { role: req.user!.role as any },
+      select: { permission: true, allowed: true }
+    });
+    for (const o of overrides) {
+      if (o.allowed) effective.add(o.permission);
+      else effective.delete(o.permission);
+    }
+
+    res.json({ permissions: [...effective] });
+  } catch {
+    res.status(500).json({ error: 'Error al obtener permisos' });
   }
 });
 

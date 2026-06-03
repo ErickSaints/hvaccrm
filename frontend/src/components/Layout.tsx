@@ -118,7 +118,7 @@ const roleBadgeColors: Record<string, string> = {
 };
 
 export default function Layout() {
-  const { user, logout } = useAuth();
+  const { user, logout, can } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isDark, toggleDark] = useDarkMode();
@@ -128,21 +128,22 @@ export default function Layout() {
 
   const isClient = user?.role === 'CLIENT';
 
-  const visibleMainNav = mainNav.filter((section) => {
-    if (user?.role === 'ADMIN') return true;
-    const defaultSections = ['General', 'Herramientas'];
-    const techSections = ['General', 'Clientes', 'Operaciones', 'Mantenimiento', 'Herramientas'];
-    const salesSections = ['General', 'Clientes', 'Ventas', 'Operaciones', 'Herramientas'];
-    const proyectosSections = ['General', 'Clientes', 'Proyectos', 'Herramientas'];
-    const comprasSections = ['General', 'Herramientas'];
+  const sectionPermissions: Record<string, string[]> = {
+    'General': ['dashboard:view'],
+    'Clientes': ['customers:view', 'equipment:view', 'assets:view'],
+    'Operaciones': ['tickets:view', 'service-orders:view', 'service-reports:view'],
+    'Ventas': ['quotations:view', 'catalog:view', 'campaigns:view'],
+    'Mantenimiento': ['policies:view', 'maintenance:view', 'invoices:view'],
+    'Proyectos': ['surveys:view'],
+    'Herramientas': [],
+  };
 
-    switch (user?.role) {
-      case 'TECHNICIAN': return techSections.includes(section.section);
-      case 'SALES': return salesSections.includes(section.section);
-      case 'PROYECTOS': return proyectosSections.includes(section.section);
-      case 'COMPRAS': return comprasSections.includes(section.section);
-      default: return defaultSections.includes(section.section);
-    }
+  const visibleMainNav = mainNav.filter((section) => {
+    if (isClient) return false;
+    if (user?.role === 'ADMIN') return true;
+    const perms = sectionPermissions[section.section];
+    if (!perms || perms.length === 0) return true;
+    return perms.some(p => can(p));
   });
 
   const bottomNav = isClient ? clientBottomNav : adminBottomNav;
