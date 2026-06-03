@@ -11,7 +11,7 @@ export interface User {
 
 export interface PermissionInfo {
   defaults: Record<string, string[]>;
-  overrides: Record<string, string[]>;
+  overrides: Record<string, Record<string, boolean>>;
   allPermissions: string[];
   categories: Record<string, { label: string; permissions: string[] }>;
   labels: Record<string, string>;

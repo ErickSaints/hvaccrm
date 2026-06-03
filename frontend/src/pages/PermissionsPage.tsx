@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Shield, Save, RotateCcw, Loader2, Check, X } from 'lucide-react';
@@ -15,12 +15,33 @@ const ROLE_LABELS: Record<string, string> = {
   COMPRAS: 'Compras',
 };
 
+function buildPermissionMap(data: PermissionInfo | undefined, role: string): Record<string, boolean> {
+  const map: Record<string, boolean> = {};
+  if (!data) return map;
+  const defaults = data.defaults[role] || [];
+  for (const p of defaults) {
+    map[p] = true;
+  }
+  const overrides = data.overrides[role];
+  if (overrides) {
+    for (const [p, allowed] of Object.entries(overrides)) {
+      map[p] = allowed;
+    }
+  }
+  for (const p of data.allPermissions) {
+    if (!(p in map)) {
+      map[p] = false;
+    }
+  }
+  return map;
+}
+
 export default function PermissionsPage() {
   const { user, isSuperAdmin } = useAuth();
   const isAdmin = user?.role === 'ADMIN';
   const queryClient = useQueryClient();
   const [selectedRole, setSelectedRole] = useState<string>('TECHNICIAN');
-  const [permissions, setPermissions] = useState<Set<string>>(new Set());
+  const [permissions, setPermissions] = useState<Record<string, boolean>>({});
 
   const { data, isLoading } = useQuery<PermissionInfo>({
     queryKey: ['permissions'],
@@ -29,20 +50,13 @@ export default function PermissionsPage() {
   });
 
   useEffect(() => {
-    if (!data) return;
-    const overrides = data.overrides[selectedRole];
-    if (overrides) {
-      setPermissions(new Set(overrides));
-    } else {
-      const defaults = data.defaults[selectedRole] || [];
-      setPermissions(new Set(defaults));
-    }
+    setPermissions(buildPermissionMap(data, selectedRole));
   }, [data, selectedRole]);
 
   const saveMutation = useMutation({
     mutationFn: async () => {
       await api.put(`/admin/permissions/${selectedRole}`, {
-        permissions: Array.from(permissions),
+        permissions,
       });
     },
     onSuccess: () => {
@@ -67,22 +81,26 @@ export default function PermissionsPage() {
     },
   });
 
-  const togglePermission = (perm: string) => {
-    setPermissions(prev => {
-      const next = new Set(prev);
-      if (next.has(perm)) next.delete(perm);
-      else next.add(perm);
-      return next;
-    });
-  };
+  const togglePermission = useCallback((perm: string) => {
+    setPermissions(prev => ({ ...prev, [perm]: !prev[perm] }));
+  }, []);
 
   const selectAll = () => {
     if (!data) return;
-    setPermissions(new Set(data.allPermissions));
+    const all: Record<string, boolean> = {};
+    for (const p of data.allPermissions) {
+      all[p] = true;
+    }
+    setPermissions(all);
   };
 
   const deselectAll = () => {
-    setPermissions(new Set());
+    if (!data) return;
+    const all: Record<string, boolean> = {};
+    for (const p of data.allPermissions) {
+      all[p] = false;
+    }
+    setPermissions(all);
   };
 
   if (!isAdmin) {
@@ -175,7 +193,7 @@ export default function PermissionsPage() {
                 </h3>
                 <div className="space-y-2">
                   {category.permissions.map((perm) => {
-                    const enabled = permissions.has(perm);
+                    const enabled = permissions[perm] ?? false;
                     return (
                       <label
                         key={perm}

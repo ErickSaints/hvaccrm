@@ -23,7 +23,7 @@ const updateUserSchema = z.object({
 
 const permissionUpdateSchema = z.object({
   role: z.string(),
-  permissions: z.array(z.string()),
+  permissions: z.record(z.boolean()),
 });
 
 router.get('/users', async (_req: Request, res: Response) => {
@@ -161,10 +161,10 @@ router.post('/shutdown', requireSuperAdmin, async (_req: Request, res: Response)
 router.get('/permissions', async (_req: Request, res: Response) => {
   try {
     const rolePermissions = await prisma.rolePermission.findMany();
-    const grouped: Record<string, string[]> = {};
+    const grouped: Record<string, Record<string, boolean>> = {};
     for (const rp of rolePermissions) {
-      if (!grouped[rp.role]) grouped[rp.role] = [];
-      grouped[rp.role].push(rp.permission);
+      if (!grouped[rp.role]) grouped[rp.role] = {};
+      grouped[rp.role][rp.permission] = rp.allowed;
     }
     res.json({
       defaults: DEFAULT_ROLE_PERMISSIONS,
@@ -190,18 +190,20 @@ router.put('/permissions/:role', requireSuperAdmin, async (req: Request, res: Re
 
     await prisma.rolePermission.deleteMany({ where: { role: role as any } });
 
-    if (permissions.length > 0) {
+    const entries = Object.entries(permissions);
+    if (entries.length > 0) {
       await prisma.rolePermission.createMany({
-        data: permissions.map((p) => ({
+        data: entries.map(([permission, allowed]) => ({
           role: role as any,
-          permission: p,
-          allowed: true,
+          permission,
+          allowed,
           updatedById: req.user!.id,
         })),
       });
     }
 
-    res.json({ message: `Permisos actualizados para el rol ${role}`, role, permissions });
+    const count = entries.filter(([, v]) => v).length;
+    res.json({ message: `Permisos actualizados para el rol ${role}`, role, enabledCount: count, total: entries.length });
   } catch (err) {
     if (err instanceof z.ZodError) {
       return res.status(400).json({ error: err.errors });
