@@ -18,7 +18,11 @@ export type PermissionAction =
   | 'admin:panel' | 'admin:users' | 'admin:permissions' | 'admin:spectate' | 'admin:system'
   | 'profile:view' | 'profile:edit'
   | 'upload:files'
-  | 'campaigns:view' | 'campaigns:create' | 'campaigns:edit' | 'campaigns:delete' | 'campaigns:send';
+  | 'campaigns:view' | 'campaigns:create' | 'campaigns:edit' | 'campaigns:delete' | 'campaigns:send'
+  | 'fleet:view' | 'fleet:create' | 'fleet:edit' | 'fleet:delete'
+  | 'reports:view'
+  | 'dispatch:view' | 'dispatch:create' | 'dispatch:edit'
+  | 'regional-prices:view';
 
 export const ALL_PERMISSIONS: PermissionAction[] = [
   'users:view', 'users:create', 'users:edit', 'users:delete',
@@ -37,6 +41,10 @@ export const ALL_PERMISSIONS: PermissionAction[] = [
   'surveys:view', 'surveys:create', 'surveys:edit', 'surveys:delete',
   'catalog:view', 'catalog:create', 'catalog:edit', 'catalog:delete',
   'campaigns:view', 'campaigns:create', 'campaigns:edit', 'campaigns:delete', 'campaigns:send',
+  'fleet:view', 'fleet:create', 'fleet:edit', 'fleet:delete',
+  'reports:view',
+  'dispatch:view', 'dispatch:create', 'dispatch:edit',
+  'regional-prices:view',
   'subscriptions:view', 'subscriptions:manage',
   'admin:panel', 'admin:users', 'admin:permissions', 'admin:spectate', 'admin:system',
   'profile:view', 'profile:edit',
@@ -123,6 +131,22 @@ export const PERMISSION_CATEGORIES: Record<string, { label: string; permissions:
   upload: {
     label: 'Archivos',
     permissions: ['upload:files'],
+  },
+  fleet: {
+    label: 'Flotilla GPS',
+    permissions: ['fleet:view', 'fleet:create', 'fleet:edit', 'fleet:delete'],
+  },
+  reports: {
+    label: 'Reportes Ejecutivos',
+    permissions: ['reports:view'],
+  },
+  dispatch: {
+    label: 'Calendario',
+    permissions: ['dispatch:view', 'dispatch:create', 'dispatch:edit'],
+  },
+  'regional-prices': {
+    label: 'Precios por Estado',
+    permissions: ['regional-prices:view'],
   },
 };
 
@@ -253,6 +277,15 @@ export const LABELS: Record<string, string> = {
   'campaigns:delete': 'Eliminar campañas',
   'campaigns:send': 'Enviar campañas',
   'upload:files': 'Subir archivos',
+  'fleet:view': 'Ver flotilla GPS',
+  'fleet:create': 'Agregar vehículos',
+  'fleet:edit': 'Editar vehículos',
+  'fleet:delete': 'Eliminar vehículos',
+  'reports:view': 'Ver reportes ejecutivos',
+  'dispatch:view': 'Ver calendario',
+  'dispatch:create': 'Crear eventos',
+  'dispatch:edit': 'Editar eventos',
+  'regional-prices:view': 'Ver precios por estado',
 };
 
 export function hasPermission(role: string, permission: PermissionAction, customPermissions?: Record<string, boolean>): boolean {

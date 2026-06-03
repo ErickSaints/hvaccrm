@@ -150,7 +150,19 @@ async function startup() {
     console.log(`[startup] Catálogo de materiales creado (${catalogData.length} items).`);
   }
 
-  // 6. Backfill trialEndsAt for existing users without trial period (skip admins)
+  // 6. One-time migration: clean stale overrides from old permission system
+  //    (old buildPermissionMap saved defaults as overrides, causing sections to appear unrequested)
+  const fleetOverride = await prisma.rolePermission.findFirst({ where: { permission: 'fleet:view' } });
+  if (!fleetOverride) {
+    const staleCount = await prisma.rolePermission.count();
+    if (staleCount > 0) {
+      await prisma.rolePermission.deleteMany();
+      console.log(`[startup] Migración: ${staleCount} overrides antiguos eliminados — el sistema de permisos cambió.`);
+      console.log('[startup] Configura los permisos desde Admin > Permisos. Ya no se borrarán automáticamente.');
+    }
+  }
+
+  // 7. Backfill trialEndsAt for existing users without trial period (skip admins)
   const usersWithoutTrial = await prisma.user.findMany({ where: { trialEndsAt: null, role: { not: 'ADMIN' } } });
   if (usersWithoutTrial.length > 0) {
     const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);

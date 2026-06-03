@@ -131,9 +131,9 @@ export default function Layout() {
   const sectionPermissions: Record<string, string[]> = {
     'General': ['dashboard:view'],
     'Clientes': ['customers:view', 'equipment:view', 'assets:view'],
-    'Operaciones': ['tickets:view', 'service-orders:view', 'service-reports:view'],
-    'Ventas': ['quotations:view', 'catalog:view', 'campaigns:view'],
-    'Mantenimiento': ['policies:view', 'maintenance:view', 'invoices:view'],
+    'Operaciones': ['tickets:view', 'service-orders:view', 'service-reports:view', 'fleet:view', 'reports:view'],
+    'Ventas': ['quotations:view', 'catalog:view', 'regional-prices:view', 'campaigns:view'],
+    'Mantenimiento': ['policies:view', 'maintenance:view', 'dispatch:view', 'invoices:view'],
     'Proyectos': ['surveys:view'],
     'Herramientas': [],
   };
