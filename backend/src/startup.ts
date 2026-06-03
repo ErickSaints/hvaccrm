@@ -160,6 +160,14 @@ async function startup() {
     console.log(`[startup] Período de prueba asignado a ${usersWithoutTrial.length} usuarios existentes.`);
   }
 
+  // 7. Reset all role permission overrides — limpia sobre-escrituras incorrectas del pasado
+  const overrideCount = await prisma.rolePermission.count();
+  if (overrideCount > 0) {
+    await prisma.rolePermission.deleteMany();
+    console.log(`[startup] ${overrideCount} overrides de permisos eliminados — ahora todos los roles usan defaults.`);
+    console.log('[startup] Si necesitas permisos personalizados, configúralos desde Admin > Permisos.');
+  }
+
   await prisma.$disconnect();
   console.log('[startup] Listo.');
 }

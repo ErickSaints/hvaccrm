@@ -7,6 +7,7 @@ export interface User {
   avatar?: string;
   active: boolean;
   isSuperAdmin?: boolean;
+  permissions?: string[];
 }
 
 export interface PermissionInfo {

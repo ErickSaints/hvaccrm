@@ -25,6 +25,19 @@ const registerSchema = z.object({
   phone: z.string().optional(),
 });
 
+async function getEffectivePermissions(role: string): Promise<string[]> {
+  const effective = new Set<string>(getPermissionsForRole(role));
+  const overrides = await prisma.rolePermission.findMany({
+    where: { role: role as any },
+    select: { permission: true, allowed: true }
+  });
+  for (const o of overrides) {
+    if (o.allowed) effective.add(o.permission);
+    else effective.delete(o.permission);
+  }
+  return [...effective];
+}
+
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const data = loginSchema.parse(req.body);
@@ -38,7 +51,8 @@ router.post('/login', async (req: Request, res: Response) => {
     }
     const token = jwt.sign({ userId: user.id, role: user.role, isSuperAdmin: user.isSuperAdmin }, JWT_SECRET, { expiresIn: '24h' });
     const { password: _, ...userData } = user;
-    res.json({ token, user: userData });
+    const permissions = await getEffectivePermissions(user.role);
+    res.json({ token, user: { ...userData, permissions } });
   } catch (err) {
     if (err instanceof z.ZodError) {
       return res.status(400).json({ error: err.errors });
@@ -253,7 +267,8 @@ router.get('/me', authenticate, async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
     const { password: _, ...userData } = user;
-    res.json(userData);
+    const permissions = await getEffectivePermissions(user.role);
+    res.json({ ...userData, permissions });
   } catch {
     res.status(500).json({ error: 'Error al obtener perfil' });
   }
@@ -261,18 +276,8 @@ router.get('/me', authenticate, async (req: Request, res: Response) => {
 
 router.get('/me/permissions', authenticate, async (req: Request, res: Response) => {
   try {
-    const effective = new Set<string>(getPermissionsForRole(req.user!.role));
-
-    const overrides = await prisma.rolePermission.findMany({
-      where: { role: req.user!.role as any },
-      select: { permission: true, allowed: true }
-    });
-    for (const o of overrides) {
-      if (o.allowed) effective.add(o.permission);
-      else effective.delete(o.permission);
-    }
-
-    res.json({ permissions: [...effective] });
+    const permissions = await getEffectivePermissions(req.user!.role);
+    res.json({ permissions });
   } catch {
     res.status(500).json({ error: 'Error al obtener permisos' });
   }
