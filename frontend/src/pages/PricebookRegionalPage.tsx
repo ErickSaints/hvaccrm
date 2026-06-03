@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Search, MapPin, DollarSign, RefreshCw, Save, Loader2, X, Edit3, TrendingUp, CheckCircle } from 'lucide-react';
+import { Search, MapPin, Save, Loader2, RotateCcw, DollarSign, TrendingUp, Check, X, ShoppingCart, Percent } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
 
@@ -30,52 +30,51 @@ interface StatePrice {
   isOverridden: boolean;
 }
 
-const formatMoney = (v: number | null) =>
+const REGIONS = [
+  { code: 'NORTE', name: 'Norte', adj: 0.07, color: 'red' },
+  { code: 'CENTRO-N', name: 'Centro-N', adj: 0.02, color: 'amber' },
+  { code: 'CENTRO', name: 'Centro', adj: 0, color: 'blue' },
+  { code: 'BAJIO', name: 'Bajío', adj: -0.02, color: 'emerald' },
+  { code: 'SURESTE', name: 'Sureste', adj: -0.07, color: 'purple' },
+] as const;
+
+const REGION_COLORS: Record<string, string> = {
+  NORTE: 'bg-red-100 text-red-700 ring-red-300 dark:bg-red-900/30 dark:text-red-300 dark:ring-red-700',
+  'CENTRO-N': 'bg-amber-100 text-amber-700 ring-amber-300 dark:bg-amber-900/30 dark:text-amber-300 dark:ring-amber-700',
+  CENTRO: 'bg-blue-100 text-blue-700 ring-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:ring-blue-700',
+  BAJIO: 'bg-emerald-100 text-emerald-700 ring-emerald-300 dark:bg-emerald-900/30 dark:text-emerald-300 dark:ring-emerald-700',
+  SURESTE: 'bg-purple-100 text-purple-700 ring-purple-300 dark:bg-purple-900/30 dark:text-purple-300 dark:ring-purple-700',
+};
+
+const REGION_BG: Record<string, string> = {
+  NORTE: 'bg-red-600',
+  'CENTRO-N': 'bg-amber-600',
+  CENTRO: 'bg-blue-600',
+  BAJIO: 'bg-emerald-600',
+  SURESTE: 'bg-purple-600',
+};
+
+const formatMoney = (v: number | null | undefined) =>
   v != null ? `$${v.toLocaleString('es-MX', { minimumFractionDigits: 2 })}` : '—';
 
-function PriceCell({ value, onChange, onBlur, isOverridden }: {
-  value: number | null; onChange: (v: number | null) => void; onBlur?: () => void; isOverridden: boolean;
-}) {
-  const [edit, setEdit] = useState<string>(value != null ? String(value) : '');
-  const [focused, setFocused] = useState(false);
-  const display = focused ? edit : formatMoney(value);
-  return (
-    <div className="relative">
-      {isOverridden && !focused && (
-        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-amber-400 rounded-full" />
-      )}
-      <input
-        value={display as string}
-        onChange={e => { setEdit(e.target.value); onChange(e.target.value ? parseFloat(e.target.value) : null); }}
-        onFocus={() => { setEdit(value != null ? String(value) : ''); setFocused(true); }}
-        onBlur={() => { setFocused(false); onBlur?.(); }}
-        className={`w-full text-right bg-transparent border-b border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-primary-500 focus:outline-none px-2 py-1 text-sm font-medium tabular-nums ${isOverridden ? 'text-amber-700 dark:text-amber-400' : 'text-gray-900 dark:text-gray-100'}`}
-        placeholder="—"
-      />
-    </div>
-  );
+function calcMargin(cost: number | null, sell: number | null): number | null {
+  if (cost == null || sell == null || cost === 0) return null;
+  return ((sell - cost) / sell) * 100;
 }
 
 export default function PricebookRegionalPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+  const [filterRegion, setFilterRegion] = useState<string | null>(null);
+  const [stateSearch, setStateSearch] = useState('');
   const [priceEdits, setPriceEdits] = useState<Record<string, Partial<StatePrice>>>({});
-  const [savingStates, setSavingStates] = useState<Set<string>>(new Set());
+  const [focusedState, setFocusedState] = useState<string | null>(null);
+  const [useTier, setUseTier] = useState<'goodPrice' | 'betterPrice' | 'bestPrice'>('goodPrice');
 
   const { data: items, isLoading: itemsLoading } = useQuery<Item[]>({
     queryKey: ['pricebook-items-all'],
     queryFn: () => api.get('/pricebook/items/all').then(r => r.data),
-  });
-
-  const { data: regions } = useQuery<Region[]>({
-    queryKey: ['pricebook-regions'],
-    queryFn: () => api.get('/pricebook/regions').then(r => r.data),
-  });
-
-  const { data: states } = useQuery<State[]>({
-    queryKey: ['pricebook-states'],
-    queryFn: () => api.get('/pricebook/states').then(r => r.data),
   });
 
   const { data: statePrices, isLoading: pricesLoading } = useQuery<StatePrice[]>({
@@ -88,7 +87,8 @@ export default function PricebookRegionalPage() {
     if (!items) return [];
     return items.filter(i =>
       i.name.toLowerCase().includes(search.toLowerCase()) ||
-      i.sku?.toLowerCase().includes(search.toLowerCase())
+      i.sku?.toLowerCase().includes(search.toLowerCase()) ||
+      i.category?.name?.toLowerCase().includes(search.toLowerCase())
     );
   }, [items, search]);
 
@@ -96,6 +96,30 @@ export default function PricebookRegionalPage() {
     if (!items || !selectedItemId) return null;
     return items.find(i => i.id === selectedItemId) || null;
   }, [items, selectedItemId]);
+
+  const filteredPrices = useMemo(() => {
+    if (!statePrices) return [];
+    let list = statePrices;
+    if (filterRegion) {
+      list = list.filter(sp => sp.regionCode === filterRegion);
+    }
+    if (stateSearch) {
+      const q = stateSearch.toLowerCase();
+      list = list.filter(sp =>
+        sp.stateName.toLowerCase().includes(q) ||
+        sp.stateCode.toLowerCase().includes(q)
+      );
+    }
+    return list;
+  }, [statePrices, filterRegion, stateSearch]);
+
+  const regionsWithPrices = useMemo(() => {
+    if (!statePrices) return REGIONS;
+    return REGIONS.map(r => ({
+      ...r,
+      stateCount: statePrices.filter(sp => sp.regionCode === r.code).length,
+    }));
+  }, [statePrices]);
 
   const saveMutation = useMutation({
     mutationFn: async ({ stateCode, data }: { stateCode: string; data: any }) => {
@@ -108,7 +132,7 @@ export default function PricebookRegionalPage() {
         delete next[vars.stateCode];
         return next;
       });
-      toast.success(`Precio guardado`);
+      toast.success(`Precio guardado para ${vars.stateCode}`);
     },
     onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al guardar'),
   });
@@ -153,209 +177,326 @@ export default function PricebookRegionalPage() {
     return statePrice[field];
   }
 
-  const editableFields = [
-    { key: 'goodPrice' as const, label: 'GOOD', color: 'text-emerald-600' },
-    { key: 'betterPrice' as const, label: 'BETTER', color: 'text-blue-600' },
-    { key: 'bestPrice' as const, label: 'BEST', color: 'text-purple-600' },
-    { key: 'costPrice' as const, label: 'COSTO', color: 'text-gray-600' },
+  const priceTiers = [
+    { key: 'goodPrice' as const, label: 'Good', desc: 'Precio estándar', color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
+    { key: 'betterPrice' as const, label: 'Better', desc: 'Precio preferencial', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-900/20' },
+    { key: 'bestPrice' as const, label: 'Best', desc: 'Precio promocional', color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 dark:bg-purple-900/20' },
   ];
-
-  const regionColors: Record<string, string> = {
-    NORTE: 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400',
-    'CENTRO-N': 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400',
-    CENTRO: 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400',
-    BAJIO: 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400',
-    SURESTE: 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400',
-  };
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-600 via-orange-700 to-red-800 p-6 lg:p-8">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary-400 rounded-full blur-3xl -translate-x-1/4 translate-y-1/4" />
+      {/* Header */}
+      <div className="card p-4 lg:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+            <MapPin className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+          </div>
+          <div>
+            <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">Precios Regionales</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Precios competitivos por estado con ajuste regional automático</p>
+          </div>
         </div>
-        <div className="relative z-10">
-          <h1 className="text-xl lg:text-2xl font-bold text-white flex items-center gap-2">
-            <MapPin className="w-6 h-6" />
-            Precios Regionales
-          </h1>
-          <p className="text-amber-200 text-sm mt-1">
-            Ajusta precios por estado con factores regionales automáticos
-          </p>
-        </div>
+        {selectedItem && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-lg">
+              Base CDMX: <strong className="text-gray-700 dark:text-gray-300">{formatMoney(selectedItem.goodPrice)}</strong>
+            </span>
+            {pendingEdits > 0 && (
+              <button onClick={handleSaveAll} disabled={saveMutation.isPending}
+                className="btn-primary text-sm inline-flex items-center gap-1.5">
+                {saveMutation.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                Guardar ({pendingEdits})
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
+      {/* Main layout */}
       <div className="flex gap-6 flex-col lg:flex-row">
-        {/* ── Left: Item selector ── */}
+        {/* Left: Item selector */}
         <div className="w-full lg:w-72 shrink-0">
-          <div className="card-static">
-            <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <Search className="w-4 h-4" />
-              Artículos
-            </h3>
-            <input
-              type="text"
-              placeholder="Buscar artículo..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="input-field mb-3"
-            />
+          <div className="card p-0">
+            <div className="p-3 border-b border-gray-100 dark:border-gray-800">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text" placeholder="Buscar artículo..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                />
+              </div>
+            </div>
             {itemsLoading ? (
-              <div className="animate-pulse space-y-2">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="h-8 bg-gray-100 dark:bg-gray-800 rounded" />
+              <div className="p-3 space-y-2">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="h-10 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
                 ))}
               </div>
             ) : (
-              <div className="space-y-0.5 max-h-[60vh] overflow-y-auto">
-                {filteredItems.map(item => (
-                  <button
-                    key={item.id}
-                    onClick={() => setSelectedItemId(item.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
-                      selectedItemId === item.id
-                        ? 'bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 font-medium shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                    }`}
-                  >
-                    <span className="line-clamp-1">{item.name}</span>
-                    {item.sku && (
-                      <span className="text-[10px] text-gray-400 dark:text-gray-600 font-mono">{item.sku}</span>
-                    )}
-                  </button>
-                ))}
+              <div className="divide-y divide-gray-50 dark:divide-gray-800/50 max-h-[65vh] overflow-y-auto">
+                {filteredItems.length === 0 ? (
+                  <div className="p-6 text-center text-sm text-gray-400 dark:text-gray-500">
+                    {search ? 'Sin resultados' : 'Selecciona un artículo'}
+                  </div>
+                ) : (
+                  filteredItems.map(item => (
+                    <button
+                      key={item.id}
+                      onClick={() => setSelectedItemId(item.id)}
+                      className={`w-full text-left px-3 py-2.5 transition-colors ${
+                        selectedItemId === item.id
+                          ? 'bg-primary-50 dark:bg-primary-900/20 border-l-2 border-primary-500'
+                          : 'hover:bg-gray-50 dark:hover:bg-gray-800/50 border-l-2 border-transparent'
+                      }`}
+                    >
+                      <div className="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-1">{item.name}</div>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        {item.category && (
+                          <span className="text-[10px] text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{item.category.name}</span>
+                        )}
+                        <span className="text-[10px] text-gray-400 dark:text-gray-500">{item.unit}</span>
+                      </div>
+                    </button>
+                  ))
+                )}
               </div>
             )}
           </div>
         </div>
 
-        {/* ── Right: Regional prices table ── */}
-        <div className="flex-1 min-w-0">
+        {/* Right: pricing panel */}
+        <div className="flex-1 min-w-0 space-y-4">
           {!selectedItemId ? (
-            <div className="card-static py-16 text-center">
-              <MapPin className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                Selecciona un artículo
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                Elige un artículo del listado para ver y ajustar sus precios por estado
+            <div className="card py-16 text-center">
+              <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-4">
+                <MapPin className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Selecciona un artículo</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Elige un artículo del listado para ver precios ajustados por estado
               </p>
             </div>
           ) : pricesLoading ? (
-            <div className="card-static py-16 text-center">
-              <Loader2 className="w-8 h-8 animate-spin text-amber-600 mx-auto" />
+            <div className="card py-16 text-center">
+              <Loader2 className="w-8 h-8 animate-spin text-primary-500 mx-auto" />
             </div>
           ) : (
-            <div className="card-static p-0 overflow-hidden">
-              {/* Item header */}
-              <div className="p-4 border-b border-gray-100 dark:border-gray-800 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10">
-                <div className="flex items-center justify-between">
+            <>
+              {/* Item info bar */}
+              <div className="card p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div>
-                    <h2 className="font-semibold text-gray-900 dark:text-gray-100">{selectedItem?.name}</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{selectedItem?.category?.name} · {selectedItem?.unit}</p>
+                    <h2 className="font-semibold text-gray-900 dark:text-gray-100 text-lg">{selectedItem?.name}</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {selectedItem?.category?.name} · {selectedItem?.unit}
+                      {selectedItem?.sku && <span className="ml-2 font-mono text-xs text-gray-400">{selectedItem.sku}</span>}
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-400 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-lg shadow-sm">
-                      Base CDMX: {formatMoney(selectedItem?.goodPrice ?? null)}
-                    </span>
-                    {pendingEdits > 0 && (
+                  {/* Tier selector */}
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                    {priceTiers.map(t => (
                       <button
-                        onClick={handleSaveAll}
-                        disabled={saveMutation.isPending}
-                        className="btn-primary text-sm bg-amber-600 hover:bg-amber-700 inline-flex items-center gap-1.5"
+                        key={t.key}
+                        onClick={() => setUseTier(t.key)}
+                        className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                          useTier === t.key
+                            ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-gray-100'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                        }`}
                       >
-                        {saveMutation.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
-                        Guardar {pendingEdits} cambio{pendingEdits !== 1 ? 's' : ''}
+                        {t.label}
                       </button>
-                    )}
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
-                      <th className="text-left px-3 py-3 font-semibold text-gray-600 dark:text-gray-400">Estado</th>
-                      <th className="text-left px-3 py-3 font-semibold text-gray-600 dark:text-gray-400">Región</th>
-                      <th className="text-center px-3 py-3 font-semibold text-gray-600 dark:text-gray-400">Factor</th>
-                      {editableFields.map(f => (
-                        <th key={f.key} className={`text-right px-3 py-3 font-semibold ${f.color}`}>{f.label}</th>
-                      ))}
-                      <th className="text-center px-3 py-3 font-semibold text-gray-600 dark:text-gray-400">Ovr</th>
-                      <th className="text-right px-3 py-3 font-semibold text-gray-600 dark:text-gray-400">Acción</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
-                    {statePrices?.map(sp => {
-                      const isEdited = !!priceEdits[sp.stateCode];
-                      const isSaving = savingStates.has(sp.stateCode);
-                      return (
-                        <tr key={sp.stateCode} className={`hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${sp.isOverridden || isEdited ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''}`}>
-                          <td className="px-3 py-2.5 whitespace-nowrap">
-                            <span className="font-medium text-gray-900 dark:text-gray-100">{sp.stateName}</span>
-                            <span className="text-xs text-gray-400 ml-1.5 font-mono">{sp.stateCode}</span>
-                          </td>
-                          <td className="px-3 py-2.5 whitespace-nowrap">
-                            <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${regionColors[sp.regionCode] || 'bg-gray-100 text-gray-700'}`}>
-                              {sp.regionName}
-                            </span>
-                          </td>
-                          <td className="px-3 py-2.5 text-center">
-                            <span className={`text-xs font-mono font-semibold ${sp.adjustmentFactor >= 0 ? 'text-red-500' : 'text-green-500'}`}>
-                              {sp.adjustmentFactor >= 0 ? '+' : ''}{(sp.adjustmentFactor * 100).toFixed(0)}%
-                            </span>
-                          </td>
-                          {editableFields.map(f => (
-                            <td key={f.key} className="px-1 py-2.5">
-                              <PriceCell
-                                value={getPrice(sp, f.key)}
-                                onChange={v => handlePriceChange(sp.stateCode, f.key, v)}
-                                isOverridden={sp.isOverridden || !!priceEdits[sp.stateCode]?.[f.key] !== undefined}
-                              />
-                            </td>
-                          ))}
-                          <td className="px-3 py-2.5 text-center">
-                            {sp.isOverridden ? (
-                              <span className="inline-flex items-center gap-1 text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded-full">
-                                <Edit3 className="w-3 h-3" />
-                                Manual
+              {/* Region filter */}
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setFilterRegion(null)}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ring-1 ${
+                    !filterRegion
+                      ? 'bg-gray-900 text-white ring-gray-900 dark:bg-white dark:text-gray-900 dark:ring-white'
+                      : 'bg-white text-gray-600 ring-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  Todas las regiones
+                </button>
+                {regionsWithPrices.map(r => (
+                  <button
+                    key={r.code}
+                    onClick={() => setFilterRegion(r.code)}
+                    className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ring-1 ${
+                      filterRegion === r.code
+                        ? `${REGION_BG[r.code]} text-white ring-transparent`
+                        : 'bg-white text-gray-600 ring-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    {r.name} {r.adj >= 0 ? '+' : ''}{(r.adj * 100).toFixed(0)}%
+                  </button>
+                ))}
+              </div>
+
+              {/* State search */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text" placeholder="Buscar estado..."
+                  value={stateSearch}
+                  onChange={e => setStateSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
+                />
+              </div>
+
+              {/* Price cards grid */}
+              {filteredPrices.length === 0 ? (
+                <div className="card py-8 text-center text-sm text-gray-400">Sin estados para mostrar</div>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  {filteredPrices.map(sp => {
+                    const selTier = sp[useTier as keyof StatePrice] as number | null;
+                    const basePrice = selectedItem?.[useTier] as number | null;
+                    const margin = calcMargin(sp.costPrice, selTier);
+                    const isEdited = !!priceEdits[sp.stateCode];
+                    const isSaving = saveMutation.isPending && !!priceEdits[sp.stateCode];
+
+                    return (
+                      <div
+                        key={sp.stateCode}
+                        className={`card p-0 overflow-hidden transition-all ${
+                          focusedState === sp.stateCode ? 'ring-2 ring-primary-500 shadow-lg' : ''
+                        } ${sp.isOverridden || isEdited ? 'ring-1 ring-amber-300 dark:ring-amber-700' : ''}`}
+                        onClick={() => setFocusedState(sp.stateCode)}
+                      >
+                        {/* State header */}
+                        <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-2 h-2 rounded-full ${sp.isOverridden || isEdited ? 'bg-amber-400' : 'bg-gray-300 dark:bg-gray-600'}`} />
+                            <div>
+                              <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">{sp.stateName}</span>
+                              <span className="text-[10px] text-gray-400 ml-1.5 font-mono">{sp.stateCode}</span>
+                            </div>
+                          </div>
+                          <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ring-1 ${REGION_COLORS[sp.regionCode]}`}>
+                            {sp.regionName}
+                          </span>
+                        </div>
+
+                        {/* Price and adjust */}
+                        <div className="p-4 space-y-3">
+                          {/* Main price display */}
+                          <div className="flex items-baseline justify-between">
+                            <span className="text-xs text-gray-500 dark:text-gray-400">Precio {priceTiers.find(t => t.key === useTier)?.label}</span>
+                            <div className="text-right">
+                              <span className={`text-xl font-bold tabular-nums ${margin != null && margin > 0 ? 'text-gray-900 dark:text-gray-100' : 'text-red-600 dark:text-red-400'}`}>
+                                {formatMoney(selTier)}
                               </span>
-                            ) : (
-                              <span className="text-xs text-gray-300 dark:text-gray-600">—</span>
-                            )}
-                          </td>
-                          <td className="px-3 py-2.5 text-right">
-                            <div className="flex items-center justify-end gap-1">
-                              {isEdited && (
-                                <button
-                                  onClick={() => handleSaveState(sp.stateCode)}
-                                  className="p-1.5 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition-colors"
-                                  title="Guardar este estado"
-                                >
-                                  {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
-                                </button>
-                              )}
-                              {sp.isOverridden && !isEdited && (
-                                <button
-                                  onClick={() => resetMutation.mutate(sp.stateCode)}
-                                  className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                  title="Restablecer a valor regional"
-                                >
-                                  <RefreshCw className="w-4 h-4" />
-                                </button>
+                              {basePrice != null && selTier != null && basePrice !== selTier && (
+                                <div className="text-[10px] text-gray-400 dark:text-gray-500">
+                                  Base: {formatMoney(basePrice)} · Ajuste: {((selTier - basePrice) / basePrice * 100).toFixed(0)}%
+                                </div>
                               )}
                             </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                          </div>
+
+                          {/* Cost and margin row */}
+                          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg px-3 py-2">
+                            <span className="flex items-center gap-1">
+                              <DollarSign className="w-3 h-3" />
+                              Costo: {formatMoney(sp.costPrice)}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Percent className="w-3 h-3" />
+                              Margen: {margin != null ? `${margin.toFixed(1)}%` : '—'}
+                            </span>
+                            <span className="text-[10px]">
+                              Factor: {sp.adjustmentFactor >= 0 ? '+' : ''}{(sp.adjustmentFactor * 100).toFixed(0)}%
+                            </span>
+                          </div>
+
+                          {/* Manual override inputs */}
+                          <div className={`grid grid-cols-2 gap-2 transition-all ${focusedState === sp.stateCode ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}>
+                            {priceTiers.map(t => (
+                              <div key={t.key}>
+                                <label className="text-[10px] text-gray-400 dark:text-gray-500 mb-0.5 block">{t.label}</label>
+                                <div className={`relative rounded-md border ${focusedState === sp.stateCode ? 'border-gray-200 dark:border-gray-600' : 'border-transparent'} overflow-hidden`}>
+                                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400">$</span>
+                                  <input
+                                    type="number" step="0.01"
+                                    value={getPrice(sp, t.key) ?? ''}
+                                    onChange={e => handlePriceChange(sp.stateCode, t.key, e.target.value ? parseFloat(e.target.value) : null)}
+                                    onFocus={() => setFocusedState(sp.stateCode)}
+                                    className={`w-full pl-5 pr-2 py-1.5 text-xs font-medium text-right bg-transparent focus:outline-none tabular-nums ${
+                                      sp.isOverridden || isEdited ? 'text-amber-700 dark:text-amber-400' : 'text-gray-900 dark:text-gray-100'
+                                    }`}
+                                    placeholder="—"
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="px-4 py-2.5 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30 flex items-center justify-end gap-1.5">
+                          {isEdited && (
+                            <button
+                              onClick={e => { e.stopPropagation(); handleSaveState(sp.stateCode); }}
+                              disabled={saveMutation.isPending}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors disabled:opacity-50"
+                            >
+                              {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                              Guardar
+                            </button>
+                          )}
+                          {sp.isOverridden && !isEdited && (
+                            <button
+                              onClick={e => { e.stopPropagation(); resetMutation.mutate(sp.stateCode); }}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            >
+                              <RotateCcw className="w-3 h-3" />
+                              Restaurar
+                            </button>
+                          )}
+
+                          {/* Copy for quoting */}
+                          {selTier != null && (
+                            <button
+                              onClick={e => {
+                                e.stopPropagation();
+                                navigator.clipboard.writeText(String(selTier));
+                                toast.success(`$${selTier.toLocaleString('es-MX', { minimumFractionDigits: 2 })} copiado`);
+                              }}
+                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-primary-600 bg-primary-50 dark:bg-primary-900/30 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
+                              title="Copiar precio"
+                            >
+                              <ShoppingCart className="w-3 h-3" />
+                              Copiar
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Summary bar */}
+              {filteredPrices.length > 0 && (
+                <div className="card p-3 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                  <span>
+                    Mostrando {filteredPrices.length} de {statePrices?.length || 0} estados
+                    {filterRegion ? ` (${REGIONS.find(r => r.code === filterRegion)?.name})` : ''}
+                  </span>
+                  <span>
+                    {statePrices?.filter(s => s.isOverridden).length || 0} con precios manuales
+                  </span>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
