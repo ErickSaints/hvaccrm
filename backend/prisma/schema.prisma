@@ -2,16 +2,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Para desarrollo local con SQLite:
+// Para Railway (producción) — usa PostgreSQL:
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-// Para Railway (producción) — usa PostgreSQL (descomentar en prod):
+// Para desarrollo local con SQLite (descomentar en local):
 // datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
 // }
 
 enum UserRole {

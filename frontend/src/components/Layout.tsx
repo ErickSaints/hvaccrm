@@ -130,10 +130,10 @@ export default function Layout() {
 
   const visibleMainNav = mainNav.filter((section) => {
     if (user?.role === 'ADMIN') return true;
-    const adminSections = ['General', 'Herramientas'];
+    const defaultSections = ['General', 'Herramientas'];
     const techSections = ['General', 'Clientes', 'Operaciones', 'Mantenimiento', 'Herramientas'];
-    const salesSections = ['General', 'Clientes', 'Operaciones', 'Herramientas'];
-    const proyectosSections = ['General', 'Proyectos', 'Herramientas'];
+    const salesSections = ['General', 'Clientes', 'Ventas', 'Operaciones', 'Herramientas'];
+    const proyectosSections = ['General', 'Clientes', 'Proyectos', 'Herramientas'];
     const comprasSections = ['General', 'Herramientas'];
 
     switch (user?.role) {
@@ -141,7 +141,7 @@ export default function Layout() {
       case 'SALES': return salesSections.includes(section.section);
       case 'PROYECTOS': return proyectosSections.includes(section.section);
       case 'COMPRAS': return comprasSections.includes(section.section);
-      default: return adminSections.includes(section.section);
+      default: return defaultSections.includes(section.section);
     }
   });
 
