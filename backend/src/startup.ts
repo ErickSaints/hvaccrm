@@ -206,26 +206,22 @@ async function startup() {
     console.log(`[startup] ${existingRegions} regiones ya existen, saltando.`);
   }
 
-  // 7a. One-time migration: detect old small catalog (22 items) and re-seed with expanded version (150+ items)
-  const oldItemCount = await prisma.pricebookItem.count();
-  if (oldItemCount > 0 && oldItemCount < 50) {
-    await prisma.pricebookItem.deleteMany();
-    await prisma.pricebookCategory.deleteMany();
-    console.log('[startup] Catalogo anterior detectado y eliminado. Se sembrara la version expandida.');
-  }
+  // 7. Ensure pricebook catalog matches code (re-seed if count differs)
+  const existingCount = await prisma.pricebookItem.count();
+  const expectedCount = catItems.length;
+  if (existingCount !== expectedCount) {
+    if (existingCount > 0) {
+      await prisma.pricebookRegionPrice.deleteMany();
+      await prisma.pricebookItem.deleteMany();
+      await prisma.pricebookCategory.deleteMany();
+    }
+    console.log(`[startup] Sembrando catalogo de precios unitarios (${expectedCount} conceptos)...`);
 
-  // 7. Ensure sample pricebook catalog items (conceptos de obra con precios reales de mercado CDMX)
-  const pricebookCount = await prisma.pricebookItem.count();
-  if (pricebookCount === 0) {
-    console.log('[startup] Sembrando catálogo de precios unitarios HVAC version expandida...');
-
-    // Create categories from pricebookData definitions
     const catMap: Record<string, number> = {};
     for (const c of catDefs) {
       const db = await prisma.pricebookCategory.create({ data: { name: c.name, sortOrder: c.sortOrder, description: c.description } });
       catMap[c.key] = db.id;
     }
-    // Seed all items with volume pricing
     let seededCount = 0;
     for (const item of catItems) {
       const catId = catMap[item.categoryKey];
@@ -245,9 +241,9 @@ async function startup() {
       seededCount++;
     }
 
-    console.log(`[startup] ${seededCount} conceptos de precio unitario creados con datos expandidos (pricebookData.ts).`);
+    console.log(`[startup] ${seededCount}/${expectedCount} conceptos de precio unitario creados (pricebookData.ts).`);
   } else {
-    console.log(`[startup] ${pricebookCount} conceptos ya existen, saltando.`);
+    console.log(`[startup] ${existingCount} conceptos coinciden con el codigo, saltando.`);
   }
 
   // 8. One-time migration: clean stale overrides from old permission system

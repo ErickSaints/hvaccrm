@@ -1033,7 +1033,7 @@ model State {
 model PricebookRegionPrice {
   id               Int      @id @default(autoincrement())
   itemId           Int
-  item             PricebookItem @relation(fields: [itemId], references: [id])
+  item             PricebookItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
   stateId          Int
   state            State    @relation(fields: [stateId], references: [id])
 
