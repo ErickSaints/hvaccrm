@@ -469,32 +469,73 @@ router.delete('/items/:id/regional-price/:stateCode', async (req: Request, res: 
 
 // ── Price Breakdown (Análisis de Precio Unitario) ────────────────────────────
 
-const breakdownLineItemSchema = z.object({
+const breakdownMaterialSchema = z.object({
   description: z.string().min(1),
   unit: z.string().default('pza'),
   quantity: z.number().positive(),
   unitCost: z.number().positive(),
+  wastePct: z.number().min(0).default(0),
   total: z.number(),
 });
 
-const breakdownLaborItemSchema = z.object({
+const breakdownLaborSchema = z.object({
   category: z.string().min(1),
   workers: z.number().int().positive().default(1),
-  hours: z.number().positive(),
-  hourlyWage: z.number().positive(),
+  dailyWage: z.number().positive(),
+  fsrFactor: z.number().default(1.0),
+  realDailyWage: z.number(),
   total: z.number(),
+});
+
+const breakdownEquipmentSchema = z.object({
+  description: z.string().min(1),
+  unit: z.string().default('hr'),
+  quantity: z.number().positive().default(1),
+  hourlyCost: z.number().positive(),
+  hoursPerDay: z.number().positive().default(8),
+  total: z.number(),
+});
+
+const breakdownFsrConfigSchema = z.object({
+  year: z.number().default(2025),
+  daysOff: z.number().default(78),
+  holidays: z.number().default(8),
+  vacationDays: z.number().default(12),
+  aguinaldoDays: z.number().default(15),
+  primaVacacionalPct: z.number().default(25),
+  imssPct: z.number().default(5.0),
+  infonavitPct: z.number().default(0.0),
+  otherPct: z.number().default(0.0),
 });
 
 const breakdownSchema = z.object({
-  indirectPct: z.number().min(0).max(100).default(20),
-  financingPct: z.number().min(0).max(100).default(2),
-  profitPct: z.number().min(0).max(100).default(10),
-  additionalPct: z.number().min(0).max(100).default(0),
-  toolPct: z.number().min(0).max(100).default(3),
-  materials: z.array(breakdownLineItemSchema).default([]),
-  labor: z.array(breakdownLaborItemSchema).default([]),
-  equipment: z.array(breakdownLineItemSchema).default([]),
+  fsrEnabled: z.boolean().default(true),
+  fsrConfig: breakdownFsrConfigSchema.default({}),
+  rendimiento: z.number().positive().default(1.0),
+  rendimientoUnit: z.string().default('pza/jor'),
+  indirectPct: z.number().min(0).max(100).default(27.48),
+  financingPct: z.number().min(0).max(100).default(2.0),
+  profitPct: z.number().min(0).max(100).default(10.0),
+  additionalPct: z.number().min(0).max(100).default(0.0),
+  toolPct: z.number().min(0).max(100).default(3.0),
+  materials: z.array(breakdownMaterialSchema).default([]),
+  labor: z.array(breakdownLaborSchema).default([]),
+  equipment: z.array(breakdownEquipmentSchema).default([]),
 });
+
+function calcTotals(breakdown: any, materials: any[], labor: any[], equipment: any[]) {
+  const totalMaterials = materials.reduce((s: number, m: any) => s + m.total, 0);
+  const totalLabor = labor.reduce((s: number, l: any) => s + l.total, 0);
+  const toolCost = (totalLabor + equipment.reduce((s: number, e: any) => s + e.total, 0)) * (breakdown.toolPct / 100);
+  const totalEquipment = equipment.reduce((s: number, e: any) => s + e.total, 0);
+  const directCost = totalMaterials + totalLabor + toolCost + totalEquipment;
+  const indirectCost = directCost * (breakdown.indirectPct / 100);
+  const financingCost = (directCost + indirectCost) * (breakdown.financingPct / 100);
+  const profit = (directCost + indirectCost + financingCost) * (breakdown.profitPct / 100);
+  const additionalCost = directCost * (breakdown.additionalPct / 100);
+  const unitPrice = directCost + indirectCost + financingCost + profit + additionalCost;
+  return { totalMaterials, totalLabor, toolCost, totalEquipment, directCost, indirectCost, financingCost, profit, additionalCost, unitPrice };
+}
 
 router.get('/items/:id/breakdown', async (req: Request, res: Response) => {
   try {
@@ -510,30 +551,30 @@ router.get('/items/:id/breakdown', async (req: Request, res: Response) => {
       return res.json({
         itemId: id,
         exists: false,
-        indirectPct: 20, financingPct: 2, profitPct: 10, additionalPct: 0, toolPct: 3,
+        fsrEnabled: true,
+        fsrConfig: { year: 2025, daysOff: 78, holidays: 8, vacationDays: 12, aguinaldoDays: 15, primaVacacionalPct: 25, imssPct: 5, infonavitPct: 0, otherPct: 0 },
+        rendimiento: 1.0,
+        rendimientoUnit: 'pza/jor',
+        indirectPct: 27.48, financingPct: 2, profitPct: 10, additionalPct: 0, toolPct: 3,
         materials: [], labor: [], equipment: [],
-        totals: { directCost: 0, indirectCost: 0, financingCost: 0, profit: 0, additionalCost: 0, unitPrice: 0 },
+        totals: { directCost: 0, totalMaterials: 0, totalLabor: 0, toolCost: 0, totalEquipment: 0, indirectCost: 0, financingCost: 0, profit: 0, additionalCost: 0, unitPrice: 0 },
       });
     }
 
     const materials = (breakdown.materials as any[]) || [];
     const labor = (breakdown.labor as any[]) || [];
     const equipment = (breakdown.equipment as any[]) || [];
+    const fsrConfig = parseFsrConfig(breakdown.fsrConfig);
 
-    const totalMaterials = materials.reduce((s, m) => s + (m.total || m.quantity * m.unitCost), 0);
-    const totalLabor = labor.reduce((s, l) => s + (l.total || l.workers * l.hours * l.hourlyWage), 0);
-    const toolCost = totalLabor * (breakdown.toolPct / 100);
-    const totalEquipment = equipment.reduce((s, e) => s + (e.total || e.quantity * e.unitCost), 0);
-    const directCost = totalMaterials + totalLabor + toolCost + totalEquipment;
-    const indirectCost = directCost * (breakdown.indirectPct / 100);
-    const financingCost = (directCost + indirectCost) * (breakdown.financingPct / 100);
-    const profit = (directCost + indirectCost + financingCost) * (breakdown.profitPct / 100);
-    const additionalCost = directCost * (breakdown.additionalPct / 100);
-    const unitPrice = directCost + indirectCost + financingCost + profit + additionalCost;
+    const totals = calcTotals(breakdown, materials, labor, equipment);
 
     res.json({
       itemId: id,
       exists: true,
+      fsrEnabled: breakdown.fsrEnabled,
+      fsrConfig,
+      rendimiento: breakdown.rendimiento,
+      rendimientoUnit: breakdown.rendimientoUnit,
       indirectPct: breakdown.indirectPct,
       financingPct: breakdown.financingPct,
       profitPct: breakdown.profitPct,
@@ -542,15 +583,18 @@ router.get('/items/:id/breakdown', async (req: Request, res: Response) => {
       materials,
       labor,
       equipment,
-      totals: {
-        totalMaterials, totalLabor, toolCost, totalEquipment,
-        directCost, indirectCost, financingCost, profit, additionalCost, unitPrice,
-      },
+      totals,
     });
   } catch {
     res.status(500).json({ error: 'Error al obtener desglose de precios' });
   }
 });
+
+function parseFsrConfig(val: any): any {
+  if (!val) return { year: 2025, daysOff: 78, holidays: 8, vacationDays: 12, aguinaldoDays: 15, primaVacacionalPct: 25, imssPct: 5, infonavitPct: 0, otherPct: 0 };
+  if (typeof val === 'string') { try { return JSON.parse(val); } catch { return {}; } }
+  return val;
+}
 
 router.put('/items/:id/breakdown', async (req: Request, res: Response) => {
   try {
@@ -560,32 +604,45 @@ router.put('/items/:id/breakdown', async (req: Request, res: Response) => {
     const item = await prisma.pricebookItem.findUnique({ where: { id }, select: { id: true } });
     if (!item) return res.status(404).json({ error: 'Artículo no encontrado' });
 
-    // Normalize line items with calculated totals
+    // Normalize materials with waste
     const materials = data.materials.map(m => ({
       description: m.description,
       unit: m.unit || 'pza',
       quantity: m.quantity,
       unitCost: m.unitCost,
-      total: m.total || m.quantity * m.unitCost,
+      wastePct: m.wastePct || 0,
+      total: m.total || m.quantity * m.unitCost * (1 + (m.wastePct || 0) / 100),
     }));
+
+    // Normalize labor with FSR
     const labor = data.labor.map(l => ({
       category: l.category,
       workers: l.workers,
-      hours: l.hours,
-      hourlyWage: l.hourlyWage,
-      total: l.total || l.workers * l.hours * l.hourlyWage,
+      dailyWage: l.dailyWage,
+      fsrFactor: l.fsrFactor || 1.0,
+      realDailyWage: l.realDailyWage || l.dailyWage * (l.fsrFactor || 1.0),
+      total: l.total || l.workers * (l.realDailyWage || l.dailyWage * (l.fsrFactor || 1.0)),
     }));
+
+    // Normalize equipment with hourly rate
     const equipment = data.equipment.map(e => ({
       description: e.description,
       unit: e.unit || 'hr',
-      quantity: e.quantity,
-      unitCost: e.unitCost,
-      total: e.total || e.quantity * e.unitCost,
+      quantity: e.quantity || 1,
+      hourlyCost: e.hourlyCost,
+      hoursPerDay: e.hoursPerDay || 8,
+      total: e.total || e.quantity * e.hourlyCost * (e.hoursPerDay || 8),
     }));
+
+    const fsrConfigStr = typeof data.fsrConfig === 'string' ? data.fsrConfig : JSON.stringify(data.fsrConfig);
 
     const breakdown = await prisma.pricebookBreakdown.upsert({
       where: { itemId: id },
       update: {
+        fsrEnabled: data.fsrEnabled,
+        fsrConfig: fsrConfigStr,
+        rendimiento: data.rendimiento,
+        rendimientoUnit: data.rendimientoUnit,
         indirectPct: data.indirectPct,
         financingPct: data.financingPct,
         profitPct: data.profitPct,
@@ -597,6 +654,10 @@ router.put('/items/:id/breakdown', async (req: Request, res: Response) => {
       },
       create: {
         itemId: id,
+        fsrEnabled: data.fsrEnabled,
+        fsrConfig: fsrConfigStr,
+        rendimiento: data.rendimiento,
+        rendimientoUnit: data.rendimientoUnit,
         indirectPct: data.indirectPct,
         financingPct: data.financingPct,
         profitPct: data.profitPct,
@@ -608,31 +669,22 @@ router.put('/items/:id/breakdown', async (req: Request, res: Response) => {
       },
     });
 
-    // Recalculate totals
-    const totalMaterials = materials.reduce((s, m) => s + m.total, 0);
-    const totalLabor = labor.reduce((s, l) => s + l.total, 0);
-    const toolCost = totalLabor * (breakdown.toolPct / 100);
-    const totalEquipment = equipment.reduce((s, e) => s + e.total, 0);
-    const directCost = totalMaterials + totalLabor + toolCost + totalEquipment;
-    const indirectCost = directCost * (breakdown.indirectPct / 100);
-    const financingCost = (directCost + indirectCost) * (breakdown.financingPct / 100);
-    const profit = (directCost + indirectCost + financingCost) * (breakdown.profitPct / 100);
-    const additionalCost = directCost * (breakdown.additionalPct / 100);
-    const unitPrice = directCost + indirectCost + financingCost + profit + additionalCost;
+    const totals = calcTotals(breakdown, materials, labor, equipment);
 
     res.json({
       itemId: id,
       exists: true,
+      fsrEnabled: breakdown.fsrEnabled,
+      fsrConfig: parseFsrConfig(breakdown.fsrConfig),
+      rendimiento: breakdown.rendimiento,
+      rendimientoUnit: breakdown.rendimientoUnit,
       indirectPct: breakdown.indirectPct,
       financingPct: breakdown.financingPct,
       profitPct: breakdown.profitPct,
       additionalPct: breakdown.additionalPct,
       toolPct: breakdown.toolPct,
       materials, labor, equipment,
-      totals: {
-        totalMaterials, totalLabor, toolCost, totalEquipment,
-        directCost, indirectCost, financingCost, profit, additionalCost, unitPrice,
-      },
+      totals,
     });
   } catch (err) {
     if (err instanceof z.ZodError) {

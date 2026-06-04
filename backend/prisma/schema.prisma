@@ -772,15 +772,25 @@ model PricebookBreakdown {
   itemId          Int      @unique
   item            PricebookItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
-  indirectPct     Float    @default(20.0)
-  financingPct    Float    @default(2.0)
-  profitPct       Float    @default(10.0)
-  additionalPct   Float    @default(0.0)
-  toolPct         Float    @default(3.0)
+  // FSR (Factor de Salario Real) configuration
+  fsrEnabled      Boolean  @default(true)
+  fsrConfig       String   @default("{}")   // JSON: { year, daysOff, holidays, vacationDays, aguinaldoDays, primaVacacionalPct, imssPct, infonavitPct, otherPct }
 
-  materials       Json     @default("[]")
-  labor           Json     @default("[]")
-  equipment       Json     @default("[]")
+  // Rendimiento (performance rate)
+  rendimiento     Float    @default(1.0)    // units per jornada (day)
+  rendimientoUnit String   @default("pza/jor")
+
+  // Percentage factors
+  indirectPct     Float    @default(27.48)  // Indirect costs (CDMX 2025: ~27.48%)
+  financingPct    Float    @default(2.0)    // Financing cost
+  profitPct       Float    @default(10.0)   // Profit
+  additionalPct   Float    @default(0.0)    // Additional charges
+  toolPct         Float    @default(3.0)    // Minor tools (% of MO + Equipment)
+
+  // Line items
+  materials       Json     @default("[]")   // [{ description, unit, quantity, unitCost, wastePct, total }]
+  labor           Json     @default("[]")   // [{ category, workers, dailyWage, fsrFactor, realDailyWage, total }]
+  equipment       Json     @default("[]")   // [{ description, unit, quantity, hourlyCost, hoursPerDay, total }]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
