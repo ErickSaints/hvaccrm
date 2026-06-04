@@ -3,10 +3,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Search, MapPin, Save, Loader2, RotateCcw, FileText,
   Minus, Plus, TrendingUp, RefreshCw, Check, X,
-  ChevronDown, ChevronRight, Percent, DollarSign
+  ChevronDown, ChevronRight, Percent, DollarSign, Calculator
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+import PricebookBreakdownEditor from '../components/PricebookBreakdownEditor';
 
 interface Item {
   id: number; sku: string | null; name: string; description: string | null;
@@ -79,6 +80,7 @@ export default function PricebookRegionalPage() {
   const [stateSearch, setStateSearch] = useState('');
   const [expandedState, setExpandedState] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Record<string, string>>({});
+  const [apuOpen, setApuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { data: items, isLoading: itemsLoading, isError: itemsError } = useQuery<Item[]>({
@@ -466,11 +468,25 @@ export default function PricebookRegionalPage() {
                                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${REGION_STYLES[sp.regionCode] || ''}`}>{sp.regionName}</span>
                                     <span className="text-[10px] text-gray-400">Ajuste: {sp.adjustmentFactor >= 0 ? '+' : ''}{(sp.adjustmentFactor * 100).toFixed(0)}%</span>
                                   </div>
-                                  <span className={`text-[10px] px-2 py-1 rounded-full font-medium ${sp.isOverridden ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'}`}>
-                                    {sp.isOverridden ? 'Precio manual' : 'Precio regional automático'}
-                                  </span>
+                                  <div className="flex items-center gap-2">
+                                    <button onClick={() => setApuOpen(prev => !prev)} className={`text-[10px] px-2 py-1 rounded-full font-medium inline-flex items-center gap-1 transition-all ${apuOpen ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300' : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600'}`}>
+                                      <Calculator className="w-3 h-3" /> APU
+                                    </button>
+                                    <span className={`text-[10px] px-2 py-1 rounded-full font-medium ${sp.isOverridden ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'}`}>
+                                      {sp.isOverridden ? 'Precio manual' : 'Precio regional automático'}
+                                    </span>
+                                  </div>
                                 </div>
 
+                                {apuOpen && selectedItem ? (
+                                  <PricebookBreakdownEditor
+                                    itemId={selectedItem.id}
+                                    goodPrice={selectedItem.goodPrice}
+                                    betterPrice={selectedItem.betterPrice}
+                                    bestPrice={selectedItem.bestPrice}
+                                    onClose={() => setApuOpen(false)}
+                                  />
+                                ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                   {TIER_CONFIG.map(({ key, label, desc }) => {
                                     const base = selectedItem?.[key] as number | null;
@@ -537,6 +553,7 @@ export default function PricebookRegionalPage() {
                                     );
                                   })}
                                 </div>
+                              )}
                               </div>
                             </td>
                           </tr>

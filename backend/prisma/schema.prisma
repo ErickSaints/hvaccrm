@@ -2,7 +2,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Para Railway (producción) — usa PostgreSQL:
+// Railway (producci+?n) ??? usa PostgreSQL:
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -11,7 +11,7 @@ datasource db {
 // Para desarrollo local con SQLite (descomentar en local):
 // datasource db {
 //   provider = "sqlite"
-//   url      = "file:./dev.db"
+//   url      = env("DATABASE_URL")
 // }
 
 enum UserRole {
@@ -764,6 +764,26 @@ model PricebookItem {
 
   materials     CatalogMaterial[]
   regionPrices  PricebookRegionPrice[]
+  breakdown     PricebookBreakdown?
+}
+
+model PricebookBreakdown {
+  id              Int      @id @default(autoincrement())
+  itemId          Int      @unique
+  item            PricebookItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  indirectPct     Float    @default(20.0)
+  financingPct    Float    @default(2.0)
+  profitPct       Float    @default(10.0)
+  additionalPct   Float    @default(0.0)
+  toolPct         Float    @default(3.0)
+
+  materials       Json     @default("[]")
+  labor           Json     @default("[]")
+  equipment       Json     @default("[]")
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 // Add supplier ref to CatalogMaterial
@@ -1022,3 +1042,6 @@ model PricebookRegionPrice {
   @@index([itemId])
   @@index([stateId])
 }
+
+
+

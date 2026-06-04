@@ -10,3 +10,4 @@ backend/uploads/avatars/
 backend/uploads/
 *.tsbuildinfo
 .vite/
+backend/logs/
