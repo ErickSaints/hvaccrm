@@ -753,6 +753,7 @@ model PricebookItem {
   vendor        Vendor?   @relation(fields: [vendorId], references: [id])
   basePrice     Float?    // Single median price (replaces tiers)
   costPrice     Float?    // Supplier cost
+  volumePricing Json?     // [{ minQty: 1, discountPct: 0 }, { minQty: 5, discountPct: 5 }, { minQty: 10, discountPct: 10 }, { minQty: 20, discountPct: 15 }]
   supplier      String?
   categoryId    Int?
   category      PricebookCategory? @relation(fields: [categoryId], references: [id])
