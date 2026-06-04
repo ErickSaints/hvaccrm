@@ -8,6 +8,7 @@ import { authenticate, requireSuperAdmin } from '../middleware/auth';
 import { sendEmail, welcomeEmail, isEmailConfigured, resetPasswordEmail } from '../notifications/email';
 import { sendSms, formatPhone, isSmsConfigured } from '../notifications/twilio';
 import crypto from 'crypto';
+import { DEFAULT_ROLE_PERMISSIONS } from '../permissions';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'hvaccrm-secret-key';
@@ -26,6 +27,10 @@ const registerSchema = z.object({
 });
 
 async function getEffectivePermissions(role: string): Promise<string[]> {
+  const count = await prisma.rolePermission.count({ where: { role: role as any } });
+  if (count === 0) {
+    return DEFAULT_ROLE_PERMISSIONS[role] || [];
+  }
   const overrides = await prisma.rolePermission.findMany({
     where: { role: role as any, allowed: true },
     select: { permission: true }

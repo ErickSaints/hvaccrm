@@ -128,23 +128,47 @@ export default function Layout() {
 
   const isClient = user?.role === 'CLIENT';
 
-  const sectionPermissions: Record<string, string[]> = {
-    'General': ['dashboard:view'],
-    'Clientes': ['customers:view', 'equipment:view', 'assets:view'],
-    'Operaciones': ['tickets:view', 'service-orders:view', 'service-reports:view', 'fleet:view', 'reports:view'],
-    'Ventas': ['quotations:view', 'catalog:view', 'regional-prices:view', 'campaigns:view'],
-    'Mantenimiento': ['policies:view', 'maintenance:view', 'dispatch:view', 'invoices:view'],
-    'Proyectos': ['surveys:view'],
-    'Herramientas': [],
+  const itemPermission: Record<string, string | null> = {
+    '/dashboard': 'dashboard:view',
+    '/customers': 'customers:view',
+    '/equipment': 'equipment:view',
+    '/assets': 'assets:view',
+    '/tickets': 'tickets:view',
+    '/service-orders': 'service-orders:view',
+    '/service-reports': 'service-reports:view',
+    '/fleet': 'fleet:view',
+    '/reports': 'reports:view',
+    '/quotations': 'quotations:view',
+    '/pricebook': 'catalog:view',
+    '/pricebook/regiones': 'regional-prices:view',
+    '/campaigns': 'campaigns:view',
+    '/policies': 'policies:view',
+    '/maintenance': 'maintenance:view',
+    '/dispatch': 'dispatch:view',
+    '/invoices': 'invoices:view',
+    '/surveys': 'surveys:view',
+    '/inventory': null,
+    '/refacciones': null,
+    '/calculos-hvac': null,
+    '/ml-predictions': null,
   };
 
-  const visibleMainNav = mainNav.filter((section) => {
-    if (isClient) return false;
-    if (user?.role === 'ADMIN') return true;
-    const perms = sectionPermissions[section.section];
-    if (!perms || perms.length === 0) return true;
-    return perms.some(p => can(p));
-  });
+  const visibleMainNav = mainNav
+    .map(section => ({
+      ...section,
+      items: section.items.filter(item => {
+        if (isClient) return false;
+        if (user?.role === 'ADMIN') return true;
+        const perm = itemPermission[item.href];
+        if (!perm) return true;
+        return can(perm);
+      }),
+    }))
+    .filter(section => {
+      if (isClient) return false;
+      if (user?.role === 'ADMIN') return true;
+      return section.items.length > 0;
+    });
 
   const bottomNav = isClient ? clientBottomNav : adminBottomNav;
 
