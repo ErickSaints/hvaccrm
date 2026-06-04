@@ -1,18 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Search, MapPin, Save, Loader2, RotateCcw, DollarSign, TrendingUp, Check, X, ShoppingCart, Percent } from 'lucide-react';
+import { Search, MapPin, Save, Loader2, RotateCcw, TrendingUp, Check, X, ShoppingCart, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
-
-interface Region {
-  id: number; code: string; name: string; adjustmentFactor: number; description: string | null; sortOrder: number;
-  _count?: { states: number };
-}
-
-interface State {
-  id: number; code: string; name: string; regionId: number;
-  region: { id: number; code: string; name: string; adjustmentFactor: number };
-}
 
 interface Item {
   id: number; sku: string | null; name: string; description: string | null;
@@ -31,46 +21,40 @@ interface StatePrice {
 }
 
 const REGIONS = [
-  { code: 'NORTE', name: 'Norte', adj: 0.07, color: 'red' },
-  { code: 'CENTRO-N', name: 'Centro-N', adj: 0.02, color: 'amber' },
-  { code: 'CENTRO', name: 'Centro', adj: 0, color: 'blue' },
-  { code: 'BAJIO', name: 'Bajío', adj: -0.02, color: 'emerald' },
-  { code: 'SURESTE', name: 'Sureste', adj: -0.07, color: 'purple' },
-] as const;
+  { code: 'NORTE', name: 'Norte', adj: 0.07 },
+  { code: 'CENTRO-N', name: 'Centro-Norte', adj: 0.02 },
+  { code: 'CENTRO', name: 'Centro', adj: 0 },
+  { code: 'BAJIO', name: 'Bajío-Occidente', adj: -0.02 },
+  { code: 'SURESTE', name: 'Sur-Sureste', adj: -0.07 },
+];
 
-const REGION_COLORS: Record<string, string> = {
-  NORTE: 'bg-red-100 text-red-700 ring-red-300 dark:bg-red-900/30 dark:text-red-300 dark:ring-red-700',
-  'CENTRO-N': 'bg-amber-100 text-amber-700 ring-amber-300 dark:bg-amber-900/30 dark:text-amber-300 dark:ring-amber-700',
-  CENTRO: 'bg-blue-100 text-blue-700 ring-blue-300 dark:bg-blue-900/30 dark:text-blue-300 dark:ring-blue-700',
-  BAJIO: 'bg-emerald-100 text-emerald-700 ring-emerald-300 dark:bg-emerald-900/30 dark:text-emerald-300 dark:ring-emerald-700',
-  SURESTE: 'bg-purple-100 text-purple-700 ring-purple-300 dark:bg-purple-900/30 dark:text-purple-300 dark:ring-purple-700',
+const REGION_STYLES: Record<string, { active: string; idle: string; badge: string }> = {
+  NORTE:     { active: 'bg-red-600 text-white ring-red-600', idle: 'text-red-700 bg-red-50 ring-red-200 hover:bg-red-100 dark:text-red-300 dark:bg-red-900/30 dark:ring-red-800', badge: 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300' },
+  'CENTRO-N':{ active: 'bg-amber-600 text-white ring-amber-600', idle: 'text-amber-700 bg-amber-50 ring-amber-200 hover:bg-amber-100 dark:text-amber-300 dark:bg-amber-900/30 dark:ring-amber-800', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300' },
+  CENTRO:    { active: 'bg-blue-600 text-white ring-blue-600', idle: 'text-blue-700 bg-blue-50 ring-blue-200 hover:bg-blue-100 dark:text-blue-300 dark:bg-blue-900/30 dark:ring-blue-800', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' },
+  BAJIO:     { active: 'bg-emerald-600 text-white ring-emerald-600', idle: 'text-emerald-700 bg-emerald-50 ring-emerald-200 hover:bg-emerald-100 dark:text-emerald-300 dark:bg-emerald-900/30 dark:ring-emerald-800', badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' },
+  SURESTE:   { active: 'bg-purple-600 text-white ring-purple-600', idle: 'text-purple-700 bg-purple-50 ring-purple-200 hover:bg-purple-100 dark:text-purple-300 dark:bg-purple-900/30 dark:ring-purple-800', badge: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' },
 };
 
-const REGION_BG: Record<string, string> = {
-  NORTE: 'bg-red-600',
-  'CENTRO-N': 'bg-amber-600',
-  CENTRO: 'bg-blue-600',
-  BAJIO: 'bg-emerald-600',
-  SURESTE: 'bg-purple-600',
-};
-
-const formatMoney = (v: number | null | undefined) =>
+const fmt = (v: number | null | undefined) =>
   v != null ? `$${v.toLocaleString('es-MX', { minimumFractionDigits: 2 })}` : '—';
 
-function calcMargin(cost: number | null, sell: number | null): number | null {
+function margin(cost: number | null, sell: number | null): number | null {
   if (cost == null || sell == null || cost === 0) return null;
   return ((sell - cost) / sell) * 100;
 }
 
 export default function PricebookRegionalPage() {
   const queryClient = useQueryClient();
-  const [search, setSearch] = useState('');
+  const [itemSearch, setItemSearch] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [filterRegion, setFilterRegion] = useState<string | null>(null);
   const [stateSearch, setStateSearch] = useState('');
-  const [priceEdits, setPriceEdits] = useState<Record<string, Partial<StatePrice>>>({});
-  const [focusedState, setFocusedState] = useState<string | null>(null);
-  const [useTier, setUseTier] = useState<'goodPrice' | 'betterPrice' | 'bestPrice'>('goodPrice');
+  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [editValues, setEditValues] = useState<Record<string, string>>({});
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const itemInputRef = useRef<HTMLInputElement>(null);
 
   const { data: items, isLoading: itemsLoading } = useQuery<Item[]>({
     queryKey: ['pricebook-items-all'],
@@ -83,56 +67,45 @@ export default function PricebookRegionalPage() {
     queryFn: () => api.get(`/pricebook/items/${selectedItemId}/regional-prices`).then(r => r.data),
   });
 
-  const filteredItems = useMemo(() => {
-    if (!items) return [];
-    return items.filter(i =>
-      i.name.toLowerCase().includes(search.toLowerCase()) ||
-      i.sku?.toLowerCase().includes(search.toLowerCase()) ||
-      i.category?.name?.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [items, search]);
-
   const selectedItem = useMemo(() => {
     if (!items || !selectedItemId) return null;
     return items.find(i => i.id === selectedItemId) || null;
   }, [items, selectedItemId]);
 
-  const filteredPrices = useMemo(() => {
+  const filteredItems = useMemo(() => {
+    if (!items) return [];
+    const q = itemSearch.toLowerCase();
+    return items.filter(i =>
+      !q || i.name.toLowerCase().includes(q) ||
+      i.sku?.toLowerCase().includes(q) ||
+      i.category?.name?.toLowerCase().includes(q)
+    );
+  }, [items, itemSearch]);
+
+  const filteredStates = useMemo(() => {
     if (!statePrices) return [];
     let list = statePrices;
-    if (filterRegion) {
-      list = list.filter(sp => sp.regionCode === filterRegion);
-    }
+    if (filterRegion) list = list.filter(sp => sp.regionCode === filterRegion);
     if (stateSearch) {
       const q = stateSearch.toLowerCase();
-      list = list.filter(sp =>
-        sp.stateName.toLowerCase().includes(q) ||
-        sp.stateCode.toLowerCase().includes(q)
-      );
+      list = list.filter(sp => sp.stateName.toLowerCase().includes(q) || sp.stateCode.toLowerCase().includes(q));
     }
     return list;
   }, [statePrices, filterRegion, stateSearch]);
 
-  const regionsWithPrices = useMemo(() => {
-    if (!statePrices) return REGIONS;
-    return REGIONS.map(r => ({
-      ...r,
-      stateCount: statePrices.filter(sp => sp.regionCode === r.code).length,
-    }));
-  }, [statePrices]);
+  const selectedStateData = useMemo(() => {
+    if (!selectedState || !statePrices) return null;
+    return statePrices.find(sp => sp.stateCode === selectedState) || null;
+  }, [selectedState, statePrices]);
 
   const saveMutation = useMutation({
-    mutationFn: async ({ stateCode, data }: { stateCode: string; data: any }) => {
-      await api.put(`/pricebook/items/${selectedItemId}/regional-price`, { stateCode, ...data });
+    mutationFn: async (data: any) => {
+      await api.put(`/pricebook/items/${selectedItemId}/regional-price`, data);
     },
-    onSuccess: (_data, vars) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pricebook-regional-prices', selectedItemId] });
-      setPriceEdits(prev => {
-        const next = { ...prev };
-        delete next[vars.stateCode];
-        return next;
-      });
-      toast.success(`Precio guardado para ${vars.stateCode}`);
+      setEditValues({});
+      toast.success('Precio guardado');
     },
     onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al guardar'),
   });
@@ -148,115 +121,82 @@ export default function PricebookRegionalPage() {
     onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al restablecer'),
   });
 
-  const pendingEdits = Object.keys(priceEdits).length;
-
-  function handlePriceChange(stateCode: string, field: string, value: number | null) {
-    setPriceEdits(prev => ({
-      ...prev,
-      [stateCode]: { ...(prev[stateCode] || {}), [field]: value },
-    }));
-  }
-
-  function handleSaveState(stateCode: string) {
-    if (!selectedItemId) return;
-    const edits = priceEdits[stateCode];
-    if (!edits) return;
-    saveMutation.mutate({ stateCode, data: edits });
-  }
-
-  function handleSaveAll() {
-    if (!selectedItemId) return;
-    for (const stateCode of Object.keys(priceEdits)) {
-      saveMutation.mutate({ stateCode, data: priceEdits[stateCode] });
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
     }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  function selectItem(item: Item) {
+    setSelectedItemId(item.id);
+    setItemSearch(item.name);
+    setShowDropdown(false);
+    setSelectedState(null);
+    setFilterRegion(null);
+    setStateSearch('');
+    setEditValues({});
   }
 
-  function getPrice(statePrice: StatePrice, field: 'goodPrice' | 'betterPrice' | 'bestPrice' | 'costPrice'): number | null {
-    const edit = priceEdits[statePrice.stateCode]?.[field];
-    if (edit !== undefined) return edit as number | null;
-    return statePrice[field];
-  }
-
-  const priceTiers = [
-    { key: 'goodPrice' as const, label: 'Good', desc: 'Precio estándar', color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
-    { key: 'betterPrice' as const, label: 'Better', desc: 'Precio preferencial', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-900/20' },
-    { key: 'bestPrice' as const, label: 'Best', desc: 'Precio promocional', color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 dark:bg-purple-900/20' },
+  const basePrices = [
+    { key: 'goodPrice', label: 'Good' },
+    { key: 'betterPrice', label: 'Better' },
+    { key: 'bestPrice', label: 'Best' },
+    { key: 'costPrice', label: 'Costo' },
   ];
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="card p-4 lg:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
-            <MapPin className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">Precios Regionales</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Precios competitivos por estado con ajuste regional automático</p>
-          </div>
-        </div>
-        {selectedItem && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-lg">
-              Base CDMX: <strong className="text-gray-700 dark:text-gray-300">{formatMoney(selectedItem.goodPrice)}</strong>
-            </span>
-            {pendingEdits > 0 && (
-              <button onClick={handleSaveAll} disabled={saveMutation.isPending}
-                className="btn-primary text-sm inline-flex items-center gap-1.5">
-                {saveMutation.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
-                Guardar ({pendingEdits})
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Main layout */}
-      <div className="flex gap-6 flex-col lg:flex-row">
-        {/* Left: Item selector */}
-        <div className="w-full lg:w-72 shrink-0">
-          <div className="card p-0">
-            <div className="p-3 border-b border-gray-100 dark:border-gray-800">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text" placeholder="Buscar artículo..."
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 dark:bg-gray-800 border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/30"
-                />
-              </div>
+  if (!selectedItemId) {
+    return (
+      <div className="space-y-6">
+        <div className="card p-5">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+              <MapPin className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             </div>
-            {itemsLoading ? (
-              <div className="p-3 space-y-2">
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="h-10 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
-                ))}
-              </div>
-            ) : (
-              <div className="divide-y divide-gray-50 dark:divide-gray-800/50 max-h-[65vh] overflow-y-auto">
-                {filteredItems.length === 0 ? (
-                  <div className="p-6 text-center text-sm text-gray-400 dark:text-gray-500">
-                    {search ? 'Sin resultados' : 'Selecciona un artículo'}
-                  </div>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">Precios Regionales</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Precios competitivos ajustados por estado y región</p>
+            </div>
+          </div>
+          <div className="relative" ref={dropdownRef}>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                ref={itemInputRef}
+                type="text"
+                placeholder="Buscar artículo (ej. Mini Split, Chiller, Mantenimiento)..."
+                value={itemSearch}
+                onChange={e => { setItemSearch(e.target.value); setShowDropdown(true); }}
+                onFocus={() => setShowDropdown(true)}
+                className="w-full pl-9 pr-10 py-3 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
+              />
+              {itemSearch && (
+                <button onClick={() => { setItemSearch(''); setShowDropdown(true); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            {showDropdown && (
+              <div className="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-80 overflow-y-auto">
+                {itemsLoading ? (
+                  <div className="p-4 text-center text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin inline mr-2" />Cargando...</div>
+                ) : filteredItems.length === 0 ? (
+                  <div className="p-4 text-center text-sm text-gray-400">{itemSearch ? 'Sin resultados' : 'Escribe para buscar'}</div>
                 ) : (
                   filteredItems.map(item => (
                     <button
                       key={item.id}
-                      onClick={() => setSelectedItemId(item.id)}
-                      className={`w-full text-left px-3 py-2.5 transition-colors ${
-                        selectedItemId === item.id
-                          ? 'bg-primary-50 dark:bg-primary-900/20 border-l-2 border-primary-500'
-                          : 'hover:bg-gray-50 dark:hover:bg-gray-800/50 border-l-2 border-transparent'
-                      }`}
+                      onClick={() => selectItem(item)}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-50 dark:border-gray-700/30 last:border-0"
                     >
-                      <div className="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-1">{item.name}</div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
                       <div className="flex items-center gap-2 mt-0.5">
-                        {item.category && (
-                          <span className="text-[10px] text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{item.category.name}</span>
-                        )}
-                        <span className="text-[10px] text-gray-400 dark:text-gray-500">{item.unit}</span>
+                        {item.category && <span className="text-[11px] text-gray-400 bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded">{item.category.name}</span>}
+                        <span className="text-[11px] text-gray-400">{item.unit}</span>
+                        {item.goodPrice != null && <span className="text-[11px] text-primary-600 font-medium ml-auto">{fmt(item.goodPrice)}</span>}
                       </div>
                     </button>
                   ))
@@ -265,241 +205,398 @@ export default function PricebookRegionalPage() {
             )}
           </div>
         </div>
+        <div className="card py-20 text-center">
+          <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-4">
+            <MapPin className="w-8 h-8 text-gray-300 dark:text-gray-600" />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Selecciona un artículo</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+            Busca y selecciona un artículo del catálogo para ver sus precios ajustados por estado según la región
+          </p>
+        </div>
+      </div>
+    );
+  }
 
-        {/* Right: pricing panel */}
-        <div className="flex-1 min-w-0 space-y-4">
-          {!selectedItemId ? (
-            <div className="card py-16 text-center">
-              <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-4">
-                <MapPin className="w-8 h-8 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Selecciona un artículo</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Elige un artículo del listado para ver precios ajustados por estado
-              </p>
+  return (
+    <div className="space-y-5">
+      {/* Header with item selector */}
+      <div className="card p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center shrink-0">
+              <MapPin className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             </div>
-          ) : pricesLoading ? (
-            <div className="card py-16 text-center">
-              <Loader2 className="w-8 h-8 animate-spin text-primary-500 mx-auto" />
-            </div>
-          ) : (
-            <>
-              {/* Item info bar */}
-              <div className="card p-4">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div>
-                    <h2 className="font-semibold text-gray-900 dark:text-gray-100 text-lg">{selectedItem?.name}</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {selectedItem?.category?.name} · {selectedItem?.unit}
-                      {selectedItem?.sku && <span className="ml-2 font-mono text-xs text-gray-400">{selectedItem.sku}</span>}
-                    </p>
+            <div className="min-w-0 flex-1">
+              <div className="relative" ref={dropdownRef}>
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Buscar otro artículo..."
+                  value={itemSearch}
+                  onChange={e => { setItemSearch(e.target.value); setShowDropdown(true); }}
+                  onFocus={() => setShowDropdown(true)}
+                  className="w-full pl-9 pr-3 py-2.5 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
+                />
+                {showDropdown && (
+                  <div className="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-72 overflow-y-auto">
+                    {filteredItems.length === 0 ? (
+                      <div className="p-3 text-center text-sm text-gray-400">{itemSearch ? 'Sin resultados' : 'Escribe para buscar'}</div>
+                    ) : (
+                      filteredItems.map(item => (
+                        <button
+                          key={item.id}
+                          onClick={() => selectItem(item)}
+                          className={`w-full text-left px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/50 border-b border-gray-50 dark:border-gray-700/30 last:border-0 ${
+                            selectedItemId === item.id ? 'bg-primary-50 dark:bg-primary-900/20' : ''
+                          }`}
+                        >
+                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
+                          <div className="text-[11px] text-gray-400">
+                            {item.category?.name} · {item.unit} · {fmt(item.goodPrice)}
+                          </div>
+                        </button>
+                      ))
+                    )}
                   </div>
-                  {/* Tier selector */}
-                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-                    {priceTiers.map(t => (
-                      <button
-                        key={t.key}
-                        onClick={() => setUseTier(t.key)}
-                        className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                          useTier === t.key
-                            ? 'bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-gray-100'
-                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                        }`}
-                      >
-                        {t.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                )}
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-              {/* Region filter */}
-              <div className="flex flex-wrap gap-2">
+      {/* Selected item info bar */}
+      {selectedItem && (
+        <div className="card p-4 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <div>
+            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{selectedItem.name}</span>
+            {selectedItem.sku && <span className="ml-2 text-xs text-gray-400 font-mono">SKU: {selectedItem.sku}</span>}
+          </div>
+          {basePrices.map(({ key, label }) => {
+            const v = selectedItem[key as keyof Item] as number | null;
+            return (
+              <span key={key} className="text-sm">
+                <span className="text-gray-400 text-xs">{label}:</span>{' '}
+                <span className="font-semibold text-gray-900 dark:text-gray-100">{fmt(v)}</span>
+              </span>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Loading state */}
+      {pricesLoading ? (
+        <div className="card py-16 text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary-500 mx-auto" />
+          <p className="text-sm text-gray-400 mt-3">Cargando precios regionales...</p>
+        </div>
+      ) : (
+        <>
+          {/* Region filter */}
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setFilterRegion(null)}
+              className={`px-4 py-2 text-sm font-medium rounded-xl ring-1 transition-all ${
+                !filterRegion
+                  ? 'bg-gray-900 text-white ring-gray-900 dark:bg-white dark:text-gray-900 dark:ring-white'
+                  : 'bg-white text-gray-600 ring-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-gray-700'
+              }`}
+            >
+              Todos
+            </button>
+            {REGIONS.map(r => {
+              const count = statePrices?.filter(sp => sp.regionCode === r.code).length || 0;
+              const s = REGION_STYLES[r.code];
+              return (
                 <button
-                  onClick={() => setFilterRegion(null)}
-                  className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ring-1 ${
-                    !filterRegion
-                      ? 'bg-gray-900 text-white ring-gray-900 dark:bg-white dark:text-gray-900 dark:ring-white'
-                      : 'bg-white text-gray-600 ring-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-gray-700'
+                  key={r.code}
+                  onClick={() => setFilterRegion(r.code)}
+                  className={`px-4 py-2 text-sm font-medium rounded-xl ring-1 transition-all ${
+                    filterRegion === r.code ? s.active : s.idle
                   }`}
                 >
-                  Todas las regiones
+                  {r.name} ({r.adj >= 0 ? '+' : ''}{r.adj * 100}%)
+                  <span className="ml-1.5 text-xs opacity-60">{count} edo(s)</span>
                 </button>
-                {regionsWithPrices.map(r => (
-                  <button
-                    key={r.code}
-                    onClick={() => setFilterRegion(r.code)}
-                    className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ring-1 ${
-                      filterRegion === r.code
-                        ? `${REGION_BG[r.code]} text-white ring-transparent`
-                        : 'bg-white text-gray-600 ring-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    {r.name} {r.adj >= 0 ? '+' : ''}{(r.adj * 100).toFixed(0)}%
-                  </button>
-                ))}
-              </div>
+              );
+            })}
+          </div>
 
-              {/* State search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text" placeholder="Buscar estado..."
-                  value={stateSearch}
-                  onChange={e => setStateSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
-                />
-              </div>
+          {/* State search */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Buscar estado por nombre o código..."
+              value={stateSearch}
+              onChange={e => setStateSearch(e.target.value)}
+              className="w-full pl-9 pr-3 py-2.5 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
+            />
+          </div>
 
-              {/* Price cards grid */}
-              {filteredPrices.length === 0 ? (
-                <div className="card py-8 text-center text-sm text-gray-400">Sin estados para mostrar</div>
-              ) : (
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                  {filteredPrices.map(sp => {
-                    const selTier = sp[useTier as keyof StatePrice] as number | null;
-                    const basePrice = selectedItem?.[useTier] as number | null;
-                    const margin = calcMargin(sp.costPrice, selTier);
-                    const isEdited = !!priceEdits[sp.stateCode];
-                    const isSaving = saveMutation.isPending && !!priceEdits[sp.stateCode];
+          {/* Table or detail panel */}
+          {selectedState && selectedStateData ? (
+            <div className="grid gap-5 lg:grid-cols-3">
+              {/* State detail */}
+              <div className="lg:col-span-2 card p-0 overflow-hidden">
+                <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => setSelectedState(null)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1 -ml-1">
+                      <ChevronDown className="w-5 h-5 rotate-90" />
+                    </button>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-100">{selectedStateData.stateName}</h3>
+                      <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${REGION_STYLES[selectedStateData.regionCode]?.badge || ''}`}>
+                        {selectedStateData.regionName} · Ajuste {selectedStateData.adjustmentFactor >= 0 ? '+' : ''}{(selectedStateData.adjustmentFactor * 100).toFixed(0)}%
+                      </span>
+                    </div>
+                  </div>
+                  <span className={`text-xs px-2 py-1 rounded-full ${selectedStateData.isOverridden ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'}`}>
+                    {selectedStateData.isOverridden ? 'Precio manual' : 'Regional automático'}
+                  </span>
+                </div>
+                <div className="p-5">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-100 dark:border-gray-800">
+                        <th className="text-left py-2 pr-4 text-gray-500 font-medium">Tier</th>
+                        <th className="text-right py-2 px-4 text-gray-500 font-medium">Base CDMX</th>
+                        <th className="text-right py-2 px-4 text-gray-500 font-medium">Precio Regional</th>
+                        <th className="text-right py-2 px-4 text-gray-500 font-medium">Margen</th>
+                        <th className="text-right py-2 pl-4 text-gray-500 font-medium">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {basePrices.filter(p => p.key !== 'costPrice').map(({ key, label }) => {
+                        const base = selectedItem?.[key as keyof Item] as number | null;
+                        const regional = selectedStateData[key as keyof StatePrice] as number | null;
+                        const m = margin(selectedStateData.costPrice, regional);
+                        const editKey = `${selectedStateData.stateCode}_${key}`;
+                        const editVal = editValues[editKey] ?? '';
+                        const isEdited = editKey in editValues;
 
-                    return (
-                      <div
-                        key={sp.stateCode}
-                        className={`card p-0 overflow-hidden transition-all ${
-                          focusedState === sp.stateCode ? 'ring-2 ring-primary-500 shadow-lg' : ''
-                        } ${sp.isOverridden || isEdited ? 'ring-1 ring-amber-300 dark:ring-amber-700' : ''}`}
-                        onClick={() => setFocusedState(sp.stateCode)}
-                      >
-                        {/* State header */}
-                        <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
-                          <div className="flex items-center gap-2.5">
-                            <div className={`w-2 h-2 rounded-full ${sp.isOverridden || isEdited ? 'bg-amber-400' : 'bg-gray-300 dark:bg-gray-600'}`} />
-                            <div>
-                              <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">{sp.stateName}</span>
-                              <span className="text-[10px] text-gray-400 ml-1.5 font-mono">{sp.stateCode}</span>
-                            </div>
-                          </div>
-                          <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ring-1 ${REGION_COLORS[sp.regionCode]}`}>
-                            {sp.regionName}
-                          </span>
-                        </div>
-
-                        {/* Price and adjust */}
-                        <div className="p-4 space-y-3">
-                          {/* Main price display */}
-                          <div className="flex items-baseline justify-between">
-                            <span className="text-xs text-gray-500 dark:text-gray-400">Precio {priceTiers.find(t => t.key === useTier)?.label}</span>
-                            <div className="text-right">
-                              <span className={`text-xl font-bold tabular-nums ${margin != null && margin > 0 ? 'text-gray-900 dark:text-gray-100' : 'text-red-600 dark:text-red-400'}`}>
-                                {formatMoney(selTier)}
-                              </span>
-                              {basePrice != null && selTier != null && basePrice !== selTier && (
-                                <div className="text-[10px] text-gray-400 dark:text-gray-500">
-                                  Base: {formatMoney(basePrice)} · Ajuste: {((selTier - basePrice) / basePrice * 100).toFixed(0)}%
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Cost and margin row */}
-                          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-lg px-3 py-2">
-                            <span className="flex items-center gap-1">
-                              <DollarSign className="w-3 h-3" />
-                              Costo: {formatMoney(sp.costPrice)}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Percent className="w-3 h-3" />
-                              Margen: {margin != null ? `${margin.toFixed(1)}%` : '—'}
-                            </span>
-                            <span className="text-[10px]">
-                              Factor: {sp.adjustmentFactor >= 0 ? '+' : ''}{(sp.adjustmentFactor * 100).toFixed(0)}%
-                            </span>
-                          </div>
-
-                          {/* Manual override inputs */}
-                          <div className={`grid grid-cols-2 gap-2 transition-all ${focusedState === sp.stateCode ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}>
-                            {priceTiers.map(t => (
-                              <div key={t.key}>
-                                <label className="text-[10px] text-gray-400 dark:text-gray-500 mb-0.5 block">{t.label}</label>
-                                <div className={`relative rounded-md border ${focusedState === sp.stateCode ? 'border-gray-200 dark:border-gray-600' : 'border-transparent'} overflow-hidden`}>
-                                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400">$</span>
+                        return (
+                          <tr key={key} className="border-b border-gray-50 dark:border-gray-800/50 last:border-0">
+                            <td className="py-3 pr-4 font-medium text-gray-900 dark:text-gray-100">{label}</td>
+                            <td className="py-3 px-4 text-right text-gray-500">{fmt(base)}</td>
+                            <td className="py-3 px-4 text-right">
+                              {isEdited ? (
+                                <div className="relative inline-block">
+                                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">$</span>
                                   <input
                                     type="number" step="0.01"
-                                    value={getPrice(sp, t.key) ?? ''}
-                                    onChange={e => handlePriceChange(sp.stateCode, t.key, e.target.value ? parseFloat(e.target.value) : null)}
-                                    onFocus={() => setFocusedState(sp.stateCode)}
-                                    className={`w-full pl-5 pr-2 py-1.5 text-xs font-medium text-right bg-transparent focus:outline-none tabular-nums ${
-                                      sp.isOverridden || isEdited ? 'text-amber-700 dark:text-amber-400' : 'text-gray-900 dark:text-gray-100'
-                                    }`}
-                                    placeholder="—"
+                                    value={editVal}
+                                    onChange={e => setEditValues(prev => ({ ...prev, [editKey]: e.target.value }))}
+                                    className="w-32 pl-5 pr-2 py-1.5 text-sm text-right bg-amber-50 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500/30 font-medium tabular-nums"
                                   />
                                 </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
+                              ) : (
+                                <span className={`font-semibold tabular-nums ${m != null && m > 0 ? 'text-gray-900 dark:text-gray-100' : m != null && m <= 0 ? 'text-red-600' : ''}`}>
+                                  {fmt(regional)}
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-3 px-4 text-right">
+                              {m != null ? (
+                                <span className={`text-sm font-medium ${m >= 20 ? 'text-emerald-600' : m >= 10 ? 'text-amber-600' : 'text-red-600'}`}>
+                                  {m.toFixed(1)}%
+                                </span>
+                              ) : <span className="text-gray-400">—</span>}
+                            </td>
+                            <td className="py-3 pl-4 text-right">
+                              {isEdited ? (
+                                <div className="flex items-center justify-end gap-1">
+                                  <button
+                                    onClick={() => {
+                                      const v = parseFloat(editVal);
+                                      if (isNaN(v)) { toast.error('Ingresa un número válido'); return; }
+                                      saveMutation.mutate({ stateCode: selectedStateData.stateCode, [key]: v });
+                                    }}
+                                    disabled={saveMutation.isPending}
+                                    className="text-xs px-2.5 py-1.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 disabled:opacity-50 font-medium"
+                                  >
+                                    <Check className="w-3 h-3 inline" /> Guardar
+                                  </button>
+                                  <button
+                                    onClick={() => setEditValues(prev => { const n = { ...prev }; delete n[editKey]; return n; })}
+                                    className="text-xs px-2.5 py-1.5 text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 font-medium"
+                                  >
+                                    <X className="w-3 h-3 inline" /> Cancelar
+                                  </button>
+                                </div>
+                              ) : (
+                                <div className="flex items-center justify-end gap-1">
+                                  <button
+                                    onClick={() => {
+                                      setEditValues(prev => ({ ...prev, [editKey]: String(regional ?? '') }));
+                                    }}
+                                    className="text-xs px-2.5 py-1.5 text-primary-600 bg-primary-50 dark:bg-primary-900/30 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 font-medium"
+                                  >
+                                    Editar
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      const v = regional;
+                                      if (v != null) {
+                                        navigator.clipboard.writeText(String(v));
+                                        toast.success(`${fmt(v)} copiado`);
+                                      }
+                                    }}
+                                    className="text-xs px-2.5 py-1.5 text-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 font-medium"
+                                    title="Copiar precio"
+                                  >
+                                    <ShoppingCart className="w-3 h-3 inline" /> Copiar
+                                  </button>
+                                </div>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {/* Cost row (read-only) */}
+                      <tr>
+                        <td className="py-3 pr-4 text-gray-500 font-medium">Costo</td>
+                        <td className="py-3 px-4 text-right text-gray-500">{fmt(selectedItem?.costPrice)}</td>
+                        <td className="py-3 px-4 text-right font-semibold tabular-nums text-gray-900 dark:text-gray-100">{fmt(selectedStateData.costPrice)}</td>
+                        <td className="py-3 px-4 text-right text-gray-400">—</td>
+                        <td className="py-3 pl-4 text-right"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                {selectedStateData.isOverridden && (
+                  <div className="px-5 py-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 flex justify-end">
+                    <button
+                      onClick={() => resetMutation.mutate(selectedStateData.stateCode)}
+                      className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-red-600 transition-colors"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      Restablecer a precio regional automático
+                    </button>
+                  </div>
+                )}
+              </div>
 
-                        {/* Actions */}
-                        <div className="px-4 py-2.5 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30 flex items-center justify-end gap-1.5">
-                          {isEdited && (
-                            <button
-                              onClick={e => { e.stopPropagation(); handleSaveState(sp.stateCode); }}
-                              disabled={saveMutation.isPending}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors disabled:opacity-50"
-                            >
-                              {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
-                              Guardar
-                            </button>
-                          )}
-                          {sp.isOverridden && !isEdited && (
-                            <button
-                              onClick={e => { e.stopPropagation(); resetMutation.mutate(sp.stateCode); }}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                            >
-                              <RotateCcw className="w-3 h-3" />
-                              Restaurar
-                            </button>
-                          )}
-
-                          {/* Copy for quoting */}
-                          {selTier != null && (
-                            <button
-                              onClick={e => {
-                                e.stopPropagation();
-                                navigator.clipboard.writeText(String(selTier));
-                                toast.success(`$${selTier.toLocaleString('es-MX', { minimumFractionDigits: 2 })} copiado`);
-                              }}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-primary-600 bg-primary-50 dark:bg-primary-900/30 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
-                              title="Copiar precio"
-                            >
-                              <ShoppingCart className="w-3 h-3" />
-                              Copiar
-                            </button>
-                          )}
+              {/* Quick stats sidebar */}
+              <div className="card p-5 space-y-4">
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Resumen</h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Región</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">{selectedStateData.regionName}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Ajuste regional</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                      {selectedStateData.adjustmentFactor >= 0 ? '+' : ''}{(selectedStateData.adjustmentFactor * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Tipo de precio</span>
+                    <span className={`font-medium text-xs px-2 py-0.5 rounded-full ${selectedStateData.isOverridden ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'}`}>
+                      {selectedStateData.isOverridden ? 'Manual' : 'Automático'}
+                    </span>
+                  </div>
+                  <hr className="border-gray-100 dark:border-gray-800" />
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Costo</span>
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">{fmt(selectedStateData.costPrice)}</span>
+                  </div>
+                  {basePrices.filter(p => p.key !== 'costPrice').map(({ key, label }) => {
+                    const regional = selectedStateData[key as keyof StatePrice] as number | null;
+                    const m = margin(selectedStateData.costPrice, regional);
+                    return (
+                      <div key={key} className="flex justify-between text-sm">
+                        <span className="text-gray-500">{label}</span>
+                        <div className="text-right">
+                          <div className="font-semibold text-gray-900 dark:text-gray-100">{fmt(regional)}</div>
+                          {m != null && <div className={`text-xs ${m >= 20 ? 'text-emerald-600' : m >= 10 ? 'text-amber-600' : 'text-red-600'}`}>Margen {m.toFixed(1)}%</div>}
                         </div>
                       </div>
                     );
                   })}
                 </div>
-              )}
-
-              {/* Summary bar */}
-              {filteredPrices.length > 0 && (
-                <div className="card p-3 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                  <span>
-                    Mostrando {filteredPrices.length} de {statePrices?.length || 0} estados
-                    {filterRegion ? ` (${REGIONS.find(r => r.code === filterRegion)?.name})` : ''}
-                  </span>
-                  <span>
-                    {statePrices?.filter(s => s.isOverridden).length || 0} con precios manuales
-                  </span>
+              </div>
+            </div>
+          ) : (
+            /* States table */
+            <div className="card p-0 overflow-hidden">
+              {filteredStates.length === 0 ? (
+                <div className="py-12 text-center text-sm text-gray-400">
+                  {stateSearch || filterRegion ? 'No hay estados con ese filtro' : 'Selecciona un artículo para ver precios'}
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
+                        <th className="text-left py-3 px-4 text-gray-500 font-medium">Estado</th>
+                        <th className="text-left py-3 px-4 text-gray-500 font-medium">Región</th>
+                        <th className="text-right py-3 px-4 text-gray-500 font-medium">Good</th>
+                        <th className="text-right py-3 px-4 text-gray-500 font-medium">Better</th>
+                        <th className="text-right py-3 px-4 text-gray-500 font-medium">Best</th>
+                        <th className="text-right py-3 px-4 text-gray-500 font-medium">Costo</th>
+                        <th className="text-right py-3 px-4 text-gray-500 font-medium">Margen</th>
+                        <th className="text-center py-3 px-4 text-gray-500 font-medium w-20">Tipo</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
+                      {filteredStates.map(sp => {
+                        const sel = sp[filterRegion ? 'goodPrice' : 'goodPrice' as keyof StatePrice] as number | null;
+                        const m = margin(sp.costPrice, sp.goodPrice);
+                        return (
+                          <tr
+                            key={sp.stateCode}
+                            onClick={() => setSelectedState(sp.stateCode)}
+                            className="hover:bg-gray-50 dark:hover:bg-gray-800/30 cursor-pointer transition-colors"
+                          >
+                            <td className="py-3 px-4">
+                              <div className="font-medium text-gray-900 dark:text-gray-100">{sp.stateName}</div>
+                              <div className="text-[11px] text-gray-400 font-mono">{sp.stateCode}</div>
+                            </td>
+                            <td className="py-3 px-4">
+                              <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${REGION_STYLES[sp.regionCode]?.badge || ''}`}>
+                                {sp.regionName}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-right font-semibold tabular-nums text-gray-900 dark:text-gray-100">{fmt(sp.goodPrice)}</td>
+                            <td className="py-3 px-4 text-right font-semibold tabular-nums text-gray-900 dark:text-gray-100">{fmt(sp.betterPrice)}</td>
+                            <td className="py-3 px-4 text-right font-semibold tabular-nums text-gray-900 dark:text-gray-100">{fmt(sp.bestPrice)}</td>
+                            <td className="py-3 px-4 text-right tabular-nums text-gray-500">{fmt(sp.costPrice)}</td>
+                            <td className="py-3 px-4 text-right">
+                              {m != null ? (
+                                <span className={`text-sm font-medium ${m >= 20 ? 'text-emerald-600' : m >= 10 ? 'text-amber-600' : 'text-red-600'}`}>
+                                  {m.toFixed(1)}%
+                                </span>
+                              ) : <span className="text-gray-400">—</span>}
+                            </td>
+                            <td className="py-3 px-4 text-center">
+                              {sp.isOverridden ? (
+                                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
+                                  Manual
+                                </span>
+                              ) : (
+                                <span className="text-[10px] text-gray-400">Auto</span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               )}
-            </>
+              {statePrices && (
+                <div className="px-4 py-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-400 flex justify-between bg-gray-50/50 dark:bg-gray-900/30">
+                  <span>Mostrando {filteredStates.length} de {statePrices.length} estados{filterRegion ? ' · Filtro por región activo' : ''}</span>
+                  <span>{statePrices.filter(s => s.isOverridden).length} con precio manual</span>
+                </div>
+              )}
+            </div>
           )}
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }

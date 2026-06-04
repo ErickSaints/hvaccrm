@@ -5,11 +5,10 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Save, Loader2, Plus, Trash2, ShoppingCart, Package } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Plus, Trash2, Package } from 'lucide-react';
 import api from '../lib/api';
 import type { Quotation, QuotationItem } from '../types';
 import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
-import MercadoLibreSearch from '../components/MercadoLibreSearch';
 import PricebookSearch from '../components/PricebookSearch';
 
 const quotationItemSchema = z.object({
@@ -48,7 +47,6 @@ export default function QuotationFormPage() {
   const [items, setItems] = useState<ItemForm[]>([createEmptyItem()]);
   const [taxPercent, setTaxPercent] = useState(16);
   const [discount, setDiscount] = useState(0);
-  const [showMLSearch, setShowMLSearch] = useState(false);
   const [showCatalog, setShowCatalog] = useState(false);
 
   const {
@@ -249,14 +247,6 @@ export default function QuotationFormPage() {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => setShowMLSearch(true)}
-                className="btn-secondary inline-flex items-center gap-2 text-sm"
-              >
-                <ShoppingCart className="w-4 h-4" />
-                Buscar en Mercado Libre
-              </button>
-              <button
-                type="button"
                 onClick={() => setShowCatalog(true)}
                 className="btn-secondary inline-flex items-center gap-2 text-sm"
               >
@@ -388,13 +378,6 @@ export default function QuotationFormPage() {
           </button>
         </div>
       </form>
-
-      {showMLSearch && (
-        <MercadoLibreSearch
-          onSelectItem={handleMLSelect}
-          onClose={() => setShowMLSearch(false)}
-        />
-      )}
 
       {showCatalog && (
         <PricebookSearch
