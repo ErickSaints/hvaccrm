@@ -162,14 +162,17 @@ async function startup() {
     }
   }
 
-  // 7. Backfill trialEndsAt for existing users without trial period (skip admins)
-  const usersWithoutTrial = await prisma.user.findMany({ where: { trialEndsAt: null, role: { not: 'ADMIN' } } });
-  if (usersWithoutTrial.length > 0) {
-    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-    for (const u of usersWithoutTrial) {
-      await prisma.user.update({ where: { id: u.id }, data: { trialEndsAt } });
+  // 7. Extend trial for all non-admin users (to avoid subscription blocks)
+  const now = new Date();
+  const trialEnd = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
+  const usersToExtend = await prisma.user.findMany({
+    where: { role: { not: 'ADMIN' }, OR: [{ trialEndsAt: null }, { trialEndsAt: { lt: now } }] },
+  });
+  if (usersToExtend.length > 0) {
+    for (const u of usersToExtend) {
+      await prisma.user.update({ where: { id: u.id }, data: { trialEndsAt: trialEnd } });
     }
-    console.log(`[startup] Período de prueba asignado a ${usersWithoutTrial.length} usuarios existentes.`);
+    console.log(`[startup] Período de prueba extendido a 90 días para ${usersToExtend.length} usuarios.`);
   }
 
   await prisma.$disconnect();

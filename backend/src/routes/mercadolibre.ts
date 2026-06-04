@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
-import { authenticate, requireSubscription } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
 import prisma from '../prisma';
 import { searchProducts } from '../scraper';
 
@@ -11,7 +11,7 @@ const searchSchema = z.object({
   limit: z.coerce.number().min(1).max(50).optional().default(20),
 });
 
-router.get('/search', authenticate, requireSubscription, async (req: Request, res: Response) => {
+router.get('/search', authenticate, async (req: Request, res: Response) => {
   try {
     const { q, limit } = searchSchema.parse(req.query);
 
@@ -40,7 +40,7 @@ const quotationSchema = z.object({
   thumbnail: z.string().optional(),
 });
 
-router.post('/create-quotation', authenticate, requireSubscription, async (req: Request, res: Response) => {
+router.post('/create-quotation', authenticate, async (req: Request, res: Response) => {
   try {
     const data = quotationSchema.parse(req.body);
 
