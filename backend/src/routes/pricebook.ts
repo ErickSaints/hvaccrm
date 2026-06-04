@@ -17,9 +17,7 @@ const itemSchema = z.object({
   name: z.string().min(1, 'El nombre es obligatorio'),
   description: z.string().optional(),
   unit: z.string().optional().default('pza'),
-  goodPrice: z.number().optional(),
-  betterPrice: z.number().optional(),
-  bestPrice: z.number().optional(),
+  basePrice: z.number().optional(),
   costPrice: z.number().optional(),
   supplier: z.string().optional(),
   categoryId: z.number().optional(),
@@ -39,7 +37,7 @@ router.get('/categories', async (_req: Request, res: Response) => {
         _count: { select: { items: { where: { active: true } } } },
         items: {
           where: { active: true },
-          select: { id: true, name: true, goodPrice: true, betterPrice: true, bestPrice: true },
+          select: { id: true, name: true, basePrice: true },
           orderBy: { name: 'asc' },
         },
       },
@@ -122,7 +120,7 @@ router.get('/items/all', async (_req: Request, res: Response) => {
     const items = await prisma.pricebookItem.findMany({
       where: { active: true },
       orderBy: { name: 'asc' },
-      select: { id: true, sku: true, name: true, description: true, unit: true, goodPrice: true, betterPrice: true, bestPrice: true, costPrice: true, category: { select: { id: true, name: true } } },
+      select: { id: true, sku: true, name: true, description: true, unit: true, basePrice: true, costPrice: true, category: { select: { id: true, name: true } } },
     });
     res.json(items);
   } catch {
@@ -251,9 +249,7 @@ router.post('/run-import', async (_req: Request, res: Response) => {
           name: item.name,
           description: item.description || '',
           unit: item.unit || 'pza',
-          goodPrice: item.goodPrice,
-          betterPrice: item.betterPrice,
-          bestPrice: item.bestPrice,
+          basePrice: item.basePrice,
           costPrice: item.costPrice,
           categoryId: category.id,
         },
@@ -311,7 +307,7 @@ router.get('/items/:id/regional-price', async (req: Request, res: Response) => {
     const stateCode = (req.query.stateCode as string) || 'CDMX';
 
     const [item, state] = await Promise.all([
-      prisma.pricebookItem.findUnique({ where: { id }, select: { id: true, goodPrice: true, betterPrice: true, bestPrice: true, costPrice: true } }),
+      prisma.pricebookItem.findUnique({ where: { id }, select: { id: true, basePrice: true, costPrice: true } }),
       prisma.state.findUnique({ where: { code: stateCode }, include: { region: true } }),
     ]);
 
@@ -330,9 +326,7 @@ router.get('/items/:id/regional-price', async (req: Request, res: Response) => {
         regionCode: state.region.code,
         regionName: state.region.name,
         adjustmentFactor: override.adjustmentFactor ?? state.region.adjustmentFactor,
-        goodPrice: override.goodPrice ?? applyFactor(item.goodPrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
-        betterPrice: override.betterPrice ?? applyFactor(item.betterPrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
-        bestPrice: override.bestPrice ?? applyFactor(item.bestPrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
+        regionalPrice: override.regionalPrice ?? applyFactor(item.basePrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
         costPrice: override.costPrice ?? applyFactor(item.costPrice, override.adjustmentFactor ?? state.region.adjustmentFactor),
         isOverridden: true,
         updatedAt: override.updatedAt,
@@ -347,9 +341,7 @@ router.get('/items/:id/regional-price', async (req: Request, res: Response) => {
       regionCode: state.region.code,
       regionName: state.region.name,
       adjustmentFactor: factor,
-      goodPrice: applyFactor(item.goodPrice, factor),
-      betterPrice: applyFactor(item.betterPrice, factor),
-      bestPrice: applyFactor(item.bestPrice, factor),
+      regionalPrice: applyFactor(item.basePrice, factor),
       costPrice: applyFactor(item.costPrice, factor),
       isOverridden: false,
     });
@@ -363,7 +355,7 @@ router.get('/items/:id/regional-prices', async (req: Request, res: Response) => 
     const id = parseInt(String(req.params.id));
     const item = await prisma.pricebookItem.findUnique({
       where: { id },
-      select: { id: true, goodPrice: true, betterPrice: true, bestPrice: true, costPrice: true },
+      select: { id: true, basePrice: true, costPrice: true },
     });
     if (!item) return res.status(404).json({ error: 'Artículo no encontrado' });
 
@@ -386,9 +378,7 @@ router.get('/items/:id/regional-prices', async (req: Request, res: Response) => 
         regionCode: state.region.code,
         regionName: state.region.name,
         adjustmentFactor: factor,
-        goodPrice: override?.goodPrice ?? applyFactor(item.goodPrice, factor),
-        betterPrice: override?.betterPrice ?? applyFactor(item.betterPrice, factor),
-        bestPrice: override?.bestPrice ?? applyFactor(item.bestPrice, factor),
+        regionalPrice: override?.regionalPrice ?? applyFactor(item.basePrice, factor),
         costPrice: override?.costPrice ?? applyFactor(item.costPrice, factor),
         isOverridden: !!override,
       };
@@ -402,9 +392,7 @@ router.get('/items/:id/regional-prices', async (req: Request, res: Response) => 
 
 const regionalPriceSchema = z.object({
   stateCode: z.string().min(1),
-  goodPrice: z.number().nullable().optional(),
-  betterPrice: z.number().nullable().optional(),
-  bestPrice: z.number().nullable().optional(),
+  regionalPrice: z.number().nullable().optional(),
   costPrice: z.number().nullable().optional(),
   adjustmentFactor: z.number().nullable().optional(),
 });
@@ -422,9 +410,7 @@ router.put('/items/:id/regional-price', async (req: Request, res: Response) => {
     if (!state) return res.status(404).json({ error: 'Estado no encontrado' });
 
     const updatable: any = { updatedById: userId };
-    if (data.goodPrice !== undefined) updatable.goodPrice = data.goodPrice;
-    if (data.betterPrice !== undefined) updatable.betterPrice = data.betterPrice;
-    if (data.bestPrice !== undefined) updatable.bestPrice = data.bestPrice;
+    if (data.regionalPrice !== undefined) updatable.regionalPrice = data.regionalPrice;
     if (data.costPrice !== undefined) updatable.costPrice = data.costPrice;
     if (data.adjustmentFactor !== undefined) updatable.adjustmentFactor = data.adjustmentFactor;
 
@@ -540,7 +526,7 @@ function calcTotals(breakdown: any, materials: any[], labor: any[], equipment: a
 router.get('/items/:id/breakdown', async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
-    const item = await prisma.pricebookItem.findUnique({ where: { id }, select: { id: true } });
+    const item = await prisma.pricebookItem.findUnique({ where: { id }, select: { id: true, basePrice: true } });
     if (!item) return res.status(404).json({ error: 'Artículo no encontrado' });
 
     const breakdown = await prisma.pricebookBreakdown.findUnique({
@@ -550,6 +536,7 @@ router.get('/items/:id/breakdown', async (req: Request, res: Response) => {
     if (!breakdown) {
       return res.json({
         itemId: id,
+        basePrice: item.basePrice,
         exists: false,
         fsrEnabled: true,
         fsrConfig: { year: 2025, daysOff: 78, holidays: 8, vacationDays: 12, aguinaldoDays: 15, primaVacacionalPct: 25, imssPct: 5, infonavitPct: 0, otherPct: 0 },
@@ -570,6 +557,7 @@ router.get('/items/:id/breakdown', async (req: Request, res: Response) => {
 
     res.json({
       itemId: id,
+      basePrice: item.basePrice,
       exists: true,
       fsrEnabled: breakdown.fsrEnabled,
       fsrConfig,

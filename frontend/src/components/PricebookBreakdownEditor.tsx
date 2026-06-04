@@ -45,9 +45,7 @@ interface BreakdownData {
 
 interface Props {
   itemId: number;
-  goodPrice: number | null;
-  betterPrice: number | null;
-  bestPrice: number | null;
+  basePrice: number | null;
   onClose: () => void;
 }
 
@@ -93,7 +91,7 @@ function calcTotals(d: {
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-export default function PricebookBreakdownEditor({ itemId, goodPrice, betterPrice, bestPrice, onClose }: Props) {
+export default function PricebookBreakdownEditor({ itemId, basePrice, onClose }: Props) {
   const queryClient = useQueryClient();
   const [tab, setTab] = useState<'materials' | 'labor' | 'equipment' | 'fsr'>('materials');
   const [showApplyModal, setShowApplyModal] = useState(false);
@@ -116,7 +114,7 @@ export default function PricebookBreakdownEditor({ itemId, goodPrice, betterPric
   });
 
   const updateItemMutation = useMutation({
-    mutationFn: async (payload: { goodPrice?: number; betterPrice?: number; bestPrice?: number }) => {
+    mutationFn: async (payload: { basePrice?: number }) => {
       const r = await api.put(`/pricebook/items/${itemId}`, payload);
       return r.data;
     },
@@ -319,11 +317,7 @@ export default function PricebookBreakdownEditor({ itemId, goodPrice, betterPric
     if (!totals) return;
     const pu = totals.unitPrice;
     const apply = (pct: number) => Math.round(pu * (1 + pct / 100) * 100) / 100;
-    updateItemMutation.mutate({
-      goodPrice: apply(markupPct),
-      betterPrice: apply(markupPct * 0.8),
-      bestPrice: apply(markupPct * 0.65),
-    });
+    updateItemMutation.mutate({ basePrice: apply(markupPct) });
     setShowApplyModal(false);
   }
 
@@ -733,18 +727,14 @@ export default function PricebookBreakdownEditor({ itemId, goodPrice, betterPric
 
       {/* ── COMPARISON + APPLY ── */}
       {totals && (
-        <div className="flex flex-wrap items-center justify-between gap-2 p-2 bg-gray-50 dark:bg-gray-800/30 rounded-lg text-[10px]">
+          <div className="flex flex-wrap items-center justify-between gap-2 p-2 bg-gray-50 dark:bg-gray-800/30 rounded-lg text-[10px]">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-gray-500 font-medium">Comparación:</span>
-            {[
-              { label: 'Good', price: goodPrice, color: 'text-blue-600' },
-              { label: 'Better', price: betterPrice, color: 'text-amber-600' },
-              { label: 'Best', price: bestPrice, color: 'text-emerald-600' },
-            ].map(({ label, price, color }) => {
-              const diff = price != null ? ((price - totals.unitPrice) / totals.unitPrice * 100) : null;
+            <span className="text-gray-500 font-medium">Comparación con precio base:</span>
+            {(() => {
+              const diff = basePrice != null ? ((basePrice - totals.unitPrice) / totals.unitPrice * 100) : null;
               return (
-                <span key={label} className={`${color} font-medium`}>
-                  {label}: {fmt(price)}
+                <span className="text-primary-600 font-medium">
+                  Base: {fmt(basePrice)}
                   {diff != null && (
                     <span className={`ml-1 ${diff >= 0 ? 'text-emerald-500' : 'text-red-400'} tabular-nums`}>
                       ({diff >= 0 ? '+' : ''}{diff.toFixed(1)}%)
@@ -752,7 +742,7 @@ export default function PricebookBreakdownEditor({ itemId, goodPrice, betterPric
                   )}
                 </span>
               );
-            })}
+            })()}
           </div>
           <button
             onClick={() => setShowApplyModal(true)}
@@ -806,21 +796,13 @@ function ApplyModalWrapper({ onClose, onApply, unitPrice, isPending }: {
             <span className="text-[10px] text-gray-500 ml-2">Precio Unitario calculado</span>
           </div>
           <div className="flex flex-col">
-            <label className="text-[10px] text-gray-500 mb-1">Margen de utilidad sobre PU (%)</label>
-            <input type="number" min="0" max="500" step="1" value={markupPct} onChange={e => setMarkupPct(parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 text-sm text-right bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary-500/30 tabular-nums" />
+            <label className="text-[10px] text-gray-500 mb-1">Ajuste sobre PU calculado (%)</label>
+            <input type="number" min="-100" max="500" step="1" value={markupPct} onChange={e => setMarkupPct(parseFloat(e.target.value) || 0)} className="w-full px-2 py-1.5 text-sm text-right bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary-500/30 tabular-nums" />
           </div>
-          <div className="grid grid-cols-3 gap-2 text-[10px]">
-            {[
-              { label: 'Good', pct: markupPct, price: unitPrice * (1 + markupPct / 100) },
-              { label: 'Better', pct: Math.round(markupPct * 0.8), price: unitPrice * (1 + markupPct * 0.8 / 100) },
-              { label: 'Best', pct: Math.round(markupPct * 0.65), price: unitPrice * (1 + markupPct * 0.65 / 100) },
-            ].map(({ label, pct, price }) => (
-              <div key={label} className="text-center p-2 bg-gray-50 dark:bg-gray-700/50 rounded">
-                <div className="text-gray-500 mb-0.5">{label}</div>
-                <div className="font-semibold text-gray-900 dark:text-gray-100 tabular-nums">{fmt(Math.round(price * 100) / 100)}</div>
-                <div className="text-[9px] text-gray-400">+{pct}%</div>
-              </div>
-            ))}
+          <div className="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded">
+            <div className="text-[10px] text-gray-500 mb-1">Nuevo Precio Base</div>
+            <div className="text-lg font-bold text-primary-600 dark:text-primary-400 tabular-nums">{fmt(Math.round(unitPrice * (1 + markupPct / 100) * 100) / 100)}</div>
+            <div className="text-[10px] text-gray-400">PU calculado × {(100 + markupPct) / 100} ({markupPct >= 0 ? '+' : ''}{markupPct}%)</div>
           </div>
           <button
             onClick={() => onApply(markupPct)}

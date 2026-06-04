@@ -751,9 +751,7 @@ model PricebookItem {
   unit          String    @default("pza")
   vendorId      Int?
   vendor        Vendor?   @relation(fields: [vendorId], references: [id])
-  goodPrice     Float?    // Good tier
-  betterPrice   Float?    // Better tier
-  bestPrice     Float?    // Best tier
+  basePrice     Float?    // Single median price (replaces tiers)
   costPrice     Float?    // Supplier cost
   supplier      String?
   categoryId    Int?
@@ -1038,9 +1036,7 @@ model PricebookRegionPrice {
   stateId          Int
   state            State    @relation(fields: [stateId], references: [id])
 
-  goodPrice        Float?
-  betterPrice      Float?
-  bestPrice        Float?
+  regionalPrice    Float?   // Single price for this region
   costPrice        Float?
   adjustmentFactor Float?
 
