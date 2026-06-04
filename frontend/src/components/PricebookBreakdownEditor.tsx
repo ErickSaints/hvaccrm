@@ -810,7 +810,7 @@ function ApplyModalWrapper({ onClose, onApply, unitPrice, isPending }: {
             className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-40 shadow-sm transition-all"
           >
             {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
-            {isPending ? 'Aplicando...' : 'Aplicar a Good / Better / Best'}
+            {isPending ? 'Aplicando...' : 'Aplicar Precio Base'}
           </button>
         </div>
       </div>

@@ -9,9 +9,7 @@ interface PricebookItem {
   name: string;
   description: string | null;
   unit: string;
-  goodPrice: number | null;
-  betterPrice: number | null;
-  bestPrice: number | null;
+  basePrice: number | null;
   category?: { id: number; name: string };
 }
 
@@ -61,7 +59,7 @@ export default function PricebookSearch({ onSelectItem, onClose }: Props) {
   };
 
   const handleAddItem = (item: PricebookItem) => {
-    const price = item.goodPrice || item.betterPrice || item.bestPrice || 0;
+    const price = item.basePrice || 0;
     const desc = item.description
       ? `${item.name} — ${item.description}`
       : item.name;
@@ -151,7 +149,7 @@ export default function PricebookSearch({ onSelectItem, onClose }: Props) {
           {items && items.length > 0 && (
             <div className="space-y-2">
               {items.map(item => {
-                const price = item.goodPrice || item.betterPrice || item.bestPrice || 0;
+                const price = item.basePrice || 0;
                 return (
                   <div
                     key={item.id}
@@ -174,22 +172,10 @@ export default function PricebookSearch({ onSelectItem, onClose }: Props) {
                         )}
                       </div>
                       <div className="flex items-center gap-3 mt-1.5">
-                        {item.goodPrice != null && (
-                          <span className="text-xs flex items-center gap-1 text-gray-600">
+                        {item.basePrice != null && (
+                          <span className="text-xs flex items-center gap-1 font-semibold text-gray-900">
                             <DollarSign className="w-3 h-3" />
-                            Good: {formatPrice(item.goodPrice)}
-                          </span>
-                        )}
-                        {item.betterPrice != null && (
-                          <span className="text-xs flex items-center gap-1 text-gray-600">
-                            <DollarSign className="w-3 h-3" />
-                            Better: {formatPrice(item.betterPrice)}
-                          </span>
-                        )}
-                        {item.bestPrice != null && (
-                          <span className="text-xs flex items-center gap-1 text-gray-600">
-                            <DollarSign className="w-3 h-3" />
-                            Best: {formatPrice(item.bestPrice)}
+                            {formatPrice(item.basePrice)}
                           </span>
                         )}
                       </div>
