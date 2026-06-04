@@ -1,8 +1,8 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect, Fragment } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  Search, MapPin, Save, Loader2, RotateCcw, Check, X,
-  Minus, Plus, TrendingUp, ShoppingCart, RefreshCw
+  Search, MapPin, Save, Loader2, RotateCcw, FileText,
+  Minus, Plus, TrendingUp, RefreshCw, ClipboardList, Check, X, ChevronDown, ChevronRight, DollarSign, Percent
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
@@ -31,12 +31,20 @@ const REGIONS = [
   { code: 'SURESTE', name: 'Sur-Sureste', adj: -0.07 },
 ];
 
-const REGION_STYLES: Record<string, { active: string; idle: string; badge: string }> = {
-  NORTE:     { active: 'bg-red-600 text-white ring-red-600', idle: 'text-red-700 bg-red-50 ring-red-200 hover:bg-red-100 dark:text-red-300 dark:bg-red-900/30 dark:ring-red-800', badge: 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300' },
-  'CENTRO-N':{ active: 'bg-amber-600 text-white ring-amber-600', idle: 'text-amber-700 bg-amber-50 ring-amber-200 hover:bg-amber-100 dark:text-amber-300 dark:bg-amber-900/30 dark:ring-amber-800', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300' },
-  CENTRO:    { active: 'bg-blue-600 text-white ring-blue-600', idle: 'text-blue-700 bg-blue-50 ring-blue-200 hover:bg-blue-100 dark:text-blue-300 dark:bg-blue-900/30 dark:ring-blue-800', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' },
-  BAJIO:     { active: 'bg-emerald-600 text-white ring-emerald-600', idle: 'text-emerald-700 bg-emerald-50 ring-emerald-200 hover:bg-emerald-100 dark:text-emerald-300 dark:bg-emerald-900/30 dark:ring-emerald-800', badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300' },
-  SURESTE:   { active: 'bg-purple-600 text-white ring-purple-600', idle: 'text-purple-700 bg-purple-50 ring-purple-200 hover:bg-purple-100 dark:text-purple-300 dark:bg-purple-900/30 dark:ring-purple-800', badge: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' },
+const REGION_COLORS: Record<string, string> = {
+  NORTE: 'text-red-600 bg-red-50 dark:text-red-300 dark:bg-red-900/20',
+  'CENTRO-N': 'text-amber-600 bg-amber-50 dark:text-amber-300 dark:bg-amber-900/20',
+  CENTRO: 'text-blue-600 bg-blue-50 dark:text-blue-300 dark:bg-blue-900/20',
+  BAJIO: 'text-emerald-600 bg-emerald-50 dark:text-emerald-300 dark:bg-emerald-900/20',
+  SURESTE: 'text-purple-600 bg-purple-50 dark:text-purple-300 dark:bg-purple-900/20',
+};
+
+const REGION_PILL: Record<string, { active: string; idle: string }> = {
+  NORTE:     { active: 'bg-red-600 text-white ring-red-600', idle: 'ring-1 ring-inset ring-red-200 text-red-700 bg-white hover:bg-red-50 dark:ring-red-800 dark:text-red-300 dark:bg-gray-800 dark:hover:bg-red-900/20' },
+  'CENTRO-N':{ active: 'bg-amber-600 text-white ring-amber-600', idle: 'ring-1 ring-inset ring-amber-200 text-amber-700 bg-white hover:bg-amber-50 dark:ring-amber-800 dark:text-amber-300 dark:bg-gray-800 dark:hover:bg-amber-900/20' },
+  CENTRO:    { active: 'bg-blue-600 text-white ring-blue-600', idle: 'ring-1 ring-inset ring-blue-200 text-blue-700 bg-white hover:bg-blue-50 dark:ring-blue-800 dark:text-blue-300 dark:bg-gray-800 dark:hover:bg-blue-900/20' },
+  BAJIO:     { active: 'bg-emerald-600 text-white ring-emerald-600', idle: 'ring-1 ring-inset ring-emerald-200 text-emerald-700 bg-white hover:bg-emerald-50 dark:ring-emerald-800 dark:text-emerald-300 dark:bg-gray-800 dark:hover:bg-emerald-900/20' },
+  SURESTE:   { active: 'bg-purple-600 text-white ring-purple-600', idle: 'ring-1 ring-inset ring-purple-200 text-purple-700 bg-white hover:bg-purple-50 dark:ring-purple-800 dark:text-purple-300 dark:bg-gray-800 dark:hover:bg-purple-900/20' },
 };
 
 const fmt = (v: number | null | undefined) =>
@@ -68,9 +76,8 @@ export default function PricebookRegionalPage() {
   const [quantity, setQuantity] = useState(1);
   const [filterRegion, setFilterRegion] = useState<string | null>(null);
   const [stateSearch, setStateSearch] = useState('');
-  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [expandedState, setExpandedState] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<Record<string, string>>({});
-  const [editTier, setEditTier] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { data: items, isLoading: itemsLoading, isError: itemsError } = useQuery<Item[]>({
@@ -94,15 +101,11 @@ export default function PricebookRegionalPage() {
   }, [items, selectedItemId]);
 
   const tier = useMemo(() => determineTier(quantity), [quantity]);
-  const costTotal = useMemo(() => {
-    if (!selectedItem?.costPrice) return null;
-    return selectedItem.costPrice * quantity;
-  }, [selectedItem, quantity]);
 
   const filteredItems = useMemo(() => {
     if (!items) return [];
     const q = itemSearch.toLowerCase().trim();
-    if (!q) return items.slice(0, 30);
+    if (!q) return [];
     return items.filter(i =>
       i.name.toLowerCase().includes(q) ||
       i.sku?.toLowerCase().includes(q) ||
@@ -124,11 +127,6 @@ export default function PricebookRegionalPage() {
     return list;
   }, [statePrices, filterRegion, stateSearch]);
 
-  const selectedStateData = useMemo(() => {
-    if (!selectedState || !statePrices) return null;
-    return statePrices.find(sp => sp.stateCode === selectedState) || null;
-  }, [selectedState, statePrices]);
-
   const saveMutation = useMutation({
     mutationFn: async (payload: any) => {
       await api.put(`/pricebook/items/${selectedItemId}/regional-price`, payload);
@@ -136,7 +134,6 @@ export default function PricebookRegionalPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pricebook-regional-prices', selectedItemId] });
       setEditValues({});
-      setEditTier(null);
       toast.success('Precio guardado');
     },
     onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al guardar'),
@@ -167,25 +164,24 @@ export default function PricebookRegionalPage() {
     setSelectedItemId(item.id);
     setItemSearch(item.name);
     setShowDropdown(false);
-    setSelectedState(null);
     setFilterRegion(null);
     setStateSearch('');
+    setExpandedState(null);
     setEditValues({});
-    setEditTier(null);
     setQuantity(1);
   }
 
   if (!selectedItemId) {
     return (
       <div className="space-y-6">
-        <div className="card p-5">
+        <div className="card p-6">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
               <MapPin className="w-5 h-5 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">Precios Regionales</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Busca un artículo para ver precios ajustados por estado y región</p>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">Catálogo Nacional de Precios</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Busca un artículo del catálogo para consultar precios ajustados por estado y región</p>
             </div>
           </div>
           <div className="relative" ref={dropdownRef}>
@@ -197,22 +193,19 @@ export default function PricebookRegionalPage() {
                 value={itemSearch}
                 onChange={e => { setItemSearch(e.target.value); setShowDropdown(true); }}
                 onFocus={() => setShowDropdown(true)}
-                className="w-full pl-9 pr-10 py-3 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
+                className="w-full pl-9 pr-3 py-3 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
               />
-              {itemSearch && (
-                <button onClick={() => { setItemSearch(''); setShowDropdown(true); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                  <X className="w-4 h-4" />
-                </button>
-              )}
             </div>
             {showDropdown && (
               <div className="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-80 overflow-y-auto">
                 {itemsError ? (
-                  <div className="p-4 text-center text-sm text-red-400">Error al cargar artículos</div>
+                  <div className="p-4 text-center text-sm text-red-500">Error al cargar artículos</div>
                 ) : itemsLoading ? (
                   <div className="p-4 text-center text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin inline mr-2" />Cargando...</div>
                 ) : filteredItems.length === 0 ? (
-                  <div className="p-4 text-center text-sm text-gray-400">{itemSearch ? 'Sin resultados' : 'Escribe para buscar'}</div>
+                  <div className="p-4 text-center text-sm text-gray-400">
+                    {itemSearch.trim() ? 'No se encontraron artículos' : 'Escribe para buscar en el catálogo'}
+                  </div>
                 ) : (
                   filteredItems.map(item => (
                     <button
@@ -224,6 +217,7 @@ export default function PricebookRegionalPage() {
                       <div className="flex items-center gap-2 mt-0.5">
                         {item.category && <span className="text-[11px] text-gray-400 bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded">{item.category.name}</span>}
                         <span className="text-[11px] text-gray-400">{item.unit}</span>
+                        {item.sku && <span className="text-[11px] text-gray-400 font-mono">{item.sku}</span>}
                         {item.goodPrice != null && <span className="text-[11px] text-primary-600 font-medium ml-auto">{fmt(item.goodPrice)}</span>}
                       </div>
                     </button>
@@ -235,11 +229,11 @@ export default function PricebookRegionalPage() {
         </div>
         <div className="card py-20 text-center">
           <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-4">
-            <MapPin className="w-8 h-8 text-gray-300 dark:text-gray-600" />
+            <FileText className="w-8 h-8 text-gray-300 dark:text-gray-600" />
           </div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Selecciona un artículo</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-            Busca y selecciona un artículo del catálogo para ver sus precios regionales
+            Busca y selecciona un artículo del catálogo para ver sus precios en los 32 estados
           </p>
         </div>
       </div>
@@ -247,125 +241,109 @@ export default function PricebookRegionalPage() {
   }
 
   return (
-    <div className="space-y-5">
-      {/* ── Header + Item search ── */}
-      <div className="card p-5">
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
-          <div className="flex items-center gap-3 min-w-0 flex-1">
-            <div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center shrink-0">
-              <MapPin className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+    <div className="space-y-4">
+      {/* ── Header Bar ── */}
+      <div className="card px-5 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-9 h-9 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center shrink-0">
+              <MapPin className="w-4 h-4 text-primary-600 dark:text-primary-400" />
             </div>
-            <div className="min-w-0 flex-1">
-              <div className="relative" ref={dropdownRef}>
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="Buscar otro artículo..."
-                  value={itemSearch}
-                  onChange={e => { setItemSearch(e.target.value); setShowDropdown(true); }}
-                  onFocus={() => setShowDropdown(true)}
-                  className="w-full pl-9 pr-3 py-2.5 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
-                />
-                {showDropdown && (
-                  <div className="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-72 overflow-y-auto">
-                    {itemsError ? (
-                      <div className="p-3 text-center text-sm text-red-400">Error al cargar artículos</div>
-                    ) : filteredItems.length === 0 ? (
-                      <div className="p-3 text-center text-sm text-gray-400">{itemSearch ? 'Sin resultados' : 'Escribe para buscar'}</div>
-                    ) : (
-                      filteredItems.map(item => (
-                        <button
-                          key={item.id}
-                          onClick={() => selectItem(item)}
-                          className={`w-full text-left px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700/50 border-b border-gray-50 dark:border-gray-700/30 last:border-0 ${
-                            selectedItemId === item.id ? 'bg-primary-50 dark:bg-primary-900/20' : ''
-                          }`}
-                        >
-                          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
-                          <div className="text-[11px] text-gray-400">
-                            {item.category?.name} · {item.unit} · {fmt(item.goodPrice)}
-                          </div>
-                        </button>
-                      ))
-                    )}
-                  </div>
+            <div className="min-w-0">
+              <h1 className="text-base font-bold text-gray-900 dark:text-gray-100 truncate">Catálogo Nacional de Precios</h1>
+              <p className="text-xs text-gray-400">Precios ajustados por región para cada estado</p>
+            </div>
+          </div>
+          <div className="relative w-72" ref={dropdownRef}>
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Cambiar artículo..."
+              value={itemSearch}
+              onChange={e => { setItemSearch(e.target.value); setShowDropdown(true); }}
+              onFocus={() => setShowDropdown(true)}
+              className="w-full pl-9 pr-3 py-2 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
+            />
+            {showDropdown && (
+              <div className="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-h-64 overflow-y-auto">
+                {filteredItems.length === 0 ? (
+                  <div className="p-3 text-center text-xs text-gray-400">{itemSearch.trim() ? 'Sin resultados' : 'Escribe para buscar'}</div>
+                ) : (
+                  filteredItems.map(item => (
+                    <button
+                      key={item.id}
+                      onClick={() => selectItem(item)}
+                      className={`w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 border-b border-gray-50 dark:border-gray-700/30 last:border-0 text-xs ${
+                        selectedItemId === item.id ? 'bg-primary-50 dark:bg-primary-900/20' : ''
+                      }`}
+                    >
+                      <span className="font-medium text-gray-900 dark:text-gray-100">{item.name}</span>
+                      <span className="text-gray-400 ml-2">{item.category?.name} · {item.unit}</span>
+                    </button>
+                  ))
                 )}
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* ── Quantity selector + active tier ── */}
+      {/* ── Item Info + Quantity ── */}
       {selectedItem && (
-        <div className="card p-4">
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
-            <div>
-              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{selectedItem.name}</span>
-              {selectedItem.sku && <span className="ml-2 text-xs text-gray-400 font-mono">SKU: {selectedItem.sku}</span>}
+        <div className="card px-5 py-4">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <h2 className="text-sm font-bold text-gray-900 dark:text-gray-100">{selectedItem.name}</h2>
+                {selectedItem.sku && <span className="text-[11px] text-gray-400 font-mono bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{selectedItem.sku}</span>}
+                <span className="text-[11px] text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{selectedItem.unit}</span>
+                {selectedItem.category && <span className="text-[11px] text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{selectedItem.category.name}</span>}
+              </div>
             </div>
-
             <div className="flex items-center gap-3">
               <span className="text-xs text-gray-500 font-medium">Cantidad:</span>
               <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-2.5 py-1.5 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors"
+                  className="px-2 py-1 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors"
                 >
-                  <Minus className="w-3.5 h-3.5" />
+                  <Minus className="w-3 h-3" />
                 </button>
                 <input
                   type="number" min="1"
                   value={quantity}
                   onChange={e => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-16 text-center text-sm py-1.5 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-x border-gray-200 dark:border-gray-700 focus:outline-none tabular-nums"
+                  className="w-14 text-center text-sm py-1 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-x border-gray-200 dark:border-gray-700 focus:outline-none tabular-nums"
                 />
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="px-2.5 py-1.5 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors"
+                  className="px-2 py-1 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Plus className="w-3 h-3" />
                 </button>
               </div>
             </div>
-
-            <div className="flex items-center gap-4 flex-wrap">
-              <div className={`text-xs font-medium px-2 py-1 rounded-full ${
-                tier.key === 'goodPrice' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400' :
-                tier.key === 'betterPrice' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' :
-                'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400'
+            <div className="flex items-center gap-4">
+              <div className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                tier.key === 'goodPrice' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' :
+                tier.key === 'betterPrice' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' :
+                'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
               }`}>
                 {tier.label} · {tier.desc}
               </div>
               {(() => {
-                const unitPrice = selectedItem[tier.key];
+                const pu = selectedItem[tier.key];
+                const total = pu != null ? pu * quantity : null;
+                const costT = selectedItem.costPrice != null ? selectedItem.costPrice * quantity : null;
+                const m = margin(selectedItem.costPrice, pu);
                 return (
                   <>
-                    <span className="text-sm text-gray-500">
-                      <span className="text-gray-400">P/U:</span>{' '}
-                      <span className="font-semibold text-gray-900 dark:text-gray-100">{fmt(unitPrice)}</span>
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      <span className="text-gray-400">Total:</span>{' '}
-                      <span className="font-bold text-lg text-primary-600 dark:text-primary-400">
-                        {fmt(unitPrice != null ? unitPrice * quantity : null)}
-                      </span>
-                    </span>
-                    {costTotal != null && (
-                      <span className="text-sm text-gray-500">
-                        <span className="text-gray-400">Costo total:</span>{' '}
-                        <span className="font-semibold text-gray-900 dark:text-gray-100">{fmt(costTotal)}</span>
-                      </span>
-                    )}
-                    {unitPrice != null && selectedItem.costPrice != null && (
-                      <span className="text-sm">
-                        <span className="text-gray-400">Margen:</span>{' '}
-                        <span className={`font-semibold ${
-                          margin(selectedItem.costPrice, unitPrice) ?? 0 >= 20 ? 'text-emerald-600' :
-                          margin(selectedItem.costPrice, unitPrice) ?? 0 >= 10 ? 'text-amber-600' : 'text-red-600'
-                        }`}>
-                          {margin(selectedItem.costPrice, unitPrice)?.toFixed(1)}%
-                        </span>
+                    <span className="text-xs text-gray-500"><span className="text-gray-400">P/U:</span> <span className="font-semibold text-gray-900 dark:text-gray-100 tabular-nums">{fmt(pu)}</span></span>
+                    <span className="text-xs text-gray-500"><span className="text-gray-400">Total:</span> <span className="font-bold text-primary-600 dark:text-primary-400 tabular-nums">{fmt(total)}</span></span>
+                    {costT != null && <span className="text-xs text-gray-500"><span className="text-gray-400">Costo:</span> <span className="font-semibold text-gray-900 dark:text-gray-100 tabular-nums">{fmt(costT)}</span></span>}
+                    {m != null && (
+                      <span className={`text-xs font-medium ${m >= 20 ? 'text-emerald-600' : m >= 10 ? 'text-amber-600' : 'text-red-600'}`}>
+                        <Percent className="w-3 h-3 inline -mt-0.5" /> {m.toFixed(1)}%
                       </span>
                     )}
                   </>
@@ -373,8 +351,6 @@ export default function PricebookRegionalPage() {
               })()}
             </div>
           </div>
-
-          {/* Tier quick-pick buttons */}
           <div className="flex gap-2 mt-3">
             {TIER_CONFIG.map(t => {
               const active = tier.key === t.key;
@@ -383,13 +359,14 @@ export default function PricebookRegionalPage() {
                 <button
                   key={t.key}
                   onClick={() => setQuantity(t.minQty)}
-                  className={`text-xs px-3 py-1.5 rounded-lg border transition-all ${
+                  className={`text-[11px] px-2.5 py-1.5 rounded-lg border transition-all ${
                     active
                       ? 'border-primary-500 bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-600 font-semibold'
                       : 'border-gray-200 dark:border-gray-700 text-gray-500 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
-                  {t.label} ({t.desc}) {price != null && <span className="font-medium">{fmt(price)}</span>}
+                  {t.label} <span className="text-gray-400">({t.desc})</span>
+                  {price != null && <span className="ml-1 font-medium tabular-nums">{fmt(price)}</span>}
                 </button>
               );
             })}
@@ -397,345 +374,287 @@ export default function PricebookRegionalPage() {
         </div>
       )}
 
-      {/* ── Error state ── */}
+      {/* ── Error ── */}
       {pricesError && (
         <div className="card p-4 text-center">
           <p className="text-sm text-red-500">Error al cargar precios regionales</p>
-          <button
-            onClick={() => queryClient.invalidateQueries({ queryKey: ['pricebook-regional-prices', selectedItemId] })}
-            className="mt-2 text-xs text-primary-600 hover:underline inline-flex items-center gap-1"
-          >
+          <button onClick={() => queryClient.invalidateQueries({ queryKey: ['pricebook-regional-prices', selectedItemId] })} className="mt-2 text-xs text-primary-600 hover:underline inline-flex items-center gap-1">
             <RefreshCw className="w-3 h-3" /> Reintentar
           </button>
         </div>
       )}
 
-      {/* ── Region pills ── */}
+      {/* ── Region pills + state search ── */}
       {!pricesLoading && !pricesError && statePrices && (
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setFilterRegion(null)}
-            className={`px-4 py-2 text-sm font-medium rounded-xl ring-1 transition-all ${
-              !filterRegion
-                ? 'bg-gray-900 text-white ring-gray-900 dark:bg-white dark:text-gray-900 dark:ring-white'
-                : 'bg-white text-gray-600 ring-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-gray-700'
-            }`}
-          >
-            Todos
-          </button>
-          {REGIONS.map(r => {
-            const count = statePrices?.filter(sp => sp.regionCode === r.code).length || 0;
-            const s = REGION_STYLES[r.code];
-            return (
-              <button
-                key={r.code}
-                onClick={() => setFilterRegion(r.code)}
-                className={`px-4 py-2 text-sm font-medium rounded-xl ring-1 transition-all ${
-                  filterRegion === r.code ? s.active : s.idle
-                }`}
-              >
-                {r.name}
-                <span className="ml-1.5 text-xs opacity-60">{count} edo(s)</span>
-              </button>
-            );
-          })}
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setFilterRegion(null)}
+              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
+                !filterRegion
+                  ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
+              }`}
+            >
+              Todos
+            </button>
+            {REGIONS.map(r => {
+              const count = statePrices.filter(sp => sp.regionCode === r.code).length;
+              const s = REGION_PILL[r.code];
+              return (
+                <button
+                  key={r.code}
+                  onClick={() => setFilterRegion(filterRegion === r.code ? null : r.code)}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${filterRegion === r.code ? s.active : s.idle}`}
+                >
+                  {r.name}
+                  <span className="ml-1 opacity-60">{count}</span>
+                </button>
+              );
+            })}
+            <div className="ml-auto relative w-56">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Filtrar estado por nombre o código..."
+                value={stateSearch}
+                onChange={e => { setStateSearch(e.target.value); setExpandedState(null); setEditValues({}); }}
+                className="w-full pl-8 pr-3 py-1.5 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
+              />
+              {stateSearch && (
+                <button onClick={() => setStateSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
       {/* ── Loading ── */}
       {pricesLoading && (
-        <div className="card py-16 text-center">
+        <div className="card py-12 text-center">
           <Loader2 className="w-8 h-8 animate-spin text-primary-500 mx-auto" />
-          <p className="text-sm text-gray-400 mt-3">Cargando precios regionales...</p>
+          <p className="text-xs text-gray-400 mt-2">Cargando precios regionales...</p>
         </div>
       )}
 
-      {/* ── Content: table or detail ── */}
+      {/* ── Main Table ── */}
       {!pricesLoading && !pricesError && statePrices && (
-        <>
-          {!selectedState ? (
-            /* ── State search + table ── */
-            <>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Buscar estado por nombre o código..."
-                  value={stateSearch}
-                  onChange={e => setStateSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 text-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500"
-                />
-              </div>
+        <div className="card p-0 overflow-hidden">
+          {filteredStates.length === 0 ? (
+            <div className="py-12 text-center text-sm text-gray-400">
+              {stateSearch || filterRegion ? 'Ningún estado coincide con los filtros aplicados' : 'No hay datos disponibles'}
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-900/30">
+                    <th className="text-left py-2.5 px-4 font-medium text-gray-500 w-10"></th>
+                    <th className="text-left py-2.5 px-3 font-medium text-gray-500">Estado</th>
+                    <th className="text-left py-2.5 px-3 font-medium text-gray-500">Región</th>
+                    <th className="text-right py-2.5 px-3 font-medium text-gray-500">Precio Unitario</th>
+                    <th className="text-right py-2.5 px-3 font-medium text-gray-500">Importe</th>
+                    <th className="text-right py-2.5 px-3 font-medium text-gray-500">Costo</th>
+                    <th className="text-right py-2.5 px-3 font-medium text-gray-500">Margen</th>
+                    <th className="text-center py-2.5 px-3 font-medium text-gray-500 w-16">Tipo</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50 dark:divide-gray-800/40">
+                  {filteredStates.map(sp => {
+                    const pu = sp[tier.key];
+                    const total = pu != null ? pu * quantity : null;
+                    const m = margin(sp.costPrice, pu);
+                    const isExpanded = expandedState === sp.stateCode;
 
-              <div className="card p-0 overflow-hidden">
-                {filteredStates.length === 0 ? (
-                  <div className="py-12 text-center text-sm text-gray-400">
-                    {stateSearch || filterRegion ? 'No hay estados con ese filtro' : 'Cargando...'}
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
-                          <th className="text-left py-3 px-4 text-gray-500 font-medium">Estado</th>
-                          <th className="text-left py-3 px-4 text-gray-500 font-medium">Región</th>
-                          <th className="text-right py-3 px-4 text-gray-500 font-medium">{tier.label} (P/U)</th>
-                          <th className="text-right py-3 px-4 text-gray-500 font-medium">Total</th>
-                          <th className="text-right py-3 px-4 text-gray-500 font-medium">Costo</th>
-                          <th className="text-right py-3 px-4 text-gray-500 font-medium">Margen</th>
-                          <th className="text-center py-3 px-4 text-gray-500 font-medium w-20">Tipo</th>
+                    return (
+                      <Fragment key={sp.stateCode}>
+                        <tr
+                          onClick={() => {
+                            if (expandedState === sp.stateCode) {
+                              setExpandedState(null);
+                              setEditValues({});
+                            } else {
+                              setExpandedState(sp.stateCode);
+                              setEditValues({});
+                            }
+                          }}
+                          className={`cursor-pointer transition-colors ${
+                            isExpanded
+                              ? 'bg-primary-50/60 dark:bg-primary-900/15'
+                              : 'hover:bg-gray-50 dark:hover:bg-gray-800/30'
+                          }`}
+                        >
+                          <td className="py-2.5 px-4 text-gray-300">
+                            {isExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+                          </td>
+                          <td className="py-2.5 px-3">
+                            <div className="font-medium text-gray-900 dark:text-gray-100">{sp.stateName}</div>
+                            <div className="text-[10px] text-gray-400 font-mono">{sp.stateCode}</div>
+                          </td>
+                          <td className="py-2.5 px-3">
+                            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${REGION_COLORS[sp.regionCode] || ''}`}>
+                              {sp.regionName}
+                            </span>
+                          </td>
+                          <td className="py-2.5 px-3 text-right font-semibold tabular-nums text-gray-900 dark:text-gray-100">{fmt(pu)}</td>
+                          <td className="py-2.5 px-3 text-right font-semibold tabular-nums text-primary-600 dark:text-primary-400">{fmt(total)}</td>
+                          <td className="py-2.5 px-3 text-right tabular-nums text-gray-500">{sp.costPrice != null ? fmt(sp.costPrice) : '—'}</td>
+                          <td className="py-2.5 px-3 text-right">
+                            {m != null ? (
+                              <span className={`font-medium ${m >= 20 ? 'text-emerald-600' : m >= 10 ? 'text-amber-600' : 'text-red-600'}`}>
+                                {m.toFixed(1)}%
+                              </span>
+                            ) : <span className="text-gray-300">—</span>}
+                          </td>
+                          <td className="py-2.5 px-3 text-center">
+                            {sp.isOverridden ? (
+                              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
+                                Manual
+                              </span>
+                            ) : (
+                              <span className="text-[10px] text-gray-400">Auto</span>
+                            )}
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
-                        {filteredStates.map(sp => {
-                          const unitPrice = sp[tier.key];
-                          const total = unitPrice != null ? unitPrice * quantity : null;
-                          const m = margin(sp.costPrice, unitPrice);
-                          return (
-                            <tr
-                              key={sp.stateCode}
-                              onClick={() => setSelectedState(sp.stateCode)}
-                              className="hover:bg-gray-50 dark:hover:bg-gray-800/30 cursor-pointer transition-colors"
-                            >
-                              <td className="py-3 px-4">
-                                <div className="font-medium text-gray-900 dark:text-gray-100">{sp.stateName}</div>
-                                <div className="text-[11px] text-gray-400 font-mono">{sp.stateCode}</div>
-                              </td>
-                              <td className="py-3 px-4">
-                                <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${REGION_STYLES[sp.regionCode]?.badge || ''}`}>
-                                  {sp.regionName}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 text-right font-semibold tabular-nums text-gray-900 dark:text-gray-100">{fmt(unitPrice)}</td>
-                              <td className="py-3 px-4 text-right font-semibold tabular-nums text-primary-600 dark:text-primary-400">{fmt(total)}</td>
-                              <td className="py-3 px-4 text-right tabular-nums text-gray-500">{fmt(sp.costPrice)}</td>
-                              <td className="py-3 px-4 text-right">
-                                {m != null ? (
-                                  <span className={`text-sm font-medium ${m >= 20 ? 'text-emerald-600' : m >= 10 ? 'text-amber-600' : 'text-red-600'}`}>
-                                    {m.toFixed(1)}%
-                                  </span>
-                                ) : <span className="text-gray-400">—</span>}
-                              </td>
-                              <td className="py-3 px-4 text-center">
-                                {sp.isOverridden ? (
-                                  <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
-                                    Manual
-                                  </span>
-                                ) : (
-                                  <span className="text-[10px] text-gray-400">Auto</span>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-                <div className="px-4 py-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-400 flex justify-between bg-gray-50/50 dark:bg-gray-900/30">
-                  <span>Mostrando {filteredStates.length} de {statePrices.length} estados{filterRegion ? ' · Filtro por región activo' : ''}</span>
-                  <span>{statePrices.filter(s => s.isOverridden).length} con precio manual</span>
-                </div>
-              </div>
-            </>
-          ) : selectedStateData ? (
-            /* ── State detail view ── */
-            <div className="grid gap-5 lg:grid-cols-3">
-              <div className="lg:col-span-2 card p-0 overflow-hidden">
-                <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <button onClick={() => { setSelectedState(null); setEditValues({}); setEditTier(null); }} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1 -ml-1">
-                      <svg className="w-5 h-5 rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
-                    </button>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-gray-100">{selectedStateData.stateName}</h3>
-                      <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${REGION_STYLES[selectedStateData.regionCode]?.badge || ''}`}>
-                        {selectedStateData.regionName} · Ajuste {selectedStateData.adjustmentFactor >= 0 ? '+' : ''}{(selectedStateData.adjustmentFactor * 100).toFixed(0)}%
-                      </span>
-                    </div>
-                  </div>
-                  <span className={`text-xs px-2 py-1 rounded-full ${selectedStateData.isOverridden ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'}`}>
-                    {selectedStateData.isOverridden ? 'Precio manual' : 'Regional automático'}
-                  </span>
-                </div>
-                <div className="p-5">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-gray-100 dark:border-gray-800">
-                        <th className="text-left py-2 pr-4 text-gray-500 font-medium">Tier</th>
-                        <th className="text-center py-2 px-4 text-gray-500 font-medium">Rango</th>
-                        <th className="text-right py-2 px-4 text-gray-500 font-medium">Base CDMX</th>
-                        <th className="text-right py-2 px-4 text-gray-500 font-medium">Precio Regional</th>
-                        <th className="text-right py-2 px-4 text-gray-500 font-medium">Margen</th>
-                        <th className="text-right py-2 pl-4 text-gray-500 font-medium">Acción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {TIER_CONFIG.map(({ key, label, desc }) => {
-                        const base = selectedItem?.[key] as number | null;
-                        const regional = selectedStateData[key] as number | null;
-                        const m = margin(selectedStateData.costPrice, regional);
-                        const editKey = `${selectedStateData.stateCode}_${key}`;
-                        const editVal = editValues[editKey] ?? '';
-                        const isEdited = editKey in editValues;
+                        {isExpanded && (
+                          <tr>
+                            <td colSpan={8} className="px-4 pb-4 pt-1">
+                              <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-700/50 p-4 ml-8">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                  {TIER_CONFIG.map(({ key, label, desc }) => {
+                                    const base = selectedItem?.[key] as number | null;
+                                    const regional = sp[key] as number | null;
+                                    const mTier = margin(sp.costPrice, regional);
+                                    const editKey = `${sp.stateCode}_${key}`;
+                                    const editVal = editValues[editKey] ?? '';
+                                    const isEdited = editKey in editValues;
+                                    const isActive = tier.key === key;
 
-                        return (
-                          <tr key={key} className={`border-b border-gray-50 dark:border-gray-800/50 last:border-0 ${tier.key === key ? 'bg-primary-50/50 dark:bg-primary-900/10' : ''}`}>
-                            <td className="py-3 pr-4 font-medium text-gray-900 dark:text-gray-100">
-                              {label}
-                              {tier.key === key && <span className="ml-1.5 text-[10px] text-primary-600 font-normal">(activo)</span>}
-                            </td>
-                            <td className="py-3 px-4 text-center text-xs text-gray-400">{desc}</td>
-                            <td className="py-3 px-4 text-right text-gray-500">{fmt(base)}</td>
-                            <td className="py-3 px-4 text-right">
-                              {isEdited ? (
-                                <div className="relative inline-block">
-                                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">$</span>
-                                  <input
-                                    type="number" step="0.01"
-                                    value={editVal}
-                                    onChange={e => setEditValues(prev => ({ ...prev, [editKey]: e.target.value }))}
-                                    className="w-32 pl-5 pr-2 py-1.5 text-sm text-right bg-amber-50 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500/30 font-medium tabular-nums"
-                                  />
+                                    return (
+                                      <div key={key} className={`p-3 rounded-lg border ${
+                                        isActive
+                                          ? 'border-primary-200 bg-primary-50/50 dark:border-primary-800 dark:bg-primary-900/20'
+                                          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+                                      }`}>
+                                        <div className="flex items-center justify-between mb-2">
+                                          <div className="flex items-center gap-1.5">
+                                            <span className="text-xs font-semibold text-gray-900 dark:text-gray-100">{label}</span>
+                                            <span className="text-[10px] text-gray-400">{desc}</span>
+                                            {isActive && <span className="text-[10px] text-primary-600 font-medium">← activo</span>}
+                                          </div>
+                                          <span className="text-[10px] text-gray-400">Base: {fmt(base)}</span>
+                                        </div>
+
+                                        <div className="flex items-center gap-2 mb-2">
+                                          <span className="text-xs text-gray-500">Precio:</span>
+                                          {isEdited ? (
+                                            <div className="relative flex-1">
+                                              <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400">$</span>
+                                              <input
+                                                type="number" step="0.01"
+                                                value={editVal}
+                                                onChange={e => setEditValues(prev => ({ ...prev, [editKey]: e.target.value }))}
+                                                className="w-full pl-4 pr-2 py-1 text-xs text-right bg-amber-50 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500/30 font-medium tabular-nums"
+                                                autoFocus
+                                              />
+                                            </div>
+                                          ) : (
+                                            <span className={`text-sm font-bold tabular-nums ${mTier != null && mTier > 0 ? 'text-gray-900 dark:text-gray-100' : mTier != null && mTier <= 0 ? 'text-red-600' : ''}`}>
+                                              {fmt(regional)}
+                                            </span>
+                                          )}
+                                        </div>
+
+                                        <div className="flex items-center justify-between mb-2">
+                                          {mTier != null ? (
+                                            <span className={`text-[11px] font-medium ${mTier >= 20 ? 'text-emerald-600' : mTier >= 10 ? 'text-amber-600' : 'text-red-600'}`}>
+                                              Margen: {mTier.toFixed(1)}%
+                                            </span>
+                                          ) : <span />}
+                                          <span className="text-[11px] text-gray-400">
+                                            Imp: {fmt(regional != null ? regional * quantity : null)}
+                                          </span>
+                                        </div>
+
+                                        <div className="flex gap-1.5">
+                                          {isEdited ? (
+                                            <>
+                                              <button
+                                                onClick={() => saveMutation.mutate({ stateCode: sp.stateCode, [key]: parseFloat(editVal) })}
+                                                disabled={saveMutation.isPending || isNaN(parseFloat(editVal))}
+                                                className="flex-1 text-[11px] px-2 py-1.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 disabled:opacity-50 font-medium inline-flex items-center justify-center gap-1"
+                                              >
+                                                {saveMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                                                Guardar
+                                              </button>
+                                              <button
+                                                onClick={() => {
+                                                  const n = { ...editValues };
+                                                  delete n[editKey];
+                                                  setEditValues(n);
+                                                }}
+                                                className="text-[11px] px-2 py-1.5 text-gray-500 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 font-medium"
+                                              >
+                                                <X className="w-3 h-3" />
+                                              </button>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <button
+                                                onClick={() => setEditValues(prev => ({ ...prev, [editKey]: String(regional ?? '') }))}
+                                                className="flex-1 text-[11px] px-2 py-1.5 text-primary-600 bg-primary-50 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-lg hover:bg-primary-100 font-medium"
+                                              >
+                                                Editar
+                                              </button>
+                                              {sp.isOverridden && (
+                                                <button
+                                                  onClick={() => {
+                                                    if (regional != null) {
+                                                      navigator.clipboard.writeText(String(regional));
+                                                      toast.success(`${fmt(regional)} copiado`);
+                                                    }
+                                                  }}
+                                                  className="text-[11px] px-2 py-1.5 text-gray-600 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 font-medium"
+                                                >
+                                                  Copiar
+                                                </button>
+                                              )}
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
                                 </div>
-                              ) : (
-                                <span className={`font-semibold tabular-nums ${m != null && m > 0 ? 'text-gray-900 dark:text-gray-100' : m != null && m <= 0 ? 'text-red-600' : ''}`}>
-                                  {fmt(regional)}
-                                </span>
-                              )}
-                            </td>
-                            <td className="py-3 px-4 text-right">
-                              {m != null ? (
-                                <span className={`text-sm font-medium ${m >= 20 ? 'text-emerald-600' : m >= 10 ? 'text-amber-600' : 'text-red-600'}`}>
-                                  {m.toFixed(1)}%
-                                </span>
-                              ) : <span className="text-gray-400">—</span>}
-                            </td>
-                            <td className="py-3 pl-4 text-right">
-                              {isEdited ? (
-                                <div className="flex items-center justify-end gap-1">
-                                  <button
-                                    onClick={() => {
-                                      const v = parseFloat(editVal);
-                                      if (isNaN(v)) { toast.error('Ingresa un número válido'); return; }
-                                      saveMutation.mutate({ stateCode: selectedStateData.stateCode, [key]: v });
-                                    }}
-                                    disabled={saveMutation.isPending}
-                                    className="text-xs px-2.5 py-1.5 bg-amber-500 text-white rounded-lg hover:bg-amber-600 disabled:opacity-50 font-medium inline-flex items-center gap-1"
-                                  >
-                                    {saveMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
-                                    Guardar
-                                  </button>
-                                  <button
-                                    onClick={() => {
-                                      const n = { ...editValues };
-                                      delete n[editKey];
-                                      setEditValues(n);
-                                      if (Object.keys(n).length === 0) setEditTier(null);
-                                    }}
-                                    className="text-xs px-2.5 py-1.5 text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 font-medium"
-                                  >
-                                    <X className="w-3 h-3 inline" />
-                                  </button>
-                                </div>
-                              ) : (
-                                <div className="flex items-center justify-end gap-1">
-                                  <button
-                                    onClick={() => {
-                                      setEditValues(prev => ({ ...prev, [editKey]: String(regional ?? '') }));
-                                      setEditTier(key);
-                                    }}
-                                    className="text-xs px-2.5 py-1.5 text-primary-600 bg-primary-50 dark:bg-primary-900/30 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 font-medium"
-                                  >
-                                    Editar
-                                  </button>
-                                  <button
-                                    onClick={() => {
-                                      if (regional != null) {
-                                        navigator.clipboard.writeText(String(regional));
-                                        toast.success(`${fmt(regional)} copiado`);
-                                      }
-                                    }}
-                                    className="text-xs px-2.5 py-1.5 text-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 font-medium"
-                                    title="Copiar precio"
-                                  >
-                                    <ShoppingCart className="w-3 h-3 inline" /> Copiar
-                                  </button>
-                                </div>
-                              )}
+                                {sp.isOverridden && (
+                                  <div className="mt-3 flex justify-end">
+                                    <button
+                                      onClick={() => resetMutation.mutate(sp.stateCode)}
+                                      className="inline-flex items-center gap-1.5 text-[11px] font-medium text-gray-400 hover:text-red-600 transition-colors"
+                                    >
+                                      <RotateCcw className="w-3 h-3" />
+                                      Restablecer a precio regional automático
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
                             </td>
                           </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-                {selectedStateData.isOverridden && (
-                  <div className="px-5 py-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30 flex justify-end">
-                    <button
-                      onClick={() => resetMutation.mutate(selectedStateData.stateCode)}
-                      className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-red-600 transition-colors"
-                    >
-                      <RotateCcw className="w-3 h-3" />
-                      Restablecer a precio regional automático
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* Quick stats sidebar */}
-              <div className="card p-5 space-y-4">
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Resumen · {quantity} {selectedItem?.unit || 'pza(s)'}</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Región</span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">{selectedStateData.regionName}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Ajuste regional</span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
-                      {selectedStateData.adjustmentFactor >= 0 ? '+' : ''}{(selectedStateData.adjustmentFactor * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Tipo de precio</span>
-                    <span className={`font-medium text-xs px-2 py-0.5 rounded-full ${selectedStateData.isOverridden ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'}`}>
-                      {selectedStateData.isOverridden ? 'Manual' : 'Automático'}
-                    </span>
-                  </div>
-                  <hr className="border-gray-100 dark:border-gray-800" />
-                  {TIER_CONFIG.map(({ key, label }) => {
-                    const regional = selectedStateData[key] as number | null;
-                    const total = regional != null ? regional * quantity : null;
-                    const m = margin(selectedStateData.costPrice, regional);
-                    const isActive = tier.key === key;
-                    return (
-                      <div key={key} className={`flex justify-between text-sm p-2 rounded-lg ${isActive ? 'bg-primary-50 dark:bg-primary-900/20' : ''}`}>
-                        <div>
-                          <span className="text-gray-500">{label}</span>
-                          {isActive && <span className="ml-1 text-[10px] text-primary-600">← activo</span>}
-                        </div>
-                        <div className="text-right">
-                          <div className={`font-semibold ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-gray-100'}`}>
-                            {total != null ? `$${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })}` : '—'}
-                          </div>
-                          <div className={`text-[11px] ${isActive ? 'text-primary-500' : 'text-gray-400'}`}>
-                            {fmt(regional)} / {selectedItem?.unit || 'pza'}
-                          </div>
-                          {m != null && (
-                            <div className={`text-[11px] ${m >= 20 ? 'text-emerald-600' : m >= 10 ? 'text-amber-600' : 'text-red-600'}`}>
-                              Margen {m.toFixed(1)}%
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                        )}
+                      </Fragment>
                     );
                   })}
-                </div>
-              </div>
+                </tbody>
+              </table>
             </div>
-          ) : null}
-        </>
+          )}
+          <div className="px-4 py-2.5 border-t border-gray-100 dark:border-gray-800 text-[11px] text-gray-400 flex justify-between bg-gray-50/60 dark:bg-gray-900/30">
+            <span>Mostrando {filteredStates.length} de {statePrices.length} estados · <span className={filterRegion ? 'text-primary-600 font-medium' : ''}>{filterRegion ? `Filtro: ${REGIONS.find(r => r.code === filterRegion)?.name}` : 'Sin filtro de región'}</span></span>
+            <span className="text-amber-600">{statePrices.filter(s => s.isOverridden).length} con precio manual</span>
+          </div>
+        </div>
       )}
     </div>
   );
