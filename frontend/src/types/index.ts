@@ -5,6 +5,7 @@ export interface User {
   role: 'ADMIN' | 'TECHNICIAN' | 'SALES' | 'CLIENT' | 'PROYECTOS' | 'COMPRAS';
   phone?: string;
   avatar?: string;
+  avatarEmoji?: string;
   active: boolean;
   isSuperAdmin?: boolean;
   permissions?: string[];

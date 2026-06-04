@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { User, Camera, Save, Loader2, Mail, Phone, Shield, Calendar, CreditCard, Clock } from 'lucide-react';
+import { User, Camera, Save, Loader2, Mail, Phone, Shield, Calendar, CreditCard, Clock, Smile } from 'lucide-react';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 import type { User as UserType } from '../types';
@@ -19,6 +19,14 @@ interface ProfileData {
   email: string;
   phone: string;
 }
+
+const EMOJI_LIST = [
+  '🛠', '🔧', '⚡', '❄️', '🔥', '💨', '💧', '🔩',
+  '🧰', '📐', '📏', '🔨', '🪛', '⚙️', '🧲', '🪜',
+  '🚐', '🚚', '🚗', '🏎️', '🚁', '🛩️', '🚀', '🚂',
+  '👨‍🔧', '👩‍🔧', '🧑‍🔧', '👷', '👨‍💼', '👩‍💼', '🧑‍💼', '👨‍🏭',
+  '😎', '🚀', '💪', '🦸', '🎯', '🏆', '⭐', '💯',
+];
 
 const roleLabels: Record<string, string> = {
   ADMIN: 'Administrador',
@@ -105,6 +113,22 @@ export default function ProfilePage() {
     },
   });
 
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const emojiMutation = useMutation({
+    mutationFn: async (emoji: string) => {
+      await api.put('/profile', { avatarEmoji: emoji });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      toast.success('Emoji actualizado');
+      setShowEmojiPicker(false);
+    },
+    onError: () => {
+      toast.error('Error al actualizar emoji');
+    },
+  });
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -163,6 +187,45 @@ export default function ProfilePage() {
               className="hidden"
               onChange={handleFileChange}
             />
+            {/* Emoji selector */}
+            <div className="mt-2 text-center">
+              <div
+                className="text-3xl cursor-pointer hover:scale-110 transition-transform"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                title="Cambiar emoji para GPS"
+              >
+                {currentUser.avatarEmoji || '🛠'}
+              </div>
+              <p className="text-[10px] text-gray-400 mt-0.5">Emoji GPS</p>
+            </div>
+            {showEmojiPicker && (
+              <div className="absolute top-28 left-0 z-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl p-3 w-72">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">Elige tu emoji</span>
+                  <button
+                    onClick={() => setShowEmojiPicker(false)}
+                    className="text-gray-400 hover:text-gray-600 text-sm"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="grid grid-cols-8 gap-1">
+                  {EMOJI_LIST.map(emoji => (
+                    <button
+                      key={emoji}
+                      onClick={() => emojiMutation.mutate(emoji)}
+                      className={`w-8 h-8 flex items-center justify-center text-lg rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors ${
+                        currentUser.avatarEmoji === emoji
+                          ? 'ring-2 ring-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                          : ''
+                      }`}
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Info */}

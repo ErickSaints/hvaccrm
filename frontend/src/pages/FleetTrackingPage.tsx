@@ -10,11 +10,14 @@ interface TechnicianLocation {
   technicianId: number;
   name: string;
   role: string;
+  avatarEmoji?: string;
   latitude: number;
   longitude: number;
   lastUpdate: string;
   status: 'ACTIVE' | 'INACTIVE';
   serviceOrderNumber?: string;
+  siteName?: string;
+  siteAddress?: string;
 }
 
 const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || '';
@@ -188,7 +191,7 @@ export default function FleetTrackingPage() {
             <div className="absolute top-2 left-3 text-[10px] text-gray-500 font-mono">90°N</div>
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] text-gray-500 font-mono">Ecuador</div>
 
-            {/* Technician dots */}
+            {/* Technician markers */}
             {locations.map(loc => {
               const active = isActive(loc.lastUpdate);
               const left = ((loc.longitude + 180) / 360) * 100;
@@ -197,18 +200,20 @@ export default function FleetTrackingPage() {
               return (
                 <div
                   key={loc.id || loc.technicianId}
-                  className="absolute flex flex-col items-center"
+                  className="absolute flex flex-col items-center pointer-events-none"
                   style={{ left: `${left}%`, top: `${top}%` }}
                 >
                   <div
-                    className={`w-4 h-4 rounded-full transform -translate-x-1/2 -translate-y-1/2 ${
+                    className={`relative flex items-center justify-center w-8 h-8 rounded-full text-lg transform -translate-x-1/2 -translate-y-1/2 ${
                       active
-                        ? 'bg-green-500 animate-pulse shadow-lg shadow-green-500/50'
-                        : 'bg-gray-500'
+                        ? 'bg-green-500/20 ring-2 ring-green-400 animate-pulse shadow-lg shadow-green-500/40'
+                        : 'bg-gray-600/40 ring-1 ring-gray-500'
                     }`}
                     title={`${loc.name} (${loc.latitude.toFixed(4)}, ${loc.longitude.toFixed(4)})`}
-                  />
-                  <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-medium text-gray-300 bg-gray-900/80 px-1.5 py-0.5 rounded">
+                  >
+                    {loc.avatarEmoji || (active ? '🛠' : '⚙')}
+                  </div>
+                  <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-medium text-gray-300 bg-gray-900/80 px-1.5 py-0.5 rounded pointer-events-auto">
                     {loc.name}
                   </span>
                 </div>
@@ -284,11 +289,9 @@ export default function FleetTrackingPage() {
                   <div key={loc.id || loc.technicianId} className="card hover:shadow-lg transition-shadow">
                     <div className="flex items-start justify-between flex-wrap gap-3">
                       <div className="flex items-start gap-3 flex-1 min-w-0">
-                        <div
-                          className={`w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${
-                            active ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
-                          }`}
-                        />
+                        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xl">
+                          {loc.avatarEmoji || (active ? '🛠' : '⚙')}
+                        </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
                             <h3 className="font-semibold text-gray-900 dark:text-gray-100">
@@ -306,15 +309,27 @@ export default function FleetTrackingPage() {
                               {timeAgo(loc.lastUpdate)}
                             </span>
                           </div>
-                          {loc.serviceOrderNumber && (
-                            <Link
-                              to={`/service-orders/${loc.serviceOrderNumber}`}
-                              className="inline-flex items-center gap-1 text-xs text-primary-600 hover:underline mt-1"
-                            >
-                              <Navigation className="w-3 h-3" />
-                              OS: {loc.serviceOrderNumber}
-                            </Link>
-                          )}
+                          <div className="mt-1.5 space-y-0.5">
+                            {loc.serviceOrderNumber && (
+                              <Link
+                                to={`/service-orders/${loc.serviceOrderNumber}`}
+                                className="inline-flex items-center gap-1 text-xs text-primary-600 hover:underline"
+                              >
+                                <Navigation className="w-3 h-3" />
+                                OS: {loc.serviceOrderNumber}
+                              </Link>
+                            )}
+                            {loc.siteName && (
+                              <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                                <span className="font-medium">Sitio:</span> {loc.siteName}
+                              </div>
+                            )}
+                            {loc.siteAddress && (
+                              <div className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
+                                <span>{loc.siteAddress}</span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <span

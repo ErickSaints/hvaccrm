@@ -44,6 +44,7 @@ const updateProfileSchema = z.object({
   name: z.string().min(1).optional(),
   phone: z.string().optional(),
   email: z.string().email().optional(),
+  avatarEmoji: z.string().optional(),
 });
 
 const changePasswordSchema = z.object({

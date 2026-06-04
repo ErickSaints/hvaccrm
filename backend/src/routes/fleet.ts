@@ -16,16 +16,40 @@ router.get('/', authenticate, requireBackoffice, async (_req: Request, res: Resp
       },
       include: {
         user: {
-          select: { id: true, name: true, role: true },
+          select: { id: true, name: true, role: true, avatarEmoji: true },
         },
         serviceOrder: {
           select: { id: true, number: true, status: true },
+          include: {
+            customer: {
+              select: { id: true, companyName: true, address: true, city: true, state: true },
+            },
+          },
         },
       },
       orderBy: { recordedAt: 'desc' },
     });
 
-    res.json(locations);
+    const mapped = locations.map(loc => ({
+      id: loc.id,
+      technicianId: loc.userId,
+      name: loc.user.name,
+      role: loc.user.role,
+      avatarEmoji: loc.user.avatarEmoji,
+      latitude: loc.latitude,
+      longitude: loc.longitude,
+      lastUpdate: loc.recordedAt,
+      status: loc.isTracking ? 'ACTIVE' as const : 'INACTIVE' as const,
+      serviceOrderNumber: loc.serviceOrder?.number,
+      siteName: loc.serviceOrder?.customer?.companyName ?? null,
+      siteAddress: loc.serviceOrder?.customer
+        ? [loc.serviceOrder.customer.address, loc.serviceOrder.customer.city, loc.serviceOrder.customer.state]
+            .filter(Boolean)
+            .join(', ')
+        : null,
+    }));
+
+    res.json(mapped);
   } catch (err) {
     console.error('Fleet list error:', err);
     res.status(500).json({ error: 'Error al obtener ubicaciones de técnicos' });
@@ -59,7 +83,7 @@ router.post('/location', authenticate, async (req: Request, res: Response) => {
       },
       include: {
         user: {
-          select: { id: true, name: true, role: true },
+          select: { id: true, name: true, role: true, avatarEmoji: true },
         },
       },
     });
@@ -68,15 +92,17 @@ router.post('/location', authenticate, async (req: Request, res: Response) => {
     if (io) {
       io.emit('technician-location', {
         id: location.id,
-        userId: location.userId,
+        technicianId: location.userId,
+        name: location.user.name,
+        role: location.user.role,
+        avatarEmoji: location.user.avatarEmoji,
         latitude: location.latitude,
         longitude: location.longitude,
-        accuracy: location.accuracy,
-        heading: location.heading,
-        speed: location.speed,
-        serviceOrderId: location.serviceOrderId,
-        recordedAt: location.recordedAt,
-        user: location.user,
+        lastUpdate: location.recordedAt,
+        status: 'ACTIVE' as const,
+        serviceOrderNumber: null,
+        siteName: null,
+        siteAddress: null,
       });
     }
 
