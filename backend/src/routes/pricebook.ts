@@ -421,26 +421,23 @@ router.put('/items/:id/regional-price', async (req: Request, res: Response) => {
     const state = await prisma.state.findUnique({ where: { code: data.stateCode } });
     if (!state) return res.status(404).json({ error: 'Estado no encontrado' });
 
+    const updatable: any = { updatedById: userId };
+    if (data.goodPrice !== undefined) updatable.goodPrice = data.goodPrice;
+    if (data.betterPrice !== undefined) updatable.betterPrice = data.betterPrice;
+    if (data.bestPrice !== undefined) updatable.bestPrice = data.bestPrice;
+    if (data.costPrice !== undefined) updatable.costPrice = data.costPrice;
+    if (data.adjustmentFactor !== undefined) updatable.adjustmentFactor = data.adjustmentFactor;
+
+    const creatable: any = {
+      itemId: id,
+      stateId: state.id,
+      ...updatable,
+    };
+
     const override = await prisma.pricebookRegionPrice.upsert({
       where: { itemId_stateId: { itemId: id, stateId: state.id } },
-      update: {
-        goodPrice: data.goodPrice ?? null,
-        betterPrice: data.betterPrice ?? null,
-        bestPrice: data.bestPrice ?? null,
-        costPrice: data.costPrice ?? null,
-        adjustmentFactor: data.adjustmentFactor ?? null,
-        updatedById: userId,
-      },
-      create: {
-        itemId: id,
-        stateId: state.id,
-        goodPrice: data.goodPrice ?? null,
-        betterPrice: data.betterPrice ?? null,
-        bestPrice: data.bestPrice ?? null,
-        costPrice: data.costPrice ?? null,
-        adjustmentFactor: data.adjustmentFactor ?? null,
-        updatedById: userId,
-      },
+      update: updatable,
+      create: creatable,
     });
 
     res.json(override);
