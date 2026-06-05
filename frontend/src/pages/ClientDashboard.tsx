@@ -21,20 +21,14 @@ import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 import type { Ticket, ServiceOrder, Quotation, Equipment, Invoice, PaginatedResponse } from '../types';
 
-const COLORS = {
-  ABIERTO: '#3B82F6',
-  EN_PROCESO: '#F59E0B',
-  RESUELTO: '#10B981',
-  CERRADO: '#6B7280',
-  PENDIENTE: '#F59E0B',
-  EN_PROGRESO: '#3B82F6',
-  COMPLETADO: '#10B981',
-  CANCELADO: '#EF4444',
-  BORRADOR: '#6B7280',
-  ENVIADA: '#3B82F6',
-  APROBADA: '#10B981',
-  RECHAZADA: '#EF4444',
-  VENCIDA: '#F59E0B',
+const COLORS: Record<string, string> = {
+  Abierto: '#3B82F6', 'En Proceso': '#F59E0B', Resuelto: '#10B981', Cerrado: '#6B7280',
+  Pendiente: '#F59E0B', 'En Progreso': '#3B82F6', Completado: '#10B981', Cancelado: '#EF4444',
+  Borrador: '#6B7280', Enviada: '#3B82F6', Aprobada: '#10B981', Rechazada: '#EF4444', Vencida: '#F59E0B',
+  /* Status keys (fallback) */
+  ABIERTO: '#3B82F6', EN_PROCESO: '#F59E0B', RESUELTO: '#10B981', CERRADO: '#6B7280',
+  PENDIENTE: '#F59E0B', EN_PROGRESO: '#3B82F6', COMPLETADO: '#10B981', CANCELADO: '#EF4444',
+  BORRADOR: '#6B7280', ENVIADA: '#3B82F6', APROBADA: '#10B981', RECHAZADA: '#EF4444', VENCIDA: '#F59E0B',
 };
 
 function statusBadge(status: string) {
@@ -106,28 +100,28 @@ function ChartCard({ title, data, dataKey }: { title: string; data: { name: stri
 export default function ClientDashboard() {
   const { user } = useAuth();
 
-  const { data: tickets } = useQuery<Ticket[]>({
+  const { data: ticketsData } = useQuery<PaginatedResponse<Ticket>>({
     queryKey: ['client-tickets'],
     queryFn: async () => {
-      const { data } = await api.get<Ticket[]>('/tickets');
+      const { data } = await api.get<PaginatedResponse<Ticket>>('/tickets');
       return data;
     },
     retry: 1,
   });
 
-  const { data: orders } = useQuery<ServiceOrder[]>({
+  const { data: ordersData } = useQuery<PaginatedResponse<ServiceOrder>>({
     queryKey: ['client-orders'],
     queryFn: async () => {
-      const { data } = await api.get<ServiceOrder[]>('/service-orders');
+      const { data } = await api.get<PaginatedResponse<ServiceOrder>>('/service-orders');
       return data;
     },
     retry: 1,
   });
 
-  const { data: quotations } = useQuery<Quotation[]>({
+  const { data: quotationsData } = useQuery<PaginatedResponse<Quotation>>({
     queryKey: ['client-quotations'],
     queryFn: async () => {
-      const { data } = await api.get<Quotation[]>('/quotations');
+      const { data } = await api.get<PaginatedResponse<Quotation>>('/quotations');
       return data;
     },
     retry: 1,
@@ -151,38 +145,42 @@ export default function ClientDashboard() {
     retry: 1,
   });
 
-  const activeTickets = tickets?.filter((t) => t.status !== 'CERRADO' && t.status !== 'RESUELTO') || [];
-  const pendingOrders = orders?.filter((o) => o.status === 'PENDIENTE' || o.status === 'EN_PROGRESO') || [];
-  const pendingQuotations = quotations?.filter((q) => q.status === 'BORRADOR' || q.status === 'ENVIADA') || [];
+  const tickets = ticketsData?.data ?? [];
+  const orders = ordersData?.data ?? [];
+  const quotations = quotationsData?.data ?? [];
   const invoices = invoicesData?.data ?? [];
 
+  const activeTickets = tickets.filter((t) => t.status !== 'CERRADO' && t.status !== 'RESUELTO');
+  const pendingOrders = orders.filter((o) => o.status === 'PENDIENTE' || o.status === 'EN_PROGRESO');
+  const pendingQuotations = quotations.filter((q) => q.status === 'BORRADOR' || q.status === 'ENVIADA');
+
   const ticketStatusData = Object.entries(
-    tickets?.reduce((acc, t) => {
+    tickets.reduce((acc, t) => {
       const label = { ABIERTO: 'Abierto', EN_PROCESO: 'En Proceso', RESUELTO: 'Resuelto', CERRADO: 'Cerrado' }[t.status] || t.status;
       acc[label] = (acc[label] || 0) + 1;
       return acc;
-    }, {} as Record<string, number>) || {}
+    }, {} as Record<string, number>)
   ).map(([name, value]) => ({ name, value }));
 
   const orderStatusData = Object.entries(
-    orders?.reduce((acc, o) => {
+    orders.reduce((acc, o) => {
       const label = { PENDIENTE: 'Pendiente', EN_PROGRESO: 'En Progreso', COMPLETADO: 'Completado', CANCELADO: 'Cancelado' }[o.status] || o.status;
       acc[label] = (acc[label] || 0) + 1;
       return acc;
-    }, {} as Record<string, number>) || {}
+    }, {} as Record<string, number>)
   ).map(([name, value]) => ({ name, value }));
 
   const quotationStatusData = Object.entries(
-    quotations?.reduce((acc, q) => {
+    quotations.reduce((acc, q) => {
       const label = { BORRADOR: 'Borrador', ENVIADA: 'Enviada', APROBADA: 'Aprobada', RECHAZADA: 'Rechazada', VENCIDA: 'Vencida' }[q.status] || q.status;
       acc[label] = (acc[label] || 0) + 1;
       return acc;
-    }, {} as Record<string, number>) || {}
+    }, {} as Record<string, number>)
   ).map(([name, value]) => ({ name, value }));
 
   const nextService = orders
-    ?.filter((o) => o.scheduledDate && o.status !== 'COMPLETADO' && o.status !== 'CANCELADO')
-    ?.sort((a, b) => new Date(a.scheduledDate!).getTime() - new Date(b.scheduledDate!).getTime())[0];
+    .filter((o) => o.scheduledDate && o.status !== 'COMPLETADO' && o.status !== 'CANCELADO')
+    .sort((a, b) => new Date(a.scheduledDate!).getTime() - new Date(b.scheduledDate!).getTime())[0];
 
   const serviceDate = nextService?.scheduledDate ? new Date(nextService.scheduledDate) : null;
   const isToday = serviceDate && serviceDate.toDateString() === new Date().toDateString();

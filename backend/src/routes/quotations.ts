@@ -260,7 +260,7 @@ router.delete('/:id', requireSuperAdmin, async (req: Request, res: Response) => 
   }
 });
 
-router.get('/:id/pdf', requirePermission('quotations:view'), async (req: Request, res: Response) => {
+router.get('/:id/pdf', requirePermission('quotations:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const quotation = await prisma.quotation.findUnique({
@@ -268,6 +268,9 @@ router.get('/:id/pdf', requirePermission('quotations:view'), async (req: Request
       include: { customer: true, items: true },
     });
     if (!quotation) return res.status(404).json({ error: 'Cotización no encontrada' });
+    if (req.user!.role === 'CLIENT' && quotation.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver esta cotización' });
+    }
     generateQuotationPdf(res, {
       number: quotation.number,
       title: quotation.title,

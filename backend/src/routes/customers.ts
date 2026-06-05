@@ -73,9 +73,12 @@ router.get('/:id', requirePermission('customers:view'), async (req: Request, res
   }
 });
 
-router.get('/:id/equipment', requirePermission('equipment:view'), async (req: Request, res: Response) => {
+router.get('/:id/equipment', requirePermission('equipment:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
+    if (req.user?.role === 'CLIENT' && req.user.customerId !== id) {
+      return res.status(403).json({ error: 'No tienes permiso para ver estos equipos' });
+    }
     const equipment = await prisma.equipment.findMany({
       where: { customerId: id },
       orderBy: { createdAt: 'desc' },
@@ -86,9 +89,12 @@ router.get('/:id/equipment', requirePermission('equipment:view'), async (req: Re
   }
 });
 
-router.get('/:id/timeline', requirePermission('customers:view'), async (req: Request, res: Response) => {
+router.get('/:id/timeline', requirePermission('customers:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
+    if (req.user?.role === 'CLIENT' && req.user.customerId !== id) {
+      return res.status(403).json({ error: 'No tienes permiso para ver esta linea de tiempo' });
+    }
     const [tickets, orders, quotations, reports, policies] = await Promise.all([
       prisma.ticket.findMany({ where: { customerId: id }, include: { assignedUser: { select: { name: true } } } }),
       prisma.serviceOrder.findMany({ where: { customerId: id }, include: { assignedUser: { select: { name: true } } } }),

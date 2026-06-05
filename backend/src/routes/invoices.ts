@@ -171,7 +171,7 @@ router.post('/generate-from-order/:orderId', requirePermission('invoices:create'
   }
 });
 
-router.get('/:id/pdf', requirePermission('invoices:view'), async (req: Request, res: Response) => {
+router.get('/:id/pdf', requirePermission('invoices:view'), scopeToCustomer, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const invoice = await prisma.invoice.findUnique({
@@ -179,6 +179,9 @@ router.get('/:id/pdf', requirePermission('invoices:view'), async (req: Request, 
       include: { customer: true, createdBy: { select: { name: true } } },
     });
     if (!invoice) return res.status(404).json({ error: 'Factura no encontrada' });
+    if (req.user!.role === 'CLIENT' && invoice.customerId !== req.user!.customerId) {
+      return res.status(403).json({ error: 'No tienes permiso para ver esta factura' });
+    }
     generateInvoicePdf(res, {
       number: invoice.number,
       title: invoice.title,
