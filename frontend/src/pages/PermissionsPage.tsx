@@ -18,12 +18,17 @@ const ROLE_LABELS: Record<string, string> = {
 function buildPermissionMap(data: PermissionInfo | undefined, role: string): Record<string, boolean> {
   const map: Record<string, boolean> = {};
   if (!data) return map;
+  // Start from defaults
+  for (const p of data.defaults[role] ?? []) {
+    map[p] = true;
+  }
   const overrides = data.overrides[role];
   if (overrides) {
     for (const [p, allowed] of Object.entries(overrides)) {
       map[p] = allowed;
     }
   }
+  // Fill remaining permissions (not in defaults) as false
   for (const p of data.allPermissions) {
     if (!(p in map)) {
       map[p] = false;
