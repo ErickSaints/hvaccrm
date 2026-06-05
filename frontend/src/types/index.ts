@@ -9,6 +9,7 @@ export interface User {
   active: boolean;
   isSuperAdmin?: boolean;
   permissions?: string[];
+  customerId?: number | null;
 }
 
 export interface PermissionInfo {

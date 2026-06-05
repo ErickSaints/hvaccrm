@@ -97,7 +97,7 @@ export default function QuotationRequestDetail() {
           <div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">{req.title}</h1>
             <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              {new Date(req.createdAt).toLocaleDateString('es-MX', { dateStyle: 'long', timeStyle: 'short' })}
+              {new Date(req.createdAt).toLocaleString('es-MX', { dateStyle: 'long', timeStyle: 'short' })}
             </p>
           </div>
           <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full ${cfg.color}`}>

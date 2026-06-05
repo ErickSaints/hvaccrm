@@ -36,7 +36,7 @@ async function getEffectivePermissions(role: string): Promise<string[]> {
     where: { role: role as any },
     select: { permission: true, allowed: true },
   });
-  const result = new Set(defaults);
+  const result = new Set<string>(defaults);
   for (const o of overrides) {
     if (o.allowed) {
       result.add(o.permission);

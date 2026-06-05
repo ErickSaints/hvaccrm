@@ -31,9 +31,10 @@ export default function TicketFormPage() {
   const isEditing = Boolean(id);
   const isBackoffice = currentUser?.role !== 'CLIENT';
   const preselectedCustomer = searchParams.get('customerId');
+  const clientCustomerId = currentUser?.role === 'CLIENT' ? currentUser.customerId : null;
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
-    preselectedCustomer ? Number(preselectedCustomer) : null
+    preselectedCustomer ? Number(preselectedCustomer) : clientCustomerId ?? null
   );
 
   const {
@@ -48,6 +49,7 @@ export default function TicketFormPage() {
     resolver: zodResolver(ticketSchema),
     defaultValues: {
       level: 'ATENCION',
+      customerId: clientCustomerId ?? undefined,
       equipmentId: null,
       assignedTo: null,
     },
@@ -197,24 +199,26 @@ export default function TicketFormPage() {
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
-          <Controller
-            name="customerId"
-            control={control}
-            render={({ field }) => (
-              <AsyncCustomerSelect
-                value={field.value}
-                onChange={(val) => {
-                  field.onChange(val);
-                  setSelectedCustomerId(val);
-                  setValue('equipmentId', null);
-                }}
-                error={errors.customerId?.message}
-              />
-            )}
-          />
-        </div>
+        {isBackoffice && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Cliente *</label>
+            <Controller
+              name="customerId"
+              control={control}
+              render={({ field }) => (
+                <AsyncCustomerSelect
+                  value={field.value}
+                  onChange={(val) => {
+                    field.onChange(val);
+                    setSelectedCustomerId(val);
+                    setValue('equipmentId', null);
+                  }}
+                  error={errors.customerId?.message}
+                />
+              )}
+            />
+          </div>
+        )}
 
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Equipo (opcional)</label>
