@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Plus, Search, Eye, Filter, ClipboardList, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useAuth } from '../lib/auth';
 import type { ServiceOrder, PaginatedResponse } from '../types';
 import Pagination from '../components/Pagination';
 
@@ -43,7 +44,9 @@ const statusOptions = [
 ];
 
 export default function ServiceOrdersPage() {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
+  const isClient = user?.role === 'CLIENT';
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFrom, setDateFrom] = useState('');
@@ -94,10 +97,12 @@ export default function ServiceOrdersPage() {
             <h1 className="text-xl lg:text-2xl font-bold text-white">Ordenes de Servicio</h1>
             <p className="text-primary-200 text-sm mt-1">Gestión de órdenes de servicio</p>
           </div>
-          <Link to="/service-orders/new" className="btn-primary bg-white/20 border-white/30 text-white hover:bg-white/30 inline-flex items-center gap-2 backdrop-blur-sm">
-          <Plus className="w-4 h-4" />
-          Nueva Orden
-        </Link>
+          {!isClient && (
+            <Link to="/service-orders/new" className="btn-primary bg-white/20 border-white/30 text-white hover:bg-white/30 inline-flex items-center gap-2 backdrop-blur-sm">
+              <Plus className="w-4 h-4" />
+              Nueva Orden
+            </Link>
+          )}
       </div>
       </div>
 
@@ -250,7 +255,7 @@ export default function ServiceOrdersPage() {
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza creando la primera orden de servicio'}
           </p>
-          {!search && !statusFilter && !dateFrom && !dateTo && (
+          {!search && !statusFilter && !dateFrom && !dateTo && !isClient && (
             <Link to="/service-orders/new" className="btn-primary inline-flex items-center gap-2">
               <Plus className="w-4 h-4" />
               Nueva Orden

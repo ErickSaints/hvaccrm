@@ -27,15 +27,24 @@ const registerSchema = z.object({
 });
 
 async function getEffectivePermissions(role: string): Promise<string[]> {
+  const defaults = DEFAULT_ROLE_PERMISSIONS[role] || [];
   const count = await prisma.rolePermission.count({ where: { role: role as any } });
   if (count === 0) {
-    return DEFAULT_ROLE_PERMISSIONS[role] || [];
+    return defaults;
   }
   const overrides = await prisma.rolePermission.findMany({
-    where: { role: role as any, allowed: true },
-    select: { permission: true }
+    where: { role: role as any },
+    select: { permission: true, allowed: true },
   });
-  return overrides.map(o => o.permission);
+  const result = new Set(defaults);
+  for (const o of overrides) {
+    if (o.allowed) {
+      result.add(o.permission);
+    } else {
+      result.delete(o.permission);
+    }
+  }
+  return Array.from(result);
 }
 
 router.post('/login', async (req: Request, res: Response) => {

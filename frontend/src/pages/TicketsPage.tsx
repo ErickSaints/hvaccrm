@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Plus, Search, Eye, Filter, TicketCheck, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useAuth } from '../lib/auth';
 import type { Ticket, PaginatedResponse } from '../types';
 import Pagination from '../components/Pagination';
 import { useSuperAdminConfirm } from '../contexts/SuperAdminContext';
@@ -30,7 +31,9 @@ function levelBadge(level: string) {
 
 export default function TicketsPage() {
   const confirmSuperAdmin = useSuperAdminConfirm();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
+  const isClient = user?.role === 'CLIENT';
   const [search, setSearch] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -94,10 +97,12 @@ export default function TicketsPage() {
             <h1 className="text-xl lg:text-2xl font-bold text-white">Tickets</h1>
             <p className="text-primary-200 text-sm mt-1">Gestión de tickets de servicio</p>
           </div>
-          <Link to="/tickets/new" className="btn-primary bg-white/20 border-white/30 text-white hover:bg-white/30 inline-flex items-center gap-2 backdrop-blur-sm">
-          <Plus className="w-4 h-4" />
-          Nuevo Ticket
-        </Link>
+          {!isClient && (
+            <Link to="/tickets/new" className="btn-primary bg-white/20 border-white/30 text-white hover:bg-white/30 inline-flex items-center gap-2 backdrop-blur-sm">
+              <Plus className="w-4 h-4" />
+              Nuevo Ticket
+            </Link>
+          )}
       </div>
       </div>
 
@@ -268,7 +273,7 @@ export default function TicketsPage() {
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza creando el primer ticket'}
           </p>
-          {!search && !levelFilter && !statusFilter && !dateFrom && !dateTo && (
+          {!search && !levelFilter && !statusFilter && !dateFrom && !dateTo && !isClient && (
             <Link to="/tickets/new" className="btn-primary inline-flex items-center gap-2">
               <Plus className="w-4 h-4" />
               Nuevo Ticket
