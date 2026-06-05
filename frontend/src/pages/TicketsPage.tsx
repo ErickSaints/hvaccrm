@@ -97,12 +97,10 @@ export default function TicketsPage() {
             <h1 className="text-xl lg:text-2xl font-bold text-white">Tickets</h1>
             <p className="text-primary-200 text-sm mt-1">Gestión de tickets de servicio</p>
           </div>
-          {!isClient && (
             <Link to="/tickets/new" className="btn-primary bg-white/20 border-white/30 text-white hover:bg-white/30 inline-flex items-center gap-2 backdrop-blur-sm">
               <Plus className="w-4 h-4" />
               Nuevo Ticket
             </Link>
-          )}
       </div>
       </div>
 
@@ -273,7 +271,7 @@ export default function TicketsPage() {
               ? 'Intenta con otros filtros de búsqueda'
               : 'Comienza creando el primer ticket'}
           </p>
-          {!search && !levelFilter && !statusFilter && !dateFrom && !dateTo && !isClient && (
+          {!search && !levelFilter && !statusFilter && !dateFrom && !dateTo && (
             <Link to="/tickets/new" className="btn-primary inline-flex items-center gap-2">
               <Plus className="w-4 h-4" />
               Nuevo Ticket
