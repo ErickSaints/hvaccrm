@@ -79,7 +79,7 @@ export default function QuotationRequestsPage() {
                       {req.description}
                     </p>
                     <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
-                      <span>{new Date(req.createdAt).toLocaleDateString('es-MX', { dateStyle: 'short' })}</span>
+                      <span>{req.createdAt ? new Date(req.createdAt).toLocaleDateString('es-MX', { dateStyle: 'short' }) : ''}</span>
                       {req.customer?.contactName && !isClient && (
                         <span>{req.customer.contactName}</span>
                       )}

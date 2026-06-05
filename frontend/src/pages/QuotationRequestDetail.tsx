@@ -96,9 +96,9 @@ export default function QuotationRequestDetail() {
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">{req.title}</h1>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              {new Date(req.createdAt).toLocaleString('es-MX', { dateStyle: 'long', timeStyle: 'short' })}
-            </p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                {req.createdAt ? new Date(req.createdAt).toLocaleString('es-MX', { dateStyle: 'long', timeStyle: 'short' }) : ''}
+              </p>
           </div>
           <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full ${cfg.color}`}>
             <StatusIcon className="w-3.5 h-3.5" />
@@ -139,7 +139,7 @@ export default function QuotationRequestDetail() {
             <div>
               <p className="text-xs font-medium text-green-700 dark:text-green-300">Cotización generada</p>
               <p className="text-sm font-semibold text-green-800 dark:text-green-200 mt-0.5">
-                {req.quotation.number} — ${req.quotation.total.toLocaleString('es-MX')}
+                {req.quotation.number} — ${typeof req.quotation.total === 'number' ? req.quotation.total.toLocaleString('es-MX') : '0'}
               </p>
             </div>
             <Link to={`/quotations/${req.quotation.id}`} className="btn-primary text-sm inline-flex items-center gap-2">

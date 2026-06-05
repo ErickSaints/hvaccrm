@@ -33,7 +33,7 @@ export default function InvoiceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { can } = useAuth();
+  const { can, user } = useAuth();
 
   const { data: invoice, isLoading } = useQuery<Invoice>({
     queryKey: ['invoice', id],
@@ -140,12 +140,12 @@ export default function InvoiceDetailPage() {
               Editar
             </Link>
           )}
-          {can('invoices:delete') && (
-            <button onClick={handleDelete} className="btn-secondary text-red-600 border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 inline-flex items-center gap-2">
-              <Trash2 className="w-4 h-4" />
-              Eliminar
-            </button>
-          )}
+                {(can('invoices:delete') || user?.role === 'ADMIN') && (
+                  <button onClick={handleDelete} className="btn-secondary text-red-600 border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 inline-flex items-center gap-2">
+                    <Trash2 className="w-4 h-4" />
+                    Eliminar
+                  </button>
+                )}
           <button onClick={handlePrint} className="btn-secondary inline-flex items-center gap-2">
             <Printer className="w-4 h-4" />
             Imprimir

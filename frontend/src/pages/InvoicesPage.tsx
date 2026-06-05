@@ -25,7 +25,7 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function InvoicesPage() {
-  const { can } = useAuth();
+  const { can, user } = useAuth();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const { data, isLoading } = useQuery<PaginatedResponse<Invoice>>({
@@ -136,7 +136,7 @@ export default function InvoicesPage() {
                           <Pencil className="w-4 h-4" />
                         </Link>
                       )}
-                      {can('invoices:delete') && (
+                      {(can('invoices:delete') || user?.role === 'ADMIN') && (
                         <button onClick={() => handleDelete(inv.id)} className="text-gray-500 hover:text-red-600 p-1.5 inline-block hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="Eliminar">
                           <Trash2 className="w-4 h-4" />
                         </button>

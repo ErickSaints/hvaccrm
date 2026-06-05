@@ -134,7 +134,8 @@ router.delete('/:id', requirePermission('invoices:delete'), async (req: Request,
     if (!existing) return res.status(404).json({ error: 'Factura no encontrada' });
     await prisma.invoice.delete({ where: { id } });
     res.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error('[invoices] Error deleting invoice:', err);
     res.status(500).json({ error: 'Error al eliminar factura' });
   }
 });
