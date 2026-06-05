@@ -176,6 +176,12 @@ export default function Layout() {
       return section.items.length > 0;
     });
 
+  const visibleClientNav = clientNav.filter(item => {
+    const perm = itemPermission[item.href];
+    if (!perm) return true;
+    return can(perm);
+  });
+
   const bottomNav = isClient ? clientBottomNav : adminBottomNav;
 
   useEffect(() => {
@@ -278,7 +284,7 @@ export default function Layout() {
         <nav className="flex-1 overflow-y-auto px-3 py-4 scrollbar-thin">
           {isClient ? (
             <div className="space-y-1">
-              {clientNav.map((item) => <NavItem key={item.name} {...item} />)}
+              {visibleClientNav.map((item) => <NavItem key={item.name} {...item} />)}
             </div>
           ) : (
             <div className="space-y-4">
