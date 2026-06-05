@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import ErrorBoundary from './ErrorBoundary';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -386,7 +387,9 @@ export default function Layout() {
         {/* Page content */}
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 lg:p-6 max-w-7xl mx-auto">
-            <Outlet />
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
           </div>
         </main>
       </div>

@@ -1,0 +1,52 @@
+import { Component, type ReactNode, type ErrorInfo } from 'react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
+
+interface Props {
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export default class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('[ErrorBoundary]', error, info.componentStack);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      if (this.props.fallback) return this.props.fallback;
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[40vh] p-8">
+          <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
+            <AlertTriangle className="w-7 h-7 text-red-600 dark:text-red-400" />
+          </div>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Algo salió mal</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center max-w-md">
+            Ocurrió un error inesperado al cargar esta sección.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="btn-secondary inline-flex items-center gap-2"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Recargar página
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}

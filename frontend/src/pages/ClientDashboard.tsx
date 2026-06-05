@@ -112,6 +112,7 @@ export default function ClientDashboard() {
       const { data } = await api.get<Ticket[]>('/tickets');
       return data;
     },
+    retry: 1,
   });
 
   const { data: orders } = useQuery<ServiceOrder[]>({
@@ -120,6 +121,7 @@ export default function ClientDashboard() {
       const { data } = await api.get<ServiceOrder[]>('/service-orders');
       return data;
     },
+    retry: 1,
   });
 
   const { data: quotations } = useQuery<Quotation[]>({
@@ -128,6 +130,7 @@ export default function ClientDashboard() {
       const { data } = await api.get<Quotation[]>('/quotations');
       return data;
     },
+    retry: 1,
   });
 
   const { data: equipment } = useQuery<Equipment[]>({
@@ -136,6 +139,7 @@ export default function ClientDashboard() {
       const { data } = await api.get<Equipment[]>('/equipment');
       return data;
     },
+    retry: 1,
   });
 
   const { data: invoicesData } = useQuery<PaginatedResponse<Invoice>>({
@@ -144,6 +148,7 @@ export default function ClientDashboard() {
       const { data } = await api.get('/invoices?page=1&limit=5');
       return data;
     },
+    retry: 1,
   });
 
   const activeTickets = tickets?.filter((t) => t.status !== 'CERRADO' && t.status !== 'RESUELTO') || [];

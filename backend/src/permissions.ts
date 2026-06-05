@@ -199,6 +199,10 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<string, PermissionAction[]> = {
   ],
   CLIENT: [
     'tickets:view', 'tickets:create',
+    'service-orders:view',
+    'quotations:view',
+    'equipment:view',
+    'invoices:view',
     'catalog:view',
     'profile:view', 'profile:edit',
     'notifications:view',
