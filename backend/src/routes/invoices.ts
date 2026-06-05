@@ -23,6 +23,20 @@ const invoiceSchema = z.object({
   serviceOrderId: z.number().optional().nullable(),
 });
 
+const invoiceUpdateSchema = z.object({
+  title: z.string().min(1).optional(),
+  subtotal: z.number().optional(),
+  tax: z.number().optional(),
+  discount: z.number().optional(),
+  total: z.number().optional(),
+  notes: z.string().optional().nullable(),
+  dueDate: z.string().optional().nullable(),
+  status: z.enum(['BORRADOR', 'EMITIDA', 'PAGADA', 'CANCELADA', 'VENCIDA']).optional(),
+  customerId: z.number().optional(),
+  quotationId: z.number().optional().nullable(),
+  serviceOrderId: z.number().optional().nullable(),
+});
+
 function generateInvoiceNumber(): string {
   const now = new Date();
   const y = now.getFullYear().toString().slice(-2);
@@ -96,6 +110,32 @@ router.post('/', requirePermission('invoices:create'), async (req: Request, res:
   } catch (err) {
     if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
     res.status(500).json({ error: 'Error al crear factura' });
+  }
+});
+
+router.put('/:id', requirePermission('invoices:edit'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const existing = await prisma.invoice.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Factura no encontrada' });
+    const data = invoiceSchema.partial().parse(req.body);
+    const invoice = await prisma.invoice.update({ where: { id }, data, include: { customer: true } });
+    res.json(invoice);
+  } catch (err) {
+    if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
+    res.status(500).json({ error: 'Error al actualizar factura' });
+  }
+});
+
+router.delete('/:id', requirePermission('invoices:delete'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const existing = await prisma.invoice.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Factura no encontrada' });
+    await prisma.invoice.delete({ where: { id } });
+    res.json({ success: true });
+  } catch {
+    res.status(500).json({ error: 'Error al eliminar factura' });
   }
 });
 

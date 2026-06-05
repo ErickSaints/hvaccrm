@@ -171,6 +171,7 @@ function AnimatedRoutes() {
             <Route path="dispatch" element={<PageTransition><DispatchPage /></PageTransition>} />
             <Route path="invoices" element={<PageTransition><InvoicesPage /></PageTransition>} />
             <Route path="invoices/new" element={<PageTransition><InvoiceFormPage /></PageTransition>} />
+            <Route path="invoices/:id/edit" element={<PageTransition><InvoiceFormPage /></PageTransition>} />
             <Route path="invoices/:id" element={<PageTransition><InvoiceDetailPage /></PageTransition>} />
             <Route path="service-reports" element={<PageTransition><ServiceReportsPage /></PageTransition>} />
             <Route path="service-reports/new" element={<PageTransition><ServiceReportFormPage /></PageTransition>} />

@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Plus, FileText, Loader2, ArrowRight } from 'lucide-react';
+import { Plus, FileText, Loader2, Pencil, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useAuth } from '../lib/auth';
 import type { Invoice, PaginatedResponse } from '../types';
 import Pagination from '../components/Pagination';
 
@@ -23,6 +25,8 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function InvoicesPage() {
+  const { can } = useAuth();
+  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const { data, isLoading } = useQuery<PaginatedResponse<Invoice>>({
     queryKey: ['invoices', page],
@@ -38,6 +42,23 @@ export default function InvoicesPage() {
   const invoices = data?.data ?? [];
   const total = data?.total ?? 0;
   const totalPages = data?.totalPages ?? 1;
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/invoices/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      toast.success('Factura eliminada');
+    },
+    onError: () => toast.error('Error al eliminar factura'),
+  });
+
+  const handleDelete = (id: number) => {
+    if (window.confirm('¿Estás seguro de eliminar esta factura?')) {
+      deleteMutation.mutate(id);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -77,14 +98,14 @@ export default function InvoicesPage() {
                 <th className="text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-4 py-3">Total</th>
                 <th className="text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-4 py-3">Estado</th>
                 <th className="text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-4 py-3">Fecha</th>
-                <th className="w-16"></th>
+                <th className="w-28"></th>
               </tr>
             </thead>
             <tbody>
               {invoices && invoices.length > 0 ? invoices.map((inv) => (
                 <tr key={inv.id} className="border-b border-gray-50 hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors">
                   <td className="px-4 py-3">
-                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{inv.number}</span>
+                    <Link to={`/invoices/${inv.id}`} className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-primary-600">{inv.number}</Link>
                   </td>
                   <td className="px-4 py-3">
                     <span className="text-sm text-gray-600">{inv.customer?.contactName || `Cliente #${inv.customerId}`}</span>
@@ -104,9 +125,21 @@ export default function InvoicesPage() {
                     <span className="text-sm text-gray-500 dark:text-gray-400">{new Date(inv.createdAt).toLocaleDateString('es-MX', { dateStyle: 'short' })}</span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link to={`/invoices/${inv.id}`} className="text-primary-600 hover:text-primary-700 p-1 inline-block">
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    <div className="flex items-center justify-end gap-1">
+                      <Link to={`/invoices/${inv.id}`} className="text-primary-600 hover:text-primary-700 p-1.5 inline-block hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors" title="Ver">
+                        <FileText className="w-4 h-4" />
+                      </Link>
+                      {can('invoices:edit') && (
+                        <Link to={`/invoices/${inv.id}/edit`} className="text-gray-500 hover:text-amber-600 p-1.5 inline-block hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition-colors" title="Editar">
+                          <Pencil className="w-4 h-4" />
+                        </Link>
+                      )}
+                      {can('invoices:delete') && (
+                        <button onClick={() => handleDelete(inv.id)} className="text-gray-500 hover:text-red-600 p-1.5 inline-block hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="Eliminar">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               )) : (

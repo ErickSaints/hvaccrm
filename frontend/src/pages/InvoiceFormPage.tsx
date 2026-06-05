@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Loader2, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -14,6 +14,8 @@ interface InvoiceItemForm {
 }
 
 export default function InvoiceFormPage() {
+  const { id } = useParams<{ id: string }>();
+  const isEdit = Boolean(id);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [title, setTitle] = useState('');
@@ -21,6 +23,26 @@ export default function InvoiceFormPage() {
   const [notes, setNotes] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [items, setItems] = useState<InvoiceItemForm[]>([{ description: '', quantity: 1, unitPrice: 0 }]);
+  const [initialized, setInitialized] = useState(false);
+
+  const { data: existingInvoice, isLoading: loadingInvoice } = useQuery<Invoice>({
+    queryKey: ['invoice', id],
+    queryFn: async () => {
+      const res = await api.get(`/invoices/${id}`);
+      return res.data;
+    },
+    enabled: isEdit,
+  });
+
+  useEffect(() => {
+    if (existingInvoice && !initialized) {
+      setTitle(existingInvoice.title);
+      setCustomerId(String(existingInvoice.customerId));
+      setNotes(existingInvoice.notes || '');
+      setDueDate(existingInvoice.dueDate ? existingInvoice.dueDate.slice(0, 10) : '');
+      setInitialized(true);
+    }
+  }, [existingInvoice, initialized]);
 
   const subtotal = items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
   const tax = subtotal * 0.16;
@@ -28,23 +50,19 @@ export default function InvoiceFormPage() {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await api.post('/invoices', {
-        title,
-        subtotal,
-        tax,
-        discount: 0,
-        total,
-        notes,
-        dueDate: dueDate || null,
-        customerId: parseInt(customerId),
-      });
+      const payload = { title, subtotal, tax, discount: 0, total, notes, dueDate: dueDate || null, customerId: parseInt(customerId) };
+      if (isEdit) {
+        await api.put(`/invoices/${id}`, payload);
+      } else {
+        await api.post('/invoices', payload);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
-      toast.success('Factura creada');
+      toast.success(isEdit ? 'Factura actualizada' : 'Factura creada');
       navigate('/invoices');
     },
-    onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al crear factura'),
+    onError: (err: any) => toast.error(err?.response?.data?.error || 'Error al guardar factura'),
   });
 
   const addItem = () => setItems([...items, { description: '', quantity: 1, unitPrice: 0 }]);
@@ -60,6 +78,14 @@ export default function InvoiceFormPage() {
     mutation.mutate();
   };
 
+  if (isEdit && loadingInvoice) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
@@ -67,8 +93,8 @@ export default function InvoiceFormPage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Nueva Factura</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Crea una nueva factura para un cliente</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{isEdit ? 'Editar Factura' : 'Nueva Factura'}</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">{isEdit ? 'Actualiza los datos de la factura' : 'Crea una nueva factura para un cliente'}</p>
         </div>
       </div>
 
@@ -156,7 +182,7 @@ export default function InvoiceFormPage() {
           <Link to="/invoices" className="btn-secondary">Cancelar</Link>
           <button type="submit" className="btn-primary" disabled={mutation.isPending}>
             {mutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-            Crear Factura
+            {isEdit ? 'Guardar Cambios' : 'Crear Factura'}
           </button>
         </div>
       </form>

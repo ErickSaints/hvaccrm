@@ -1,8 +1,9 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Loader2, Printer, FileText, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { ArrowLeft, Loader2, Printer, FileText, CheckCircle2, XCircle, Clock, Pencil, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useAuth } from '../lib/auth';
 import type { Invoice } from '../types';
 
 const statusStyles: Record<string, string> = {
@@ -32,6 +33,7 @@ export default function InvoiceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { can } = useAuth();
 
   const { data: invoice, isLoading } = useQuery<Invoice>({
     queryKey: ['invoice', id],
@@ -53,6 +55,24 @@ export default function InvoiceDetailPage() {
     },
     onError: () => toast.error('Error al actualizar estado'),
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      await api.delete(`/invoices/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      toast.success('Factura eliminada');
+      navigate('/invoices');
+    },
+    onError: () => toast.error('Error al eliminar factura'),
+  });
+
+  const handleDelete = () => {
+    if (window.confirm('¿Estás seguro de eliminar esta factura?')) {
+      deleteMutation.mutate();
+    }
+  };
 
   const handlePrint = () => window.print();
 
@@ -111,6 +131,18 @@ export default function InvoiceDetailPage() {
                 );
               })}
             </div>
+          )}
+          {can('invoices:edit') && (
+            <Link to={`/invoices/${id}/edit`} className="btn-secondary inline-flex items-center gap-2">
+              <Pencil className="w-4 h-4" />
+              Editar
+            </Link>
+          )}
+          {can('invoices:delete') && (
+            <button onClick={handleDelete} className="btn-secondary text-red-600 border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 inline-flex items-center gap-2">
+              <Trash2 className="w-4 h-4" />
+              Eliminar
+            </button>
           )}
           <button onClick={handlePrint} className="btn-secondary inline-flex items-center gap-2">
             <Printer className="w-4 h-4" />

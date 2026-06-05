@@ -21,8 +21,9 @@ export default function QuotationRequestForm() {
       await api.post('/quotation-requests', { title: title.trim(), description: description.trim() });
       toast.success('Solicitud enviada correctamente');
       navigate('/quotation-requests');
-    } catch {
-      toast.error('Error al enviar la solicitud');
+    } catch (err: any) {
+      const msg = err?.response?.data?.error || err?.response?.data?.message || 'Error al enviar la solicitud';
+      toast.error(Array.isArray(msg) ? msg[0]?.message || 'Error de validación' : msg);
     } finally {
       setSubmitting(false);
     }
