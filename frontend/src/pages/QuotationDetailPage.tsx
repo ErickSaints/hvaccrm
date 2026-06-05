@@ -59,13 +59,14 @@ export default function QuotationDetailPage() {
   const queryClient = useQueryClient();
   const [statusDropdown, setStatusDropdown] = useState(false);
 
-  const { data: quotation, isLoading } = useQuery<Quotation>({
+  const { data: quotation, isLoading, error: queryError } = useQuery<Quotation>({
     queryKey: ['quotation', id],
     queryFn: async () => {
       const { data } = await api.get<Quotation>(`/quotations/${id}`);
       return data;
     },
     enabled: Boolean(id),
+    retry: false,
   });
 
   const statusMutation = useMutation({
@@ -113,6 +114,18 @@ export default function QuotationDetailPage() {
     return (
       <div className="flex items-center justify-center py-20">
         <Loader2 className="w-8 h-8 text-primary-600 animate-spin" />
+      </div>
+    );
+  }
+
+  if (queryError) {
+    const errMsg = (queryError as any)?.response?.data?.error || 'Error al cargar la cotización';
+    return (
+      <div className="text-center py-20">
+        <p className="text-red-500 font-medium">{errMsg}</p>
+        <Link to="/quotations" className="text-primary-600 hover:text-primary-700 font-medium mt-2 inline-block">
+          Volver a cotizaciones
+        </Link>
       </div>
     );
   }

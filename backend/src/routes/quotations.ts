@@ -85,7 +85,11 @@ router.get('/', requirePermission('quotations:view'), scopeToCustomer, paginate,
         where,
         skip: req.pagination!.skip,
         take: req.pagination!.limit,
-        include: { customer: true, createdBy: true, items: true },
+        include: {
+          customer: true,
+          createdBy: { select: { id: true, name: true, email: true } },
+          items: true,
+        },
         orderBy: { createdAt: 'desc' },
       }),
       prisma.quotation.count({ where }),
@@ -94,11 +98,12 @@ router.get('/', requirePermission('quotations:view'), scopeToCustomer, paginate,
       const sanitized = quotations.map(({ subtotal, tax, discount, total, items, ...rest }) => ({
         ...rest,
         subtotal: 0, tax: 0, discount: 0, total: 0,
-        items: items.map(({ unitPrice, total: it, ...ir }: any) => ({ ...ir, unitPrice: 0, total: 0 })),
+        items: (items || []).map(({ unitPrice, total: it, ...ir }: any) => ({ ...ir, unitPrice: 0, total: 0 })),
       }));
       return res.json(paginatedResponse(sanitized, total, req.pagination!.page, req.pagination!.limit));
     }
-    res.json(paginatedResponse(quotations, total, req.pagination!.page, req.pagination!.limit));
+    const safe = quotations.map((q) => ({ ...q, items: q.items || [] }));
+    res.json(paginatedResponse(safe, total, req.pagination!.page, req.pagination!.limit));
   } catch {
     res.status(500).json({ error: 'Error al obtener cotizaciones' });
   }
@@ -109,7 +114,11 @@ router.get('/:id', requirePermission('quotations:view'), async (req: Request, re
     const id = parseInt(String(req.params.id));
     const quotation = await prisma.quotation.findUnique({
       where: { id },
-      include: { customer: true, createdBy: true, items: true },
+      include: {
+        customer: true,
+        createdBy: { select: { id: true, name: true, email: true } },
+        items: true,
+      },
     });
     if (!quotation) {
       return res.status(404).json({ error: 'Cotización no encontrada' });
@@ -118,7 +127,8 @@ router.get('/:id', requirePermission('quotations:view'), async (req: Request, re
       return res.status(403).json({ error: 'No tienes permiso para ver esta cotización' });
     }
     if (req.user!.role === 'TECHNICIAN') {
-      const { subtotal, tax, discount, total, items, ...rest } = quotation;
+      const items = quotation.items || [];
+      const { subtotal, tax, discount, total, ...rest } = quotation;
       return res.json({
         ...rest,
         subtotal: 0, tax: 0, discount: 0, total: 0,
@@ -127,7 +137,7 @@ router.get('/:id', requirePermission('quotations:view'), async (req: Request, re
         })),
       });
     }
-    res.json(quotation);
+    res.json({ ...quotation, items: quotation.items || [] });
   } catch {
     res.status(500).json({ error: 'Error al obtener cotización' });
   }
@@ -205,7 +215,7 @@ router.put('/:id', requirePermission('quotations:edit'), requireSubscription, as
 
     const quotation = await prisma.quotation.findUnique({
       where: { id },
-      include: { items: true, customer: true },
+      include: { items: true, customer: true, createdBy: { select: { id: true, name: true, email: true } } },
     });
     res.json(quotation);
   } catch (err) {
