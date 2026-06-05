@@ -5,6 +5,7 @@ export type PermissionAction =
   | 'equipment:view' | 'equipment:create' | 'equipment:edit' | 'equipment:delete'
   | 'invoices:view' | 'invoices:create' | 'invoices:edit' | 'invoices:delete'
   | 'quotations:view' | 'quotations:create' | 'quotations:edit' | 'quotations:delete'
+  | 'quotation-requests:view' | 'quotation-requests:create' | 'quotation-requests:manage'
   | 'service-orders:view' | 'service-orders:create' | 'service-orders:edit' | 'service-orders:delete'
   | 'service-reports:view' | 'service-reports:create' | 'service-reports:edit' | 'service-reports:delete'
   | 'policies:view' | 'policies:create' | 'policies:edit' | 'policies:delete'
@@ -31,6 +32,7 @@ export const ALL_PERMISSIONS: PermissionAction[] = [
   'equipment:view', 'equipment:create', 'equipment:edit', 'equipment:delete',
   'invoices:view', 'invoices:create', 'invoices:edit', 'invoices:delete',
   'quotations:view', 'quotations:create', 'quotations:edit', 'quotations:delete',
+  'quotation-requests:view', 'quotation-requests:create', 'quotation-requests:manage',
   'service-orders:view', 'service-orders:create', 'service-orders:edit', 'service-orders:delete',
   'service-reports:view', 'service-reports:create', 'service-reports:edit', 'service-reports:delete',
   'policies:view', 'policies:create', 'policies:edit', 'policies:delete',
@@ -75,6 +77,10 @@ export const PERMISSION_CATEGORIES: Record<string, { label: string; permissions:
   quotations: {
     label: 'Cotizaciones',
     permissions: ['quotations:view', 'quotations:create', 'quotations:edit', 'quotations:delete'],
+  },
+  'quotation-requests': {
+    label: 'Solicitudes de Cotización',
+    permissions: ['quotation-requests:view', 'quotation-requests:create', 'quotation-requests:manage'],
   },
   'service-orders': {
     label: 'Órdenes de Servicio',
@@ -173,6 +179,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<string, PermissionAction[]> = {
     'equipment:view',
     'tickets:view', 'tickets:create',
     'quotations:view', 'quotations:create', 'quotations:edit',
+    'quotation-requests:view', 'quotation-requests:create', 'quotation-requests:manage',
     'service-orders:view',
     'policies:view', 'policies:create', 'policies:edit',
     'maintenance:view',
@@ -201,6 +208,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<string, PermissionAction[]> = {
     'tickets:view', 'tickets:create',
     'service-orders:view',
     'quotations:view',
+    'quotation-requests:view', 'quotation-requests:create',
     'equipment:view',
     'invoices:view',
     'catalog:view',
@@ -235,6 +243,9 @@ export const LABELS: Record<string, string> = {
   'quotations:create': 'Crear cotizaciones',
   'quotations:edit': 'Editar cotizaciones',
   'quotations:delete': 'Eliminar cotizaciones',
+  'quotation-requests:view': 'Ver solicitudes de cotización',
+  'quotation-requests:create': 'Crear solicitudes de cotización',
+  'quotation-requests:manage': 'Gestionar solicitudes de cotización',
   'service-orders:view': 'Ver órdenes de servicio',
   'service-orders:create': 'Crear órdenes de servicio',
   'service-orders:edit': 'Editar órdenes de servicio',

@@ -64,6 +64,9 @@ const FleetTrackingPage = lazy(() => import('./pages/FleetTrackingPage'));
 const MarketingCampaignsPage = lazy(() => import('./pages/MarketingCampaignsPage'));
 const PricebookPage = lazy(() => import('./pages/PricebookPage'));
 const PricebookRegionalPage = lazy(() => import('./pages/PricebookRegionalPage'));
+const QuotationRequestsPage = lazy(() => import('./pages/QuotationRequestsPage'));
+const QuotationRequestForm = lazy(() => import('./pages/QuotationRequestForm'));
+const QuotationRequestDetail = lazy(() => import('./pages/QuotationRequestDetail'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -158,6 +161,9 @@ function AnimatedRoutes() {
             <Route path="quotations" element={<PageTransition><QuotationsPage /></PageTransition>} />
             <Route path="quotations/new" element={<PageTransition><QuotationFormPage /></PageTransition>} />
             <Route path="quotations/:id" element={<PageTransition><QuotationDetailPage /></PageTransition>} />
+            <Route path="quotation-requests" element={<PageTransition><QuotationRequestsPage /></PageTransition>} />
+            <Route path="quotation-requests/new" element={<PageTransition><QuotationRequestForm /></PageTransition>} />
+            <Route path="quotation-requests/:id" element={<PageTransition><QuotationRequestDetail /></PageTransition>} />
             <Route path="service-orders" element={<PageTransition><ServiceOrdersPage /></PageTransition>} />
             <Route path="service-orders/new" element={<PageTransition><ServiceOrderFormPage /></PageTransition>} />
             <Route path="service-orders/:id" element={<PageTransition><ServiceOrderDetailPage /></PageTransition>} />

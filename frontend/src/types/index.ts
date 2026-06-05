@@ -335,6 +335,20 @@ export interface MLPrediction {
   nextServiceRecommended: string;
 }
 
+export interface QuotationRequest {
+  id: number;
+  title: string;
+  description: string;
+  status: 'PENDIENTE' | 'REVISADO' | 'COTIZADO' | 'RECHAZADO';
+  notes?: string;
+  customerId: number;
+  customer?: { id: number; companyName?: string; contactName: string };
+  quotationId?: number;
+  quotation?: { id: number; number: string; total: number; status: string };
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface MLPredictionsResponse {
   generatedAt: string;
   total: number;

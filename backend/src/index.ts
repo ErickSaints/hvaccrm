@@ -39,6 +39,7 @@ import reviewRoutes from './routes/reviews';
 import commissionRoutes from './routes/commissions';
 import warrantyRoutes from './routes/warranties';
 import purchasingRoutes from './routes/purchasing';
+import quotationRequestRoutes from './routes/quotationRequests';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler';
 import { startReminderScheduler } from './notifications/scheduler';
 import { startMaintenanceScheduler } from './notifications/maintenanceScheduler';
@@ -86,6 +87,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/commissions', commissionRoutes);
 app.use('/api/warranties', warrantyRoutes);
 app.use('/api/purchasing', purchasingRoutes);
+app.use('/api/quotation-requests', quotationRequestRoutes);
 
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });

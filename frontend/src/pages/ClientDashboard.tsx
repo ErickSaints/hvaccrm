@@ -19,7 +19,7 @@ import {
 } from 'recharts';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
-import type { Ticket, ServiceOrder, Quotation, Equipment, Invoice, PaginatedResponse } from '../types';
+import type { Ticket, ServiceOrder, Quotation, Equipment, Invoice, PaginatedResponse, QuotationRequest } from '../types';
 
 const COLORS: Record<string, string> = {
   Abierto: '#3B82F6', 'En Proceso': '#F59E0B', Resuelto: '#10B981', Cerrado: '#6B7280',
@@ -145,6 +145,15 @@ export default function ClientDashboard() {
     retry: 1,
   });
 
+  const { data: quotationRequests } = useQuery<QuotationRequest[]>({
+    queryKey: ['client-quotation-requests'],
+    queryFn: async () => {
+      const { data } = await api.get<QuotationRequest[]>('/quotation-requests');
+      return data;
+    },
+    retry: 1,
+  });
+
   const tickets = ticketsData?.data ?? [];
   const orders = ordersData?.data ?? [];
   const quotations = quotationsData?.data ?? [];
@@ -153,6 +162,7 @@ export default function ClientDashboard() {
   const activeTickets = tickets.filter((t) => t.status !== 'CERRADO' && t.status !== 'RESUELTO');
   const pendingOrders = orders.filter((o) => o.status === 'PENDIENTE' || o.status === 'EN_PROGRESO');
   const pendingQuotations = quotations.filter((q) => q.status === 'BORRADOR' || q.status === 'ENVIADA');
+  const pendingRequests = quotationRequests?.filter((r) => r.status === 'PENDIENTE' || r.status === 'REVISADO') ?? [];
 
   const ticketStatusData = Object.entries(
     tickets.reduce((acc, t) => {
@@ -238,11 +248,11 @@ export default function ClientDashboard() {
               <FileText className="w-5 h-5 text-violet-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{pendingQuotations.length}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Pendientes</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{pendingRequests.length}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Solicitudes</p>
             </div>
           </div>
-          <Link to="/quotations" className="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
+          <Link to="/quotation-requests" className="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
             Ver todas <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
@@ -321,9 +331,13 @@ export default function ClientDashboard() {
               <TicketCheck className="w-5 h-5 text-amber-600" />
               <span className="text-xs font-medium text-amber-700 dark:text-amber-300">Mis Tickets</span>
             </Link>
-            <Link to="/quotations" className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-violet-50 dark:bg-violet-900/20 hover:bg-violet-100 dark:hover:bg-violet-900/30 transition-colors">
+            <Link to="/quotation-requests/new" className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-violet-50 dark:bg-violet-900/20 hover:bg-violet-100 dark:hover:bg-violet-900/30 transition-colors">
               <FileText className="w-5 h-5 text-violet-600" />
-              <span className="text-xs font-medium text-violet-700 dark:text-violet-300">Cotizaciones</span>
+              <span className="text-xs font-medium text-violet-700 dark:text-violet-300">Solicitar Cotización</span>
+            </Link>
+            <Link to="/quotations" className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
+              <FileText className="w-5 h-5 text-indigo-600" />
+              <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300">Mis Cotizaciones</span>
             </Link>
             <Link to="/client/settings" className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
               <Wrench className="w-5 h-5 text-gray-600" />
@@ -398,27 +412,40 @@ export default function ClientDashboard() {
           </div>
         </div>
 
-        {/* Recent Quotations */}
+        {/* Mis Solicitudes de Cotización */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Mis Cotizaciones</h2>
-            <Link to="/quotations" className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Mis Solicitudes</h2>
+            <Link to="/quotation-requests" className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1">
               Ver todas <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <div className="space-y-2">
-            {quotations && quotations.length > 0 ? quotations.slice(0, 5).map((q) => (
-              <Link key={q.id} to={`/quotations/${q.id}`} className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3">
+            {quotationRequests && quotationRequests.length > 0 ? quotationRequests.slice(0, 5).map((r) => (
+              <Link key={r.id} to={`/quotation-requests/${r.id}`} className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors -mx-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{q.title || q.number}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">${q.total?.toLocaleString('es-MX') || '0'}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{r.title}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      {new Date(r.createdAt).toLocaleDateString('es-MX', { dateStyle: 'short' })}
+                    </p>
                   </div>
-                  {statusBadge(q.status)}
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                    r.status === 'PENDIENTE' ? 'bg-amber-100 text-amber-800' :
+                    r.status === 'REVISADO' ? 'bg-blue-100 text-blue-800' :
+                    r.status === 'COTIZADO' ? 'bg-green-100 text-green-800' :
+                    r.status === 'RECHAZADO' ? 'bg-red-100 text-red-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {r.status === 'PENDIENTE' ? 'Pendiente' :
+                     r.status === 'REVISADO' ? 'Revisado' :
+                     r.status === 'COTIZADO' ? 'Cotizado' :
+                     r.status === 'RECHAZADO' ? 'Rechazado' : r.status}
+                  </span>
                 </div>
               </Link>
             )) : (
-              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin cotizaciones</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Sin solicitudes</p>
             )}
           </div>
         </div>

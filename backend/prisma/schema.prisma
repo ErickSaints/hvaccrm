@@ -185,6 +185,7 @@ model Customer {
   assets        Asset[]
   surveys       Survey[]
   invoices      Invoice[]
+  quotationRequests QuotationRequest[]
   campaignRecipients CampaignRecipient[]
 
   users         User[]
@@ -265,6 +266,7 @@ model Quotation {
   items           QuotationItem[]
   invoices        Invoice[]
   commissionEarnings CommissionEarning[]
+  quotationRequests QuotationRequest[]
 }
 
 model QuotationItem {
@@ -276,6 +278,31 @@ model QuotationItem {
 
   quotationId   Int
   quotation     Quotation @relation(fields: [quotationId], references: [id])
+}
+
+enum QuotationRequestStatus {
+  PENDIENTE
+  REVISADO
+  COTIZADO
+  RECHAZADO
+}
+
+model QuotationRequest {
+  id          Int                     @id @default(autoincrement())
+  title       String
+  description String
+  status      QuotationRequestStatus  @default(PENDIENTE)
+  notes       String?
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+
+  customerId  Int
+  customer    Customer                @relation(fields: [customerId], references: [id])
+
+  quotationId Int?
+  quotation   Quotation?              @relation(fields: [quotationId], references: [id])
+
+  @@map("quotation_requests")
 }
 
 model MaintenancePolicy {
