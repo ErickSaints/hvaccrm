@@ -1,7 +1,9 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, FileText, Clock, Eye, CheckCircle2, XCircle } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, FileText, Clock, Eye, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import api from '../lib/api';
+import { useAuth } from '../lib/auth';
 import type { QuotationRequest } from '../types';
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; color: string }> = {
@@ -14,6 +16,10 @@ const statusConfig: Record<string, { label: string; icon: typeof Clock; color: s
 export default function QuotationRequestDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { user: currentUser } = useAuth();
+
+  const isBackoffice = currentUser?.role !== 'CLIENT';
 
   const { data: req, isLoading } = useQuery<QuotationRequest>({
     queryKey: ['quotation-request', id],
@@ -22,6 +28,26 @@ export default function QuotationRequestDetail() {
       return data;
     },
     enabled: !!id,
+  });
+
+  const convertMutation = useMutation({
+    mutationFn: async () => {
+      const { data } = await api.post(`/quotation-requests/${id}/convert`);
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['quotation-request', id] });
+      queryClient.invalidateQueries({ queryKey: ['quotation-requests'] });
+      toast.success('Cotización creada');
+      navigate(`/quotations/${data.id}`);
+    },
+    onError: (err: unknown) => {
+      const msg =
+        err && typeof err === 'object' && 'response' in err
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error || 'Error al crear cotización'
+          : 'Error al crear cotización';
+      toast.error(msg);
+    },
   });
 
   if (isLoading) {
@@ -75,6 +101,23 @@ export default function QuotationRequestDetail() {
           <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
             <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Notas del vendedor:</p>
             <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{req.notes}</p>
+          </div>
+        )}
+
+        {isBackoffice && !req.quotation && req.status !== 'COTIZADO' && req.status !== 'RECHAZADO' && (
+          <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+            <button
+              onClick={() => convertMutation.mutate()}
+              disabled={convertMutation.isPending}
+              className="btn-primary inline-flex items-center gap-2"
+            >
+              {convertMutation.isPending ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <FileText className="w-4 h-4" />
+              )}
+              Crear Cotización
+            </button>
           </div>
         )}
 

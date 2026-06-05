@@ -161,7 +161,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<string, PermissionAction[]> = {
   TECHNICIAN: [
     'customers:view', 'customers:edit',
     'equipment:view', 'equipment:edit',
-    'tickets:view', 'tickets:create', 'tickets:edit', 'tickets:assign',
+    'tickets:view', 'tickets:create', 'tickets:edit',
     'service-orders:view', 'service-orders:create', 'service-orders:edit',
     'service-reports:view', 'service-reports:create', 'service-reports:edit',
     'policies:view',
@@ -193,7 +193,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<string, PermissionAction[]> = {
   PROYECTOS: [
     'customers:view',
     'equipment:view',
-    'tickets:view',
+    'tickets:view', 'tickets:assign',
     'quotations:view',
     'surveys:view', 'surveys:create', 'surveys:edit', 'surveys:delete',
     'dashboard:view',

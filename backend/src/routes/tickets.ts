@@ -125,7 +125,7 @@ router.post('/', requirePermission('tickets:create'), requireSubscription, async
         status: data.status || 'ABIERTO',
         customerId: customer.id,
         equipmentId: data.equipmentId,
-        assignedTo: data.assignedTo ?? req.user!.id,
+        assignedTo: data.assignedTo,
         resolution: data.resolution,
       },
     });
@@ -138,7 +138,14 @@ router.post('/', requirePermission('tickets:create'), requireSubscription, async
   }
 });
 
-router.put('/:id', requirePermission('tickets:edit'), async (req: Request, res: Response) => {
+const assignGuard = (req: Request, res: Response, next: any) => {
+  if (req.body && req.body.assignedTo !== undefined) {
+    return requirePermission('tickets:assign')(req, res, next);
+  }
+  return requirePermission('tickets:edit')(req, res, next);
+};
+
+router.put('/:id', assignGuard, async (req: Request, res: Response) => {
   try {
     const id = parseInt(String(req.params.id));
     const data = ticketSchema.partial().parse(req.body);

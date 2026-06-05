@@ -194,7 +194,7 @@ export default function TicketDetailPage() {
     );
   }
 
-  const isAdmin = currentUser?.role === 'ADMIN';
+  const canAssign = currentUser?.role === 'ADMIN' || currentUser?.role === 'PROYECTOS';
   const canResolve = ticket.status !== 'RESUELTO' && ticket.status !== 'CERRADO';
 
   return (
@@ -244,7 +244,7 @@ export default function TicketDetailPage() {
               )}
             </div>
           )}
-          {isAdmin && (
+          {canAssign && (
             <div className="relative">
               <button
                 onClick={() => setAssignDropdown(!assignDropdown)}

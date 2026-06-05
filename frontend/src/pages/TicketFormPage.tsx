@@ -7,6 +7,7 @@ import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Save, Loader2, AlertTriangle } from 'lucide-react';
 import api from '../lib/api';
+import { useAuth } from '../lib/auth';
 import type { Ticket, User, Equipment } from '../types';
 import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
@@ -26,7 +27,9 @@ export default function TicketFormPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { user: currentUser } = useAuth();
   const isEditing = Boolean(id);
+  const isBackoffice = currentUser?.role !== 'CLIENT';
   const preselectedCustomer = searchParams.get('customerId');
 
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(
@@ -230,26 +233,28 @@ export default function TicketFormPage() {
           {errors.equipmentId && <p className="text-red-500 text-xs mt-1">{errors.equipmentId.message}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Asignar a (opcional)</label>
-          <Controller
-            name="assignedTo"
-            control={control}
-            render={({ field }) => (
-              <select
-                value={field.value ?? ''}
-                onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}
-                className="input-field"
-              >
-                <option value="">Sin asignar</option>
-                {users?.map((u) => (
-                  <option key={u.id} value={u.id}>{u.name} ({u.role})</option>
-                ))}
-              </select>
-            )}
-          />
-          {errors.assignedTo && <p className="text-red-500 text-xs mt-1">{errors.assignedTo.message}</p>}
-        </div>
+        {isBackoffice && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Asignar a (opcional)</label>
+            <Controller
+              name="assignedTo"
+              control={control}
+              render={({ field }) => (
+                <select
+                  value={field.value ?? ''}
+                  onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}
+                  className="input-field"
+                >
+                  <option value="">Sin asignar</option>
+                  {users?.map((u) => (
+                    <option key={u.id} value={u.id}>{u.name} ({u.role})</option>
+                  ))}
+                </select>
+              )}
+            />
+            {errors.assignedTo && <p className="text-red-500 text-xs mt-1">{errors.assignedTo.message}</p>}
+          </div>
+        )}
 
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
           <button type="button" onClick={() => navigate('/tickets')} className="btn-secondary">

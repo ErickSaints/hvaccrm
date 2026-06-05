@@ -88,4 +88,58 @@ router.put('/:id', requirePermission('quotation-requests:manage'), async (req: R
   }
 });
 
+async function generateQuotationNumber(): Promise<string> {
+  const now = new Date();
+  const prefix = `COT-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}-`;
+  const last = await prisma.quotation.findFirst({
+    where: { number: { startsWith: prefix } },
+    orderBy: { number: 'desc' },
+  });
+  let next = 1;
+  if (last) {
+    const parts = last.number.split('-');
+    next = parseInt(parts[2]) + 1;
+  }
+  return `${prefix}${String(next).padStart(4, '0')}`;
+}
+
+router.post('/:id/convert', requirePermission('quotation-requests:manage'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const request = await prisma.quotationRequest.findUnique({
+      where: { id },
+      include: { customer: true },
+    });
+    if (!request) return res.status(404).json({ error: 'Solicitud no encontrada' });
+
+    const number = await generateQuotationNumber();
+    const quotation = await prisma.quotation.create({
+      data: {
+        number,
+        title: request.title,
+        customerId: request.customerId,
+        createdById: req.user!.id,
+        subtotal: 0,
+        tax: 0,
+        discount: 0,
+        total: 0,
+        notes: request.description,
+        items: {
+          create: { description: request.description, quantity: 1, unitPrice: 0, total: 0 },
+        },
+      },
+      include: { items: true, customer: true },
+    });
+
+    await prisma.quotationRequest.update({
+      where: { id },
+      data: { status: 'COTIZADO', quotationId: quotation.id },
+    });
+
+    res.status(201).json(quotation);
+  } catch {
+    res.status(500).json({ error: 'Error al convertir solicitud en cotización' });
+  }
+});
+
 export default router;
