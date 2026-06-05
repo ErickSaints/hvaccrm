@@ -51,7 +51,9 @@ export default function InvoicesPage() {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
       toast.success('Factura eliminada');
     },
-    onError: () => toast.error('Error al eliminar factura'),
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al eliminar factura');
+    },
   });
 
   const handleDelete = (id: number) => {

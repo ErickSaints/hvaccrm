@@ -21,13 +21,14 @@ export default function QuotationRequestDetail() {
 
   const isBackoffice = currentUser?.role !== 'CLIENT';
 
-  const { data: req, isLoading } = useQuery<QuotationRequest>({
+  const { data: req, isLoading, error: queryError } = useQuery<QuotationRequest>({
     queryKey: ['quotation-request', id],
     queryFn: async () => {
       const { data } = await api.get<QuotationRequest>(`/quotation-requests/${id}`);
       return data;
     },
     enabled: !!id,
+    retry: false,
   });
 
   const convertMutation = useMutation({
@@ -54,6 +55,18 @@ export default function QuotationRequestDetail() {
     return (
       <div className="flex justify-center py-12">
         <div className="w-8 h-8 border-[3px] border-primary-200 border-t-primary-600 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (queryError) {
+    const errMsg = (queryError as any)?.response?.data?.error || 'Error al cargar la solicitud';
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-500 font-medium">{errMsg}</p>
+        <button onClick={() => navigate('/quotation-requests')} className="text-primary-600 hover:text-primary-700 text-sm mt-2">
+          Volver a solicitudes
+        </button>
       </div>
     );
   }

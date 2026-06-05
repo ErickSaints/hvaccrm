@@ -36,7 +36,10 @@ router.get('/:id', requirePermission('quotation-requests:view'), scopeToCustomer
     const id = parseInt(String(req.params.id));
     const request = await prisma.quotationRequest.findUnique({
       where: { id },
-      include: { customer: true, quotation: true },
+      include: {
+        customer: { select: { id: true, companyName: true, contactName: true, email: true, phone: true, address: true } },
+        quotation: { select: { id: true, number: true, total: true, status: true } },
+      },
     });
     if (!request) return res.status(404).json({ error: 'Solicitud no encontrada' });
     if (req.user!.role === 'CLIENT' && request.customerId !== req.user!.customerId) {

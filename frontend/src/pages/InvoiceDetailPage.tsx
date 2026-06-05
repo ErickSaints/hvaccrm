@@ -65,7 +65,9 @@ export default function InvoiceDetailPage() {
       toast.success('Factura eliminada');
       navigate('/invoices');
     },
-    onError: () => toast.error('Error al eliminar factura'),
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al eliminar factura');
+    },
   });
 
   const handleDelete = () => {
