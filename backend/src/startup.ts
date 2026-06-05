@@ -49,16 +49,18 @@ async function ensureDemoData() {
   }
 
   console.log('[startup] Sembrando datos demo (clientes, equipos, tickets, etc.)...');
-  const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } })!;
-  const tech1 = await prisma.user.findFirst({ where: { email: 'tecnico1@hvaccrm.com' } });
-  const tech2 = await prisma.user.findFirst({ where: { email: 'tecnico2@hvaccrm.com' } });
-  const sales = await prisma.user.findFirst({ where: { email: 'ventas@hvaccrm.com' } });
+  const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
+  let tech1 = await prisma.user.findFirst({ where: { email: 'tecnico1@hvaccrm.com' } });
+  let tech2 = await prisma.user.findFirst({ where: { email: 'tecnico2@hvaccrm.com' } });
+  let sales = await prisma.user.findFirst({ where: { email: 'ventas@hvaccrm.com' } });
 
   if (!tech1 || !tech2 || !sales) {
-    // Users missing entirely — run full seed
-    console.log('[startup] Usuarios demo incompletos — ejecutando seed completo...');
-    await import('./seed');
-    return;
+    const techPassword = await bcrypt.hash('tecnic0123', 10);
+    const trialEndsAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
+    if (!tech1) tech1 = await prisma.user.create({ data: { email: 'tecnico1@hvaccrm.com', name: 'Carlos Técnico', role: 'TECHNICIAN', password: techPassword, phone: '555-0101', trialEndsAt } });
+    if (!tech2) tech2 = await prisma.user.create({ data: { email: 'tecnico2@hvaccrm.com', name: 'María López', role: 'TECHNICIAN', password: techPassword, phone: '555-0102', trialEndsAt } });
+    if (!sales) sales = await prisma.user.create({ data: { email: 'ventas@hvaccrm.com', name: 'Roberto Ventas', role: 'SALES', password: techPassword, phone: '555-0103', trialEndsAt } });
+    console.log('[startup] Usuarios demo creados.');
   }
 
   // Create customers
@@ -118,31 +120,10 @@ async function startup() {
   // 2. Ensure subscription plans exist
   await ensurePlans(admin.id);
 
-  // 3. Ensure demo technicians and sales users exist
-  const techPassword = await bcrypt.hash('tecnic0123', 10);
-  const existingUsers = await prisma.user.findMany({ where: { role: { in: ['TECHNICIAN', 'SALES', 'PROYECTOS', 'COMPRAS'] } } });
-  if (existingUsers.length < 5) {
-    const needed = [
-      { email: 'tecnico1@hvaccrm.com', name: 'Carlos Técnico', role: 'TECHNICIAN' as const, phone: '555-0101' },
-      { email: 'tecnico2@hvaccrm.com', name: 'María López', role: 'TECHNICIAN' as const, phone: '555-0102' },
-      { email: 'ventas@hvaccrm.com', name: 'Roberto Ventas', role: 'SALES' as const, phone: '555-0103' },
-      { email: 'proyectos@hvaccrm.com', name: 'Ana Proyectos', role: 'PROYECTOS' as const, phone: '555-0104' },
-      { email: 'compras@hvaccrm.com', name: 'Luis Compras', role: 'COMPRAS' as const, phone: '555-0105' },
-    ];
-    const trialEndsAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
-    for (const u of needed) {
-      const exists = existingUsers.find((eu) => eu.email === u.email);
-      if (!exists) {
-        await prisma.user.create({ data: { ...u, password: techPassword, trialEndsAt } });
-        console.log(`[startup] Usuario creado: ${u.email}`);
-      }
-    }
-  }
-
-  // 4. Ensure demo data (customers, equipment, tickets, etc.)
+  // 3. Ensure demo data (customers, equipment, tickets, etc.)
   await ensureDemoData();
 
-  // 5. Ensure material catalog
+  // 4. Ensure material catalog
   const catalogCount = await prisma.catalogMaterial.count();
   if (catalogCount === 0) {
     console.log('[startup] Sembrando catálogo de materiales HVAC...');
@@ -151,7 +132,7 @@ async function startup() {
     console.log(`[startup] Catálogo de materiales creado (${catalogData.length} items).`);
   }
 
-  // 6. Ensure regions & states for regional pricing
+  // 5. Ensure regions & states for regional pricing
   const existingRegions = await prisma.region.count();
   if (existingRegions === 0) {
     console.log('[startup] Sembrando regiones y estados para precios regionales...');
@@ -206,7 +187,7 @@ async function startup() {
     console.log(`[startup] ${existingRegions} regiones ya existen, saltando.`);
   }
 
-  // 7. Ensure pricebook catalog matches code (re-seed if count differs)
+  // 6. Ensure pricebook catalog matches code (re-seed if count differs)
   const existingCount = await prisma.pricebookItem.count();
   const expectedCount = catItems.length;
   if (existingCount !== expectedCount) {
@@ -246,7 +227,7 @@ async function startup() {
     console.log(`[startup] ${existingCount} conceptos coinciden con el codigo, saltando.`);
   }
 
-  // 8. One-time migration: clean stale overrides from old permission system
+  // 7. One-time migration: clean stale overrides from old permission system
   //    (old buildPermissionMap saved defaults as overrides, causing sections to appear unrequested)
   const fleetOverride = await prisma.rolePermission.findFirst({ where: { permission: 'fleet:view' } });
   if (!fleetOverride) {
@@ -258,7 +239,7 @@ async function startup() {
     }
   }
 
-  // 9. Extend trial for all non-admin users (to avoid subscription blocks)
+  // 8. Extend trial for all non-admin users (to avoid subscription blocks)
   const now = new Date();
   const trialEnd = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
   const usersToExtend = await prisma.user.findMany({
