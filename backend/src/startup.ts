@@ -227,6 +227,44 @@ async function startup() {
     console.log(`[startup] ${existingCount} conceptos coinciden con el codigo, saltando.`);
   }
 
+  // 6.5. Supplement from catalog_import.json (new categories added via JSON)
+  try {
+    const fs = await import('fs');
+    const path = await import('path');
+    const jsonPath = path.join(__dirname, '..', 'public', 'catalog_import.json');
+    if (fs.existsSync(jsonPath)) {
+      const raw = fs.readFileSync(jsonPath, 'utf-8');
+      const jsonItems: any[] = JSON.parse(raw);
+      let jsonCreated = 0;
+      for (const item of jsonItems) {
+        if (!item.name || !item.category) continue;
+        let cat = await prisma.pricebookCategory.findFirst({ where: { name: item.category, active: true } });
+        if (!cat) {
+          cat = await prisma.pricebookCategory.create({ data: { name: item.category, sortOrder: 99 } });
+        }
+        const exists = await prisma.pricebookItem.findFirst({ where: { name: item.name, categoryId: cat.id, active: true } });
+        if (!exists) {
+          const sku = `JSON-${item.category.substring(0, 3).toUpperCase()}-${Date.now()}-${jsonCreated}`;
+          await prisma.pricebookItem.create({
+            data: {
+              sku,
+              name: item.name,
+              description: item.description || '',
+              unit: item.unit || 'pza',
+              basePrice: item.basePrice ?? null,
+              costPrice: item.costPrice ?? null,
+              categoryId: cat.id,
+            },
+          });
+          jsonCreated++;
+        }
+      }
+      if (jsonCreated > 0) console.log(`[startup] ${jsonCreated} items adicionales del catalogo extendido (catalog_import.json).`);
+    }
+  } catch (e) {
+    console.log('[startup] Nota: no se pudo leer catalog_import.json (opcional).');
+  }
+
   // 7. One-time migration: clean stale overrides from old permission system
   //    (old buildPermissionMap saved defaults as overrides, causing sections to appear unrequested)
   const fleetOverride = await prisma.rolePermission.findFirst({ where: { permission: 'fleet:view' } });
