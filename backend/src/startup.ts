@@ -293,4 +293,7 @@ async function startup() {
   console.log('[startup] Listo.');
 }
 
-startup();
+startup().catch((err) => {
+  console.error('[startup] Error fatal:', err);
+  process.exit(1);
+});
