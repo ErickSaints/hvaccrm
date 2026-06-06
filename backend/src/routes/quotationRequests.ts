@@ -69,6 +69,7 @@ router.post('/', requirePermission('quotation-requests:create'), async (req: Req
     res.status(201).json(request);
   } catch (err) {
     if (err instanceof z.ZodError) return res.status(400).json({ error: err.errors });
+    console.error('[quotationRequests] Error creating:', err);
     res.status(500).json({ error: 'Error al crear solicitud' });
   }
 });
