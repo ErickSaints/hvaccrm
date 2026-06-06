@@ -193,10 +193,8 @@ export default function AiAssistant() {
   const { armL, armR, legL, legR, velRef } = useLimbs();
 
   const dragStart = useRef({ x: 0, y: 0, px: 0, py: 0, t: 0 });
-  const isDragging = useRef(false);
+  const pointerDown = useRef(false);
   const hasMoved = useRef(false);
-
-  const tick = useRef(0);
 
   // Blink timer
   useEffect(() => {
@@ -214,22 +212,20 @@ export default function AiAssistant() {
   // ─── Drag ──────────────────────────────────────────────────────────
 
   const onDown = useCallback((e: React.PointerEvent) => {
-    isDragging.current = false;
+    pointerDown.current = true;
     hasMoved.current = false;
     dragStart.current = { x: e.clientX, y: e.clientY, px: pos.x, py: pos.y, t: Date.now() };
   }, [pos]);
 
   const onMove = useCallback((e: React.PointerEvent) => {
+    if (!pointerDown.current) return;
     const dx = e.clientX - dragStart.current.x;
     const dy = e.clientY - dragStart.current.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
 
     if (dist > 5) {
       hasMoved.current = true;
-      if (!isDragging.current) {
-        isDragging.current = true;
-        setDragging(true);
-      }
+      setDragging(true);
       const dt = Math.max(1, Date.now() - dragStart.current.t);
       velRef.current.vx = (dx / dt) * 16;
       velRef.current.vy = (dy / dt) * 16;
@@ -238,7 +234,7 @@ export default function AiAssistant() {
   }, [velRef]);
 
   const onUp = useCallback(() => {
-    isDragging.current = false;
+    pointerDown.current = false;
     setDragging(false);
     if (!hasMoved.current) {
       setIsOpen(true);
