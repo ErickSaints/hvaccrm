@@ -46,7 +46,7 @@
       ]
     ],
     "extra": {
-      "apiUrl": "https://hvaccrm.production.up.railway.app/api"
+      "apiUrl": "https://hvaccrm-production.up.railway.app/api"
     }
   }
 }
