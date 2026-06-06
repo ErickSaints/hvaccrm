@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, FileText, Clock, Eye, CheckCircle2, XCircle } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, FileText, Clock, Eye, CheckCircle2, XCircle, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 import type { QuotationRequest } from '../types';
@@ -15,7 +16,7 @@ const statusConfig: Record<string, { label: string; icon: typeof Clock; color: s
 export default function QuotationRequestDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, can } = useAuth();
 
   const isBackoffice = currentUser?.role !== 'CLIENT';
 
@@ -28,6 +29,28 @@ export default function QuotationRequestDetail() {
     enabled: !!id,
     retry: false,
   });
+
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      await api.delete(`/quotation-requests/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quotation-requests'] });
+      toast.success('Solicitud eliminada');
+      navigate('/quotation-requests');
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al eliminar solicitud');
+    },
+  });
+
+  const handleDelete = () => {
+    if (window.confirm('¿Estás seguro de eliminar esta solicitud de cotización?')) {
+      deleteMutation.mutate();
+    }
+  };
 
   const goToNewQuotation = () => {
     navigate(`/quotations/new?fromRequest=${id}`);
@@ -107,6 +130,19 @@ export default function QuotationRequestDetail() {
             >
               <FileText className="w-4 h-4" />
               Crear Cotización
+            </button>
+          </div>
+        )}
+
+        {(can('quotation-requests:delete') || currentUser?.role === 'ADMIN') && (
+          <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+            <button
+              onClick={handleDelete}
+              disabled={deleteMutation.isPending}
+              className="btn-secondary text-red-600 border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 inline-flex items-center gap-2"
+            >
+              <Trash2 className="w-4 h-4" />
+              {deleteMutation.isPending ? 'Eliminando...' : 'Eliminar Solicitud'}
             </button>
           </div>
         )}

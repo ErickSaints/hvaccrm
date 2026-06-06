@@ -92,6 +92,19 @@ router.put('/:id', requirePermission('quotation-requests:manage'), async (req: R
   }
 });
 
+router.delete('/:id', requirePermission('quotation-requests:delete'), async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(String(req.params.id));
+    const existing = await prisma.quotationRequest.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Solicitud no encontrada' });
+    await prisma.quotationRequest.delete({ where: { id } });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[quotationRequests] Error deleting:', err);
+    res.status(500).json({ error: 'Error al eliminar solicitud' });
+  }
+});
+
 async function generateQuotationNumber(): Promise<string> {
   const now = new Date();
   const prefix = `COT-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}-`;

@@ -5,7 +5,7 @@ export type PermissionAction =
   | 'equipment:view' | 'equipment:create' | 'equipment:edit' | 'equipment:delete'
   | 'invoices:view' | 'invoices:create' | 'invoices:edit' | 'invoices:delete'
   | 'quotations:view' | 'quotations:create' | 'quotations:edit' | 'quotations:delete'
-  | 'quotation-requests:view' | 'quotation-requests:create' | 'quotation-requests:manage'
+  | 'quotation-requests:view' | 'quotation-requests:create' | 'quotation-requests:manage' | 'quotation-requests:delete'
   | 'service-orders:view' | 'service-orders:create' | 'service-orders:edit' | 'service-orders:delete'
   | 'service-reports:view' | 'service-reports:create' | 'service-reports:edit' | 'service-reports:delete'
   | 'policies:view' | 'policies:create' | 'policies:edit' | 'policies:delete'
@@ -32,7 +32,7 @@ export const ALL_PERMISSIONS: PermissionAction[] = [
   'equipment:view', 'equipment:create', 'equipment:edit', 'equipment:delete',
   'invoices:view', 'invoices:create', 'invoices:edit', 'invoices:delete',
   'quotations:view', 'quotations:create', 'quotations:edit', 'quotations:delete',
-  'quotation-requests:view', 'quotation-requests:create', 'quotation-requests:manage',
+  'quotation-requests:view', 'quotation-requests:create', 'quotation-requests:manage', 'quotation-requests:delete',
   'service-orders:view', 'service-orders:create', 'service-orders:edit', 'service-orders:delete',
   'service-reports:view', 'service-reports:create', 'service-reports:edit', 'service-reports:delete',
   'policies:view', 'policies:create', 'policies:edit', 'policies:delete',
@@ -80,7 +80,7 @@ export const PERMISSION_CATEGORIES: Record<string, { label: string; permissions:
   },
   'quotation-requests': {
     label: 'Solicitudes de Cotización',
-    permissions: ['quotation-requests:view', 'quotation-requests:create', 'quotation-requests:manage'],
+    permissions: ['quotation-requests:view', 'quotation-requests:create', 'quotation-requests:manage', 'quotation-requests:delete'],
   },
   'service-orders': {
     label: 'Órdenes de Servicio',
@@ -246,6 +246,7 @@ export const LABELS: Record<string, string> = {
   'quotation-requests:view': 'Ver solicitudes de cotización',
   'quotation-requests:create': 'Crear solicitudes de cotización',
   'quotation-requests:manage': 'Gestionar solicitudes de cotización',
+  'quotation-requests:delete': 'Eliminar solicitudes de cotización',
   'service-orders:view': 'Ver órdenes de servicio',
   'service-orders:create': 'Crear órdenes de servicio',
   'service-orders:edit': 'Editar órdenes de servicio',

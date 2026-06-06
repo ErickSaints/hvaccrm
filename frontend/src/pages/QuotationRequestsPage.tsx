@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { FileText, Plus, ArrowRight, Eye, CheckCircle2, XCircle, Clock, ClipboardList } from 'lucide-react';
+import { FileText, Plus, ArrowRight, Eye, CheckCircle2, XCircle, Clock, ClipboardList, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 import type { QuotationRequest } from '../types';
@@ -27,8 +28,27 @@ const statusIcons: Record<string, typeof Clock> = {
 };
 
 export default function QuotationRequestsPage() {
-  const { user } = useAuth();
+  const { user, can } = useAuth();
   const isClient = user?.role === 'CLIENT';
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await api.delete(`/quotation-requests/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quotation-requests'] });
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.error || 'Error al eliminar solicitud');
+    },
+  });
+
+  const handleDelete = (id: number) => {
+    if (window.confirm('¿Estás seguro de eliminar esta solicitud de cotización?')) {
+      deleteMutation.mutate(id);
+    }
+  };
 
   const { data: requests, isLoading } = useQuery<QuotationRequest[]>({
     queryKey: ['quotation-requests'],
@@ -100,6 +120,15 @@ export default function QuotationRequestsPage() {
                     >
                       <Eye className="w-4 h-4" />
                     </Link>
+                    {(can('quotation-requests:delete') || user?.role === 'ADMIN') && (
+                      <button
+                        onClick={() => handleDelete(req.id)}
+                        disabled={deleteMutation.isPending}
+                        className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
