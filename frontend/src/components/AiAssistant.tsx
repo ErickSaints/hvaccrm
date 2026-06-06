@@ -165,18 +165,18 @@ function useLimbs() {
 
       const { vx, vy } = velRef.current;
       const speed = Math.sqrt(vx * vx + vy * vy);
-      const idle = Math.sin(idleRef.current * 0.8) * 0.04;
-      const swing = -vx * 0.0008;
-      const sway = vy * 0.0005;
-      const walk = speed * 0.0003 * Math.sin(idleRef.current * 4);
+      const idle = Math.sin(idleRef.current * 0.8) * 0.08;
+      const swing = -vx * 0.006;
+      const sway = vy * 0.004;
+      const walk = speed * 0.003 * Math.sin(idleRef.current * 4);
 
       rawArmL.set(swing + sway + idle);
       rawArmR.set(-swing - sway - idle);
-      rawLegL.set(swing * 0.5 + sway * 0.3 + idle * 0.3 + walk);
-      rawLegR.set(-swing * 0.5 - sway * 0.3 - idle * 0.3 + walk);
+      rawLegL.set(swing * 0.5 + sway * 0.4 + idle * 0.3 + walk);
+      rawLegR.set(-swing * 0.5 - sway * 0.4 - idle * 0.3 + walk);
 
-      velRef.current.vx *= 0.94;
-      velRef.current.vy *= 0.94;
+      velRef.current.vx *= 0.98;
+      velRef.current.vy *= 0.98;
 
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -191,6 +191,15 @@ function useLimbs() {
 
 export default function AiAssistant() {
   const { user } = useAuth();
+
+  // Force unregister PWA service worker to always get fresh assets
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        for (const r of regs) r.unregister();
+      });
+    }
+  }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([{ role: 'assistant', content: WELCOME }]);
   const [input, setInput] = useState('');
