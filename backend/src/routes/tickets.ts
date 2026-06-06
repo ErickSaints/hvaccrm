@@ -97,9 +97,14 @@ router.post('/', requirePermission('tickets:create'), requireSubscription, async
   try {
     const data = ticketSchema.parse(req.body);
 
+    let customerId = data.customerId;
+    if (!customerId && req.user!.role === 'CLIENT') {
+      customerId = req.user!.customerId;
+    }
+
     let customer;
-    if (data.customerId) {
-      customer = await prisma.customer.findUnique({ where: { id: data.customerId } });
+    if (customerId) {
+      customer = await prisma.customer.findUnique({ where: { id: customerId } });
       if (!customer) {
         return res.status(400).json({ error: 'Cliente no encontrado' });
       }

@@ -15,7 +15,7 @@ const ticketSchema = z.object({
   title: z.string().min(1, 'El título es obligatorio'),
   description: z.string().min(1, 'La descripción es obligatoria'),
   level: z.enum(['EMERGENCIA', 'ATENCION', 'PROGRAMAR']),
-  customerId: z.number({ required_error: 'Selecciona un cliente', invalid_type_error: 'Selecciona un cliente' }),
+  customerId: z.number().optional().nullable(),
   equipmentId: z.number().optional().nullable(),
   assignedTo: z.number().optional().nullable(),
 });
@@ -27,9 +27,9 @@ export default function TicketFormPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, isLoading: authLoading } = useAuth();
   const isEditing = Boolean(id);
-  const isBackoffice = currentUser?.role !== 'CLIENT';
+  const isBackoffice = currentUser?.role !== 'CLIENT' && currentUser?.role !== undefined;
   const preselectedCustomer = searchParams.get('customerId');
   const clientCustomerId = currentUser?.role === 'CLIENT' ? currentUser.customerId : null;
 
@@ -129,8 +129,20 @@ export default function TicketFormPage() {
   });
 
   const onSubmit = (data: TicketFormData) => {
+    if (currentUser?.role === 'CLIENT') {
+      data.customerId = currentUser.customerId ?? undefined;
+      data.assignedTo = undefined;
+    }
     mutation.mutate(data);
   };
+
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-8 h-8 text-primary-600 animate-spin" />
+      </div>
+    );
+  }
 
   if (isEditing && loadingTicket) {
     return (
