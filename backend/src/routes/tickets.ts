@@ -97,9 +97,9 @@ router.post('/', requirePermission('tickets:create'), requireSubscription, async
   try {
     const data = ticketSchema.parse(req.body);
 
-    let customerId = data.customerId;
+    let customerId = data.customerId ?? undefined;
     if (!customerId && req.user!.role === 'CLIENT') {
-      customerId = req.user!.customerId;
+      customerId = req.user!.customerId ?? undefined;
     }
 
     let customer;

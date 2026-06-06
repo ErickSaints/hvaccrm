@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
@@ -46,6 +47,13 @@ function getBaseURL(): string {
 }
 
 let openai: OpenAI | null = null;
+let anthropic: Anthropic | null = null;
+
+function detectProvider(): 'openai' | 'anthropic' {
+  const model = getModel();
+  if (model.startsWith('claude-')) return 'anthropic';
+  return 'openai';
+}
 
 function getClient(): OpenAI {
   if (openai) return openai;
@@ -53,6 +61,12 @@ function getClient(): OpenAI {
   const baseURL = getBaseURL();
   openai = new OpenAI({ apiKey, baseURL });
   return openai;
+}
+
+function getAnthropicClient(): Anthropic {
+  if (anthropic) return anthropic;
+  anthropic = new Anthropic({ apiKey: getApiKey() });
+  return anthropic;
 }
 
 const SYSTEM_PROMPT = `Eres un asistente de IA integrado en un CRM para empresas de climatización y refrigeración (HVAC-R) en México.
@@ -182,6 +196,18 @@ const TOOLS: OpenAI.ChatCompletionTool[] = [
     },
   },
 ];
+
+function toolsForAnthropic(): Anthropic.Messages.Tool[] {
+  return (TOOLS as OpenAI.ChatCompletionFunctionTool[]).map(t => ({
+    name: t.function.name,
+    description: t.function.description,
+    input_schema: t.function.parameters as Anthropic.Messages.Tool.InputSchema,
+  }));
+}
+
+function toolsForOpenAI(): OpenAI.ChatCompletionTool[] {
+  return TOOLS;
+}
 
 const PROJECT_ROOT = 'C:\\Users\\mante\\hvaccrm';
 
@@ -373,7 +399,7 @@ async function executeTool(name: string, args: any): Promise<string> {
   }
 }
 
-export async function processMessage(
+async function processMessageOpenAI(
   messages: { role: 'user' | 'assistant' | 'system'; content: string }[],
   onStream: (chunk: string) => void
 ): Promise<string> {
@@ -386,7 +412,6 @@ export async function processMessage(
   ];
 
   let fullResponse = '';
-  let currentToolCalls: OpenAI.ChatCompletionMessageToolCall[] = [];
 
   while (true) {
     const stream = await client.chat.completions.create({
@@ -427,7 +452,6 @@ export async function processMessage(
 
     fullResponse += deltaContent;
 
-    // Check for tool calls
     const toolCalls = Array.from(deltaToolCalls.entries())
       .filter(([_, tc]) => tc.id && tc.function?.name)
       .map(([_, tc]) => ({
@@ -441,29 +465,22 @@ export async function processMessage(
 
     if (toolCalls.length === 0) break;
 
-    // Execute tool calls
     const toolResults: ToolResult[] = [];
     for (const tc of toolCalls) {
       let args: any = {};
-      try {
-        args = JSON.parse(tc.function.arguments);
-      } catch {
-        args = {};
-      }
+      try { args = JSON.parse(tc.function.arguments); } catch { args = {}; }
       onStream(`\n\n**🔧 Ejecutando: \`${tc.function.name}\`...**\n\n`);
       const result = await executeTool(tc.function.name, args);
       toolResults.push({ tool_call_id: tc.id, output: result });
       onStream(`\`\`\`\n${result.slice(0, 2000)}\n\`\`\`\n\n`);
     }
 
-    // Add assistant message with tool calls
     apiMessages.push({
       role: 'assistant',
       content: deltaContent || null,
       tool_calls: toolCalls,
     } as any);
 
-    // Add tool results
     for (const tr of toolResults) {
       apiMessages.push({
         role: 'tool',
@@ -474,6 +491,95 @@ export async function processMessage(
   }
 
   return fullResponse;
+}
+
+async function processMessageAnthropic(
+  messages: { role: 'user' | 'assistant' | 'system'; content: string }[],
+  onStream: (chunk: string) => void
+): Promise<string> {
+  const client = getAnthropicClient();
+  const model = getModel();
+
+  const apiMessages: Anthropic.Messages.MessageParam[] = messages.map(m => ({
+    role: m.role === 'system' ? 'user' : m.role as 'user' | 'assistant',
+    content: m.content,
+  }));
+
+  let fullResponse = '';
+
+  while (true) {
+    const stream = await client.messages.create({
+      model,
+      max_tokens: 4096,
+      system: SYSTEM_PROMPT,
+      messages: apiMessages,
+      tools: toolsForAnthropic(),
+      stream: true,
+    });
+
+    let textContent = '';
+    const blocks: { type: string; id?: string; name?: string; input?: any }[] = [];
+
+    for await (const event of stream) {
+      if (event.type === 'content_block_start') {
+        blocks.push(event.content_block);
+      }
+      if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+        textContent += event.delta.text;
+        onStream(event.delta.text);
+      }
+    }
+
+    fullResponse += textContent;
+
+    const toolUseBlocks = blocks.filter(b => b.type === 'tool_use' && b.id && b.name);
+
+    if (toolUseBlocks.length === 0) break;
+
+    const toolResults: ToolResult[] = [];
+    for (const tb of toolUseBlocks) {
+      onStream(`\n\n**🔧 Ejecutando: \`${tb.name}\`...**\n\n`);
+      const result = await executeTool(tb.name!, tb.input || {});
+      toolResults.push({ tool_call_id: tb.id!, output: result });
+      onStream(`\`\`\`\n${result.slice(0, 2000)}\n\`\`\`\n\n`);
+    }
+
+    // Build assistant response with content blocks
+    const assistantContent: Anthropic.Messages.ContentBlockParam[] = [];
+    if (textContent) assistantContent.push({ type: 'text', text: textContent });
+    for (const tb of toolUseBlocks) {
+      assistantContent.push({
+        type: 'tool_use',
+        id: tb.id!,
+        name: tb.name!,
+        input: tb.input || {},
+      });
+    }
+
+    apiMessages.push({ role: 'assistant', content: assistantContent });
+
+    // Build tool result content block
+    const toolResultContent: Anthropic.Messages.ContentBlockParam[] = toolResults.map(tr => ({
+      type: 'tool_result',
+      tool_use_id: tr.tool_call_id,
+      content: tr.output,
+    }));
+
+    apiMessages.push({ role: 'user', content: toolResultContent });
+  }
+
+  return fullResponse;
+}
+
+export async function processMessage(
+  messages: { role: 'user' | 'assistant' | 'system'; content: string }[],
+  onStream: (chunk: string) => void
+): Promise<string> {
+  const provider = detectProvider();
+  if (provider === 'anthropic') {
+    return processMessageAnthropic(messages, onStream);
+  }
+  return processMessageOpenAI(messages, onStream);
 }
 
 export function validateConfig(): { valid: boolean; message: string } {
