@@ -1,7 +1,6 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, FileText, Clock, Eye, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
+import { ArrowLeft, FileText, Clock, Eye, CheckCircle2, XCircle } from 'lucide-react';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 import type { QuotationRequest } from '../types';
@@ -16,7 +15,6 @@ const statusConfig: Record<string, { label: string; icon: typeof Clock; color: s
 export default function QuotationRequestDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { user: currentUser } = useAuth();
 
   const isBackoffice = currentUser?.role !== 'CLIENT';
@@ -31,25 +29,9 @@ export default function QuotationRequestDetail() {
     retry: false,
   });
 
-  const convertMutation = useMutation({
-    mutationFn: async () => {
-      const { data } = await api.post(`/quotation-requests/${id}/convert`);
-      return data;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['quotation-request', id] });
-      queryClient.invalidateQueries({ queryKey: ['quotation-requests'] });
-      toast.success('Cotización creada');
-      navigate(`/quotations/${data.id}`);
-    },
-    onError: (err: unknown) => {
-      const msg =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error || 'Error al crear cotización'
-          : 'Error al crear cotización';
-      toast.error(msg);
-    },
-  });
+  const goToNewQuotation = () => {
+    navigate(`/quotations/new?fromRequest=${id}`);
+  };
 
   if (isLoading) {
     return (
@@ -120,15 +102,10 @@ export default function QuotationRequestDetail() {
         {isBackoffice && !req.quotation && req.status !== 'COTIZADO' && req.status !== 'RECHAZADO' && (
           <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
             <button
-              onClick={() => convertMutation.mutate()}
-              disabled={convertMutation.isPending}
+              onClick={goToNewQuotation}
               className="btn-primary inline-flex items-center gap-2"
             >
-              {convertMutation.isPending ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <FileText className="w-4 h-4" />
-              )}
+              <FileText className="w-4 h-4" />
               Crear Cotización
             </button>
           </div>

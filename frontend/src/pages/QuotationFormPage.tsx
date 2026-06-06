@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,7 +7,7 @@ import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Save, Loader2, Plus, Trash2, Package } from 'lucide-react';
 import api from '../lib/api';
-import type { Quotation, QuotationItem } from '../types';
+import type { Quotation, QuotationItem, QuotationRequest } from '../types';
 import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 import PricebookSearch from '../components/PricebookSearch';
 
@@ -42,7 +42,9 @@ export default function QuotationFormPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
   const isEditing = Boolean(id);
+  const fromRequestId = searchParams.get('fromRequest');
 
   const [items, setItems] = useState<ItemForm[]>([createEmptyItem()]);
   const [taxPercent, setTaxPercent] = useState(16);
@@ -67,6 +69,28 @@ export default function QuotationFormPage() {
     },
     enabled: isEditing,
   });
+
+  const { data: requestData } = useQuery<QuotationRequest>({
+    queryKey: ['quotation-request', fromRequestId],
+    queryFn: async () => {
+      const { data } = await api.get<QuotationRequest>(`/quotation-requests/${fromRequestId}`);
+      return data;
+    },
+    enabled: !!fromRequestId,
+  });
+
+  useEffect(() => {
+    if (requestData) {
+      reset({
+        title: requestData.title || '',
+        customerId: requestData.customerId,
+        notes: requestData.description || '',
+        terms: '',
+        validUntil: '',
+      });
+      setItems([{ description: requestData.description || '', quantity: 1, unitPrice: 0 }]);
+    }
+  }, [requestData, reset]);
 
   useEffect(() => {
     if (quotationData) {
