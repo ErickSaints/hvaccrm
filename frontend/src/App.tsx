@@ -223,7 +223,7 @@ export default function App() {
         <BrowserRouter>
           <SuperAdminProvider>
             <AnimatedRoutes />
-            <AiAssistant />
+            {/* <AiAssistant /> */}
           </SuperAdminProvider>
         </BrowserRouter>
         <Toaster
