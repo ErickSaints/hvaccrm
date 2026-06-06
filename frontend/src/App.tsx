@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { AuthProvider, useAuth } from './lib/auth';
 import { SuperAdminProvider } from './contexts/SuperAdminContext';
 import Layout from './components/Layout';
+import AiAssistant from './components/AiAssistant';
 import LoginPage from './pages/LoginPage';
 
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
@@ -222,6 +223,7 @@ export default function App() {
         <BrowserRouter>
           <SuperAdminProvider>
             <AnimatedRoutes />
+            <AiAssistant />
           </SuperAdminProvider>
         </BrowserRouter>
         <Toaster
