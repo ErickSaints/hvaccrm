@@ -9,18 +9,50 @@ interface ToolResult {
   output: string;
 }
 
+interface AiConfig {
+  apiKey: string;
+  model: string;
+  baseURL: string;
+}
+
+const CONFIG_PATH = path.join(__dirname, '..', '..', 'ai_config.json');
+
+function loadConfig(): AiConfig {
+  try {
+    if (fs.existsSync(CONFIG_PATH)) {
+      return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+    }
+  } catch {}
+  return { apiKey: '', model: '', baseURL: '' };
+}
+
+function saveConfig(c: AiConfig) {
+  fs.writeFileSync(CONFIG_PATH, JSON.stringify(c, null, 2), 'utf-8');
+}
+
+function getApiKey(): string {
+  const fileCfg = loadConfig();
+  return process.env.AI_API_KEY || fileCfg.apiKey || 'sk-placeholder';
+}
+
+function getModel(): string {
+  const fileCfg = loadConfig();
+  return process.env.AI_MODEL || fileCfg.model || 'gpt-4o';
+}
+
+function getBaseURL(): string {
+  const fileCfg = loadConfig();
+  return process.env.AI_BASE_URL || fileCfg.baseURL || 'https://api.openai.com/v1';
+}
+
 let openai: OpenAI | null = null;
 
 function getClient(): OpenAI {
   if (openai) return openai;
-  const baseURL = process.env.AI_BASE_URL || 'https://api.openai.com/v1';
-  const apiKey = process.env.AI_API_KEY || 'sk-placeholder';
+  const apiKey = getApiKey();
+  const baseURL = getBaseURL();
   openai = new OpenAI({ apiKey, baseURL });
   return openai;
-}
-
-function getModel(): string {
-  return process.env.AI_MODEL || 'gpt-4o';
 }
 
 const SYSTEM_PROMPT = `Eres un asistente de IA integrado en un CRM para empresas de climatización y refrigeración (HVAC-R) en México.
@@ -445,8 +477,8 @@ export async function processMessage(
 }
 
 export function validateConfig(): { valid: boolean; message: string } {
-  const key = process.env.AI_API_KEY;
-  const model = process.env.AI_MODEL || 'gpt-4o';
+  const key = getApiKey();
+  const model = getModel();
   if (!key || key === 'sk-placeholder') {
     return { valid: false, message: 'AI_API_KEY no configurada. Configúrala en backend/.env o en el panel de administración.' };
   }
@@ -454,10 +486,25 @@ export function validateConfig(): { valid: boolean; message: string } {
 }
 
 export function getConfig() {
+  const fileCfg = loadConfig();
   return {
     provider: process.env.AI_PROVIDER || 'openai',
-    model: process.env.AI_MODEL || 'gpt-4o',
-    baseURL: process.env.AI_BASE_URL || 'https://api.openai.com/v1',
+    model: getModel(),
+    baseURL: getBaseURL(),
     configured: validateConfig().valid,
+    hasFileConfig: !!fileCfg.apiKey,
   };
+}
+
+export function updateConfig(c: { apiKey?: string; model?: string; baseURL?: string }): AiConfig {
+  const current = loadConfig();
+  const merged: AiConfig = {
+    apiKey: c.apiKey !== undefined ? c.apiKey : current.apiKey,
+    model: c.model !== undefined ? c.model : current.model,
+    baseURL: c.baseURL !== undefined ? c.baseURL : current.baseURL,
+  };
+  saveConfig(merged);
+  // Reset client so it picks up new config
+  openai = null;
+  return merged;
 }

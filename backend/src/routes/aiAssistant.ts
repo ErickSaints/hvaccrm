@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { authenticate, requireRole } from '../middleware/auth';
-import { processMessage, validateConfig, getConfig } from '../services/aiAssistant';
+import { processMessage, validateConfig, getConfig, updateConfig } from '../services/aiAssistant';
 
 const router = Router();
 
@@ -9,6 +9,19 @@ router.use(requireRole(['ADMIN']));
 
 router.get('/config', (_req: Request, res: Response) => {
   res.json(getConfig());
+});
+
+router.put('/config', (req: Request, res: Response) => {
+  const { apiKey, model, baseURL } = req.body;
+  if (apiKey === '' || model === '' || baseURL === '') {
+    return res.status(400).json({ error: 'Los valores no pueden estar vacíos' });
+  }
+  const cfg = updateConfig({
+    apiKey: apiKey !== undefined ? apiKey : undefined,
+    model: model !== undefined ? model : undefined,
+    baseURL: baseURL !== undefined ? baseURL : undefined,
+  });
+  res.json({ success: true, configured: validateConfig().valid, model: cfg.model });
 });
 
 router.post('/chat', async (req: Request, res: Response) => {

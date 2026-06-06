@@ -11,3 +11,4 @@ backend/uploads/
 *.tsbuildinfo
 .vite/
 backend/logs/
+backend/ai_config.json

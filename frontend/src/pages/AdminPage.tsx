@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Shield, Users, Search, Eye, Power, Loader2, CheckCircle, XCircle, Edit3 } from 'lucide-react';
+import { Shield, Users, Search, Eye, Power, Loader2, CheckCircle, XCircle, Edit3, Sparkles, Key, Globe, Cpu } from 'lucide-react';
 import api from '../lib/api';
 
 interface AdminUser {
@@ -22,6 +22,30 @@ export default function AdminPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
   const [editForm, setEditForm] = useState({ name: '', email: '', role: '', phone: '', password: '' });
+
+  const [aiConfig, setAiConfig] = useState({ apiKey: '', model: '', baseURL: '' });
+  const [showAiConfig, setShowAiConfig] = useState(false);
+
+  const { data: aiCfg } = useQuery({
+    queryKey: ['ai-config'],
+    queryFn: () => api.get('/admin/ai/config').then(r => r.data),
+  });
+
+  useEffect(() => {
+    if (aiCfg) {
+      setAiConfig({ apiKey: aiCfg.hasFileConfig ? '••••' : '', model: aiCfg.model, baseURL: aiCfg.baseURL });
+    }
+  }, [aiCfg]);
+
+  const saveAiConfig = useMutation({
+    mutationFn: (data: any) => api.put('/admin/ai/config', data),
+    onSuccess: () => {
+      toast.success('Configuración IA guardada');
+      setShowAiConfig(false);
+      queryClient.invalidateQueries({ queryKey: ['ai-config'] });
+    },
+    onError: (err: any) => toast.error(err.response?.data?.error || 'Error al guardar'),
+  });
 
   const { data: users, isLoading } = useQuery<AdminUser[]>({
     queryKey: ['admin-users'],
@@ -117,6 +141,63 @@ export default function AdminPage() {
           placeholder="Buscar usuarios..."
           className="input-field pl-10"
         />
+      </div>
+
+      {/* AI Config */}
+      <div className="card p-5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-sky-600 dark:text-sky-400" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Asistente IA</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {aiCfg?.configured
+                  ? <span className="text-green-600">Configurado ({aiCfg.model})</span>
+                  : <span className="text-red-500">No configurado</span>}
+              </p>
+            </div>
+          </div>
+          <button onClick={() => setShowAiConfig(!showAiConfig)} className="btn-secondary text-sm">
+            {showAiConfig ? 'Cerrar' : 'Configurar'}
+          </button>
+        </div>
+
+        {showAiConfig && (
+          <div className="mt-4 space-y-3 border-t border-gray-100 dark:border-gray-800 pt-4">
+            <div>
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <Key className="w-4 h-4" /> API Key
+              </label>
+              <input value={aiConfig.apiKey} onChange={e => setAiConfig({ ...aiConfig, apiKey: e.target.value })}
+                className="input-field font-mono text-sm" type="password" placeholder="sk-..." />
+              <p className="text-xs text-gray-400 mt-1">OpenAI, Anthropic, DeepSeek, o cualquier compatible con OpenAI SDK</p>
+            </div>
+            <div>
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <Cpu className="w-4 h-4" /> Modelo
+              </label>
+              <input value={aiConfig.model} onChange={e => setAiConfig({ ...aiConfig, model: e.target.value })}
+                className="input-field text-sm" placeholder="gpt-4o" />
+            </div>
+            <div>
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <Globe className="w-4 h-4" /> Base URL
+              </label>
+              <input value={aiConfig.baseURL} onChange={e => setAiConfig({ ...aiConfig, baseURL: e.target.value })}
+                className="input-field text-sm" placeholder="https://api.openai.com/v1" />
+            </div>
+            <button onClick={() => {
+              const payload: any = { model: aiConfig.model, baseURL: aiConfig.baseURL };
+              if (aiConfig.apiKey && aiConfig.apiKey !== '••••') payload.apiKey = aiConfig.apiKey;
+              saveAiConfig.mutate(payload);
+            }} disabled={saveAiConfig.isPending} className="btn-primary flex items-center gap-2">
+              {saveAiConfig.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+              Guardar Configuración
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Edit Modal */}
