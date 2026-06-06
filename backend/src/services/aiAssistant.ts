@@ -38,12 +38,12 @@ function getApiKey(): string {
 
 function getModel(): string {
   const fileCfg = loadConfig();
-  return process.env.AI_MODEL || fileCfg.model || 'gpt-4o';
+  return process.env.AI_MODEL || fileCfg.model || 'kimi-k2-instruct';
 }
 
 function getBaseURL(): string {
   const fileCfg = loadConfig();
-  return process.env.AI_BASE_URL || fileCfg.baseURL || 'https://api.openai.com/v1';
+  return process.env.AI_BASE_URL || fileCfg.baseURL || 'https://api.groq.com/openai/v1';
 }
 
 let openai: OpenAI | null = null;
