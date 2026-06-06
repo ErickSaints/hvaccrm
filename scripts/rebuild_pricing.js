@@ -223,52 +223,69 @@ Object.entries(PRECIO_INSTALACION_POR_TR).forEach(([equipo, precioTr]) => {
   }
 });
 
-// ─── 2. Planes de Mantenimiento ──────────────────────────────────────────
-// PRECIO POR TONELADA DE REFRIGERACION AL AÑO (MXN)
-// Unidad: TR/año — el usuario multiplica por las TR del equipo
+// ─── 2. Polizas de Mantenimiento ──────────────────────────────────────────
+// PRECIOS BASADOS EN HOMEPRO FEBRERO 2026 + MERCADO CDMX
+// Precios reales y competitivos por tonelada de refrigeracion al año (MXN)
+// Fuente: HomePro Indice Costos Mano Obra Feb 2026 (PRNewswire),
+//         analisisdepreciosunitarios.com, AireyClimas CDMX 2026
+//
+// HomePro 2026 (precios por visita preventiva):
+//   Minisplit 1 TR: $2,500 | 2 TR: $2,600 | 3 TR: $2,700
+//   Cassette 2-4 TR: $2,700-$3,200 | Piso techo 5 TR: $2,800
+//   Fan Coil 4.5 TR: $3,600 | VRF: $2,800-$4,500/unidad
+//   Chiller: desde $15,000 | Rooftop: $4,000-$9,000
+//
+// Poliza = precio por visita x visitas anuales x descuento por contrato
 const MANT_POR_TR_ANUAL = {
-  'Minisplit':                              { basico: 1200, estandar: 1800, premium: 2800 },
-  'Cassette':                               { basico: 1500, estandar: 2200, premium: 3200 },
-  'Fan Coil (agua helada)':                 { basico: 1000, estandar: 1600, premium: 2500 },
-  'AHU/Manejadora de aire':                 { basico: 1200, estandar: 1800, premium: 3000 },
-  'Rooftop/Paquete':                        { basico: 1100, estandar: 1700, premium: 2600 },
-  'VRF':                                    { basico: 1400, estandar: 2200, premium: 3500 },
-  'Chiller':                                { basico: 800,  estandar: 1400, premium: 2500 },
-  'Torre de enfriamiento':                  { basico: 600,  estandar: 1000, premium: 1800 },
-  'Sistema agua helada completo':           { basico: 700,  estandar: 1200, premium: 2200 },
-  'Bomba de agua HVAC':                     { basico: 500,  estandar: 900,  premium: 0 },
+  // Equipo:              basico(2vis)  estandar(4vis)  premium(4vis+emerg)
+  'Minisplit':                              { basico: 3400, estandar: 6400, premium: 8400 },
+  'Cassette':                               { basico: 3000, estandar: 5800, premium: 7600 },
+  'Fan Coil (agua helada)':                 { basico: 3700, estandar: 7000, premium: 9200 },
+  'AHU/Manejadora de aire':                 { basico: 2600, estandar: 4800, premium: 6300 },
+  'Rooftop/Paquete':                        { basico: 3100, estandar: 5800, premium: 7600 },
+  'VRF':                                    { basico: 2000, estandar: 3800, premium: 5000 },
+  'Chiller':                                { basico: 1400, estandar: 2600, premium: 3400 },
+  'Torre de enfriamiento':                  { basico: 1000, estandar: 1900, premium: 2500 },
+  'Sistema agua helada completo':           { basico: 1200, estandar: 2200, premium: 2900 },
+  'Bomba de agua HVAC':                     { basico: 850,  estandar: 1600, premium: 0 },
 };
 
 const DESCRIPCIONES_MANT = {
   'Minisplit':                    'minisplit',
   'Cassette':                     'cassette',
-  'Fan Coil (agua helada)':       'fan coil',
+  'Fan Coil (agua helada)':       'fan coil de agua helada',
   'AHU/Manejadora de aire':       'manejadora de aire',
   'Rooftop/Paquete':              'rooftop/paquete',
   'VRF':                          'sistema VRF',
   'Chiller':                      'chiller',
   'Torre de enfriamiento':        'torre de enfriamiento',
-  'Sistema agua helada completo': 'sistema agua helada completo',
+  'Sistema agua helada completo': 'sistema de agua helada completo',
   'Bomba de agua HVAC':           'bomba de agua HVAC',
 };
 
 const VISITAS_MANT = {
-  'basico':   '2 visitas/año',
-  'estandar': '4 visitas/año',
-  'premium':  '4 visitas + emergencia 24/7',
+  'basico':   '2 visitas preventivas/año',
+  'estandar': '4 visitas preventivas/año',
+  'premium':  '4 visitas preventivas + emergencias 24/7 sin costo',
 };
 
-const DETALLE_MANT = {
-  'Minisplit':                    'limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje',
-  'Cassette':                     'limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto',
-  'Fan Coil (agua helada)':       'limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje',
-  'AHU/Manejadora de aire':       'limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos',
-  'Rooftop/Paquete':              'limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles',
-  'VRF':                          'limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red',
-  'Chiller':                      'revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre',
-  'Torre de enfriamiento':        'limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador',
-  'Sistema agua helada completo': 'chiller, bombas, torre, fan coils, controles, valvulería',
-  'Bomba de agua HVAC':           'lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones',
+const INCLUYE_MANT = {
+  'basico':   'limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento',
+  'estandar': 'limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs',
+  'premium':  'limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto',
+};
+
+const DETALLE_MANT_EQUIPO = {
+  'Minisplit':                    'Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revision de presiones, amperajes, carga de refrigerante, conexiones electricas, control remoto, drenaje',
+  'Cassette':                     'Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revision de presiones, amperajes, carga de refrigerante, conexiones electricas, control remoto',
+  'Fan Coil (agua helada)':       'Limpieza de serpentin de agua helada, bandeja de condensados, filtros, ventilador, valvulas de control | Revision de temperatura de impulsión y retorno, conexiones hidraulicas, actuadores',
+  'AHU/Manejadora de aire':       'Limpieza de serpentines de enfriamiento y calefaccion, filtros, ventiladores, compuertas de mezcla, drenaje | Revision de transmisiones, bandas, poleas, conexiones electricas, controles, sensores',
+  'Rooftop/Paquete':              'Limpieza de serpentines de condensador y evaporador, filtros, quemadores (calefaccion), ventiladores, drenaje | Revision de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operacion',
+  'VRF':                          'Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revision de tuberia de refrigerante, deteccion de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicacion BCU',
+  'Chiller':                      'Limpieza de condensador y evaporador, cambio de aceite y filtros, revision de compresor | Analisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, bombas de agua helada, valvulería',
+  'Torre de enfriamiento':        'Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, valvula de llenado | Revision de motor, ventilador, transmision, analisis de agua (pH, TDS, dureza), tratamiento quimico dosificador',
+  'Sistema agua helada completo': 'Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, valvulería, controles, sensores | Reporte ejecutivo de eficiencia',
+  'Bomba de agua HVAC':           'Lubricacion de baleros y chumaceras, revision de sellos mecanicos, acoplamiento, motor, valvulas de succion y descarga, presiones, amperajes, alineacion, base y nivelacion',
 };
 
 const mantenimientoItems = [];
@@ -277,16 +294,20 @@ Object.entries(MANT_POR_TR_ANUAL).forEach(([equipo, planes]) => {
     if (precioUnitario === 0) return;
 
     const visits = VISITAS_MANT[nivel];
-    const detalles = DETALLE_MANT[equipo];
+    const incluye = INCLUYE_MANT[nivel];
+    const detalles = DETALLE_MANT_EQUIPO[equipo];
     const equipoLower = DESCRIPCIONES_MANT[equipo];
     const unidad = equipo === 'Bomba de agua HVAC' ? 'HP/año' : 'TR/año';
     const descUnidad = equipo === 'Bomba de agua HVAC' ? 'HP' : 'TR';
 
+    const nivelLabel = nivel.charAt(0).toUpperCase() + nivel.slice(1);
+    const visitCount = nivel === 'basico' ? '2 visitas' : '4 visitas';
+
     mantenimientoItems.push({
-      name: `Plan mantenimiento ${equipo} - ${nivel}`,
-      description: `Mantenimiento preventivo ${nivel} para ${equipoLower} | ${visits} | $${precioUnitario.toLocaleString()}/${descUnidad}/año | Incluye ${detalles} | Reporte digital | Cotizar multiplicando por las ${descUnidad} del equipo`,
+      name: `Poliza mantenimiento ${equipo} - ${nivelLabel}`,
+      description: `Poliza de mantenimiento ${nivelLabel} para ${equipoLower} | ${visits} | $${precioUnitario.toLocaleString()}/${descUnidad}/año | Incluye: ${incluye} | Detalle tecnico: ${detalles} | Reporte digital incluido | Cotizar: cantidad de ${descUnidad} x $${precioUnitario.toLocaleString()}/${descUnidad}/año | Precios basados en HomePro CDMX 2026`,
       unit: unidad,
-      category: 'Planes de Mantenimiento',
+      category: 'Polizas de Mantenimiento',
       basePrice: precioUnitario,
       costPrice: Math.round(precioUnitario * 0.55),
     });
@@ -369,7 +390,7 @@ const GAS_PRECIOS_REALES = {
 console.log('Current items:', data.length);
 
 // Remove categories we fully regenerate (Instalacion Equipos + Planes de Mantenimiento)
-const removeCats = ['Instalacion Equipos', 'Instalación Equipos', 'Planes de Mantenimiento'];
+const removeCats = ['Instalacion Equipos', 'Instalación Equipos', 'Planes de Mantenimiento', 'Polizas de Mantenimiento'];
 const removedByCat = {};
 data = data.filter(item => {
   if (removeCats.includes(item.category)) {

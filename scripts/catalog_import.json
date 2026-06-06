@@ -20104,236 +20104,236 @@
     "costPrice": 250
   },
   {
-    "name": "Plan mantenimiento AHU/Manejadora de aire - basico",
-    "description": "Mantenimiento preventivo basico para manejadora de aire | 2 visitas/año | $1,200/TR/año | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "name": "Poliza mantenimiento AHU/Manejadora de aire - Basico",
+    "description": "Poliza de mantenimiento Basico para manejadora de aire | 2 visitas preventivas/año | $2,600/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Limpieza de serpentines de enfriamiento y calefaccion, filtros, ventiladores, compuertas de mezcla, drenaje | Revision de transmisiones, bandas, poleas, conexiones electricas, controles, sensores | Reporte digital incluido | Cotizar: cantidad de TR x $2,600/TR/año | Precios basados en HomePro CDMX 2026",
     "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1200,
-    "costPrice": 660
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora de aire - estandar",
-    "description": "Mantenimiento preventivo estandar para manejadora de aire | 4 visitas/año | $1,800/TR/año | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1800,
-    "costPrice": 990
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora de aire - premium",
-    "description": "Mantenimiento preventivo premium para manejadora de aire | 4 visitas + emergencia 24/7 | $3,000/TR/año | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 3000,
-    "costPrice": 1650
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua HVAC - basico",
-    "description": "Mantenimiento preventivo basico para bomba de agua HVAC | 2 visitas/año | $500/HP/año | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital | Cotizar multiplicando por las HP del equipo",
-    "unit": "HP/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 500,
-    "costPrice": 275
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua HVAC - estandar",
-    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC | 4 visitas/año | $900/HP/año | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital | Cotizar multiplicando por las HP del equipo",
-    "unit": "HP/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 900,
-    "costPrice": 495
-  },
-  {
-    "name": "Plan mantenimiento Cassette - basico",
-    "description": "Mantenimiento preventivo basico para cassette | 2 visitas/año | $1,500/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1500,
-    "costPrice": 825
-  },
-  {
-    "name": "Plan mantenimiento Cassette - estandar",
-    "description": "Mantenimiento preventivo estandar para cassette | 4 visitas/año | $2,200/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2200,
-    "costPrice": 1210
-  },
-  {
-    "name": "Plan mantenimiento Cassette - premium",
-    "description": "Mantenimiento preventivo premium para cassette | 4 visitas + emergencia 24/7 | $3,200/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 3200,
-    "costPrice": 1760
-  },
-  {
-    "name": "Plan mantenimiento Chiller - basico",
-    "description": "Mantenimiento preventivo basico para chiller | 2 visitas/año | $800/TR/año | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 800,
-    "costPrice": 440
-  },
-  {
-    "name": "Plan mantenimiento Chiller - estandar",
-    "description": "Mantenimiento preventivo estandar para chiller | 4 visitas/año | $1,400/TR/año | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1400,
-    "costPrice": 770
-  },
-  {
-    "name": "Plan mantenimiento Chiller - premium",
-    "description": "Mantenimiento preventivo premium para chiller | 4 visitas + emergencia 24/7 | $2,500/TR/año | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2500,
-    "costPrice": 1375
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil (agua helada) - basico",
-    "description": "Mantenimiento preventivo basico para fan coil | 2 visitas/año | $1,000/TR/año | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1000,
-    "costPrice": 550
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil (agua helada) - estandar",
-    "description": "Mantenimiento preventivo estandar para fan coil | 4 visitas/año | $1,600/TR/año | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1600,
-    "costPrice": 880
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil (agua helada) - premium",
-    "description": "Mantenimiento preventivo premium para fan coil | 4 visitas + emergencia 24/7 | $2,500/TR/año | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2500,
-    "costPrice": 1375
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - basico",
-    "description": "Mantenimiento preventivo basico para minisplit | 2 visitas/año | $1,200/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1200,
-    "costPrice": 660
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - estandar",
-    "description": "Mantenimiento preventivo estandar para minisplit | 4 visitas/año | $1,800/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1800,
-    "costPrice": 990
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - premium",
-    "description": "Mantenimiento preventivo premium para minisplit | 4 visitas + emergencia 24/7 | $2,800/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2800,
-    "costPrice": 1540
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - basico",
-    "description": "Mantenimiento preventivo basico para rooftop/paquete | 2 visitas/año | $1,100/TR/año | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1100,
-    "costPrice": 605
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - estandar",
-    "description": "Mantenimiento preventivo estandar para rooftop/paquete | 4 visitas/año | $1,700/TR/año | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1700,
-    "costPrice": 935
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - premium",
-    "description": "Mantenimiento preventivo premium para rooftop/paquete | 4 visitas + emergencia 24/7 | $2,600/TR/año | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
+    "category": "Polizas de Mantenimiento",
     "basePrice": 2600,
     "costPrice": 1430
   },
   {
-    "name": "Plan mantenimiento Sistema agua helada completo - basico",
-    "description": "Mantenimiento preventivo basico para sistema agua helada completo | 2 visitas/año | $700/TR/año | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "name": "Poliza mantenimiento AHU/Manejadora de aire - Estandar",
+    "description": "Poliza de mantenimiento Estandar para manejadora de aire | 4 visitas preventivas/año | $4,800/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Limpieza de serpentines de enfriamiento y calefaccion, filtros, ventiladores, compuertas de mezcla, drenaje | Revision de transmisiones, bandas, poleas, conexiones electricas, controles, sensores | Reporte digital incluido | Cotizar: cantidad de TR x $4,800/TR/año | Precios basados en HomePro CDMX 2026",
     "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 700,
-    "costPrice": 385
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 4800,
+    "costPrice": 2640
   },
   {
-    "name": "Plan mantenimiento Sistema agua helada completo - estandar",
-    "description": "Mantenimiento preventivo estandar para sistema agua helada completo | 4 visitas/año | $1,200/TR/año | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "name": "Poliza mantenimiento AHU/Manejadora de aire - Premium",
+    "description": "Poliza de mantenimiento Premium para manejadora de aire | 4 visitas preventivas + emergencias 24/7 sin costo | $6,300/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Limpieza de serpentines de enfriamiento y calefaccion, filtros, ventiladores, compuertas de mezcla, drenaje | Revision de transmisiones, bandas, poleas, conexiones electricas, controles, sensores | Reporte digital incluido | Cotizar: cantidad de TR x $6,300/TR/año | Precios basados en HomePro CDMX 2026",
     "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1200,
-    "costPrice": 660
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 6300,
+    "costPrice": 3465
   },
   {
-    "name": "Plan mantenimiento Sistema agua helada completo - premium",
-    "description": "Mantenimiento preventivo premium para sistema agua helada completo | 4 visitas + emergencia 24/7 | $2,200/TR/año | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2200,
-    "costPrice": 1210
+    "name": "Poliza mantenimiento Bomba de agua HVAC - Basico",
+    "description": "Poliza de mantenimiento Basico para bomba de agua HVAC | 2 visitas preventivas/año | $850/HP/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Lubricacion de baleros y chumaceras, revision de sellos mecanicos, acoplamiento, motor, valvulas de succion y descarga, presiones, amperajes, alineacion, base y nivelacion | Reporte digital incluido | Cotizar: cantidad de HP x $850/HP/año | Precios basados en HomePro CDMX 2026",
+    "unit": "HP/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 850,
+    "costPrice": 468
   },
   {
-    "name": "Plan mantenimiento Torre de enfriamiento - basico",
-    "description": "Mantenimiento preventivo basico para torre de enfriamiento | 2 visitas/año | $600/TR/año | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital | Cotizar multiplicando por las TR del equipo",
-    "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 600,
-    "costPrice": 330
+    "name": "Poliza mantenimiento Bomba de agua HVAC - Estandar",
+    "description": "Poliza de mantenimiento Estandar para bomba de agua HVAC | 4 visitas preventivas/año | $1,600/HP/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Lubricacion de baleros y chumaceras, revision de sellos mecanicos, acoplamiento, motor, valvulas de succion y descarga, presiones, amperajes, alineacion, base y nivelacion | Reporte digital incluido | Cotizar: cantidad de HP x $1,600/HP/año | Precios basados en HomePro CDMX 2026",
+    "unit": "HP/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 1600,
+    "costPrice": 880
   },
   {
-    "name": "Plan mantenimiento Torre de enfriamiento - estandar",
-    "description": "Mantenimiento preventivo estandar para torre de enfriamiento | 4 visitas/año | $1,000/TR/año | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "name": "Poliza mantenimiento Cassette - Basico",
+    "description": "Poliza de mantenimiento Basico para cassette | 2 visitas preventivas/año | $3,000/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revision de presiones, amperajes, carga de refrigerante, conexiones electricas, control remoto | Reporte digital incluido | Cotizar: cantidad de TR x $3,000/TR/año | Precios basados en HomePro CDMX 2026",
     "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1000,
-    "costPrice": 550
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 3000,
+    "costPrice": 1650
   },
   {
-    "name": "Plan mantenimiento Torre de enfriamiento - premium",
-    "description": "Mantenimiento preventivo premium para torre de enfriamiento | 4 visitas + emergencia 24/7 | $1,800/TR/año | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "name": "Poliza mantenimiento Cassette - Estandar",
+    "description": "Poliza de mantenimiento Estandar para cassette | 4 visitas preventivas/año | $5,800/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revision de presiones, amperajes, carga de refrigerante, conexiones electricas, control remoto | Reporte digital incluido | Cotizar: cantidad de TR x $5,800/TR/año | Precios basados en HomePro CDMX 2026",
     "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1800,
-    "costPrice": 990
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 5800,
+    "costPrice": 3190
   },
   {
-    "name": "Plan mantenimiento VRF - basico",
-    "description": "Mantenimiento preventivo basico para sistema VRF | 2 visitas/año | $1,400/TR/año | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "name": "Poliza mantenimiento Cassette - Premium",
+    "description": "Poliza de mantenimiento Premium para cassette | 4 visitas preventivas + emergencias 24/7 sin costo | $7,600/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revision de presiones, amperajes, carga de refrigerante, conexiones electricas, control remoto | Reporte digital incluido | Cotizar: cantidad de TR x $7,600/TR/año | Precios basados en HomePro CDMX 2026",
     "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 7600,
+    "costPrice": 4180
+  },
+  {
+    "name": "Poliza mantenimiento Chiller - Basico",
+    "description": "Poliza de mantenimiento Basico para chiller | 2 visitas preventivas/año | $1,400/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Limpieza de condensador y evaporador, cambio de aceite y filtros, revision de compresor | Analisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, bombas de agua helada, valvulería | Reporte digital incluido | Cotizar: cantidad de TR x $1,400/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
     "basePrice": 1400,
     "costPrice": 770
   },
   {
-    "name": "Plan mantenimiento VRF - estandar",
-    "description": "Mantenimiento preventivo estandar para sistema VRF | 4 visitas/año | $2,200/TR/año | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "name": "Poliza mantenimiento Chiller - Estandar",
+    "description": "Poliza de mantenimiento Estandar para chiller | 4 visitas preventivas/año | $2,600/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Limpieza de condensador y evaporador, cambio de aceite y filtros, revision de compresor | Analisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, bombas de agua helada, valvulería | Reporte digital incluido | Cotizar: cantidad de TR x $2,600/TR/año | Precios basados en HomePro CDMX 2026",
     "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 2600,
+    "costPrice": 1430
+  },
+  {
+    "name": "Poliza mantenimiento Chiller - Premium",
+    "description": "Poliza de mantenimiento Premium para chiller | 4 visitas preventivas + emergencias 24/7 sin costo | $3,400/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Limpieza de condensador y evaporador, cambio de aceite y filtros, revision de compresor | Analisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, bombas de agua helada, valvulería | Reporte digital incluido | Cotizar: cantidad de TR x $3,400/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 3400,
+    "costPrice": 1870
+  },
+  {
+    "name": "Poliza mantenimiento Fan Coil (agua helada) - Basico",
+    "description": "Poliza de mantenimiento Basico para fan coil de agua helada | 2 visitas preventivas/año | $3,700/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Limpieza de serpentin de agua helada, bandeja de condensados, filtros, ventilador, valvulas de control | Revision de temperatura de impulsión y retorno, conexiones hidraulicas, actuadores | Reporte digital incluido | Cotizar: cantidad de TR x $3,700/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 3700,
+    "costPrice": 2035
+  },
+  {
+    "name": "Poliza mantenimiento Fan Coil (agua helada) - Estandar",
+    "description": "Poliza de mantenimiento Estandar para fan coil de agua helada | 4 visitas preventivas/año | $7,000/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Limpieza de serpentin de agua helada, bandeja de condensados, filtros, ventilador, valvulas de control | Revision de temperatura de impulsión y retorno, conexiones hidraulicas, actuadores | Reporte digital incluido | Cotizar: cantidad de TR x $7,000/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 7000,
+    "costPrice": 3850
+  },
+  {
+    "name": "Poliza mantenimiento Fan Coil (agua helada) - Premium",
+    "description": "Poliza de mantenimiento Premium para fan coil de agua helada | 4 visitas preventivas + emergencias 24/7 sin costo | $9,200/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Limpieza de serpentin de agua helada, bandeja de condensados, filtros, ventilador, valvulas de control | Revision de temperatura de impulsión y retorno, conexiones hidraulicas, actuadores | Reporte digital incluido | Cotizar: cantidad de TR x $9,200/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 9200,
+    "costPrice": 5060
+  },
+  {
+    "name": "Poliza mantenimiento Minisplit - Basico",
+    "description": "Poliza de mantenimiento Basico para minisplit | 2 visitas preventivas/año | $3,400/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revision de presiones, amperajes, carga de refrigerante, conexiones electricas, control remoto, drenaje | Reporte digital incluido | Cotizar: cantidad de TR x $3,400/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 3400,
+    "costPrice": 1870
+  },
+  {
+    "name": "Poliza mantenimiento Minisplit - Estandar",
+    "description": "Poliza de mantenimiento Estandar para minisplit | 4 visitas preventivas/año | $6,400/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revision de presiones, amperajes, carga de refrigerante, conexiones electricas, control remoto, drenaje | Reporte digital incluido | Cotizar: cantidad de TR x $6,400/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 6400,
+    "costPrice": 3520
+  },
+  {
+    "name": "Poliza mantenimiento Minisplit - Premium",
+    "description": "Poliza de mantenimiento Premium para minisplit | 4 visitas preventivas + emergencias 24/7 sin costo | $8,400/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revision de presiones, amperajes, carga de refrigerante, conexiones electricas, control remoto, drenaje | Reporte digital incluido | Cotizar: cantidad de TR x $8,400/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 8400,
+    "costPrice": 4620
+  },
+  {
+    "name": "Poliza mantenimiento Rooftop/Paquete - Basico",
+    "description": "Poliza de mantenimiento Basico para rooftop/paquete | 2 visitas preventivas/año | $3,100/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Limpieza de serpentines de condensador y evaporador, filtros, quemadores (calefaccion), ventiladores, drenaje | Revision de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operacion | Reporte digital incluido | Cotizar: cantidad de TR x $3,100/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 3100,
+    "costPrice": 1705
+  },
+  {
+    "name": "Poliza mantenimiento Rooftop/Paquete - Estandar",
+    "description": "Poliza de mantenimiento Estandar para rooftop/paquete | 4 visitas preventivas/año | $5,800/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Limpieza de serpentines de condensador y evaporador, filtros, quemadores (calefaccion), ventiladores, drenaje | Revision de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operacion | Reporte digital incluido | Cotizar: cantidad de TR x $5,800/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 5800,
+    "costPrice": 3190
+  },
+  {
+    "name": "Poliza mantenimiento Rooftop/Paquete - Premium",
+    "description": "Poliza de mantenimiento Premium para rooftop/paquete | 4 visitas preventivas + emergencias 24/7 sin costo | $7,600/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Limpieza de serpentines de condensador y evaporador, filtros, quemadores (calefaccion), ventiladores, drenaje | Revision de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operacion | Reporte digital incluido | Cotizar: cantidad de TR x $7,600/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 7600,
+    "costPrice": 4180
+  },
+  {
+    "name": "Poliza mantenimiento Sistema agua helada completo - Basico",
+    "description": "Poliza de mantenimiento Basico para sistema de agua helada completo | 2 visitas preventivas/año | $1,200/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, valvulería, controles, sensores | Reporte ejecutivo de eficiencia | Reporte digital incluido | Cotizar: cantidad de TR x $1,200/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 1200,
+    "costPrice": 660
+  },
+  {
+    "name": "Poliza mantenimiento Sistema agua helada completo - Estandar",
+    "description": "Poliza de mantenimiento Estandar para sistema de agua helada completo | 4 visitas preventivas/año | $2,200/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, valvulería, controles, sensores | Reporte ejecutivo de eficiencia | Reporte digital incluido | Cotizar: cantidad de TR x $2,200/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
     "basePrice": 2200,
     "costPrice": 1210
   },
   {
-    "name": "Plan mantenimiento VRF - premium",
-    "description": "Mantenimiento preventivo premium para sistema VRF | 4 visitas + emergencia 24/7 | $3,500/TR/año | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "name": "Poliza mantenimiento Sistema agua helada completo - Premium",
+    "description": "Poliza de mantenimiento Premium para sistema de agua helada completo | 4 visitas preventivas + emergencias 24/7 sin costo | $2,900/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, valvulería, controles, sensores | Reporte ejecutivo de eficiencia | Reporte digital incluido | Cotizar: cantidad de TR x $2,900/TR/año | Precios basados en HomePro CDMX 2026",
     "unit": "TR/año",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 3500,
-    "costPrice": 1925
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 2900,
+    "costPrice": 1595
+  },
+  {
+    "name": "Poliza mantenimiento Torre de enfriamiento - Basico",
+    "description": "Poliza de mantenimiento Basico para torre de enfriamiento | 2 visitas preventivas/año | $1,000/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, valvula de llenado | Revision de motor, ventilador, transmision, analisis de agua (pH, TDS, dureza), tratamiento quimico dosificador | Reporte digital incluido | Cotizar: cantidad de TR x $1,000/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 1000,
+    "costPrice": 550
+  },
+  {
+    "name": "Poliza mantenimiento Torre de enfriamiento - Estandar",
+    "description": "Poliza de mantenimiento Estandar para torre de enfriamiento | 4 visitas preventivas/año | $1,900/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, valvula de llenado | Revision de motor, ventilador, transmision, analisis de agua (pH, TDS, dureza), tratamiento quimico dosificador | Reporte digital incluido | Cotizar: cantidad de TR x $1,900/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 1900,
+    "costPrice": 1045
+  },
+  {
+    "name": "Poliza mantenimiento Torre de enfriamiento - Premium",
+    "description": "Poliza de mantenimiento Premium para torre de enfriamiento | 4 visitas preventivas + emergencias 24/7 sin costo | $2,500/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, valvula de llenado | Revision de motor, ventilador, transmision, analisis de agua (pH, TDS, dureza), tratamiento quimico dosificador | Reporte digital incluido | Cotizar: cantidad de TR x $2,500/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 2500,
+    "costPrice": 1375
+  },
+  {
+    "name": "Poliza mantenimiento VRF - Basico",
+    "description": "Poliza de mantenimiento Basico para sistema VRF | 2 visitas preventivas/año | $2,000/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 10% descuento en refacciones, mano de obra correctiva con 15% descuento | Detalle tecnico: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revision de tuberia de refrigerante, deteccion de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicacion BCU | Reporte digital incluido | Cotizar: cantidad de TR x $2,000/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 2000,
+    "costPrice": 1100
+  },
+  {
+    "name": "Poliza mantenimiento VRF - Estandar",
+    "description": "Poliza de mantenimiento Estandar para sistema VRF | 4 visitas preventivas/año | $3,800/TR/año | Incluye: limpieza completa, revision de componentes, reporte digital, 15% descuento en refacciones, mano de obra correctiva con 20% descuento, respuesta prioritaria < 24 hrs | Detalle tecnico: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revision de tuberia de refrigerante, deteccion de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicacion BCU | Reporte digital incluido | Cotizar: cantidad de TR x $3,800/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 3800,
+    "costPrice": 2090
+  },
+  {
+    "name": "Poliza mantenimiento VRF - Premium",
+    "description": "Poliza de mantenimiento Premium para sistema VRF | 4 visitas preventivas + emergencias 24/7 sin costo | $5,000/TR/año | Incluye: limpieza completa, revision de componentes, reporte ejecutivo, 20% descuento en refacciones, mano de obra correctiva sin costo, respuesta inmediata < 4 hrs, atencion 24/7/365, monitoreo remoto | Detalle tecnico: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revision de tuberia de refrigerante, deteccion de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicacion BCU | Reporte digital incluido | Cotizar: cantidad de TR x $5,000/TR/año | Precios basados en HomePro CDMX 2026",
+    "unit": "TR/año",
+    "category": "Polizas de Mantenimiento",
+    "basePrice": 5000,
+    "costPrice": 2750
   },
   {
     "name": "Compuerta cortafuego (UL 555) motorizada",
