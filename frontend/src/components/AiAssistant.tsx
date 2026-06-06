@@ -53,6 +53,7 @@ function Char({ armL, armR, legL, legR, blink, thinking, s }: CharProps) {
   const hpRx = c + s * 0.08, hpRy = c + s * 0.2;
   const fLx = hpLx - Math.sin(legL) * s * 0.2, fLy = hpLy + Math.cos(legL) * s * 0.2;
   const fRx = hpRx - Math.sin(legR) * s * 0.2, fRy = hpRy + Math.cos(legR) * s * 0.2;
+  const hh = s * 0.025; // hand/finger size
 
   const hex = (r: number) => {
     const p: string[] = [];
@@ -77,11 +78,25 @@ function Char({ armL, armR, legL, legR, blink, thinking, s }: CharProps) {
       <line x1={hpRx} y1={hpRy} x2={fRx} y2={fRy} stroke="#38bdf8" strokeWidth={s * 0.035} strokeLinecap="round" />
       <circle cx={fLx} cy={fLy} r={s * 0.04} fill="#7dd3fc" />
       <circle cx={fRx} cy={fRy} r={s * 0.04} fill="#7dd3fc" />
+      {/* Left toes */}
+      <circle cx={fLx - s * 0.025} cy={fLy - s * 0.015} r={s * 0.015} fill="#bae6fd" />
+      <circle cx={fLx + s * 0.025} cy={fLy - s * 0.015} r={s * 0.015} fill="#bae6fd" />
+      {/* Right toes */}
+      <circle cx={fRx - s * 0.025} cy={fRy - s * 0.015} r={s * 0.015} fill="#bae6fd" />
+      <circle cx={fRx + s * 0.025} cy={fRy - s * 0.015} r={s * 0.015} fill="#bae6fd" />
       {/* Arms */}
       <line x1={slX} y1={slY} x2={hlX} y2={hlY} stroke="#38bdf8" strokeWidth={s * 0.03} strokeLinecap="round" />
       <line x1={srX} y1={srY} x2={hrX} y2={hrY} stroke="#38bdf8" strokeWidth={s * 0.03} strokeLinecap="round" />
       <circle cx={hlX} cy={hlY} r={s * 0.035} fill="#7dd3fc" />
       <circle cx={hrX} cy={hrY} r={s * 0.035} fill="#7dd3fc" />
+      {/* Left fingers */}
+      <line x1={hlX} y1={hlY} x2={hlX - hh * 1.2} y2={hlY - hh * 1.2} stroke="#7dd3fc" strokeWidth={s * 0.02} strokeLinecap="round" />
+      <line x1={hlX} y1={hlY} x2={hlX} y2={hlY - hh * 1.6} stroke="#7dd3fc" strokeWidth={s * 0.02} strokeLinecap="round" />
+      <line x1={hlX} y1={hlY} x2={hlX + hh * 1.2} y2={hlY - hh * 1.2} stroke="#7dd3fc" strokeWidth={s * 0.02} strokeLinecap="round" />
+      {/* Right fingers */}
+      <line x1={hrX} y1={hrY} x2={hrX - hh * 1.2} y2={hrY - hh * 1.2} stroke="#7dd3fc" strokeWidth={s * 0.02} strokeLinecap="round" />
+      <line x1={hrX} y1={hrY} x2={hrX} y2={hrY - hh * 1.6} stroke="#7dd3fc" strokeWidth={s * 0.02} strokeLinecap="round" />
+      <line x1={hrX} y1={hrY} x2={hrX + hh * 1.2} y2={hrY - hh * 1.2} stroke="#7dd3fc" strokeWidth={s * 0.02} strokeLinecap="round" />
       {/* Body */}
       <g filter="url(#sh)">
         <polygon points={hex(s * 0.28)} fill="url(#bg)" stroke="#7dd3fc" strokeWidth={s * 0.02} />
@@ -148,19 +163,20 @@ function useLimbs() {
       last = now;
       idleRef.current += dt;
 
-      const { vx } = velRef.current;
+      const { vx, vy } = velRef.current;
+      const speed = Math.sqrt(vx * vx + vy * vy);
       const idle = Math.sin(idleRef.current * 0.8) * 0.04;
-      const drag = -vx * 0.0006;
-      const dragL = -vx * 0.0004;
+      const swing = -vx * 0.0008;
+      const sway = vy * 0.0005;
+      const walk = speed * 0.0003 * Math.sin(idleRef.current * 4);
 
-      rawArmL.set(drag + idle);
-      rawArmR.set(-drag - idle);
-      rawLegL.set(dragL + idle * 0.5);
-      rawLegR.set(-dragL - idle * 0.5);
+      rawArmL.set(swing + sway + idle);
+      rawArmR.set(-swing - sway - idle);
+      rawLegL.set(swing * 0.5 + sway * 0.3 + idle * 0.3 + walk);
+      rawLegR.set(-swing * 0.5 - sway * 0.3 - idle * 0.3 + walk);
 
-      // Decay velocity when not dragging
-      velRef.current.vx *= 0.92;
-      velRef.current.vy *= 0.92;
+      velRef.current.vx *= 0.94;
+      velRef.current.vy *= 0.94;
 
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -193,6 +209,7 @@ export default function AiAssistant() {
   const { armL, armR, legL, legR, velRef } = useLimbs();
 
   const dragStart = useRef({ x: 0, y: 0, px: 0, py: 0, t: 0 });
+  const lastMove = useRef({ x: 0, y: 0, t: 0 });
   const pointerDown = useRef(false);
   const hasMoved = useRef(false);
 
@@ -215,6 +232,7 @@ export default function AiAssistant() {
     pointerDown.current = true;
     hasMoved.current = false;
     dragStart.current = { x: e.clientX, y: e.clientY, px: pos.x, py: pos.y, t: Date.now() };
+    lastMove.current = { x: e.clientX, y: e.clientY, t: Date.now() };
   }, [pos]);
 
   const onMove = useCallback((e: React.PointerEvent) => {
@@ -226,10 +244,12 @@ export default function AiAssistant() {
     if (dist > 5) {
       hasMoved.current = true;
       setDragging(true);
-      const dt = Math.max(1, Date.now() - dragStart.current.t);
-      velRef.current.vx = (dx / dt) * 16;
-      velRef.current.vy = (dy / dt) * 16;
       setPos({ x: dragStart.current.px + dx, y: dragStart.current.py - dy });
+
+      const idt = Math.max(1, Date.now() - lastMove.current.t);
+      velRef.current.vx = (e.clientX - lastMove.current.x) / idt * 16;
+      velRef.current.vy = (e.clientY - lastMove.current.y) / idt * 16;
+      lastMove.current = { x: e.clientX, y: e.clientY, t: Date.now() };
     }
   }, [velRef]);
 
