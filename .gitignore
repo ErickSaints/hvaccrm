@@ -12,3 +12,6 @@ backend/uploads/
 .vite/
 backend/logs/
 backend/ai_config.json
+scripts/
+backend/backend.err
+backend/backend.log

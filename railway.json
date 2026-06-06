@@ -9,6 +9,5 @@
     "restartPolicyMaxRetries": 10,
     "healthcheckPath": "/health"
   }
-}
 
 }
