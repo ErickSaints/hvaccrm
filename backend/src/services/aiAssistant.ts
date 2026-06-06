@@ -38,7 +38,7 @@ function getApiKey(): string {
 
 function getModel(): string {
   const fileCfg = loadConfig();
-  return process.env.AI_MODEL || fileCfg.model || 'kimi-k2-instruct';
+  return process.env.AI_MODEL || fileCfg.model || 'moonshotai/kimi-k2-instruct';
 }
 
 function getBaseURL(): string {
