@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
-import { X, Send, Zap, ChevronDown, Sparkles } from 'lucide-react';
+import { X, Send, Zap, ChevronDown, Sparkles, Key, Globe, Cpu, Loader2, CheckCircle, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 
 interface ChatMessage {
@@ -210,6 +210,14 @@ export default function AiAssistant() {
   const [blink, setBlink] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [thinking, setThinking] = useState(false);
+  const [showConfig, setShowConfig] = useState(false);
+  const [configApiKey, setConfigApiKey] = useState('');
+  const [configModel, setConfigModel] = useState('gpt-4o-mini');
+  const [configBaseUrl, setConfigBaseUrl] = useState('');
+  const [configSaving, setConfigSaving] = useState(false);
+  const [configLoaded, setConfigLoaded] = useState(false);
+  const [configSuccess, setConfigSuccess] = useState<string | null>(null);
+  const [configError, setConfigError] = useState<string | null>(null);
 
   const msgsEnd = useRef<HTMLDivElement>(null);
   const inpRef = useRef<HTMLInputElement>(null);
@@ -230,6 +238,51 @@ export default function AiAssistant() {
     }, 3000 + Math.random() * 2000);
     return () => clearInterval(int);
   }, []);
+
+  // Fetch AI config when drawer opens
+  const fetchConfig = useCallback(async () => {
+    try {
+      const tok = localStorage.getItem('token');
+      const res = await fetch('/api/admin/ai/config', {
+        headers: { Authorization: `Bearer ${tok}` },
+      });
+      if (res.ok) {
+        const d = await res.json();
+        setConfigApiKey(d.apiKey || '');
+        setConfigModel(d.model || 'gpt-4o-mini');
+        setConfigBaseUrl(d.baseUrl || '');
+        setConfigLoaded(true);
+        if (!d.apiKey) setShowConfig(true);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => { if (isOpen) fetchConfig(); }, [isOpen, fetchConfig]);
+
+  const saveConfig = useCallback(async () => {
+    setConfigSaving(true);
+    setConfigSuccess(null);
+    setConfigError(null);
+    try {
+      const tok = localStorage.getItem('token');
+      const res = await fetch('/api/admin/ai/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${tok}` },
+        body: JSON.stringify({ apiKey: configApiKey, model: configModel, baseUrl: configBaseUrl }),
+      });
+      if (res.ok) {
+        setConfigSuccess('Configuración guardada correctamente');
+        setShowConfig(false);
+      } else {
+        const e = await res.json().catch(() => ({ error: 'Error al guardar' }));
+        setConfigError(e.error);
+      }
+    } catch (err: any) {
+      setConfigError(err.message);
+    } finally {
+      setConfigSaving(false);
+    }
+  }, [configApiKey, configModel, configBaseUrl]);
 
   const scrolldown = useCallback(() => msgsEnd.current?.scrollIntoView({ behavior: 'smooth' }), []);
   useEffect(() => { scrolldown(); }, [messages, streaming, scrolldown]);
@@ -292,7 +345,12 @@ export default function AiAssistant() {
         body: JSON.stringify({ message: msg, history: messages.map(m => ({ role: m.role, content: m.content })) }),
         signal: ac.signal,
       });
-      if (!res.ok) { const e = await res.json().catch(() => ({ error: 'Error' })); setStreaming(`**Error:** ${e.error}`); return; }
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({ error: 'Error' }));
+        setStreaming(`**Error:** ${e.error}`);
+        if (e.error?.includes('no configurada')) setShowConfig(true);
+        return;
+      }
       const r = res.body?.getReader(); if (!r) return;
       const dec = new TextDecoder(); let buf = '';
       while (true) {
@@ -400,6 +458,48 @@ export default function AiAssistant() {
 
               {!minimized && (
                 <>
+                  {/* AI Config Form */}
+                  {showConfig && (
+                    <div className="shrink-0 border-b border-white/10 px-4 py-4 bg-sky-500/5 space-y-3">
+                      <div className="flex items-center gap-2 text-sm font-medium text-sky-300">
+                        <Key className="w-4 h-4" />
+                        Configurar API Key de IA
+                      </div>
+                      <p className="text-xs text-gray-400">Necesitas una API key de OpenAI (o compatible) para usar el asistente.</p>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 bg-white/5 rounded-lg border border-white/10 px-3 py-1.5 focus-within:border-sky-500/50">
+                          <Key className="w-4 h-4 text-gray-500 shrink-0" />
+                          <input type="password" value={configApiKey}
+                            onChange={e => setConfigApiKey(e.target.value)}
+                            placeholder="sk-..." autoComplete="off"
+                            className="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-500 outline-none" />
+                        </div>
+                        <div className="flex items-center gap-2 bg-white/5 rounded-lg border border-white/10 px-3 py-1.5 focus-within:border-sky-500/50">
+                          <Cpu className="w-4 h-4 text-gray-500 shrink-0" />
+                          <input type="text" value={configModel}
+                            onChange={e => setConfigModel(e.target.value)}
+                            placeholder="gpt-4o-mini" autoComplete="off"
+                            className="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-500 outline-none" />
+                        </div>
+                        <div className="flex items-center gap-2 bg-white/5 rounded-lg border border-white/10 px-3 py-1.5 focus-within:border-sky-500/50">
+                          <Globe className="w-4 h-4 text-gray-500 shrink-0" />
+                          <input type="text" value={configBaseUrl}
+                            onChange={e => setConfigBaseUrl(e.target.value)}
+                            placeholder="https://api.openai.com/v1 (opcional)" autoComplete="off"
+                            className="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-500 outline-none" />
+                        </div>
+                      </div>
+                      {configSuccess && <div className="flex items-center gap-1.5 text-xs text-green-400"><CheckCircle className="w-3.5 h-3.5" />{configSuccess}</div>}
+                      {configError && <div className="flex items-center gap-1.5 text-xs text-red-400"><AlertTriangle className="w-3.5 h-3.5" />{configError}</div>}
+                      <div className="flex gap-2">
+                        <button onClick={saveConfig} disabled={configSaving || !configApiKey.trim()}
+                          className="flex-1 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5">
+                          {configSaving && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                          Guardar configuración
+                        </button>
+                      </div>
+                    </div>
+                  )}
                   <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin">
                     {messages.map((msg, i) => (
                       <div key={i} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
