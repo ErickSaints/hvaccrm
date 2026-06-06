@@ -12282,10 +12282,10 @@
   {
     "name": "R-1233zd (Cilindro 20 kg)",
     "description": "Refrigerante: R-1233zd | Presentación: Cilindro 20 kg | Price Kg: $850/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 17000,
-    "costPrice": 11415
+    "basePrice": 18050,
+    "costPrice": 13538
   },
   {
     "name": "R-1233zd(E) 11.35kg",
@@ -12298,18 +12298,18 @@
   {
     "name": "R-1234yf (Cilindro 10 kg)",
     "description": "Refrigerante: R-1234yf | Presentación: Cilindro 10 kg | Price Kg: $1650/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 16500,
-    "costPrice": 10644
+    "basePrice": 11400,
+    "costPrice": 8550
   },
   {
     "name": "R-1234yf (Lata 500g)",
     "description": "Refrigerante: R-1234yf | Presentación: Lata 500g | Price Kg: $1800/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 1200,
-    "costPrice": 900
+    "basePrice": 720,
+    "costPrice": 540
   },
   {
     "name": "R-1234yf 10kg",
@@ -12332,8 +12332,8 @@
     "description": "Categoría: Gas Refrigerante | Presentación: Lata 400g",
     "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 1200,
-    "costPrice": 900
+    "basePrice": 576,
+    "costPrice": 432
   },
   {
     "name": "R-1234ze(E) 11.35kg",
@@ -12362,34 +12362,34 @@
   {
     "name": "R-134a (Boya 13.6 kg)",
     "description": "Refrigerante: R-134a | Presentación: Boya 13.6 kg | Price Kg: $235/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 3200,
-    "costPrice": 2009
+    "basePrice": 3488,
+    "costPrice": 2616
   },
   {
     "name": "R-134a (Cilindro 50 kg)",
     "description": "Refrigerante: R-134a | Presentación: Cilindro 50 kg | Price Kg: $220/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 11000,
-    "costPrice": 7132
+    "basePrice": 12825,
+    "costPrice": 9619
   },
   {
     "name": "R-134a (Lata 300g)",
     "description": "Refrigerante: R-134a | Presentación: Lata 300g | Price Kg: $280/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 270,
-    "costPrice": 203
+    "basePrice": 97,
+    "costPrice": 73
   },
   {
     "name": "R-134a CHEMOURS",
     "description": "Presentación: Boya 13.6 kg | Price Kg: ~$235/kg | Fuente: REACSA 2026",
     "unit": "kg",
     "category": "Gas Refrigerante",
-    "basePrice": 3200,
-    "costPrice": 2037
+    "basePrice": 270,
+    "costPrice": 203
   },
   {
     "name": "R-134a cilindro recarga 2kg",
@@ -12404,8 +12404,8 @@
     "description": "Categoría: Gas Refrigerante | Presentación: Lata 400g",
     "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 270,
-    "costPrice": 203
+    "basePrice": 130,
+    "costPrice": 98
   },
   {
     "name": "R-141b 11.35kg",
@@ -12426,26 +12426,26 @@
   {
     "name": "R-22 (Boya 13.6 kg)",
     "description": "Refrigerante: R-22 | Presentación: Boya 13.6 kg | Price Kg: $226/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 3077,
-    "costPrice": 2260
+    "basePrice": 5814,
+    "costPrice": 4361
   },
   {
     "name": "R-22 (Cilindro 50 kg)",
     "description": "Refrigerante: R-22 | Presentación: Cilindro 50 kg | Price Kg: $210/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 10500,
-    "costPrice": 7874
+    "basePrice": 21375,
+    "costPrice": 16031
   },
   {
     "name": "R-22 (Lata 1 kg)",
     "description": "Refrigerante: R-22 | Presentación: Lata 1 kg | Price Kg: $263/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 450,
-    "costPrice": 338
+    "basePrice": 540,
+    "costPrice": 405
   },
   {
     "name": "R-22 cilindro recarga 2kg",
@@ -12460,16 +12460,16 @@
     "description": "Presentación: Boya 13.6 kg | Price Kg: $226/kg | Fuente: REACSA 2026",
     "unit": "kg",
     "category": "Gas Refrigerante",
-    "basePrice": 3076.69,
-    "costPrice": 1991
+    "basePrice": 450,
+    "costPrice": 338
   },
   {
     "name": "R-22 lata 400g",
     "description": "Categoría: Gas Refrigerante | Presentación: Lata 400g",
     "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 450,
-    "costPrice": 338
+    "basePrice": 216,
+    "costPrice": 162
   },
   {
     "name": "R-245fa 11.35kg",
@@ -12490,50 +12490,50 @@
   {
     "name": "R-290 Propano (Cilindro 10 kg)",
     "description": "Refrigerante: R-290 Propano | Presentación: Cilindro 10 kg | Price Kg: $180/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 1800,
-    "costPrice": 1282
+    "basePrice": 1235,
+    "costPrice": 926
   },
   {
     "name": "R-290 Propano (Cilindro 25 kg)",
     "description": "Refrigerante: R-290 Propano | Presentación: Cilindro 25 kg | Price Kg: $165/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 4125,
-    "costPrice": 2344
+    "basePrice": 3088,
+    "costPrice": 2316
   },
   {
     "name": "R-32 (Boya 9.5 kg)",
     "description": "Refrigerante: R-32 | Presentación: Boya 9.5 kg | Price Kg: $526/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 5000,
-    "costPrice": 3203
+    "basePrice": 1805,
+    "costPrice": 1354
   },
   {
     "name": "R-32 (Cilindro 25 kg)",
     "description": "Refrigerante: R-32 | Presentación: Cilindro 25 kg | Price Kg: $490/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 12250,
-    "costPrice": 6822
+    "basePrice": 4750,
+    "costPrice": 3563
   },
   {
     "name": "R-32 (Cilindro 50 kg)",
     "description": "Refrigerante: R-32 | Presentación: Cilindro 50 kg | Price Kg: $470/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 23500,
-    "costPrice": 15603
+    "basePrice": 9500,
+    "costPrice": 7125
   },
   {
     "name": "R-32 (Lata 800g)",
     "description": "Refrigerante: R-32 | Presentación: Lata 800g | Price Kg: $560/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 200,
-    "costPrice": 150
+    "basePrice": 192,
+    "costPrice": 144
   },
   {
     "name": "R-32 10kg",
@@ -12556,40 +12556,40 @@
     "description": "Presentación: Boya 9.5 kg | Price Kg: $526/kg | Fuente: REACSA 2026",
     "unit": "kg",
     "category": "Gas Refrigerante",
-    "basePrice": 5000,
-    "costPrice": 2791
+    "basePrice": 200,
+    "costPrice": 150
   },
   {
     "name": "R-32 lata 400g",
     "description": "Categoría: Gas Refrigerante | Presentación: Lata 400g",
     "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 200,
-    "costPrice": 150
+    "basePrice": 96,
+    "costPrice": 72
   },
   {
     "name": "R-404A (Cilindro 10.9 kg)",
     "description": "Refrigerante: R-404A | Presentación: Cilindro 10.9 kg | Price Kg: $532/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 5800,
-    "costPrice": 4277
+    "basePrice": 2744,
+    "costPrice": 2058
   },
   {
     "name": "R-404A (Cilindro 25 kg)",
     "description": "Refrigerante: R-404A | Presentación: Cilindro 25 kg | Price Kg: $510/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 12750,
-    "costPrice": 9355
+    "basePrice": 6294,
+    "costPrice": 4721
   },
   {
     "name": "R-404A (Cilindro 50 kg)",
     "description": "Refrigerante: R-404A | Presentación: Cilindro 50 kg | Price Kg: $490/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 24500,
-    "costPrice": 17216
+    "basePrice": 12588,
+    "costPrice": 9441
   },
   {
     "name": "R-404A cilindro recarga 2kg",
@@ -12604,32 +12604,32 @@
     "description": "Presentación: 10.896 kg | Price Kg: ~$532/kg | Fuente: REACSA 2026",
     "unit": "kg",
     "category": "Gas Refrigerante",
-    "basePrice": 5800,
-    "costPrice": 3657
+    "basePrice": 265,
+    "costPrice": 199
   },
   {
     "name": "R-404A lata 400g",
     "description": "Categoría: Gas Refrigerante | Presentación: Lata 400g",
     "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 265,
-    "costPrice": 199
+    "basePrice": 127,
+    "costPrice": 95
   },
   {
     "name": "R-407C (Cilindro 12 kg)",
     "description": "Refrigerante: R-407C | Presentación: Cilindro 12 kg | Price Kg: $380/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 4560,
-    "costPrice": 3303
+    "basePrice": 3249,
+    "costPrice": 2437
   },
   {
     "name": "R-407C (Cilindro 25 kg)",
     "description": "Refrigerante: R-407C | Presentación: Cilindro 25 kg | Price Kg: $360/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 9000,
-    "costPrice": 5827
+    "basePrice": 6769,
+    "costPrice": 5077
   },
   {
     "name": "R-407C cilindro recarga 2kg",
@@ -12644,8 +12644,8 @@
     "description": "Categoría: Gas Refrigerante | Presentación: Lata 400g",
     "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 285,
-    "costPrice": 214
+    "basePrice": 137,
+    "costPrice": 103
   },
   {
     "name": "R-407H 11.35kg",
@@ -12666,34 +12666,34 @@
   {
     "name": "R-410A (Boya 11.35 kg)",
     "description": "Refrigerante: R-410A | Presentación: Boya 11.35 kg | Price Kg: $279/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 3170,
-    "costPrice": 2363
+    "basePrice": 3019,
+    "costPrice": 2264
   },
   {
     "name": "R-410A (Cilindro 25 kg)",
     "description": "Refrigerante: R-410A | Presentación: Cilindro 25 kg | Price Kg: $265/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 6625,
-    "costPrice": 3819
+    "basePrice": 6650,
+    "costPrice": 4988
   },
   {
     "name": "R-410A (Cilindro 50 kg)",
     "description": "Refrigerante: R-410A | Presentación: Cilindro 50 kg | Price Kg: $255/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 12750,
-    "costPrice": 7697
+    "basePrice": 13300,
+    "costPrice": 9975
   },
   {
     "name": "R-410A (Lata 650g)",
     "description": "Refrigerante: R-410A | Presentación: Lata 650g | Price Kg: $412/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 280,
-    "costPrice": 210
+    "basePrice": 218,
+    "costPrice": 164
   },
   {
     "name": "R-410A cilindro recarga 2kg",
@@ -12708,16 +12708,16 @@
     "description": "Categoría: Gas Refrigerante | Presentación: Lata 400g",
     "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 280,
-    "costPrice": 210
+    "basePrice": 134,
+    "costPrice": 101
   },
   {
     "name": "R-410A Suva Freon",
     "description": "Presentación: Boya 11.35 kg | Price Kg: $279/kg | Fuente: REACSA 2026",
     "unit": "kg",
     "category": "Gas Refrigerante",
-    "basePrice": 3170.72,
-    "costPrice": 1878
+    "basePrice": 280,
+    "costPrice": 210
   },
   {
     "name": "R-448A 11.35kg",
@@ -12730,18 +12730,18 @@
   {
     "name": "R-448A Solstice N40 (Cilindro 10 kg)",
     "description": "Refrigerante: R-448A Solstice N40 | Presentación: Cilindro 10 kg | Price Kg: $650/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 6500,
-    "costPrice": 3756
+    "basePrice": 3610,
+    "costPrice": 2708
   },
   {
     "name": "R-448A Solstice N40 (Cilindro 25 kg)",
     "description": "Refrigerante: R-448A Solstice N40 | Presentación: Cilindro 25 kg | Price Kg: $620/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 15500,
-    "costPrice": 10882
+    "basePrice": 9025,
+    "costPrice": 6769
   },
   {
     "name": "R-449A 11.35kg",
@@ -12754,26 +12754,26 @@
   {
     "name": "R-449A Opteon XP40 (Cilindro 11 kg)",
     "description": "Refrigerante: R-449A Opteon XP40 | Presentación: Cilindro 11 kg | Price Kg: $600/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 6600,
-    "costPrice": 3749
+    "basePrice": 6479,
+    "costPrice": 4859
   },
   {
     "name": "R-449A Opteon XP40 (Cilindro 25 kg)",
     "description": "Refrigerante: R-449A Opteon XP40 | Presentación: Cilindro 25 kg | Price Kg: $580/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 14500,
-    "costPrice": 10250
+    "basePrice": 14725,
+    "costPrice": 11044
   },
   {
     "name": "R-452A (Cilindro 10 kg)",
     "description": "Refrigerante: R-452A | Presentación: Cilindro 10 kg | Price Kg: $720/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 7200,
-    "costPrice": 4794
+    "basePrice": 5225,
+    "costPrice": 3919
   },
   {
     "name": "R-452A 11.35kg",
@@ -12804,8 +12804,8 @@
     "description": "Categoría: Gas Refrigerante | Presentación: Lata 400g",
     "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 350,
-    "costPrice": 263
+    "basePrice": 168,
+    "costPrice": 126
   },
   {
     "name": "R-513A 10kg",
@@ -12818,10 +12818,10 @@
   {
     "name": "R-515B (Cilindro 20 kg)",
     "description": "Refrigerante: R-515B | Presentación: Cilindro 20 kg | Price Kg: $780/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 15600,
-    "costPrice": 9056
+    "basePrice": 14250,
+    "costPrice": 10688
   },
   {
     "name": "R-515B 10kg",
@@ -12834,18 +12834,18 @@
   {
     "name": "R-600a Isobutano (Cilindro 10 kg)",
     "description": "Refrigerante: R-600a Isobutano | Presentación: Cilindro 10 kg | Price Kg: $200/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 2000,
-    "costPrice": 1276
+    "basePrice": 1425,
+    "costPrice": 1069
   },
   {
     "name": "R-600a Isobutano (Cilindro 25 kg)",
     "description": "Refrigerante: R-600a Isobutano | Presentación: Cilindro 25 kg | Price Kg: $185/kg | Fuente: REACSA 2026",
-    "unit": "kg",
+    "unit": "pieza",
     "category": "Gas Refrigerante",
-    "basePrice": 4625,
-    "costPrice": 2654
+    "basePrice": 3563,
+    "costPrice": 2672
   },
   {
     "name": "R-600a Isobutano 11.35kg",
@@ -16728,103 +16728,63 @@
     "costPrice": 239
   },
   {
-    "name": "* Incluye equipo + instalación + maniobra. NO incluye ducteráa (cotizar aparte ~$25,000-$200,000 según tamaño)",
-    "description": "Categoría: Vrf / Vrv",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": null,
-    "costPrice": null
-  },
-  {
-    "name": "Cassette (1-2T)",
-    "description": "Categoría: Cassette | Capacidad: 1-2T | Tiempo: 4-6 hrs | Fuente: Genz Clima 2026",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 5400,
-    "costPrice": 3137
-  },
-  {
-    "name": "Cassette (3-4T)",
-    "description": "Categoría: Cassette | Capacidad: 3-4T | Tiempo: 5-8 hrs | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 6000,
-    "costPrice": 3829
-  },
-  {
-    "name": "Conductos + equipo (departamento) (m2)",
-    "description": "Categoría: Sistema Por Conductos | Tiempo: 4-8 hrs | Fuente: MirageCDMX / Genz Clima 2026",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 12000,
-    "costPrice": 7002
-  },
-  {
-    "name": "Control centralizado VRF (Sistema)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: Sistema | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 8000,
-    "costPrice": 4810
-  },
-  {
-    "name": "Instalacion de bomba de agua HVAC 1 HP",
-    "description": "Instalacion profesional de bomba de agua 1 HP | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
+    "name": "Instalacion bomba de agua HVAC 1 HP",
+    "description": "Instalacion profesional de bomba de agua 1 HP | Mano de obra: $3,500 fijo | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 3500,
     "costPrice": 1925
   },
   {
-    "name": "Instalacion de bomba de agua HVAC 10 HP",
-    "description": "Instalacion profesional de bomba de agua 10 HP | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
+    "name": "Instalacion bomba de agua HVAC 10 HP",
+    "description": "Instalacion profesional de bomba de agua 10 HP | Mano de obra: $7,000 fijo | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 7000,
     "costPrice": 3850
   },
   {
-    "name": "Instalacion de bomba de agua HVAC 2 HP",
-    "description": "Instalacion profesional de bomba de agua 2 HP | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
+    "name": "Instalacion bomba de agua HVAC 2 HP",
+    "description": "Instalacion profesional de bomba de agua 2 HP | Mano de obra: $4,000 fijo | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 4000,
     "costPrice": 2200
   },
   {
-    "name": "Instalacion de bomba de agua HVAC 20 HP",
-    "description": "Instalacion profesional de bomba de agua 20 HP | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
+    "name": "Instalacion bomba de agua HVAC 20 HP",
+    "description": "Instalacion profesional de bomba de agua 20 HP | Mano de obra: $9,000 fijo | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 9000,
     "costPrice": 4950
   },
   {
-    "name": "Instalacion de bomba de agua HVAC 3 HP",
-    "description": "Instalacion profesional de bomba de agua 3 HP | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
+    "name": "Instalacion bomba de agua HVAC 3 HP",
+    "description": "Instalacion profesional de bomba de agua 3 HP | Mano de obra: $4,500 fijo | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 4500,
     "costPrice": 2475
   },
   {
-    "name": "Instalacion de bomba de agua HVAC 5 HP",
-    "description": "Instalacion profesional de bomba de agua 5 HP | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
+    "name": "Instalacion bomba de agua HVAC 5 HP",
+    "description": "Instalacion profesional de bomba de agua 5 HP | Mano de obra: $5,500 fijo | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 5500,
     "costPrice": 3025
   },
   {
-    "name": "Instalacion de bomba de agua HVAC 50 HP",
-    "description": "Instalacion profesional de bomba de agua 50 HP | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
+    "name": "Instalacion bomba de agua HVAC 50 HP",
+    "description": "Instalacion profesional de bomba de agua 50 HP | Mano de obra: $12,000 fijo | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 12000,
     "costPrice": 6600
   },
   {
-    "name": "Instalacion de caldera 1000 MBH",
+    "name": "Instalacion caldera 1000 MBH",
     "description": "Instalacion profesional de caldera 1000 MBH | Incluye conexion de gas, chimenea/venteo, tuberia de agua caliente, valvulería de seguridad, conexion electrica y control | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
@@ -16832,7 +16792,7 @@
     "costPrice": 6600
   },
   {
-    "name": "Instalacion de caldera 2000 MBH",
+    "name": "Instalacion caldera 2000 MBH",
     "description": "Instalacion profesional de caldera 2000 MBH | Incluye conexion de gas, chimenea/venteo, tuberia de agua caliente, valvulería de seguridad, conexion electrica y control | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
@@ -16840,7 +16800,7 @@
     "costPrice": 9900
   },
   {
-    "name": "Instalacion de caldera 500 MBH",
+    "name": "Instalacion caldera 500 MBH",
     "description": "Instalacion profesional de caldera 500 MBH | Incluye conexion de gas, chimenea/venteo, tuberia de agua caliente, valvulería de seguridad, conexion electrica y control | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
@@ -16848,7 +16808,7 @@
     "costPrice": 4400
   },
   {
-    "name": "Instalacion de caldera 5000 MBH",
+    "name": "Instalacion caldera 5000 MBH",
     "description": "Instalacion profesional de caldera 5000 MBH | Incluye conexion de gas, chimenea/venteo, tuberia de agua caliente, valvulería de seguridad, conexion electrica y control | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
@@ -16856,111 +16816,111 @@
     "costPrice": 13750
   },
   {
-    "name": "Instalacion de cassette 2 TR",
-    "description": "Instalacion profesional de cassette 2 TR en plafon | Incluye soporteria, tuberia de cobre hasta 8m, cableado electrico, drenaje, control remoto, prueba | No incluye equipo",
+    "name": "Instalacion cassette 2 TR",
+    "description": "Instalacion profesional de cassette 2 TR en plafon | Mano de obra: $3,500/TR | Incluye soporteria, tuberia de cobre hasta 8m, cableado electrico, drenaje, control remoto, prueba | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 7000,
     "costPrice": 3850
   },
   {
-    "name": "Instalacion de cassette 3 TR",
-    "description": "Instalacion profesional de cassette 3 TR en plafon | Incluye soporteria, tuberia de cobre hasta 8m, cableado electrico, drenaje, control remoto, prueba | No incluye equipo",
+    "name": "Instalacion cassette 3 TR",
+    "description": "Instalacion profesional de cassette 3 TR en plafon | Mano de obra: $3,000/TR | Incluye soporteria, tuberia de cobre hasta 8m, cableado electrico, drenaje, control remoto, prueba | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 9000,
     "costPrice": 4950
   },
   {
-    "name": "Instalacion de cassette 4 TR",
-    "description": "Instalacion profesional de cassette 4 TR en plafon | Incluye soporteria, tuberia de cobre hasta 8m, cableado electrico, drenaje, control remoto, prueba | No incluye equipo",
+    "name": "Instalacion cassette 4 TR",
+    "description": "Instalacion profesional de cassette 4 TR en plafon | Mano de obra: $2,800/TR | Incluye soporteria, tuberia de cobre hasta 8m, cableado electrico, drenaje, control remoto, prueba | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 11200,
     "costPrice": 6160
   },
   {
-    "name": "Instalacion de chiller centrifugo 400 TR",
-    "description": "Instalacion profesional de chiller centrifugo 400 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller centrifugo 400 TR",
+    "description": "Instalacion profesional de chiller centrifugo 400 TR | Mano de obra: $2,000/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 800000,
     "costPrice": 440000
   },
   {
-    "name": "Instalacion de chiller centrifugo 600 TR",
-    "description": "Instalacion profesional de chiller centrifugo 600 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller centrifugo 600 TR",
+    "description": "Instalacion profesional de chiller centrifugo 600 TR | Mano de obra: $1,800/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 1080000,
     "costPrice": 594000
   },
   {
-    "name": "Instalacion de chiller centrifugo 800 TR",
-    "description": "Instalacion profesional de chiller centrifugo 800 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller centrifugo 800 TR",
+    "description": "Instalacion profesional de chiller centrifugo 800 TR | Mano de obra: $1,600/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 1280000,
     "costPrice": 704000
   },
   {
-    "name": "Instalacion de chiller scroll 30 TR",
-    "description": "Instalacion profesional de chiller scroll 30 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller scroll 30 TR",
+    "description": "Instalacion profesional de chiller scroll 30 TR | Mano de obra: $3,500/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 105000,
     "costPrice": 57750
   },
   {
-    "name": "Instalacion de chiller scroll 50 TR",
-    "description": "Instalacion profesional de chiller scroll 50 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller scroll 50 TR",
+    "description": "Instalacion profesional de chiller scroll 50 TR | Mano de obra: $3,200/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 160000,
     "costPrice": 88000
   },
   {
-    "name": "Instalacion de chiller scroll 80 TR",
-    "description": "Instalacion profesional de chiller scroll 80 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller scroll 80 TR",
+    "description": "Instalacion profesional de chiller scroll 80 TR | Mano de obra: $3,000/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 240000,
     "costPrice": 132000
   },
   {
-    "name": "Instalacion de chiller tornillo 100 TR",
-    "description": "Instalacion profesional de chiller tornillo 100 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller tornillo 100 TR",
+    "description": "Instalacion profesional de chiller tornillo 100 TR | Mano de obra: $2,800/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 280000,
     "costPrice": 154000
   },
   {
-    "name": "Instalacion de chiller tornillo 150 TR",
-    "description": "Instalacion profesional de chiller tornillo 150 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller tornillo 150 TR",
+    "description": "Instalacion profesional de chiller tornillo 150 TR | Mano de obra: $2,600/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 390000,
     "costPrice": 214500
   },
   {
-    "name": "Instalacion de chiller tornillo 200 TR",
-    "description": "Instalacion profesional de chiller tornillo 200 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller tornillo 200 TR",
+    "description": "Instalacion profesional de chiller tornillo 200 TR | Mano de obra: $2,400/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 480000,
     "costPrice": 264000
   },
   {
-    "name": "Instalacion de chiller tornillo 300 TR",
-    "description": "Instalacion profesional de chiller tornillo 300 TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
+    "name": "Instalacion chiller tornillo 300 TR",
+    "description": "Instalacion profesional de chiller tornillo 300 TR | Mano de obra: $2,200/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 660000,
     "costPrice": 363000
   },
   {
-    "name": "Instalacion de cuarto frio grande",
+    "name": "Instalacion cuarto frio grande",
     "description": "Instalacion profesional de cuarto frio grande | Incluye panel aislante, puerta, unidad condensadora, evaporador, tuberia de refrigerante, control, iluminacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
@@ -16968,7 +16928,7 @@
     "costPrice": 9900
   },
   {
-    "name": "Instalacion de cuarto frio mediano",
+    "name": "Instalacion cuarto frio mediano",
     "description": "Instalacion profesional de cuarto frio mediano | Incluye panel aislante, puerta, unidad condensadora, evaporador, tuberia de refrigerante, control, iluminacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
@@ -16976,7 +16936,7 @@
     "costPrice": 6600
   },
   {
-    "name": "Instalacion de cuarto frio pequeno",
+    "name": "Instalacion cuarto frio pequeno",
     "description": "Instalacion profesional de cuarto frio pequeno | Incluye panel aislante, puerta, unidad condensadora, evaporador, tuberia de refrigerante, control, iluminacion | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
@@ -16984,484 +16944,284 @@
     "costPrice": 4400
   },
   {
-    "name": "Instalacion de fan coil 10 TR (agua helada)",
-    "description": "Instalacion profesional de fan coil 10 TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
+    "name": "Instalacion fan coil 10 TR (agua helada)",
+    "description": "Instalacion profesional de fan coil 10 TR | Mano de obra: $2,200/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 22000,
     "costPrice": 12100
   },
   {
-    "name": "Instalacion de fan coil 15 TR (agua helada)",
-    "description": "Instalacion profesional de fan coil 15 TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
+    "name": "Instalacion fan coil 15 TR (agua helada)",
+    "description": "Instalacion profesional de fan coil 15 TR | Mano de obra: $2,000/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 30000,
     "costPrice": 16500
   },
   {
-    "name": "Instalacion de fan coil 2 TR (agua helada)",
-    "description": "Instalacion profesional de fan coil 2 TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
+    "name": "Instalacion fan coil 2 TR (agua helada)",
+    "description": "Instalacion profesional de fan coil 2 TR | Mano de obra: $3,500/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 7000,
     "costPrice": 3850
   },
   {
-    "name": "Instalacion de fan coil 20 TR (agua helada)",
-    "description": "Instalacion profesional de fan coil 20 TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
+    "name": "Instalacion fan coil 20 TR (agua helada)",
+    "description": "Instalacion profesional de fan coil 20 TR | Mano de obra: $1,800/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 36000,
     "costPrice": 19800
   },
   {
-    "name": "Instalacion de fan coil 3 TR (agua helada)",
-    "description": "Instalacion profesional de fan coil 3 TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
+    "name": "Instalacion fan coil 3 TR (agua helada)",
+    "description": "Instalacion profesional de fan coil 3 TR | Mano de obra: $3,200/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 9600,
     "costPrice": 5280
   },
   {
-    "name": "Instalacion de fan coil 4 TR (agua helada)",
-    "description": "Instalacion profesional de fan coil 4 TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
+    "name": "Instalacion fan coil 4 TR (agua helada)",
+    "description": "Instalacion profesional de fan coil 4 TR | Mano de obra: $3,000/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 12000,
     "costPrice": 6600
   },
   {
-    "name": "Instalacion de fan coil 6 TR (agua helada)",
-    "description": "Instalacion profesional de fan coil 6 TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
+    "name": "Instalacion fan coil 6 TR (agua helada)",
+    "description": "Instalacion profesional de fan coil 6 TR | Mano de obra: $2,800/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 16800,
     "costPrice": 9240
   },
   {
-    "name": "Instalacion de fan coil 8 TR (agua helada)",
-    "description": "Instalacion profesional de fan coil 8 TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
+    "name": "Instalacion fan coil 8 TR (agua helada)",
+    "description": "Instalacion profesional de fan coil 8 TR | Mano de obra: $2,500/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 20000,
     "costPrice": 11000
   },
   {
-    "name": "Instalacion de manejadora de aire 10000 CFM",
-    "description": "Instalacion profesional de manejadora de aire 10000 CFM | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
+    "name": "Instalacion manejadora de aire 10000 CFM",
+    "description": "Instalacion profesional de manejadora de aire 10000 CFM | Mano de obra: $2,500/TR x 25 TR | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
-    "basePrice": 2500,
-    "costPrice": 1375
+    "basePrice": 62500,
+    "costPrice": 34375
   },
   {
-    "name": "Instalacion de manejadora de aire 1500 CFM",
-    "description": "Instalacion profesional de manejadora de aire 1500 CFM | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 3500,
-    "costPrice": 1925
-  },
-  {
-    "name": "Instalacion de manejadora de aire 3000 CFM",
-    "description": "Instalacion profesional de manejadora de aire 3000 CFM | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 3000,
-    "costPrice": 1650
-  },
-  {
-    "name": "Instalacion de manejadora de aire 400 CFM",
-    "description": "Instalacion profesional de manejadora de aire 400 CFM | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 3000,
-    "costPrice": 1650
-  },
-  {
-    "name": "Instalacion de manejadora de aire 5000 CFM",
-    "description": "Instalacion profesional de manejadora de aire 5000 CFM | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 2800,
-    "costPrice": 1540
-  },
-  {
-    "name": "Instalacion de manejadora de aire 800 CFM",
-    "description": "Instalacion profesional de manejadora de aire 800 CFM | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 3200,
-    "costPrice": 1760
-  },
-  {
-    "name": "Instalacion de minisplit 1 TR (alta pared)",
-    "description": "Instalacion profesional de minisplit 1 TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 3500,
-    "costPrice": 1925
-  },
-  {
-    "name": "Instalacion de minisplit 2 TR (alta pared)",
-    "description": "Instalacion profesional de minisplit 2 TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 6000,
-    "costPrice": 3300
-  },
-  {
-    "name": "Instalacion de minisplit 3 TR (alta pared)",
-    "description": "Instalacion profesional de minisplit 3 TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 7500,
-    "costPrice": 4125
-  },
-  {
-    "name": "Instalacion de minisplit 4 TR (alta pared)",
-    "description": "Instalacion profesional de minisplit 4 TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 8800,
-    "costPrice": 4840
-  },
-  {
-    "name": "Instalacion de minisplit 5 TR (alta pared)",
-    "description": "Instalacion profesional de minisplit 5 TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 10000,
-    "costPrice": 5500
-  },
-  {
-    "name": "Instalacion de piso-techo 3 TR",
-    "description": "Instalacion profesional de piso-techo 3 TR | Incluye soporteria, tuberia de cobre, cableado, drenaje, control, prueba | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 9600,
-    "costPrice": 5280
-  },
-  {
-    "name": "Instalacion de piso-techo 5 TR",
-    "description": "Instalacion profesional de piso-techo 5 TR | Incluye soporteria, tuberia de cobre, cableado, drenaje, control, prueba | No incluye equipo",
+    "name": "Instalacion manejadora de aire 1500 CFM",
+    "description": "Instalacion profesional de manejadora de aire 1500 CFM | Mano de obra: $3,500/TR x 4 TR | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 14000,
     "costPrice": 7700
   },
   {
-    "name": "Instalacion de piso-techo 8 TR",
-    "description": "Instalacion profesional de piso-techo 8 TR | Incluye soporteria, tuberia de cobre, cableado, drenaje, control, prueba | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 20000,
-    "costPrice": 11000
-  },
-  {
-    "name": "Instalacion de rooftop/paquete 10 TR",
-    "description": "Instalacion profesional de rooftop 10 TR en azotea | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 30000,
-    "costPrice": 16500
-  },
-  {
-    "name": "Instalacion de rooftop/paquete 12.5 TR",
-    "description": "Instalacion profesional de rooftop 12.5 TR en azotea | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 35000,
-    "costPrice": 19250
-  },
-  {
-    "name": "Instalacion de rooftop/paquete 15 TR",
-    "description": "Instalacion profesional de rooftop 15 TR en azotea | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 39000,
-    "costPrice": 21450
-  },
-  {
-    "name": "Instalacion de rooftop/paquete 20 TR",
-    "description": "Instalacion profesional de rooftop 20 TR en azotea | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 48000,
-    "costPrice": 26400
-  },
-  {
-    "name": "Instalacion de rooftop/paquete 25 TR",
-    "description": "Instalacion profesional de rooftop 25 TR en azotea | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 55000,
-    "costPrice": 30250
-  },
-  {
-    "name": "Instalacion de rooftop/paquete 5 TR",
-    "description": "Instalacion profesional de rooftop 5 TR en azotea | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 17500,
-    "costPrice": 9625
-  },
-  {
-    "name": "Instalacion de rooftop/paquete 7.5 TR",
-    "description": "Instalacion profesional de rooftop 7.5 TR en azotea | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
+    "name": "Instalacion manejadora de aire 3000 CFM",
+    "description": "Instalacion profesional de manejadora de aire 3000 CFM | Mano de obra: $3,000/TR x 8 TR | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 24000,
     "costPrice": 13200
   },
   {
-    "name": "Instalacion de sistema VRF completo (por TR)",
-    "description": "Instalacion profesional de sistema VRF | Incluye tuberia de refrigerante, refnet, cableado de control y alimentacion, drenajes, puesta en marcha, carga de refrigerante | Por tonelada de refrigeracion",
+    "name": "Instalacion manejadora de aire 400 CFM",
+    "description": "Instalacion profesional de manejadora de aire 400 CFM | Mano de obra: $3,000/TR x 1 TR | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 3000,
+    "costPrice": 1650
+  },
+  {
+    "name": "Instalacion manejadora de aire 5000 CFM",
+    "description": "Instalacion profesional de manejadora de aire 5000 CFM | Mano de obra: $2,800/TR x 13 TR | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 36400,
+    "costPrice": 20020
+  },
+  {
+    "name": "Instalacion manejadora de aire 800 CFM",
+    "description": "Instalacion profesional de manejadora de aire 800 CFM | Mano de obra: $3,200/TR x 2 TR | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 6400,
+    "costPrice": 3520
+  },
+  {
+    "name": "Instalacion minisplit 1 TR (alta pared)",
+    "description": "Instalacion profesional de minisplit 1 TR | Mano de obra: $3,500/TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 3500,
+    "costPrice": 1925
+  },
+  {
+    "name": "Instalacion minisplit 2 TR (alta pared)",
+    "description": "Instalacion profesional de minisplit 2 TR | Mano de obra: $3,000/TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 6000,
+    "costPrice": 3300
+  },
+  {
+    "name": "Instalacion minisplit 3 TR (alta pared)",
+    "description": "Instalacion profesional de minisplit 3 TR | Mano de obra: $2,500/TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 7500,
+    "costPrice": 4125
+  },
+  {
+    "name": "Instalacion minisplit 4 TR (alta pared)",
+    "description": "Instalacion profesional de minisplit 4 TR | Mano de obra: $2,200/TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 8800,
+    "costPrice": 4840
+  },
+  {
+    "name": "Instalacion minisplit 5 TR (alta pared)",
+    "description": "Instalacion profesional de minisplit 5 TR | Mano de obra: $2,000/TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 10000,
+    "costPrice": 5500
+  },
+  {
+    "name": "Instalacion piso-techo 3 TR",
+    "description": "Instalacion profesional de piso-techo 3 TR | Mano de obra: $3,200/TR | Incluye soporteria, tuberia de cobre, cableado, drenaje, control, prueba | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 9600,
+    "costPrice": 5280
+  },
+  {
+    "name": "Instalacion piso-techo 5 TR",
+    "description": "Instalacion profesional de piso-techo 5 TR | Mano de obra: $2,800/TR | Incluye soporteria, tuberia de cobre, cableado, drenaje, control, prueba | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 14000,
+    "costPrice": 7700
+  },
+  {
+    "name": "Instalacion piso-techo 8 TR",
+    "description": "Instalacion profesional de piso-techo 8 TR | Mano de obra: $2,500/TR | Incluye soporteria, tuberia de cobre, cableado, drenaje, control, prueba | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 20000,
+    "costPrice": 11000
+  },
+  {
+    "name": "Instalacion rooftop/paquete 10 TR",
+    "description": "Instalacion profesional de rooftop 10 TR en azotea | Mano de obra: $3,000/TR | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 30000,
+    "costPrice": 16500
+  },
+  {
+    "name": "Instalacion rooftop/paquete 12.5 TR",
+    "description": "Instalacion profesional de rooftop 12.5 TR en azotea | Mano de obra: $2,800/TR | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 35000,
+    "costPrice": 19250
+  },
+  {
+    "name": "Instalacion rooftop/paquete 15 TR",
+    "description": "Instalacion profesional de rooftop 15 TR en azotea | Mano de obra: $2,600/TR | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 39000,
+    "costPrice": 21450
+  },
+  {
+    "name": "Instalacion rooftop/paquete 20 TR",
+    "description": "Instalacion profesional de rooftop 20 TR en azotea | Mano de obra: $2,400/TR | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 48000,
+    "costPrice": 26400
+  },
+  {
+    "name": "Instalacion rooftop/paquete 25 TR",
+    "description": "Instalacion profesional de rooftop 25 TR en azotea | Mano de obra: $2,200/TR | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 55000,
+    "costPrice": 30250
+  },
+  {
+    "name": "Instalacion rooftop/paquete 5 TR",
+    "description": "Instalacion profesional de rooftop 5 TR en azotea | Mano de obra: $3,500/TR | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 17500,
+    "costPrice": 9625
+  },
+  {
+    "name": "Instalacion rooftop/paquete 7.5 TR",
+    "description": "Instalacion profesional de rooftop 7.5 TR en azotea | Mano de obra: $3,200/TR | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo",
+    "unit": "servicio",
+    "category": "Instalacion Equipos",
+    "basePrice": 24000,
+    "costPrice": 13200
+  },
+  {
+    "name": "Instalacion sistema VRF completo",
+    "description": "Instalacion profesional de sistema VRF | Incluye tuberia de refrigerante, refnet, cableado de control y alimentacion, drenajes, puesta en marcha, carga de refrigerante | Cotizar por tonelada de refrigeracion",
     "unit": "TR",
     "category": "Instalacion Equipos",
     "basePrice": 5500,
     "costPrice": 3025
   },
   {
-    "name": "Instalacion de torre de enfriamiento 100 TR",
-    "description": "Instalacion profesional de torre de enfriamiento 100 TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo",
+    "name": "Instalacion torre de enfriamiento 100 TR",
+    "description": "Instalacion profesional de torre de enfriamiento 100 TR | Mano de obra: $2,500/TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 250000,
     "costPrice": 137500
   },
   {
-    "name": "Instalacion de torre de enfriamiento 200 TR",
-    "description": "Instalacion profesional de torre de enfriamiento 200 TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo",
+    "name": "Instalacion torre de enfriamiento 200 TR",
+    "description": "Instalacion profesional de torre de enfriamiento 200 TR | Mano de obra: $2,200/TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 440000,
     "costPrice": 242000
   },
   {
-    "name": "Instalacion de torre de enfriamiento 300 TR",
-    "description": "Instalacion profesional de torre de enfriamiento 300 TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo",
+    "name": "Instalacion torre de enfriamiento 300 TR",
+    "description": "Instalacion profesional de torre de enfriamiento 300 TR | Mano de obra: $2,000/TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 600000,
     "costPrice": 330000
   },
   {
-    "name": "Instalacion de torre de enfriamiento 500 TR",
-    "description": "Instalacion profesional de torre de enfriamiento 500 TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo",
+    "name": "Instalacion torre de enfriamiento 500 TR",
+    "description": "Instalacion profesional de torre de enfriamiento 500 TR | Mano de obra: $1,800/TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 900000,
     "costPrice": 495000
   },
   {
-    "name": "Instalacion de unidad interior VRF (cassette/conducto/pared)",
-    "description": "Instalacion profesional de unidad interior VRF | Incluye tuberia de refrigerante, cableado de control, drenaje, soporteria, conexion a red | No incluye equipo",
+    "name": "Instalacion unidad interior VRF (cassette/conducto/pared)",
+    "description": "Instalacion profesional de unidad interior VRF | Precio fijo por unidad interior | Incluye tuberia de refrigerante, cableado de control, drenaje, soporteria, conexion a red | No incluye equipo",
     "unit": "servicio",
     "category": "Instalacion Equipos",
     "basePrice": 4500,
     "costPrice": 2475
-  },
-  {
-    "name": "Kit Refnet (derivación VRF) (Por pieza)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: Por pieza | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 2500,
-    "costPrice": 1552
-  },
-  {
-    "name": "Minisplit (0.5-1T (6K-12K BTU))",
-    "description": "Categoría: Minisplits | Capacidad: 0.5-1T (6K-12K BTU) | Tiempo: 3-4 hrs | Fuente: Genz Clima / HomePro 2026",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 1500,
-    "costPrice": 909
-  },
-  {
-    "name": "Minisplit (1.5T (18K BTU))",
-    "description": "Categoría: Minisplits | Capacidad: 1.5T (18K BTU) | Tiempo: 4-5 hrs | Fuente: HomePro 2026",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 1800,
-    "costPrice": 1118
-  },
-  {
-    "name": "Minisplit (2T (24K BTU))",
-    "description": "Categoría: Minisplits | Capacidad: 2T (24K BTU) | Tiempo: 4-6 hrs | Fuente: HomePro 2026",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 2500,
-    "costPrice": 1379
-  },
-  {
-    "name": "Minisplit (3T (36K BTU))",
-    "description": "Categoría: Minisplits | Capacidad: 3T (36K BTU) | Tiempo: 5-8 hrs | Fuente: MirageCDMX 2025",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 3000,
-    "costPrice": 1888
-  },
-  {
-    "name": "Minisplit inverter 1.5T (instalado real) (1.5T)",
-    "description": "Categoría: Minisplits | Capacidad: 1.5T | Tiempo: 4-6 hrs | Fuente: HomePro (con extras reales)",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 1500,
-    "costPrice": 943
-  },
-  {
-    "name": "Multisplit 2x1 (2 UI + 1 UE)",
-    "description": "Categoría: Multisplit | Capacidad: 2 UI + 1 UE | Tiempo: 4-6 hrs | Fuente: Genz Clima 2026",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 3000,
-    "costPrice": 1672
-  },
-  {
-    "name": "Multisplit 3x1 (3 UI + 1 UE)",
-    "description": "Categoría: Multisplit | Capacidad: 3 UI + 1 UE | Tiempo: 5-8 hrs | Fuente: Genz Clima 2026",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 4000,
-    "costPrice": 2210
-  },
-  {
-    "name": "Multisplit 4x1 (4 UI + 1 UE)",
-    "description": "Categoría: Multisplit | Capacidad: 4 UI + 1 UE | Tiempo: 6-10 hrs | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 5000,
-    "costPrice": 3245
-  },
-  {
-    "name": "PAQUETE / ROOFTOP (incluye maniobra+montaje)",
-    "description": "Categoría: Sistema Por Conductos",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": null,
-    "costPrice": null
-  },
-  {
-    "name": "Paquete 10 TR (10 TR)",
-    "description": "Categoría: Sistema Por Conductos | Capacidad: 10 TR | Tiempo: 3-5 dáas | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 35000,
-    "costPrice": 21802
-  },
-  {
-    "name": "Paquete 15 TR (15 TR)",
-    "description": "Categoría: Sistema Por Conductos | Capacidad: 15 TR | Tiempo: 4-7 dáas | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 50000,
-    "costPrice": 28192
-  },
-  {
-    "name": "Paquete 20 TR (20 TR)",
-    "description": "Categoría: Sistema Por Conductos | Capacidad: 20 TR | Tiempo: 5-8 dáas | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 70000,
-    "costPrice": 40286
-  },
-  {
-    "name": "Paquete 5 TR (5 TR)",
-    "description": "Categoría: Sistema Por Conductos | Capacidad: 5 TR | Tiempo: 2-4 dáas | Fuente: APU analisisdepreciosunitarios",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 22000,
-    "costPrice": 12310
-  },
-  {
-    "name": "Piso-Techo (3T)",
-    "description": "Categoría: Piso-Techo | Capacidad: 3T | Tiempo: 4-6 hrs | Fuente: Varias",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 3500,
-    "costPrice": 2072
-  },
-  {
-    "name": "Piso-Techo (5T)",
-    "description": "Categoría: Piso-Techo | Capacidad: 5T | Tiempo: 5-8 hrs | Fuente: Varias",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 4500,
-    "costPrice": 2746
-  },
-  {
-    "name": "Piso-Techo (8T)",
-    "description": "Categoría: Piso-Techo | Capacidad: 8T | Tiempo: 6-10 hrs | Fuente: Varias",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 6000,
-    "costPrice": 3418
-  },
-  {
-    "name": "Puesta en marcha + programación VRF (Sistema)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: Sistema | Tiempo: 1-3 dáas | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 15000,
-    "costPrice": 9364
-  },
-  {
-    "name": "Sistema VRF completo 8 HP (Daikin) (8 HP, 8-12 UI)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: 8 HP, 8-12 UI | Price Equipo: $468,988 (CYPE) | Tiempo: 1-2 semanas | Fuente: CYPE Generador Precios",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 80000,
-    "costPrice": 44377
-  },
-  {
-    "name": "Solo instalación conductos (sin preinst.) (m2)",
-    "description": "Categoría: Sistema Por Conductos | Price Equipo: N/A | Tiempo: 4-8 hrs | Fuente: Genz Clima 2026",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 5600,
-    "costPrice": 3081
-  },
-  {
-    "name": "Tuberáa VRF (cobre aislado) (Por metro)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: Por metro | Price Mo: $800 - $1,500/ml | Price Equipo: Incluido | Price Total: $800 - $1,500/ml | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": null,
-    "costPrice": null
-  },
-  {
-    "name": "Unidad exterior VRF (16-20 HP)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: 16-20 HP | Tiempo: 3-5 dáas | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 60000,
-    "costPrice": 38347
-  },
-  {
-    "name": "Unidad exterior VRF (24-34 HP)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: 24-34 HP | Tiempo: 4-7 dáas | Fuente: Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 100000,
-    "costPrice": 63533
-  },
-  {
-    "name": "Unidad exterior VRF (8-10 HP)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: 8-10 HP | Tiempo: 2-4 dáas | Fuente: CYPE / Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 30000,
-    "costPrice": 18050
-  },
-  {
-    "name": "Unidad interior VRF (instalación por UI) (Cualquier)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: Cualquier | Tiempo: 1-2 dáas c/u | Fuente: CYPE / Proyección",
-    "unit": "servicio",
-    "category": "Instalacion Equipos",
-    "basePrice": 20000,
-    "costPrice": 11239
   },
   {
     "name": "Anemómetro de aspas",
@@ -20344,1532 +20104,236 @@
     "costPrice": 250
   },
   {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan basico (2 visitas/año) - 10000 CFM (basico)",
-    "description": "Mantenimiento preventivo basico para manejadora de aire 10000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 30000,
-    "costPrice": 16500
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan basico (2 visitas/año) - 1500 CFM (basico)",
-    "description": "Mantenimiento preventivo basico para manejadora de aire 1500 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 4800,
-    "costPrice": 2640
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan basico (2 visitas/año) - 3000 CFM (basico)",
-    "description": "Mantenimiento preventivo basico para manejadora de aire 3000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 9600,
-    "costPrice": 5280
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan basico (2 visitas/año) - 400 CFM (basico)",
-    "description": "Mantenimiento preventivo basico para manejadora de aire 400 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento AHU/Manejadora de aire - basico",
+    "description": "Mantenimiento preventivo basico para manejadora de aire | 2 visitas/año | $1,200/TR/año | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 1200,
     "costPrice": 660
   },
   {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan basico (2 visitas/año) - 5000 CFM (basico)",
-    "description": "Mantenimiento preventivo basico para manejadora de aire 5000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 15600,
-    "costPrice": 8580
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan basico (2 visitas/año) - 800 CFM (basico)",
-    "description": "Mantenimiento preventivo basico para manejadora de aire 800 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2400,
-    "costPrice": 1320
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan estandar (4 visitas/año) - 10000 CFM (estandar)",
-    "description": "Mantenimiento preventivo estandar para manejadora de aire 10000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 45000,
-    "costPrice": 24750
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan estandar (4 visitas/año) - 1500 CFM (estandar)",
-    "description": "Mantenimiento preventivo estandar para manejadora de aire 1500 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 7200,
-    "costPrice": 3960
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan estandar (4 visitas/año) - 3000 CFM (estandar)",
-    "description": "Mantenimiento preventivo estandar para manejadora de aire 3000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 14400,
-    "costPrice": 7920
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan estandar (4 visitas/año) - 400 CFM (estandar)",
-    "description": "Mantenimiento preventivo estandar para manejadora de aire 400 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento AHU/Manejadora de aire - estandar",
+    "description": "Mantenimiento preventivo estandar para manejadora de aire | 4 visitas/año | $1,800/TR/año | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 1800,
     "costPrice": 990
   },
   {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan estandar (4 visitas/año) - 5000 CFM (estandar)",
-    "description": "Mantenimiento preventivo estandar para manejadora de aire 5000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 23400,
-    "costPrice": 12870
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan estandar (4 visitas/año) - 800 CFM (estandar)",
-    "description": "Mantenimiento preventivo estandar para manejadora de aire 800 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 3600,
-    "costPrice": 1980
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan premium (4 visitas + emergencia) - 10000 CFM (premium)",
-    "description": "Mantenimiento preventivo premium para manejadora de aire 10000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 75000,
-    "costPrice": 41250
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan premium (4 visitas + emergencia) - 1500 CFM (premium)",
-    "description": "Mantenimiento preventivo premium para manejadora de aire 1500 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 12000,
-    "costPrice": 6600
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan premium (4 visitas + emergencia) - 3000 CFM (premium)",
-    "description": "Mantenimiento preventivo premium para manejadora de aire 3000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 24000,
-    "costPrice": 13200
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan premium (4 visitas + emergencia) - 400 CFM (premium)",
-    "description": "Mantenimiento preventivo premium para manejadora de aire 400 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento AHU/Manejadora de aire - premium",
+    "description": "Mantenimiento preventivo premium para manejadora de aire | 4 visitas + emergencia 24/7 | $3,000/TR/año | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 3000,
     "costPrice": 1650
   },
   {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan premium (4 visitas + emergencia) - 5000 CFM (premium)",
-    "description": "Mantenimiento preventivo premium para manejadora de aire 5000 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 39000,
-    "costPrice": 21450
-  },
-  {
-    "name": "Plan mantenimiento AHU/Manejadora - Plan premium (4 visitas + emergencia) - 800 CFM (premium)",
-    "description": "Mantenimiento preventivo premium para manejadora de aire 800 CFM | 2 visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 6000,
-    "costPrice": 3300
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan basico (2 visitas/año) - 1 HP (basico)",
-    "description": "Mantenimiento preventivo basico para bomba de agua HVAC 1 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Bomba de agua HVAC - basico",
+    "description": "Mantenimiento preventivo basico para bomba de agua HVAC | 2 visitas/año | $500/HP/año | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital | Cotizar multiplicando por las HP del equipo",
+    "unit": "HP/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 500,
     "costPrice": 275
   },
   {
-    "name": "Plan mantenimiento Bomba de agua - Plan basico (2 visitas/año) - 10 HP (basico)",
-    "description": "Mantenimiento preventivo basico para bomba de agua HVAC 10 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 5000,
-    "costPrice": 2750
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan basico (2 visitas/año) - 2 HP (basico)",
-    "description": "Mantenimiento preventivo basico para bomba de agua HVAC 2 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1000,
-    "costPrice": 550
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan basico (2 visitas/año) - 20 HP (basico)",
-    "description": "Mantenimiento preventivo basico para bomba de agua HVAC 20 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 10000,
-    "costPrice": 5500
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan basico (2 visitas/año) - 3 HP (basico)",
-    "description": "Mantenimiento preventivo basico para bomba de agua HVAC 3 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1500,
-    "costPrice": 825
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan basico (2 visitas/año) - 5 HP (basico)",
-    "description": "Mantenimiento preventivo basico para bomba de agua HVAC 5 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2500,
-    "costPrice": 1375
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan basico (2 visitas/año) - 50 HP (basico)",
-    "description": "Mantenimiento preventivo basico para bomba de agua HVAC 50 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 25000,
-    "costPrice": 13750
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan estandar (4 visitas/año) - 1 HP (estandar)",
-    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC 1 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Bomba de agua HVAC - estandar",
+    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC | 4 visitas/año | $900/HP/año | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital | Cotizar multiplicando por las HP del equipo",
+    "unit": "HP/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 900,
     "costPrice": 495
   },
   {
-    "name": "Plan mantenimiento Bomba de agua - Plan estandar (4 visitas/año) - 10 HP (estandar)",
-    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC 10 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Cassette - basico",
+    "description": "Mantenimiento preventivo basico para cassette | 2 visitas/año | $1,500/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 9000,
-    "costPrice": 4950
+    "basePrice": 1500,
+    "costPrice": 825
   },
   {
-    "name": "Plan mantenimiento Bomba de agua - Plan estandar (4 visitas/año) - 2 HP (estandar)",
-    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC 2 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Cassette - estandar",
+    "description": "Mantenimiento preventivo estandar para cassette | 4 visitas/año | $2,200/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 1800,
-    "costPrice": 990
+    "basePrice": 2200,
+    "costPrice": 1210
   },
   {
-    "name": "Plan mantenimiento Bomba de agua - Plan estandar (4 visitas/año) - 20 HP (estandar)",
-    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC 20 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 18000,
-    "costPrice": 9900
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan estandar (4 visitas/año) - 3 HP (estandar)",
-    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC 3 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2700,
-    "costPrice": 1485
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan estandar (4 visitas/año) - 5 HP (estandar)",
-    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC 5 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 4500,
-    "costPrice": 2475
-  },
-  {
-    "name": "Plan mantenimiento Bomba de agua - Plan estandar (4 visitas/año) - 50 HP (estandar)",
-    "description": "Mantenimiento preventivo estandar para bomba de agua HVAC 50 HP | 2 visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 45000,
-    "costPrice": 24750
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan basico (2 visitas/año) - 2 TR (basico)",
-    "description": "Mantenimiento preventivo basico para cassette 2 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 3000,
-    "costPrice": 1650
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan basico (2 visitas/año) - 3 TR (basico)",
-    "description": "Mantenimiento preventivo basico para cassette 3 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 4500,
-    "costPrice": 2475
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan basico (2 visitas/año) - 4 TR (basico)",
-    "description": "Mantenimiento preventivo basico para cassette 4 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 6000,
-    "costPrice": 3300
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan estandar (4 visitas/año) - 2 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para cassette 2 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 4400,
-    "costPrice": 2420
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan estandar (4 visitas/año) - 3 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para cassette 3 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 6600,
-    "costPrice": 3630
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan estandar (4 visitas/año) - 4 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para cassette 4 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 8800,
-    "costPrice": 4840
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan premium (4 visitas + emergencia) - 2 TR (premium)",
-    "description": "Mantenimiento preventivo premium para cassette 2 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 6400,
-    "costPrice": 3520
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan premium (4 visitas + emergencia) - 3 TR (premium)",
-    "description": "Mantenimiento preventivo premium para cassette 3 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 9600,
-    "costPrice": 5280
-  },
-  {
-    "name": "Plan mantenimiento Cassette - Plan premium (4 visitas + emergencia) - 4 TR (premium)",
-    "description": "Mantenimiento preventivo premium para cassette 4 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 12800,
-    "costPrice": 7040
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 100 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 100 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 80000,
-    "costPrice": 44000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 150 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 150 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 120000,
-    "costPrice": 66000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 200 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 200 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 160000,
-    "costPrice": 88000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 30 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 30 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 24000,
-    "costPrice": 13200
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 300 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 300 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 240000,
-    "costPrice": 132000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 400 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 400 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 320000,
-    "costPrice": 176000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 50 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 50 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 40000,
-    "costPrice": 22000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 600 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 600 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 480000,
-    "costPrice": 264000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 80 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 80 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 64000,
-    "costPrice": 35200
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan basico (2 visitas/año) - 800 TR (basico)",
-    "description": "Mantenimiento preventivo basico para chiller 800 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 640000,
-    "costPrice": 352000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 100 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 100 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 140000,
-    "costPrice": 77000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 150 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 150 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 210000,
-    "costPrice": 115500
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 200 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 200 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 280000,
-    "costPrice": 154000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 30 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 30 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 42000,
-    "costPrice": 23100
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 300 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 300 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 420000,
-    "costPrice": 231000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 400 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 400 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 560000,
-    "costPrice": 308000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 50 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 50 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 70000,
-    "costPrice": 38500
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 600 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 600 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 840000,
-    "costPrice": 462000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 80 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 80 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 112000,
-    "costPrice": 61600
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan estandar (4 visitas/año) - 800 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para chiller 800 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1120000,
-    "costPrice": 616000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 100 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 100 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 250000,
-    "costPrice": 137500
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 150 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 150 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 375000,
-    "costPrice": 206250
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 200 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 200 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 500000,
-    "costPrice": 275000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 30 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 30 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 75000,
-    "costPrice": 41250
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 300 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 300 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 750000,
-    "costPrice": 412500
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 400 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 400 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1000000,
-    "costPrice": 550000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 50 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 50 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 125000,
-    "costPrice": 68750
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 600 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 600 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1500000,
-    "costPrice": 825000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 80 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 80 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 200000,
-    "costPrice": 110000
-  },
-  {
-    "name": "Plan mantenimiento Chiller - Plan premium (4 visitas + monitoreo 24/7) - 800 TR (premium)",
-    "description": "Mantenimiento preventivo premium para chiller 800 TR | 2 visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2000000,
-    "costPrice": 1100000
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan basico (2 visitas/año) - 10 TR (basico)",
-    "description": "Mantenimiento preventivo basico para fan coil 10 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 10000,
-    "costPrice": 5500
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan basico (2 visitas/año) - 15 TR (basico)",
-    "description": "Mantenimiento preventivo basico para fan coil 15 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 15000,
-    "costPrice": 8250
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan basico (2 visitas/año) - 2 TR (basico)",
-    "description": "Mantenimiento preventivo basico para fan coil 2 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2000,
-    "costPrice": 1100
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan basico (2 visitas/año) - 20 TR (basico)",
-    "description": "Mantenimiento preventivo basico para fan coil 20 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 20000,
-    "costPrice": 11000
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan basico (2 visitas/año) - 3 TR (basico)",
-    "description": "Mantenimiento preventivo basico para fan coil 3 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 3000,
-    "costPrice": 1650
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan basico (2 visitas/año) - 4 TR (basico)",
-    "description": "Mantenimiento preventivo basico para fan coil 4 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 4000,
-    "costPrice": 2200
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan basico (2 visitas/año) - 6 TR (basico)",
-    "description": "Mantenimiento preventivo basico para fan coil 6 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 6000,
-    "costPrice": 3300
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan basico (2 visitas/año) - 8 TR (basico)",
-    "description": "Mantenimiento preventivo basico para fan coil 8 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 8000,
-    "costPrice": 4400
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan estandar (4 visitas/año) - 10 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para fan coil 10 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 16000,
-    "costPrice": 8800
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan estandar (4 visitas/año) - 15 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para fan coil 15 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 24000,
-    "costPrice": 13200
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan estandar (4 visitas/año) - 2 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para fan coil 2 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Cassette - premium",
+    "description": "Mantenimiento preventivo premium para cassette | 4 visitas + emergencia 24/7 | $3,200/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 3200,
     "costPrice": 1760
   },
   {
-    "name": "Plan mantenimiento Fan Coil - Plan estandar (4 visitas/año) - 20 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para fan coil 20 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Chiller - basico",
+    "description": "Mantenimiento preventivo basico para chiller | 2 visitas/año | $800/TR/año | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 32000,
-    "costPrice": 17600
+    "basePrice": 800,
+    "costPrice": 440
   },
   {
-    "name": "Plan mantenimiento Fan Coil - Plan estandar (4 visitas/año) - 3 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para fan coil 3 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Chiller - estandar",
+    "description": "Mantenimiento preventivo estandar para chiller | 4 visitas/año | $1,400/TR/año | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 4800,
-    "costPrice": 2640
+    "basePrice": 1400,
+    "costPrice": 770
   },
   {
-    "name": "Plan mantenimiento Fan Coil - Plan estandar (4 visitas/año) - 4 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para fan coil 4 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Chiller - premium",
+    "description": "Mantenimiento preventivo premium para chiller | 4 visitas + emergencia 24/7 | $2,500/TR/año | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 6400,
-    "costPrice": 3520
+    "basePrice": 2500,
+    "costPrice": 1375
   },
   {
-    "name": "Plan mantenimiento Fan Coil - Plan estandar (4 visitas/año) - 6 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para fan coil 6 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Fan Coil (agua helada) - basico",
+    "description": "Mantenimiento preventivo basico para fan coil | 2 visitas/año | $1,000/TR/año | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 9600,
-    "costPrice": 5280
+    "basePrice": 1000,
+    "costPrice": 550
   },
   {
-    "name": "Plan mantenimiento Fan Coil - Plan estandar (4 visitas/año) - 8 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para fan coil 8 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Fan Coil (agua helada) - estandar",
+    "description": "Mantenimiento preventivo estandar para fan coil | 4 visitas/año | $1,600/TR/año | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 12800,
-    "costPrice": 7040
+    "basePrice": 1600,
+    "costPrice": 880
   },
   {
-    "name": "Plan mantenimiento Fan Coil - Plan premium (4 visitas + emergencia) - 10 TR (premium)",
-    "description": "Mantenimiento preventivo premium para fan coil 10 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Fan Coil (agua helada) - premium",
+    "description": "Mantenimiento preventivo premium para fan coil | 4 visitas + emergencia 24/7 | $2,500/TR/año | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 25000,
-    "costPrice": 13750
+    "basePrice": 2500,
+    "costPrice": 1375
   },
   {
-    "name": "Plan mantenimiento Fan Coil - Plan premium (4 visitas + emergencia) - 15 TR (premium)",
-    "description": "Mantenimiento preventivo premium para fan coil 15 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 37500,
-    "costPrice": 20625
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan premium (4 visitas + emergencia) - 2 TR (premium)",
-    "description": "Mantenimiento preventivo premium para fan coil 2 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 5000,
-    "costPrice": 2750
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan premium (4 visitas + emergencia) - 20 TR (premium)",
-    "description": "Mantenimiento preventivo premium para fan coil 20 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 50000,
-    "costPrice": 27500
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan premium (4 visitas + emergencia) - 3 TR (premium)",
-    "description": "Mantenimiento preventivo premium para fan coil 3 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 7500,
-    "costPrice": 4125
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan premium (4 visitas + emergencia) - 4 TR (premium)",
-    "description": "Mantenimiento preventivo premium para fan coil 4 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 10000,
-    "costPrice": 5500
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan premium (4 visitas + emergencia) - 6 TR (premium)",
-    "description": "Mantenimiento preventivo premium para fan coil 6 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 15000,
-    "costPrice": 8250
-  },
-  {
-    "name": "Plan mantenimiento Fan Coil - Plan premium (4 visitas + emergencia) - 8 TR (premium)",
-    "description": "Mantenimiento preventivo premium para fan coil 8 TR | 2 visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 20000,
-    "costPrice": 11000
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - Plan basico (2 visitas/año) - 1 TR (basico)",
-    "description": "Mantenimiento preventivo basico para minisplit 1 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Minisplit - basico",
+    "description": "Mantenimiento preventivo basico para minisplit | 2 visitas/año | $1,200/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 1200,
     "costPrice": 660
   },
   {
-    "name": "Plan mantenimiento Minisplit - Plan basico (2 visitas/año) - 2 TR (basico)",
-    "description": "Mantenimiento preventivo basico para minisplit 2 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 2400,
-    "costPrice": 1320
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - Plan basico (2 visitas/año) - 3 TR (basico)",
-    "description": "Mantenimiento preventivo basico para minisplit 3 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 3600,
-    "costPrice": 1980
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - Plan basico (2 visitas/año) - 5 TR (basico)",
-    "description": "Mantenimiento preventivo basico para minisplit 5 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 6000,
-    "costPrice": 3300
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - Plan estandar (4 visitas/año) - 1 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para minisplit 1 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Minisplit - estandar",
+    "description": "Mantenimiento preventivo estandar para minisplit | 4 visitas/año | $1,800/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 1800,
     "costPrice": 990
   },
   {
-    "name": "Plan mantenimiento Minisplit - Plan estandar (4 visitas/año) - 2 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para minisplit 2 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 3600,
-    "costPrice": 1980
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - Plan estandar (4 visitas/año) - 3 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para minisplit 3 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 5400,
-    "costPrice": 2970
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - Plan estandar (4 visitas/año) - 5 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para minisplit 5 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 9000,
-    "costPrice": 4950
-  },
-  {
-    "name": "Plan mantenimiento Minisplit - Plan premium (4 visitas + emergencia) - 1 TR (premium)",
-    "description": "Mantenimiento preventivo premium para minisplit 1 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Minisplit - premium",
+    "description": "Mantenimiento preventivo premium para minisplit | 4 visitas + emergencia 24/7 | $2,800/TR/año | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
     "basePrice": 2800,
     "costPrice": 1540
   },
   {
-    "name": "Plan mantenimiento Minisplit - Plan premium (4 visitas + emergencia) - 2 TR (premium)",
-    "description": "Mantenimiento preventivo premium para minisplit 2 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Rooftop/Paquete - basico",
+    "description": "Mantenimiento preventivo basico para rooftop/paquete | 2 visitas/año | $1,100/TR/año | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 5600,
-    "costPrice": 3080
+    "basePrice": 1100,
+    "costPrice": 605
   },
   {
-    "name": "Plan mantenimiento Minisplit - Plan premium (4 visitas + emergencia) - 3 TR (premium)",
-    "description": "Mantenimiento preventivo premium para minisplit 3 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Rooftop/Paquete - estandar",
+    "description": "Mantenimiento preventivo estandar para rooftop/paquete | 4 visitas/año | $1,700/TR/año | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 8400,
-    "costPrice": 4620
+    "basePrice": 1700,
+    "costPrice": 935
   },
   {
-    "name": "Plan mantenimiento Minisplit - Plan premium (4 visitas + emergencia) - 5 TR (premium)",
-    "description": "Mantenimiento preventivo premium para minisplit 5 TR | 2 visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Rooftop/Paquete - premium",
+    "description": "Mantenimiento preventivo premium para rooftop/paquete | 4 visitas + emergencia 24/7 | $2,600/TR/año | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 14000,
-    "costPrice": 7700
+    "basePrice": 2600,
+    "costPrice": 1430
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan basico (2 visitas/año) - 10 TR (basico)",
-    "description": "Mantenimiento preventivo basico para rooftop/paquete 10 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Sistema agua helada completo - basico",
+    "description": "Mantenimiento preventivo basico para sistema agua helada completo | 2 visitas/año | $700/TR/año | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 11000,
-    "costPrice": 6050
+    "basePrice": 700,
+    "costPrice": 385
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan basico (2 visitas/año) - 12.5 TR (basico)",
-    "description": "Mantenimiento preventivo basico para rooftop/paquete 12.5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Sistema agua helada completo - estandar",
+    "description": "Mantenimiento preventivo estandar para sistema agua helada completo | 4 visitas/año | $1,200/TR/año | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 13750,
-    "costPrice": 7563
+    "basePrice": 1200,
+    "costPrice": 660
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan basico (2 visitas/año) - 15 TR (basico)",
-    "description": "Mantenimiento preventivo basico para rooftop/paquete 15 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Sistema agua helada completo - premium",
+    "description": "Mantenimiento preventivo premium para sistema agua helada completo | 4 visitas + emergencia 24/7 | $2,200/TR/año | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 16500,
-    "costPrice": 9075
+    "basePrice": 2200,
+    "costPrice": 1210
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan basico (2 visitas/año) - 20 TR (basico)",
-    "description": "Mantenimiento preventivo basico para rooftop/paquete 20 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Torre de enfriamiento - basico",
+    "description": "Mantenimiento preventivo basico para torre de enfriamiento | 2 visitas/año | $600/TR/año | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 22000,
-    "costPrice": 12100
+    "basePrice": 600,
+    "costPrice": 330
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan basico (2 visitas/año) - 25 TR (basico)",
-    "description": "Mantenimiento preventivo basico para rooftop/paquete 25 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Torre de enfriamiento - estandar",
+    "description": "Mantenimiento preventivo estandar para torre de enfriamiento | 4 visitas/año | $1,000/TR/año | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 27500,
-    "costPrice": 15125
+    "basePrice": 1000,
+    "costPrice": 550
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan basico (2 visitas/año) - 5 TR (basico)",
-    "description": "Mantenimiento preventivo basico para rooftop/paquete 5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento Torre de enfriamiento - premium",
+    "description": "Mantenimiento preventivo premium para torre de enfriamiento | 4 visitas + emergencia 24/7 | $1,800/TR/año | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 5500,
-    "costPrice": 3025
+    "basePrice": 1800,
+    "costPrice": 990
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan basico (2 visitas/año) - 7.5 TR (basico)",
-    "description": "Mantenimiento preventivo basico para rooftop/paquete 7.5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento VRF - basico",
+    "description": "Mantenimiento preventivo basico para sistema VRF | 2 visitas/año | $1,400/TR/año | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 8250,
-    "costPrice": 4538
+    "basePrice": 1400,
+    "costPrice": 770
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan estandar (4 visitas/año) - 10 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para rooftop/paquete 10 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento VRF - estandar",
+    "description": "Mantenimiento preventivo estandar para sistema VRF | 4 visitas/año | $2,200/TR/año | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 17000,
-    "costPrice": 9350
+    "basePrice": 2200,
+    "costPrice": 1210
   },
   {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan estandar (4 visitas/año) - 12.5 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para rooftop/paquete 12.5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
+    "name": "Plan mantenimiento VRF - premium",
+    "description": "Mantenimiento preventivo premium para sistema VRF | 4 visitas + emergencia 24/7 | $3,500/TR/año | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital | Cotizar multiplicando por las TR del equipo",
+    "unit": "TR/año",
     "category": "Planes de Mantenimiento",
-    "basePrice": 21250,
-    "costPrice": 11688
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan estandar (4 visitas/año) - 15 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para rooftop/paquete 15 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 25500,
-    "costPrice": 14025
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan estandar (4 visitas/año) - 20 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para rooftop/paquete 20 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 34000,
-    "costPrice": 18700
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan estandar (4 visitas/año) - 25 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para rooftop/paquete 25 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 42500,
-    "costPrice": 23375
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan estandar (4 visitas/año) - 5 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para rooftop/paquete 5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 8500,
-    "costPrice": 4675
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan estandar (4 visitas/año) - 7.5 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para rooftop/paquete 7.5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 12750,
-    "costPrice": 7013
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan premium (4 visitas + emergencia) - 10 TR (premium)",
-    "description": "Mantenimiento preventivo premium para rooftop/paquete 10 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 26000,
-    "costPrice": 14300
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan premium (4 visitas + emergencia) - 12.5 TR (premium)",
-    "description": "Mantenimiento preventivo premium para rooftop/paquete 12.5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 32500,
-    "costPrice": 17875
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan premium (4 visitas + emergencia) - 15 TR (premium)",
-    "description": "Mantenimiento preventivo premium para rooftop/paquete 15 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 39000,
-    "costPrice": 21450
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan premium (4 visitas + emergencia) - 20 TR (premium)",
-    "description": "Mantenimiento preventivo premium para rooftop/paquete 20 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 52000,
-    "costPrice": 28600
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan premium (4 visitas + emergencia) - 25 TR (premium)",
-    "description": "Mantenimiento preventivo premium para rooftop/paquete 25 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 65000,
-    "costPrice": 35750
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan premium (4 visitas + emergencia) - 5 TR (premium)",
-    "description": "Mantenimiento preventivo premium para rooftop/paquete 5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 13000,
-    "costPrice": 7150
-  },
-  {
-    "name": "Plan mantenimiento Rooftop/Paquete - Plan premium (4 visitas + emergencia) - 7.5 TR (premium)",
-    "description": "Mantenimiento preventivo premium para rooftop/paquete 7.5 TR | 2 visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 19500,
-    "costPrice": 10725
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan basico - 100 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema agua helada completo 100 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 70000,
-    "costPrice": 38500
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan basico - 150 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema agua helada completo 150 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 105000,
-    "costPrice": 57750
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan basico - 200 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema agua helada completo 200 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 140000,
-    "costPrice": 77000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan basico - 300 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema agua helada completo 300 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 210000,
-    "costPrice": 115500
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan basico - 50 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema agua helada completo 50 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 35000,
-    "costPrice": 19250
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan basico - 500 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema agua helada completo 500 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 350000,
-    "costPrice": 192500
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan estandar - 100 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema agua helada completo 100 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 120000,
-    "costPrice": 66000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan estandar - 150 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema agua helada completo 150 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 180000,
-    "costPrice": 99000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan estandar - 200 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema agua helada completo 200 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 240000,
-    "costPrice": 132000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan estandar - 300 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema agua helada completo 300 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 360000,
-    "costPrice": 198000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan estandar - 50 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema agua helada completo 50 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 60000,
-    "costPrice": 33000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan estandar - 500 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema agua helada completo 500 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 600000,
-    "costPrice": 330000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan premium - 100 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema agua helada completo 100 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 220000,
-    "costPrice": 121000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan premium - 150 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema agua helada completo 150 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 330000,
-    "costPrice": 181500
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan premium - 200 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema agua helada completo 200 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 440000,
-    "costPrice": 242000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan premium - 300 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema agua helada completo 300 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 660000,
-    "costPrice": 363000
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan premium - 50 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema agua helada completo 50 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 110000,
-    "costPrice": 60500
-  },
-  {
-    "name": "Plan mantenimiento Sistema agua helada completo - Plan premium - 500 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema agua helada completo 500 TR | 2 visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 1100000,
-    "costPrice": 605000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan basico (2 visitas/año) - 100 TR (basico)",
-    "description": "Mantenimiento preventivo basico para torre de enfriamiento 100 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 60000,
-    "costPrice": 33000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan basico (2 visitas/año) - 200 TR (basico)",
-    "description": "Mantenimiento preventivo basico para torre de enfriamiento 200 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 120000,
-    "costPrice": 66000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan basico (2 visitas/año) - 300 TR (basico)",
-    "description": "Mantenimiento preventivo basico para torre de enfriamiento 300 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 180000,
-    "costPrice": 99000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan basico (2 visitas/año) - 500 TR (basico)",
-    "description": "Mantenimiento preventivo basico para torre de enfriamiento 500 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 300000,
-    "costPrice": 165000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan estandar (4 visitas/año) - 100 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para torre de enfriamiento 100 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 100000,
-    "costPrice": 55000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan estandar (4 visitas/año) - 200 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para torre de enfriamiento 200 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 200000,
-    "costPrice": 110000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan estandar (4 visitas/año) - 300 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para torre de enfriamiento 300 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 300000,
-    "costPrice": 165000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan estandar (4 visitas/año) - 500 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para torre de enfriamiento 500 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 500000,
-    "costPrice": 275000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan premium (4 visitas + analisis agua) - 100 TR (premium)",
-    "description": "Mantenimiento preventivo premium para torre de enfriamiento 100 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 180000,
-    "costPrice": 99000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan premium (4 visitas + analisis agua) - 200 TR (premium)",
-    "description": "Mantenimiento preventivo premium para torre de enfriamiento 200 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 360000,
-    "costPrice": 198000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan premium (4 visitas + analisis agua) - 300 TR (premium)",
-    "description": "Mantenimiento preventivo premium para torre de enfriamiento 300 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 540000,
-    "costPrice": 297000
-  },
-  {
-    "name": "Plan mantenimiento Torre enfriamiento - Plan premium (4 visitas + analisis agua) - 500 TR (premium)",
-    "description": "Mantenimiento preventivo premium para torre de enfriamiento 500 TR | 2 visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 900000,
-    "costPrice": 495000
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 10 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 10 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 14000,
-    "costPrice": 7700
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 12 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 12 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 16800,
-    "costPrice": 9240
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 14 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 14 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 19600,
-    "costPrice": 10780
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 16 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 16 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 22400,
-    "costPrice": 12320
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 18 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 18 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 25200,
-    "costPrice": 13860
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 20 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 20 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 28000,
-    "costPrice": 15400
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 24 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 24 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 33600,
-    "costPrice": 18480
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 28 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 28 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 39200,
-    "costPrice": 21560
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 34 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 34 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 47600,
-    "costPrice": 26180
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 6 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 6 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 8400,
-    "costPrice": 4620
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan basico (2 visitas/año) - 8 TR (basico)",
-    "description": "Mantenimiento preventivo basico para sistema VRF 8 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 11200,
-    "costPrice": 6160
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 10 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 10 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 22000,
-    "costPrice": 12100
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 12 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 12 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 26400,
-    "costPrice": 14520
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 14 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 14 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 30800,
-    "costPrice": 16940
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 16 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 16 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 35200,
-    "costPrice": 19360
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 18 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 18 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 39600,
-    "costPrice": 21780
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 20 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 20 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 44000,
-    "costPrice": 24200
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 24 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 24 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 52800,
-    "costPrice": 29040
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 28 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 28 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 61600,
-    "costPrice": 33880
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 34 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 34 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 74800,
-    "costPrice": 41140
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 6 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 6 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 13200,
-    "costPrice": 7260
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan estandar (4 visitas/año) - 8 TR (estandar)",
-    "description": "Mantenimiento preventivo estandar para sistema VRF 8 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 17600,
-    "costPrice": 9680
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 10 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 10 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 35000,
-    "costPrice": 19250
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 12 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 12 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 42000,
-    "costPrice": 23100
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 14 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 14 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 49000,
-    "costPrice": 26950
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 16 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 16 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 56000,
-    "costPrice": 30800
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 18 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 18 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 63000,
-    "costPrice": 34650
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 20 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 20 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 70000,
-    "costPrice": 38500
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 24 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 24 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 84000,
-    "costPrice": 46200
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 28 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 28 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 98000,
-    "costPrice": 53900
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 34 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 34 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 119000,
-    "costPrice": 65450
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 6 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 6 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 21000,
-    "costPrice": 11550
-  },
-  {
-    "name": "Plan mantenimiento VRF - Plan premium (4 visitas + emergencia 24/7) - 8 TR (premium)",
-    "description": "Mantenimiento preventivo premium para sistema VRF 8 TR | 2 visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital",
-    "unit": "plan/anual",
-    "category": "Planes de Mantenimiento",
-    "basePrice": 28000,
-    "costPrice": 15400
+    "basePrice": 3500,
+    "costPrice": 1925
   },
   {
     "name": "Compuerta cortafuego (UL 555) motorizada",

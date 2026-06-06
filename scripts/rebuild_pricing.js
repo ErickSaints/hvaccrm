@@ -75,6 +75,13 @@ const PRECIO_INSTALACION_POR_TR = {
   'Cuarto frio grande': 18000,
 };
 
+// ─── PRECIOS POR UNIDAD CORRECTA ─────────────────────────────
+// Cada item usa la unidad con la que se cotiza en obra:
+//   - Instalacion: "servicio" (precio total por equipo de capacidad X)
+//   - Mantenimiento: "TR/año" (precio por tonelada de refrigeracion al año)
+//   - Bomba mantenimiento: "HP/año" (precio por HP al año)
+//   - Caldera mantenimiento: "MBH/año" (precio por MBH al año)
+
 // ─── 1. Replace Instalacion Equipos ──────────────────────────────────────
 const instalacionItems = [];
 Object.entries(PRECIO_INSTALACION_POR_TR).forEach(([equipo, precioTr]) => {
@@ -82,269 +89,207 @@ Object.entries(PRECIO_INSTALACION_POR_TR).forEach(([equipo, precioTr]) => {
   const toneladas = matchTR ? parseFloat(matchTR[1]) : 1;
   const totalBase = Math.round(precioTr * toneladas);
 
-  let name, desc, unit, bp;
-  
   if (equipo.includes('Minisplit')) {
     const tr = toneladas;
-    name = `Instalacion de minisplit ${tr} TR (alta pared)`;
-    desc = `Instalacion profesional de minisplit ${tr} TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion minisplit ${tr} TR (alta pared)`,
+      description: `Instalacion profesional de minisplit ${tr} TR | Mano de obra: $${precioTr.toLocaleString()}/TR | Incluye soporteria, tuberia de cobre hasta 5m, cableado electrico, drenaje, prueba de funcionamiento | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('Cassette')) {
     const tr = toneladas;
-    name = `Instalacion de cassette ${tr} TR`;
-    desc = `Instalacion profesional de cassette ${tr} TR en plafon | Incluye soporteria, tuberia de cobre hasta 8m, cableado electrico, drenaje, control remoto, prueba | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion cassette ${tr} TR`,
+      description: `Instalacion profesional de cassette ${tr} TR en plafon | Mano de obra: $${precioTr.toLocaleString()}/TR | Incluye soporteria, tuberia de cobre hasta 8m, cableado electrico, drenaje, control remoto, prueba | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('Piso-Techo')) {
     const tr = toneladas;
-    name = `Instalacion de piso-techo ${tr} TR`;
-    desc = `Instalacion profesional de piso-techo ${tr} TR | Incluye soporteria, tuberia de cobre, cableado, drenaje, control, prueba | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion piso-techo ${tr} TR`,
+      description: `Instalacion profesional de piso-techo ${tr} TR | Mano de obra: $${precioTr.toLocaleString()}/TR | Incluye soporteria, tuberia de cobre, cableado, drenaje, control, prueba | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('Fan Coil')) {
     const tr = toneladas;
-    name = `Instalacion de fan coil ${tr} TR (agua helada)`;
-    desc = `Instalacion profesional de fan coil ${tr} TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion fan coil ${tr} TR (agua helada)`,
+      description: `Instalacion profesional de fan coil ${tr} TR | Mano de obra: $${precioTr.toLocaleString()}/TR | Incluye tuberia de agua helada ida/retorno, valvulas de corte, conexion electrica, drenaje, bandeja | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('AHU')) {
     const cfm = parseInt(equipo.match(/(\d+)\s*CFM/)[1]);
-    name = `Instalacion de manejadora de aire ${cfm} CFM`;
-    desc = `Instalacion profesional de manejadora de aire ${cfm} CFM | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    const tr = Math.round(cfm / 400);
+    const totalBase = Math.round(precioTr * tr);
+    instalacionItems.push({
+      name: `Instalacion manejadora de aire ${cfm} CFM`,
+      description: `Instalacion profesional de manejadora de aire ${cfm} CFM | Mano de obra: $${precioTr.toLocaleString()}/TR x ${tr} TR | Incluye conexion a ductos, tuberia de agua helada, valvulería, conexion electrica y control, drenaje | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('Rooftop')) {
     const tr = toneladas;
-    name = `Instalacion de rooftop/paquete ${tr} TR`;
-    desc = `Instalacion profesional de rooftop ${tr} TR en azotea | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion rooftop/paquete ${tr} TR`,
+      description: `Instalacion profesional de rooftop ${tr} TR en azotea | Mano de obra: $${precioTr.toLocaleString()}/TR | Incluye base metalica, ducteria de conexion, cableado electrico, termostato, puesta en marcha | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('VRF unidad interior')) {
-    name = `Instalacion de unidad interior VRF (cassette/conducto/pared)`;
-    desc = `Instalacion profesional de unidad interior VRF | Incluye tuberia de refrigerante, cableado de control, drenaje, soporteria, conexion a red | No incluye equipo`;
-    unit = 'servicio';
-    bp = 4500;
+    instalacionItems.push({
+      name: `Instalacion unidad interior VRF (cassette/conducto/pared)`,
+      description: `Instalacion profesional de unidad interior VRF | Precio fijo por unidad interior | Incluye tuberia de refrigerante, cableado de control, drenaje, soporteria, conexion a red | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: 4500,
+      costPrice: Math.round(4500 * 0.55),
+    });
   } else if (equipo.includes('VRF sistema')) {
-    name = `Instalacion de sistema VRF completo (por TR)`;
-    desc = `Instalacion profesional de sistema VRF | Incluye tuberia de refrigerante, refnet, cableado de control y alimentacion, drenajes, puesta en marcha, carga de refrigerante | Por tonelada de refrigeracion`;
-    unit = 'TR';
-    bp = precioTr;
+    instalacionItems.push({
+      name: `Instalacion sistema VRF completo`,
+      description: `Instalacion profesional de sistema VRF | Incluye tuberia de refrigerante, refnet, cableado de control y alimentacion, drenajes, puesta en marcha, carga de refrigerante | Cotizar por tonelada de refrigeracion`,
+      unit: 'TR',
+      category: 'Instalacion Equipos',
+      basePrice: precioTr,
+      costPrice: Math.round(precioTr * 0.55),
+    });
   } else if (equipo.includes('Chiller')) {
     const tr = toneladas;
     const tipo = equipo.includes('centrifugo') ? 'centrifugo' : equipo.includes('tornillo') ? 'tornillo' : 'scroll';
-    name = `Instalacion de chiller ${tipo} ${tr} TR`;
-    desc = `Instalacion profesional de chiller ${tipo} ${tr} TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion chiller ${tipo} ${tr} TR`,
+      description: `Instalacion profesional de chiller ${tipo} ${tr} TR | Mano de obra: $${precioTr.toLocaleString()}/TR | Incluye cimentacion, conexiones hidraulicas, electricas y de control, tuberia de agua helada, valvulería, puesta en marcha | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('Torre')) {
     const tr = toneladas;
-    name = `Instalacion de torre de enfriamiento ${tr} TR`;
-    desc = `Instalacion profesional de torre de enfriamiento ${tr} TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion torre de enfriamiento ${tr} TR`,
+      description: `Instalacion profesional de torre de enfriamiento ${tr} TR | Mano de obra: $${precioTr.toLocaleString()}/TR | Incluye base, tuberia de conexion, valvulería, flotador, conexion electrica, puesta en marcha | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('Bomba')) {
     const hp = parseInt(equipo.match(/(\d+)\s*HP/)[1]);
-    name = `Instalacion de bomba de agua HVAC ${hp} HP`;
-    desc = `Instalacion profesional de bomba de agua ${hp} HP | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion bomba de agua HVAC ${hp} HP`,
+      description: `Instalacion profesional de bomba de agua ${hp} HP | Mano de obra: $${precioTr.toLocaleString()} fijo | Incluye tuberia de succion y descarga, valvulas de compuerta y check, conexion electrica, base, acoplamiento, alineacion | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('Caldera')) {
     const mbh = parseInt(equipo.match(/(\d+)\s*MBH/)[1]);
-    name = `Instalacion de caldera ${mbh} MBH`;
-    desc = `Instalacion profesional de caldera ${mbh} MBH | Incluye conexion de gas, chimenea/venteo, tuberia de agua caliente, valvulería de seguridad, conexion electrica y control | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion caldera ${mbh} MBH`,
+      description: `Instalacion profesional de caldera ${mbh} MBH | Incluye conexion de gas, chimenea/venteo, tuberia de agua caliente, valvulería de seguridad, conexion electrica y control | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   } else if (equipo.includes('Cuarto')) {
     const tam = equipo.includes('pequeno') ? 'pequeno' : equipo.includes('mediano') ? 'mediano' : 'grande';
-    name = `Instalacion de cuarto frio ${tam}`;
-    desc = `Instalacion profesional de cuarto frio ${tam} | Incluye panel aislante, puerta, unidad condensadora, evaporador, tuberia de refrigerante, control, iluminacion | No incluye equipo`;
-    unit = 'servicio';
-    bp = totalBase;
-  } else {
-    name = `Instalacion de ${equipo}`;
-    desc = `Instalacion profesional de ${equipo}`;
-    unit = 'servicio';
-    bp = totalBase;
+    instalacionItems.push({
+      name: `Instalacion cuarto frio ${tam}`,
+      description: `Instalacion profesional de cuarto frio ${tam} | Incluye panel aislante, puerta, unidad condensadora, evaporador, tuberia de refrigerante, control, iluminacion | No incluye equipo`,
+      unit: 'servicio',
+      category: 'Instalacion Equipos',
+      basePrice: totalBase,
+      costPrice: Math.round(totalBase * 0.55),
+    });
   }
-
-  instalacionItems.push({
-    name,
-    description: desc,
-    unit,
-    category: 'Instalacion Equipos',
-    basePrice: bp,
-    costPrice: Math.round(bp * 0.55),
-  });
 });
 
-// ─── 2. Replace Planes de Mantenimiento ─────────────────────────────────
-// Precios por tonelada de refrigeracion al año (MXN)
+// ─── 2. Planes de Mantenimiento ──────────────────────────────────────────
+// PRECIO POR TONELADA DE REFRIGERACION AL AÑO (MXN)
+// Unidad: TR/año — el usuario multiplica por las TR del equipo
 const MANT_POR_TR_ANUAL = {
-  'Minisplit - Plan basico (2 visitas/año)': { basico: 1200, estandar: 0, premium: 0 },
-  'Minisplit - Plan estandar (4 visitas/año)': { basico: 0, estandar: 1800, premium: 0 },
-  'Minisplit - Plan premium (4 visitas + emergencia)': { basico: 0, estandar: 0, premium: 2800 },
-  'Cassette - Plan basico (2 visitas/año)': { basico: 1500, estandar: 0, premium: 0 },
-  'Cassette - Plan estandar (4 visitas/año)': { basico: 0, estandar: 2200, premium: 0 },
-  'Cassette - Plan premium (4 visitas + emergencia)': { basico: 0, estandar: 0, premium: 3200 },
-  'Fan Coil - Plan basico (2 visitas/año)': { basico: 1000, estandar: 0, premium: 0 },
-  'Fan Coil - Plan estandar (4 visitas/año)': { basico: 0, estandar: 1600, premium: 0 },
-  'Fan Coil - Plan premium (4 visitas + emergencia)': { basico: 0, estandar: 0, premium: 2500 },
-  'AHU/Manejadora - Plan basico (2 visitas/año)': { basico: 1200, estandar: 0, premium: 0 },
-  'AHU/Manejadora - Plan estandar (4 visitas/año)': { basico: 0, estandar: 1800, premium: 0 },
-  'AHU/Manejadora - Plan premium (4 visitas + emergencia)': { basico: 0, estandar: 0, premium: 3000 },
-  'Rooftop/Paquete - Plan basico (2 visitas/año)': { basico: 1100, estandar: 0, premium: 0 },
-  'Rooftop/Paquete - Plan estandar (4 visitas/año)': { basico: 0, estandar: 1700, premium: 0 },
-  'Rooftop/Paquete - Plan premium (4 visitas + emergencia)': { basico: 0, estandar: 0, premium: 2600 },
-  'VRF - Plan basico (2 visitas/año)': { basico: 1400, estandar: 0, premium: 0 },
-  'VRF - Plan estandar (4 visitas/año)': { basico: 0, estandar: 2200, premium: 0 },
-  'VRF - Plan premium (4 visitas + emergencia 24/7)': { basico: 0, estandar: 0, premium: 3500 },
-  'Chiller - Plan basico (2 visitas/año)': { basico: 800, estandar: 0, premium: 0 },
-  'Chiller - Plan estandar (4 visitas/año)': { basico: 0, estandar: 1400, premium: 0 },
-  'Chiller - Plan premium (4 visitas + monitoreo 24/7)': { basico: 0, estandar: 0, premium: 2500 },
-  'Torre enfriamiento - Plan basico (2 visitas/año)': { basico: 600, estandar: 0, premium: 0 },
-  'Torre enfriamiento - Plan estandar (4 visitas/año)': { basico: 0, estandar: 1000, premium: 0 },
-  'Torre enfriamiento - Plan premium (4 visitas + analisis agua)': { basico: 0, estandar: 0, premium: 1800 },
-  'Bomba de agua - Plan basico (2 visitas/año)': { basico: 500, estandar: 0, premium: 0 },
-  'Bomba de agua - Plan estandar (4 visitas/año)': { basico: 0, estandar: 900, premium: 0 },
-  'Sistema agua helada completo - Plan basico': { basico: 700, estandar: 0, premium: 0 },
-  'Sistema agua helada completo - Plan estandar': { basico: 0, estandar: 1200, premium: 0 },
-  'Sistema agua helada completo - Plan premium': { basico: 0, estandar: 0, premium: 2200 },
+  'Minisplit':                              { basico: 1200, estandar: 1800, premium: 2800 },
+  'Cassette':                               { basico: 1500, estandar: 2200, premium: 3200 },
+  'Fan Coil (agua helada)':                 { basico: 1000, estandar: 1600, premium: 2500 },
+  'AHU/Manejadora de aire':                 { basico: 1200, estandar: 1800, premium: 3000 },
+  'Rooftop/Paquete':                        { basico: 1100, estandar: 1700, premium: 2600 },
+  'VRF':                                    { basico: 1400, estandar: 2200, premium: 3500 },
+  'Chiller':                                { basico: 800,  estandar: 1400, premium: 2500 },
+  'Torre de enfriamiento':                  { basico: 600,  estandar: 1000, premium: 1800 },
+  'Sistema agua helada completo':           { basico: 700,  estandar: 1200, premium: 2200 },
+  'Bomba de agua HVAC':                     { basico: 500,  estandar: 900,  premium: 0 },
+};
+
+const DESCRIPCIONES_MANT = {
+  'Minisplit':                    'minisplit',
+  'Cassette':                     'cassette',
+  'Fan Coil (agua helada)':       'fan coil',
+  'AHU/Manejadora de aire':       'manejadora de aire',
+  'Rooftop/Paquete':              'rooftop/paquete',
+  'VRF':                          'sistema VRF',
+  'Chiller':                      'chiller',
+  'Torre de enfriamiento':        'torre de enfriamiento',
+  'Sistema agua helada completo': 'sistema agua helada completo',
+  'Bomba de agua HVAC':           'bomba de agua HVAC',
+};
+
+const VISITAS_MANT = {
+  'basico':   '2 visitas/año',
+  'estandar': '4 visitas/año',
+  'premium':  '4 visitas + emergencia 24/7',
+};
+
+const DETALLE_MANT = {
+  'Minisplit':                    'limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje',
+  'Cassette':                     'limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto',
+  'Fan Coil (agua helada)':       'limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje',
+  'AHU/Manejadora de aire':       'limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos',
+  'Rooftop/Paquete':              'limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles',
+  'VRF':                          'limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red',
+  'Chiller':                      'revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre',
+  'Torre de enfriamiento':        'limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador',
+  'Sistema agua helada completo': 'chiller, bombas, torre, fan coils, controles, valvulería',
+  'Bomba de agua HVAC':           'lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones',
 };
 
 const mantenimientoItems = [];
-Object.entries(MANT_POR_TR_ANUAL).forEach(([nombre, planes]) => {
-  // Generate for common capacities
-  const capacidades = [1, 2, 3, 5, 10, 15, 20, 30, 50, 100, 200, 300, 500];
-  
-  Object.entries(planes).forEach(([nivel, precioTr]) => {
-    if (precioTr === 0) return;
-    
-    const nivelName = nivel.match(/basico|estandar|premium/)[0];
-    const visits = nivel.includes('2 visitas') ? 2 : nivel.includes('4 visitas') ? 4 : nivel.includes('emergencia') ? '4 + emergencia' : 2;
-    
-    if (nombre.includes('Minisplit')) {
-      for (const tr of [1, 2, 3, 5]) {
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${tr} TR (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para minisplit ${tr} TR | ${visits} visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, revision electrica, presiones, drenaje | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('Cassette')) {
-      for (const tr of [2, 3, 4]) {
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${tr} TR (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para cassette ${tr} TR | ${visits} visitas anuales | Incluye limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, control remoto | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('Fan Coil')) {
-      for (const tr of [2, 3, 4, 6, 8, 10, 15, 20]) {
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${tr} TR (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para fan coil ${tr} TR | ${visits} visitas anuales | Incluye limpieza de serpentin, bandeja, filtros, ventilador, valvulas, drenaje | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('AHU')) {
-      for (const cfm of [400, 800, 1500, 3000, 5000, 10000]) {
-        const tr = Math.round(cfm / 400);
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${cfm} CFM (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para manejadora de aire ${cfm} CFM | ${visits} visitas anuales | Incluye limpieza de serpentines, filtros, ventiladores, compuertas, drenaje, cheques electricos | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('Rooftop')) {
-      for (const tr of [5, 7.5, 10, 12.5, 15, 20, 25]) {
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${tr} TR (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para rooftop/paquete ${tr} TR | ${visits} visitas anuales | Incluye limpieza de serpentines, filtros, quemadores, ventiladores, drenaje, controles | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('VRF')) {
-      for (const tr of [6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 34]) {
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${tr} TR (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para sistema VRF ${tr} TR | ${visits} visitas anuales | Incluye limpieza de condensadoras, evaporadoras, tuberia de refrigerante, revision de fugas, controles, red | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('Chiller')) {
-      for (const tr of [30, 50, 80, 100, 150, 200, 300, 400, 600, 800]) {
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${tr} TR (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para chiller ${tr} TR | ${visits} visitas anuales | Incluye revision de compresor, aceite, filtros, refrigerante, controles, bombas, torre | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('Torre')) {
-      for (const tr of [100, 200, 300, 500]) {
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${tr} TR (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para torre de enfriamiento ${tr} TR | ${visits} visitas anuales | Incluye limpieza de relleno, boquillas, bandeja, flotador, analisis de agua, motor, ventilador | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('Bomba')) {
-      for (const hp of [1, 2, 3, 5, 10, 20, 50]) {
-        const total = Math.round(precioTr * hp);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${hp} HP (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para bomba de agua HVAC ${hp} HP | ${visits} visitas anuales | Incluye lubricacion, revision de sellos, acoplamiento, motor, valvulas, presiones | Reporte digital`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    } else if (nombre.includes('Sistema agua helada')) {
-      for (const tr of [50, 100, 150, 200, 300, 500]) {
-        const total = Math.round(precioTr * tr);
-        mantenimientoItems.push({
-          name: `Plan mantenimiento ${nombre} - ${tr} TR (${nivelName})`,
-          description: `Mantenimiento preventivo ${nivelName} para sistema agua helada completo ${tr} TR | ${visits} visitas anuales | Incluye chiller, bombas, torre, fan coils, controles, valvulería | Reporte digital ejecutivo`,
-          unit: 'plan/anual',
-          category: 'Planes de Mantenimiento',
-          basePrice: total,
-          costPrice: Math.round(total * 0.55),
-        });
-      }
-    }
+Object.entries(MANT_POR_TR_ANUAL).forEach(([equipo, planes]) => {
+  Object.entries(planes).forEach(([nivel, precioUnitario]) => {
+    if (precioUnitario === 0) return;
+
+    const visits = VISITAS_MANT[nivel];
+    const detalles = DETALLE_MANT[equipo];
+    const equipoLower = DESCRIPCIONES_MANT[equipo];
+    const unidad = equipo === 'Bomba de agua HVAC' ? 'HP/año' : 'TR/año';
+    const descUnidad = equipo === 'Bomba de agua HVAC' ? 'HP' : 'TR';
+
+    mantenimientoItems.push({
+      name: `Plan mantenimiento ${equipo} - ${nivel}`,
+      description: `Mantenimiento preventivo ${nivel} para ${equipoLower} | ${visits} | $${precioUnitario.toLocaleString()}/${descUnidad}/año | Incluye ${detalles} | Reporte digital | Cotizar multiplicando por las ${descUnidad} del equipo`,
+      unit: unidad,
+      category: 'Planes de Mantenimiento',
+      basePrice: precioUnitario,
+      costPrice: Math.round(precioUnitario * 0.55),
+    });
   });
 });
 
@@ -423,39 +368,52 @@ const GAS_PRECIOS_REALES = {
 // ─── APPLY CHANGES ────────────────────────────────────────────────────────
 console.log('Current items:', data.length);
 
-// Track removed
-const removeCats = ['Planes de Mantenimiento'];
-let removed = 0;
+// Remove categories we fully regenerate (Instalacion Equipos + Planes de Mantenimiento)
+const removeCats = ['Instalacion Equipos', 'Instalación Equipos', 'Planes de Mantenimiento'];
+const removedByCat = {};
 data = data.filter(item => {
-  if (removeCats.includes(item.category)) { removed++; return false; }
+  if (removeCats.includes(item.category)) {
+    removedByCat[item.category] = (removedByCat[item.category] || 0) + 1;
+    return false;
+  }
   return true;
 });
-console.log('Removed old maintenance plans:', removed);
+Object.entries(removedByCat).forEach(([cat, count]) => {
+  console.log(`Removed ${cat}: ${count} items`);
+});
 
 // Fix gas refrigerant prices
 let gasFixed = 0;
 data.forEach(item => {
   if (item.category === 'Gas Refrigerante' && item.name && item.basePrice != null) {
-    // Check if it's a known refrigerant
     for (const [gas, precioKg] of Object.entries(GAS_PRECIOS_REALES)) {
       if (item.name.includes(gas)) {
-        // Parse kg from name or description
         let kg = 1;
-        const kgMatch = item.name.match(/([\d.]+)\s*kg/i) || item.description?.match(/([\d.]+)\s*kg/i);
-        if (kgMatch) kg = parseFloat(kgMatch[1]);
+        const kgMatch = item.name.match(/([\d.]+)\s*(kg|g)\b/i);
+        if (kgMatch) {
+          const val = parseFloat(kgMatch[1]);
+          kg = kgMatch[2].toLowerCase() === 'g' ? val / 1000 : val;
+        }
+
+        const isContainer = /Cilindro|Boya|Tanque/i.test(item.name);
+        const isSmallCan = /Lata/i.test(item.name);
         
-        // If unit is 'kg', price per kg
-        if (item.unit === 'kg' && kg === 1) {
-          item.basePrice = precioKg;
-          item.costPrice = Math.round(precioKg * 0.75);
-          gasFixed++;
-        } else if (item.unit === 'pieza' && kg > 1) {
-          // Price for the container
-          item.basePrice = Math.round(precioKg * kg * 0.95); // slight discount for bulk
+        if (isContainer && kg > 1) {
+          item.unit = 'pieza';
+          item.basePrice = Math.round(precioKg * kg * 0.95);
           item.costPrice = Math.round(item.basePrice * 0.75);
           gasFixed++;
-        } else if (kg === 1) {
-          // Assume per kg
+        } else if (isSmallCan && kg <= 1) {
+          item.unit = 'pieza';
+          item.basePrice = Math.round(precioKg * kg * 1.2);
+          item.costPrice = Math.round(item.basePrice * 0.75);
+          gasFixed++;
+        } else if (item.unit === 'pieza' && kg > 1 && !isContainer && !isSmallCan) {
+          item.basePrice = Math.round(precioKg * kg * 0.95);
+          item.costPrice = Math.round(item.basePrice * 0.75);
+          gasFixed++;
+        } else if (item.unit === 'kg' || kg <= 1) {
+          item.unit = 'kg';
           item.basePrice = precioKg;
           item.costPrice = Math.round(precioKg * 0.75);
           gasFixed++;
