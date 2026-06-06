@@ -6,6 +6,7 @@ import cors from 'cors';
 import path from 'path';
 import prisma from './prisma';
 import logger from './logger';
+import './startup';
 import authRoutes from './routes/auth';
 import customerRoutes from './routes/customers';
 import equipmentRoutes from './routes/equipment';

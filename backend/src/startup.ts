@@ -290,7 +290,6 @@ async function startup() {
     console.log(`[startup] Período de prueba extendido a 90 días para ${usersToExtend.length} usuarios.`);
   }
 
-  await prisma.$disconnect();
   console.log('[startup] Listo.');
 }
 
