@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ErrorBoundary from './ErrorBoundary';
+import KeyboardShortcuts from './KeyboardShortcuts';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -406,6 +407,7 @@ export default function Layout() {
       </div>
 
       <GlobalSearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <KeyboardShortcuts />
     </div>
   );
 }
