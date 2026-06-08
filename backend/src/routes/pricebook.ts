@@ -120,7 +120,7 @@ router.get('/items/all', async (_req: Request, res: Response) => {
     const items = await prisma.pricebookItem.findMany({
       where: { active: true },
       orderBy: { name: 'asc' },
-      select: { id: true, sku: true, name: true, description: true, unit: true, basePrice: true, costPrice: true, category: { select: { id: true, name: true } } },
+      select: { id: true, sku: true, name: true, description: true, unit: true, basePrice: true, costPrice: true, categoryId: true, category: { select: { id: true, name: true } } },
     });
     res.json(items);
   } catch {

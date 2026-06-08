@@ -89,6 +89,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/commissions', commissionRoutes);
 app.use('/api/warranties', warrantyRoutes);
 app.use('/api/purchasing', purchasingRoutes);
+app.use('/api/quotation-requests', quotationRequestRoutes);
 app.use('/api/admin/ai', aiAssistantRoutes);
 
 app.get('/health', (_req, res) => {

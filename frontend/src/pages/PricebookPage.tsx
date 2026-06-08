@@ -51,10 +51,9 @@ export default function PricebookPage() {
   });
 
   const { data: items, isLoading: itemsLoading } = useQuery<PricebookItem[]>({
-    queryKey: ['pricebook-items', selectedCategoryId],
+    queryKey: ['pricebook-items'],
     queryFn: () => {
-      const params = selectedCategoryId ? `?categoryId=${selectedCategoryId}` : '';
-      return api.get(`/pricebook/items${params}`).then(r => {
+      return api.get('/pricebook/items/all').then(r => {
         const d = r.data;
         return Array.isArray(d) ? d : (d.data || []);
       });
@@ -62,8 +61,9 @@ export default function PricebookPage() {
   });
 
   const filteredItems = (items || []).filter(i =>
-    i.name.toLowerCase().includes(search.toLowerCase()) ||
-    i.sku?.toLowerCase().includes(search.toLowerCase())
+    (selectedCategoryId == null || i.category?.id === selectedCategoryId) &&
+    (i.name.toLowerCase().includes(search.toLowerCase()) ||
+    i.sku?.toLowerCase().includes(search.toLowerCase()))
   );
 
   const activeCategories = (categories || []).filter(c => c.active);
