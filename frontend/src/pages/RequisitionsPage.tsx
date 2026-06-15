@@ -16,7 +16,6 @@ interface Requisition {
   approvedBy: { id: number; name: string } | null;
   branch: { id: number; name: string } | null;
   items: Item[];
-  items: Item[];
 }
 
 const statusStyles: Record<string, string> = {
