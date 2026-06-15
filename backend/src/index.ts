@@ -21,7 +21,7 @@ import userRoutes from './routes/users';
 import profileRoutes from './routes/profile';
 import subscriptionRoutes from './routes/subscriptions';
 import uploadRoutes from './routes/upload';
-import mercadolibreRoutes from './routes/mercadolibre';
+
 import searchRoutes from './routes/search';
 import notificationRoutes from './routes/notifications';
 import assetRoutes from './routes/assets';
@@ -41,6 +41,7 @@ import commissionRoutes from './routes/commissions';
 import warrantyRoutes from './routes/warranties';
 import purchasingRoutes from './routes/purchasing';
 import quotationRequestRoutes from './routes/quotationRequests';
+import mercadolibreRoutes from './routes/mercadolibre';
 import aiAssistantRoutes from './routes/aiAssistant';
 import materialRequisitionRoutes from './routes/materialRequisitions';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler';
@@ -71,7 +72,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/upload', uploadRoutes);
-app.use('/api/mercadolibre', mercadolibreRoutes);
+
 app.use('/api/search', searchRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/assets', assetRoutes);
@@ -91,6 +92,7 @@ app.use('/api/commissions', commissionRoutes);
 app.use('/api/warranties', warrantyRoutes);
 app.use('/api/purchasing', purchasingRoutes);
 app.use('/api/quotation-requests', quotationRequestRoutes);
+app.use('/api/mercadolibre', mercadolibreRoutes);
 app.use('/api/material-requisitions', materialRequisitionRoutes);
 app.use('/api/admin/ai', aiAssistantRoutes);
 

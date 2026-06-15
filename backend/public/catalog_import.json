@@ -4721,7 +4721,7 @@
   },
   {
     "name": "Almacén",
-    "description": "Fuente: Habitissimo CDMX 2026",
+    "description": "",
     "unit": "obra",
     "category": "Centralizado Completo",
     "basePrice": 44800,
@@ -4729,7 +4729,7 @@
   },
   {
     "name": "Comunidad residencial",
-    "description": "Fuente: Habitissimo CDMX 2026",
+    "description": "",
     "unit": "obra",
     "category": "Centralizado Completo",
     "basePrice": 56000,
@@ -4737,7 +4737,7 @@
   },
   {
     "name": "Departamento",
-    "description": "Fuente: Habitissimo CDMX 2026",
+    "description": "",
     "unit": "obra",
     "category": "Centralizado Completo",
     "basePrice": 17900,
@@ -4745,7 +4745,7 @@
   },
   {
     "name": "Local comercial",
-    "description": "Fuente: Habitissimo CDMX 2026",
+    "description": "",
     "unit": "obra",
     "category": "Centralizado Completo",
     "basePrice": 42500,
@@ -4753,7 +4753,7 @@
   },
   {
     "name": "Oficinas",
-    "description": "Fuente: Habitissimo CDMX 2026",
+    "description": "",
     "unit": "obra",
     "category": "Centralizado Completo",
     "basePrice": 39200,
@@ -7537,7 +7537,7 @@
   },
   {
     "name": "Aislamiento elastomérico (tuberáas)",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² instalado | Notas: Incluye material + instalación | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² instalado | Notas: Incluye material + instalación",
     "unit": "m²",
     "category": "Ductería",
     "basePrice": 200,
@@ -7545,7 +7545,7 @@
   },
   {
     "name": "Aislamiento fibra de vidrio para ductos",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² instalado | Notas: Incluye material + instalación | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² instalado | Notas: Incluye material + instalación",
     "unit": "m²",
     "category": "Ductería",
     "basePrice": 150,
@@ -7577,7 +7577,7 @@
   },
   {
     "name": "Cal. 22 (0.76 mm)",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~5.9 kg/m² | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~5.9 kg/m²",
     "unit": "m²",
     "category": "Ductería",
     "basePrice": 560,
@@ -7585,7 +7585,7 @@
   },
   {
     "name": "Cal. 24 (0.61 mm)",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~4.7 kg/m² | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~4.7 kg/m²",
     "unit": "m²",
     "category": "Ductería",
     "basePrice": 450,
@@ -7593,7 +7593,7 @@
   },
   {
     "name": "Cal. 26 (0.49 mm)",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~3.9 kg/m² | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: m² | Notas: ~3.9 kg/m²",
     "unit": "m²",
     "category": "Ductería",
     "basePrice": 370,
@@ -7745,7 +7745,7 @@
   },
   {
     "name": "Compuerta de regulación",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación",
     "unit": "pieza",
     "category": "Ductería",
     "basePrice": 800,
@@ -7769,7 +7769,7 @@
   },
   {
     "name": "Costo Directo Total",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Fuente: APU",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 80.12,
@@ -7897,7 +7897,7 @@
   },
   {
     "name": "Difusor de impulsión",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación",
     "unit": "pieza",
     "category": "Ductería",
     "basePrice": 500,
@@ -8009,7 +8009,7 @@
   },
   {
     "name": "Ducto flexible aislado",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: metro lineal | Notas: Incluye instalación | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: metro lineal | Notas: Incluye instalación",
     "unit": "metro",
     "category": "Ductería",
     "basePrice": 280,
@@ -8049,7 +8049,7 @@
   },
   {
     "name": "Ducto lámina galvanizada cal. 22",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos industriales, alta presión | Fuente: analisisdepreciosunitarios 2025",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos industriales, alta presión",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 110,
@@ -8057,7 +8057,7 @@
   },
   {
     "name": "Ducto lámina galvanizada cal. 24",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos comerciales, troncales | Fuente: analisisdepreciosunitarios 2025",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos comerciales, troncales",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 95,
@@ -8065,7 +8065,7 @@
   },
   {
     "name": "Ducto lámina galvanizada cal. 26",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos pequeños residenciales | Fuente: analisisdepreciosunitarios 2025",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg instalado | Notas: Uso: ductos pequeños residenciales",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 95,
@@ -9817,7 +9817,7 @@
   },
   {
     "name": "Herramienta (dobladora, menor, andamio)",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: 3% de MO | Fuente: APU",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: 3% de MO",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 0.62,
@@ -9825,7 +9825,7 @@
   },
   {
     "name": "Indirectos (15%) + Utilidad (12%)",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Fuente: APU",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 21.63,
@@ -9849,7 +9849,7 @@
   },
   {
     "name": "Mano de obra (cuadrilla 1 Of + 1 Ayte)",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: 0.01 jornal @ $1,150 + FASAR | Fuente: APU",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: 0.01 jornal @ $1,150 + FASAR",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 20.7,
@@ -9865,7 +9865,7 @@
   },
   {
     "name": "Materiales (lámina 1.05kg + consumibles)",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: Lámina $50/kg + 5% desperdicio | Fuente: APU",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: Lámina $50/kg + 5% desperdicio",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 58.8,
@@ -9889,7 +9889,7 @@
   },
   {
     "name": "Precio Unitario Al Cliente",
-    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: Antes de IVA | Fuente: APU",
+    "description": "Categoría: Ductos De Lámina Galvanizada | Unidad: kg | Notas: Antes de IVA",
     "unit": "kg",
     "category": "Ductería",
     "basePrice": 101.75,
@@ -9921,7 +9921,7 @@
   },
   {
     "name": "Rejilla de retorno",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación | Fuente: Proyección",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: pieza instalada | Notas: Incluye instalación",
     "unit": "pieza",
     "category": "Ductería",
     "basePrice": 400,
@@ -10033,7 +10033,7 @@
   },
   {
     "name": "Solo conductos en almacén",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra",
     "unit": "obra",
     "category": "Ductería",
     "basePrice": 44800,
@@ -10041,7 +10041,7 @@
   },
   {
     "name": "Solo conductos en comunidad residencial",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra",
     "unit": "obra",
     "category": "Ductería",
     "basePrice": 168000,
@@ -10049,7 +10049,7 @@
   },
   {
     "name": "Solo conductos en departamento",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra",
     "unit": "obra",
     "category": "Ductería",
     "basePrice": 17900,
@@ -10057,7 +10057,7 @@
   },
   {
     "name": "Solo conductos en local comercial",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra",
     "unit": "obra",
     "category": "Ductería",
     "basePrice": 56000,
@@ -10065,7 +10065,7 @@
   },
   {
     "name": "Solo conductos en oficinas",
-    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra | Fuente: Habitissimo CDMX 2026",
+    "description": "Categoría: Aislamiento Y Accesorios | Unidad: obra",
     "unit": "obra",
     "category": "Ductería",
     "basePrice": 39200,
@@ -12233,7 +12233,7 @@
   },
   {
     "name": "Acetileno soldadura (Cilindro 6 m3)",
-    "description": "Refrigerante: Acetileno soldadura | Presentación: Cilindro 6 m3 | Fuente: REACSA 2026",
+    "description": "Refrigerante: Acetileno soldadura | Presentación: Cilindro 6 m3",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 2500,
@@ -12241,7 +12241,7 @@
   },
   {
     "name": "CO2 refrigeración (Cilindro 25 kg)",
-    "description": "Refrigerante: CO2 refrigeración | Presentación: Cilindro 25 kg | Price Kg: $85/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: CO2 refrigeración | Presentación: Cilindro 25 kg | Price Kg: $85/kg",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 2125,
@@ -12249,7 +12249,7 @@
   },
   {
     "name": "Nitrógeno N2 (Tanque 10 m3)",
-    "description": "Refrigerante: Nitrógeno N2 | Presentación: Tanque 10 m3 | Fuente: REACSA 2026",
+    "description": "Refrigerante: Nitrógeno N2 | Presentación: Tanque 10 m3",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 1800,
@@ -12257,7 +12257,7 @@
   },
   {
     "name": "Nitrógeno N2 prueba presión (Cilindro 6 m3)",
-    "description": "Refrigerante: Nitrógeno N2 prueba presión | Presentación: Cilindro 6 m3 | Fuente: REACSA 2026",
+    "description": "Refrigerante: Nitrógeno N2 prueba presión | Presentación: Cilindro 6 m3",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 1200,
@@ -12265,7 +12265,7 @@
   },
   {
     "name": "Oxágeno O2 soldadura (Cilindro 6 m3)",
-    "description": "Refrigerante: Oxágeno O2 soldadura | Presentación: Cilindro 6 m3 | Fuente: REACSA 2026",
+    "description": "Refrigerante: Oxágeno O2 soldadura | Presentación: Cilindro 6 m3",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 900,
@@ -12281,7 +12281,7 @@
   },
   {
     "name": "R-1233zd (Cilindro 20 kg)",
-    "description": "Refrigerante: R-1233zd | Presentación: Cilindro 20 kg | Price Kg: $850/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-1233zd | Presentación: Cilindro 20 kg | Price Kg: $850/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 19950,
@@ -12297,7 +12297,7 @@
   },
   {
     "name": "R-1234yf (Cilindro 10 kg)",
-    "description": "Refrigerante: R-1234yf | Presentación: Cilindro 10 kg | Price Kg: $1650/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-1234yf | Presentación: Cilindro 10 kg | Price Kg: $1650/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 13300,
@@ -12305,7 +12305,7 @@
   },
   {
     "name": "R-1234yf (Lata 500g)",
-    "description": "Refrigerante: R-1234yf | Presentación: Lata 500g | Price Kg: $1800/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-1234yf | Presentación: Lata 500g | Price Kg: $1800/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 875,
@@ -12361,7 +12361,7 @@
   },
   {
     "name": "R-134a (Boya 13.6 kg)",
-    "description": "Refrigerante: R-134a | Presentación: Boya 13.6 kg | Price Kg: $235/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-134a | Presentación: Boya 13.6 kg | Price Kg: $235/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 3876,
@@ -12369,7 +12369,7 @@
   },
   {
     "name": "R-134a (Cilindro 50 kg)",
-    "description": "Refrigerante: R-134a | Presentación: Cilindro 50 kg | Price Kg: $220/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-134a | Presentación: Cilindro 50 kg | Price Kg: $220/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 14250,
@@ -12377,7 +12377,7 @@
   },
   {
     "name": "R-134a (Lata 300g)",
-    "description": "Refrigerante: R-134a | Presentación: Lata 300g | Price Kg: $280/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-134a | Presentación: Lata 300g | Price Kg: $280/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 113,
@@ -12385,7 +12385,7 @@
   },
   {
     "name": "R-134a CHEMOURS",
-    "description": "Presentación: Boya 13.6 kg | Price Kg: ~$235/kg | Fuente: REACSA 2026",
+    "description": "Presentación: Boya 13.6 kg | Price Kg: ~$235/kg",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 300,
@@ -12425,7 +12425,7 @@
   },
   {
     "name": "R-22 (Boya 13.6 kg)",
-    "description": "Refrigerante: R-22 | Presentación: Boya 13.6 kg | Price Kg: $226/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-22 | Presentación: Boya 13.6 kg | Price Kg: $226/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 6460,
@@ -12433,7 +12433,7 @@
   },
   {
     "name": "R-22 (Cilindro 50 kg)",
-    "description": "Refrigerante: R-22 | Presentación: Cilindro 50 kg | Price Kg: $210/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-22 | Presentación: Cilindro 50 kg | Price Kg: $210/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 23750,
@@ -12441,7 +12441,7 @@
   },
   {
     "name": "R-22 (Lata 1 kg)",
-    "description": "Refrigerante: R-22 | Presentación: Lata 1 kg | Price Kg: $263/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-22 | Presentación: Lata 1 kg | Price Kg: $263/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 625,
@@ -12457,7 +12457,7 @@
   },
   {
     "name": "R-22 Freon",
-    "description": "Presentación: Boya 13.6 kg | Price Kg: $226/kg | Fuente: REACSA 2026",
+    "description": "Presentación: Boya 13.6 kg | Price Kg: $226/kg",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 500,
@@ -12489,7 +12489,7 @@
   },
   {
     "name": "R-290 Propano (Cilindro 10 kg)",
-    "description": "Refrigerante: R-290 Propano | Presentación: Cilindro 10 kg | Price Kg: $180/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-290 Propano | Presentación: Cilindro 10 kg | Price Kg: $180/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 1520,
@@ -12497,7 +12497,7 @@
   },
   {
     "name": "R-290 Propano (Cilindro 25 kg)",
-    "description": "Refrigerante: R-290 Propano | Presentación: Cilindro 25 kg | Price Kg: $165/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-290 Propano | Presentación: Cilindro 25 kg | Price Kg: $165/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 3800,
@@ -12505,7 +12505,7 @@
   },
   {
     "name": "R-32 (Boya 9.5 kg)",
-    "description": "Refrigerante: R-32 | Presentación: Boya 9.5 kg | Price Kg: $526/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-32 | Presentación: Boya 9.5 kg | Price Kg: $526/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 1986,
@@ -12513,7 +12513,7 @@
   },
   {
     "name": "R-32 (Cilindro 25 kg)",
-    "description": "Refrigerante: R-32 | Presentación: Cilindro 25 kg | Price Kg: $490/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-32 | Presentación: Cilindro 25 kg | Price Kg: $490/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 5225,
@@ -12521,7 +12521,7 @@
   },
   {
     "name": "R-32 (Cilindro 50 kg)",
-    "description": "Refrigerante: R-32 | Presentación: Cilindro 50 kg | Price Kg: $470/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-32 | Presentación: Cilindro 50 kg | Price Kg: $470/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 10450,
@@ -12529,7 +12529,7 @@
   },
   {
     "name": "R-32 (Lata 800g)",
-    "description": "Refrigerante: R-32 | Presentación: Lata 800g | Price Kg: $560/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-32 | Presentación: Lata 800g | Price Kg: $560/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 220,
@@ -12553,7 +12553,7 @@
   },
   {
     "name": "R-32 Freon",
-    "description": "Presentación: Boya 9.5 kg | Price Kg: $526/kg | Fuente: REACSA 2026",
+    "description": "Presentación: Boya 9.5 kg | Price Kg: $526/kg",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 220,
@@ -12569,7 +12569,7 @@
   },
   {
     "name": "R-404A (Cilindro 10.9 kg)",
-    "description": "Refrigerante: R-404A | Presentación: Cilindro 10.9 kg | Price Kg: $532/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-404A | Presentación: Cilindro 10.9 kg | Price Kg: $532/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 3003,
@@ -12577,7 +12577,7 @@
   },
   {
     "name": "R-404A (Cilindro 25 kg)",
-    "description": "Refrigerante: R-404A | Presentación: Cilindro 25 kg | Price Kg: $510/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-404A | Presentación: Cilindro 25 kg | Price Kg: $510/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 6888,
@@ -12585,7 +12585,7 @@
   },
   {
     "name": "R-404A (Cilindro 50 kg)",
-    "description": "Refrigerante: R-404A | Presentación: Cilindro 50 kg | Price Kg: $490/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-404A | Presentación: Cilindro 50 kg | Price Kg: $490/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 13775,
@@ -12601,7 +12601,7 @@
   },
   {
     "name": "R-404A Freon",
-    "description": "Presentación: 10.896 kg | Price Kg: ~$532/kg | Fuente: REACSA 2026",
+    "description": "Presentación: 10.896 kg | Price Kg: ~$532/kg",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 290,
@@ -12617,7 +12617,7 @@
   },
   {
     "name": "R-407C (Cilindro 12 kg)",
-    "description": "Refrigerante: R-407C | Presentación: Cilindro 12 kg | Price Kg: $380/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-407C | Presentación: Cilindro 12 kg | Price Kg: $380/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 3534,
@@ -12625,7 +12625,7 @@
   },
   {
     "name": "R-407C (Cilindro 25 kg)",
-    "description": "Refrigerante: R-407C | Presentación: Cilindro 25 kg | Price Kg: $360/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-407C | Presentación: Cilindro 25 kg | Price Kg: $360/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 7363,
@@ -12657,7 +12657,7 @@
   },
   {
     "name": "R-410A",
-    "description": "Presentación: Lata 650g | Price Kg: $412/kg | Fuente: REACSA 2026",
+    "description": "Presentación: Lata 650g | Price Kg: $412/kg",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 320,
@@ -12665,7 +12665,7 @@
   },
   {
     "name": "R-410A (Boya 11.35 kg)",
-    "description": "Refrigerante: R-410A | Presentación: Boya 11.35 kg | Price Kg: $279/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-410A | Presentación: Boya 11.35 kg | Price Kg: $279/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 3450,
@@ -12673,7 +12673,7 @@
   },
   {
     "name": "R-410A (Cilindro 25 kg)",
-    "description": "Refrigerante: R-410A | Presentación: Cilindro 25 kg | Price Kg: $265/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-410A | Presentación: Cilindro 25 kg | Price Kg: $265/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 7600,
@@ -12681,7 +12681,7 @@
   },
   {
     "name": "R-410A (Cilindro 50 kg)",
-    "description": "Refrigerante: R-410A | Presentación: Cilindro 50 kg | Price Kg: $255/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-410A | Presentación: Cilindro 50 kg | Price Kg: $255/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 15200,
@@ -12689,7 +12689,7 @@
   },
   {
     "name": "R-410A (Lata 650g)",
-    "description": "Refrigerante: R-410A | Presentación: Lata 650g | Price Kg: $412/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-410A | Presentación: Lata 650g | Price Kg: $412/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 260,
@@ -12713,7 +12713,7 @@
   },
   {
     "name": "R-410A Suva Freon",
-    "description": "Presentación: Boya 11.35 kg | Price Kg: $279/kg | Fuente: REACSA 2026",
+    "description": "Presentación: Boya 11.35 kg | Price Kg: $279/kg",
     "unit": "kg",
     "category": "Gas Refrigerante",
     "basePrice": 320,
@@ -12729,7 +12729,7 @@
   },
   {
     "name": "R-448A Solstice N40 (Cilindro 10 kg)",
-    "description": "Refrigerante: R-448A Solstice N40 | Presentación: Cilindro 10 kg | Price Kg: $650/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-448A Solstice N40 | Presentación: Cilindro 10 kg | Price Kg: $650/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 3990,
@@ -12737,7 +12737,7 @@
   },
   {
     "name": "R-448A Solstice N40 (Cilindro 25 kg)",
-    "description": "Refrigerante: R-448A Solstice N40 | Presentación: Cilindro 25 kg | Price Kg: $620/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-448A Solstice N40 | Presentación: Cilindro 25 kg | Price Kg: $620/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 9975,
@@ -12753,7 +12753,7 @@
   },
   {
     "name": "R-449A Opteon XP40 (Cilindro 11 kg)",
-    "description": "Refrigerante: R-449A Opteon XP40 | Presentación: Cilindro 11 kg | Price Kg: $600/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-449A Opteon XP40 | Presentación: Cilindro 11 kg | Price Kg: $600/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 7106,
@@ -12761,7 +12761,7 @@
   },
   {
     "name": "R-449A Opteon XP40 (Cilindro 25 kg)",
-    "description": "Refrigerante: R-449A Opteon XP40 | Presentación: Cilindro 25 kg | Price Kg: $580/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-449A Opteon XP40 | Presentación: Cilindro 25 kg | Price Kg: $580/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 16150,
@@ -12769,7 +12769,7 @@
   },
   {
     "name": "R-452A (Cilindro 10 kg)",
-    "description": "Refrigerante: R-452A | Presentación: Cilindro 10 kg | Price Kg: $720/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-452A | Presentación: Cilindro 10 kg | Price Kg: $720/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 5700,
@@ -12817,7 +12817,7 @@
   },
   {
     "name": "R-515B (Cilindro 20 kg)",
-    "description": "Refrigerante: R-515B | Presentación: Cilindro 20 kg | Price Kg: $780/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-515B | Presentación: Cilindro 20 kg | Price Kg: $780/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 15580,
@@ -12833,7 +12833,7 @@
   },
   {
     "name": "R-600a Isobutano (Cilindro 10 kg)",
-    "description": "Refrigerante: R-600a Isobutano | Presentación: Cilindro 10 kg | Price Kg: $200/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-600a Isobutano | Presentación: Cilindro 10 kg | Price Kg: $200/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 1710,
@@ -12841,7 +12841,7 @@
   },
   {
     "name": "R-600a Isobutano (Cilindro 25 kg)",
-    "description": "Refrigerante: R-600a Isobutano | Presentación: Cilindro 25 kg | Price Kg: $185/kg | Fuente: REACSA 2026",
+    "description": "Refrigerante: R-600a Isobutano | Presentación: Cilindro 25 kg | Price Kg: $185/kg",
     "unit": "pieza",
     "category": "Gas Refrigerante",
     "basePrice": 4275,
@@ -14521,7 +14521,7 @@
   },
   {
     "name": "Adaptación eléctrica 110V/220V",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Genz Clima 2026",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 500,
@@ -14529,7 +14529,7 @@
   },
   {
     "name": "Alimentador trifásico (tablero a equipo industrial)",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 5000,
@@ -14537,7 +14537,7 @@
   },
   {
     "name": "Arrancador magnético para compresor (instalado)",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 2500,
@@ -14721,7 +14721,7 @@
   },
   {
     "name": "Breaker termomagnético 20A 2 polos (instalado)",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 400,
@@ -14729,7 +14729,7 @@
   },
   {
     "name": "Breaker termomagnético 30-50A 2 polos (instalado)",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 600,
@@ -14849,7 +14849,7 @@
   },
   {
     "name": "Cable uso rudo cal.10 (por metro)",
-    "description": "Categoría: Materiales Eléctricos | Fuente: Proyección",
+    "description": "Categoría: Materiales Eléctricos",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 50,
@@ -14857,7 +14857,7 @@
   },
   {
     "name": "Cable uso rudo cal.6 (por metro)",
-    "description": "Categoría: Materiales Eléctricos | Fuente: Proyección",
+    "description": "Categoría: Materiales Eléctricos",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 120,
@@ -14865,7 +14865,7 @@
   },
   {
     "name": "Cable uso rudo cal.8 (por metro)",
-    "description": "Categoría: Materiales Eléctricos | Fuente: Proyección",
+    "description": "Categoría: Materiales Eléctricos",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 80,
@@ -15001,7 +15001,7 @@
   },
   {
     "name": "Centro de carga 2-4 polos (instalado)",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 800,
@@ -15177,7 +15177,7 @@
   },
   {
     "name": "Contacto 220V con tierra (instalado)",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 400,
@@ -15249,7 +15249,7 @@
   },
   {
     "name": "Instalación eléctrica completa (tablero y equipo)",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: HomePro 2026",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 1500,
@@ -15337,7 +15337,7 @@
   },
   {
     "name": "Kit instalación eléctrica 220V 20m cal.10 (material completo)",
-    "description": "Categoría: Materiales Eléctricos | Fuente: MercadoLibre 2026 (precio real)",
+    "description": "Categoría: Materiales Eléctricos",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 1189,
@@ -15761,7 +15761,7 @@
   },
   {
     "name": "Variador de frecuencia (VFD) (instalado)",
-    "description": "Categoría: Servicios De Instalación Eléctrica | Fuente: Proyección",
+    "description": "Categoría: Servicios De Instalación Eléctrica",
     "unit": "servicio",
     "category": "Instalación Eléctrica",
     "basePrice": 8000,
@@ -17577,7 +17577,7 @@
   },
   {
     "name": "Carga de gas refrigerante (servicio completo)",
-    "description": "Categoría: Reparaciones Menores | Tiempo: 2-3 hrs | Fuente: SimpleClima 2026",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 2-3 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 1200,
@@ -17609,7 +17609,7 @@
   },
   {
     "name": "Compresor chiller (reemplazo - refacción + mano obra)",
-    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 2-7 dáas | Fuente: HomePro Ind. 2026",
+    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 2-7 dáas",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 80000,
@@ -17641,7 +17641,7 @@
   },
   {
     "name": "Destapar drenaje de minisplit",
-    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Varias fuentes",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 500,
@@ -17713,7 +17713,7 @@
   },
   {
     "name": "Diagnóstico / visita técnica",
-    "description": "Categoría: Servicios De Diagnóstico | Tiempo: 30 min - 1 hr | Fuente: AireyClimas, Mercado",
+    "description": "Categoría: Servicios De Diagnóstico | Tiempo: 30 min - 1 hr",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 350,
@@ -17729,7 +17729,7 @@
   },
   {
     "name": "Eliminar agua condensada de bateráa",
-    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Habitissimo 2026",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 635,
@@ -17737,7 +17737,7 @@
   },
   {
     "name": "Instalar sifón en desagüe",
-    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Habitissimo 2026",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 610,
@@ -17745,7 +17745,7 @@
   },
   {
     "name": "Levantamiento para cotización",
-    "description": "Categoría: Servicios De Diagnóstico | Tiempo: 30 min | Fuente: AireyClimas 2025",
+    "description": "Categoría: Servicios De Diagnóstico | Tiempo: 30 min",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 350,
@@ -17897,7 +17897,7 @@
   },
   {
     "name": "Recuperación de nivel de refrigerante (hasta 20%)",
-    "description": "Categoría: Reparaciones Menores | Price: Incluido en mantenimiento preventivo | Tiempo: N/A | Fuente: AireyClimas",
+    "description": "Categoría: Reparaciones Menores | Price: Incluido en mantenimiento preventivo | Tiempo: N/A",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": null,
@@ -18041,7 +18041,7 @@
   },
   {
     "name": "Reemplazo de empaques de cabezal",
-    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 2-3 dáas | Fuente: Proyección",
+    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 2-3 dáas",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 15000,
@@ -18529,7 +18529,7 @@
   },
   {
     "name": "Reparación mayor (compresor, PCB)",
-    "description": "Categoría: Reparaciones Menores | Price: $4,000 - $15,000+ | Tiempo: 4-8 hrs | Fuente: Varias fuentes",
+    "description": "Categoría: Reparaciones Menores | Price: $4,000 - $15,000+ | Tiempo: 4-8 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": null,
@@ -18537,7 +18537,7 @@
   },
   {
     "name": "Reparación mediana (fugas, válvulas)",
-    "description": "Categoría: Reparaciones Menores | Tiempo: 2-4 hrs | Fuente: Varias fuentes",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 2-4 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 1500,
@@ -18545,7 +18545,7 @@
   },
   {
     "name": "Reparación menor (cableado, conexiones)",
-    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Varias fuentes",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 500,
@@ -18553,7 +18553,7 @@
   },
   {
     "name": "Reparar fuga en circuito frigoráfico",
-    "description": "Categoría: Reparaciones Menores | Tiempo: 1-3 hrs | Fuente: Habitissimo 2026",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-3 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 675,
@@ -18561,7 +18561,7 @@
   },
   {
     "name": "Reparar presión del refrigerante",
-    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs | Fuente: Habitissimo 2026",
+    "description": "Categoría: Reparaciones Menores | Tiempo: 1-2 hrs",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 845,
@@ -18585,7 +18585,7 @@
   },
   {
     "name": "Válvula de expansión chiller",
-    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 1-2 dáas | Fuente: Proyección",
+    "description": "Categoría: Reparaciones Chiller / Industrial | Tiempo: 1-2 dáas",
     "unit": "servicio",
     "category": "Mantto Correctivo",
     "basePrice": 8000,
@@ -18705,7 +18705,7 @@
   },
   {
     "name": "Cassette (2-4 TR)",
-    "description": "Categoría: Cassette | Capacidad: 2-4 TR | Horas: 7-8 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro Feb 2026",
+    "description": "Categoría: Cassette | Capacidad: 2-4 TR | Horas: 7-8 hrs | Frecuencia: Cada 4-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 2700,
@@ -18713,7 +18713,7 @@
   },
   {
     "name": "Chiller (100-300 TR)",
-    "description": "Categoría: Chiller / Agua Helada | Capacidad: 100-300 TR | Horas: 2-4 dáas | Frecuencia: Cada 6 meses | Fuente: HomePro Ind. 2026",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 100-300 TR | Horas: 2-4 dáas | Frecuencia: Cada 6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 30000,
@@ -18721,7 +18721,7 @@
   },
   {
     "name": "Chiller (300-800 TR)",
-    "description": "Categoría: Chiller / Agua Helada | Capacidad: 300-800 TR | Horas: 3-7 dáas | Frecuencia: Cada 6 meses | Fuente: HomePro Ind. 2026",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 300-800 TR | Horas: 3-7 dáas | Frecuencia: Cada 6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 60000,
@@ -18729,7 +18729,7 @@
   },
   {
     "name": "Chiller (50-100 TR)",
-    "description": "Categoría: Chiller / Agua Helada | Capacidad: 50-100 TR | Horas: 1-2 dáas | Frecuencia: Cada 6 meses | Fuente: HomePro 2026",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 50-100 TR | Horas: 1-2 dáas | Frecuencia: Cada 6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 15000,
@@ -18737,7 +18737,7 @@
   },
   {
     "name": "Chiller (mantenimiento completo) (50-100 TR)",
-    "description": "Categoría: Chiller / Agua Helada | Capacidad: 50-100 TR | Price: Desde $15,000 | Horas: 1-2 dáas | Frecuencia: Cada 6 meses | Fuente: HomePro Feb 2026",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 50-100 TR | Price: Desde $15,000 | Horas: 1-2 dáas | Frecuencia: Cada 6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": null,
@@ -18817,7 +18817,7 @@
   },
   {
     "name": "Fan Coil (15-20 TR)",
-    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 15-20 TR | Horas: 12-16 hrs | Frecuencia: Cada 3-6 meses | Fuente: Proyección mercado",
+    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 15-20 TR | Horas: 12-16 hrs | Frecuencia: Cada 3-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 6000,
@@ -18825,7 +18825,7 @@
   },
   {
     "name": "Fan Coil (4.5 TR)",
-    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 4.5 TR | Horas: 8.5 hrs | Frecuencia: Cada 3-6 meses | Fuente: HomePro Feb 2026",
+    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 4.5 TR | Horas: 8.5 hrs | Frecuencia: Cada 3-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 3600,
@@ -18833,7 +18833,7 @@
   },
   {
     "name": "Fan Coil (8-10 TR)",
-    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 8-10 TR | Horas: 10-12 hrs | Frecuencia: Cada 3-6 meses | Fuente: Proyección mercado",
+    "description": "Categoría: Fan Coil (Agua Helada) | Capacidad: 8-10 TR | Horas: 10-12 hrs | Frecuencia: Cada 3-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 4500,
@@ -18953,7 +18953,7 @@
   },
   {
     "name": "Mantenimiento + recarga de gas (Cualquier)",
-    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 3-4 hrs | Frecuencia: Solo si necesario | Fuente: SimpleClima 2026",
+    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 3-4 hrs | Frecuencia: Solo si necesario",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 1200,
@@ -18961,7 +18961,7 @@
   },
   {
     "name": "Mantenimiento básico (solo filtros) (Cualquier)",
-    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 1 hr | Frecuencia: Cada 2-3 meses | Fuente: Habitissimo 2026",
+    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 1 hr | Frecuencia: Cada 2-3 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 600,
@@ -18969,7 +18969,7 @@
   },
   {
     "name": "Mantenimiento completo (limpieza total) (Cualquier)",
-    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 2-3 hrs | Frecuencia: Cada 6 meses | Fuente: Varias fuentes CDMX",
+    "description": "Categoría: Minisplits | Capacidad: Cualquier | Horas: 2-3 hrs | Frecuencia: Cada 6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 1000,
@@ -19177,7 +19177,7 @@
   },
   {
     "name": "Minisplit (1 TR (12K BTU))",
-    "description": "Categoría: Minisplits | Capacidad: 1 TR (12K BTU) | Horas: 5.9 hrs | Frecuencia: Cada 6-12 meses | Fuente: HomePro Feb 2026",
+    "description": "Categoría: Minisplits | Capacidad: 1 TR (12K BTU) | Horas: 5.9 hrs | Frecuencia: Cada 6-12 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 2500,
@@ -19185,7 +19185,7 @@
   },
   {
     "name": "Minisplit (2 TR (24K BTU))",
-    "description": "Categoría: Minisplits | Capacidad: 2 TR (24K BTU) | Horas: 6.1 hrs | Frecuencia: Cada 6-12 meses | Fuente: HomePro Feb 2026",
+    "description": "Categoría: Minisplits | Capacidad: 2 TR (24K BTU) | Horas: 6.1 hrs | Frecuencia: Cada 6-12 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 2600,
@@ -19193,7 +19193,7 @@
   },
   {
     "name": "Minisplit (3 TR (36K BTU))",
-    "description": "Categoría: Minisplits | Capacidad: 3 TR (36K BTU) | Horas: 6.4 hrs | Frecuencia: Cada 6-12 meses | Fuente: HomePro Feb 2026",
+    "description": "Categoría: Minisplits | Capacidad: 3 TR (36K BTU) | Horas: 6.4 hrs | Frecuencia: Cada 6-12 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 2700,
@@ -19201,7 +19201,7 @@
   },
   {
     "name": "Minisplit económico (empresa chica) (1-3 TR)",
-    "description": "Categoría: Minisplits | Capacidad: 1-3 TR | Horas: 2-3 hrs | Frecuencia: Cada 6-12 meses | Fuente: AireyClimas 2025-26",
+    "description": "Categoría: Minisplits | Capacidad: 1-3 TR | Horas: 2-3 hrs | Frecuencia: Cada 6-12 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 1100,
@@ -19225,7 +19225,7 @@
   },
   {
     "name": "Piso-Techo (5 TR)",
-    "description": "Categoría: Piso-Techo | Capacidad: 5 TR | Horas: 6.6 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro Feb 2026",
+    "description": "Categoría: Piso-Techo | Capacidad: 5 TR | Horas: 6.6 hrs | Frecuencia: Cada 4-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 2800,
@@ -19233,7 +19233,7 @@
   },
   {
     "name": "Piso-Techo (8-10 TR)",
-    "description": "Categoría: Piso-Techo | Capacidad: 8-10 TR | Horas: 8-10 hrs | Frecuencia: Cada 4-6 meses | Fuente: Proyección mercado",
+    "description": "Categoría: Piso-Techo | Capacidad: 8-10 TR | Horas: 8-10 hrs | Frecuencia: Cada 4-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 3500,
@@ -19417,7 +19417,7 @@
   },
   {
     "name": "Rooftop (10 TR)",
-    "description": "Categoría: Rooftop / Paquete | Capacidad: 10 TR | Horas: 8-10 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro 2026",
+    "description": "Categoría: Rooftop / Paquete | Capacidad: 10 TR | Horas: 8-10 hrs | Frecuencia: Cada 4-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 5500,
@@ -19425,7 +19425,7 @@
   },
   {
     "name": "Rooftop (15-20 TR)",
-    "description": "Categoría: Rooftop / Paquete | Capacidad: 15-20 TR | Horas: 10-14 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro 2026",
+    "description": "Categoría: Rooftop / Paquete | Capacidad: 15-20 TR | Horas: 10-14 hrs | Frecuencia: Cada 4-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 7000,
@@ -19433,7 +19433,7 @@
   },
   {
     "name": "Rooftop (5 TR)",
-    "description": "Categoría: Rooftop / Paquete | Capacidad: 5 TR | Horas: 6-8 hrs | Frecuencia: Cada 4-6 meses | Fuente: HomePro 2026",
+    "description": "Categoría: Rooftop / Paquete | Capacidad: 5 TR | Horas: 6-8 hrs | Frecuencia: Cada 4-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 4000,
@@ -19457,7 +19457,7 @@
   },
   {
     "name": "Sistema VRF completo (20+ UI)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: 20+ UI | Horas: 2-5 dáas | Frecuencia: Cada 6 meses | Fuente: Proyección mercado",
+    "description": "Categoría: Vrf / Vrv | Capacidad: 20+ UI | Horas: 2-5 dáas | Frecuencia: Cada 6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 25000,
@@ -19465,7 +19465,7 @@
   },
   {
     "name": "Torre de enfriamiento (100-500 TR)",
-    "description": "Categoría: Chiller / Agua Helada | Capacidad: 100-500 TR | Horas: 1-2 dáas | Frecuencia: Cada 3-6 meses | Fuente: HomePro 2026",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: 100-500 TR | Horas: 1-2 dáas | Frecuencia: Cada 3-6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 8000,
@@ -19537,7 +19537,7 @@
   },
   {
     "name": "Tratamiento de agua para torre (Por sistema)",
-    "description": "Categoría: Chiller / Agua Helada | Capacidad: Por sistema | Price: $5,000 - $15,000/mes | Horas: N/A | Frecuencia: Mensual | Fuente: HomePro Ind. 2026",
+    "description": "Categoría: Chiller / Agua Helada | Capacidad: Por sistema | Price: $5,000 - $15,000/mes | Horas: N/A | Frecuencia: Mensual",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": null,
@@ -19545,7 +19545,7 @@
   },
   {
     "name": "Unidad exterior VRF (8-20 HP)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: 8-20 HP | Horas: 8-12 hrs | Frecuencia: Cada 6 meses | Fuente: Proyección mercado",
+    "description": "Categoría: Vrf / Vrv | Capacidad: 8-20 HP | Horas: 8-12 hrs | Frecuencia: Cada 6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 5000,
@@ -19553,7 +19553,7 @@
   },
   {
     "name": "Unidad interior VRF (por UI) (Cualquier)",
-    "description": "Categoría: Vrf / Vrv | Capacidad: Cualquier | Horas: 3-5 hrs | Frecuencia: Cada 6 meses | Fuente: HomePro Feb 2026",
+    "description": "Categoría: Vrf / Vrv | Capacidad: Cualquier | Horas: 3-5 hrs | Frecuencia: Cada 6 meses",
     "unit": "servicio",
     "category": "Mantto Preventivo",
     "basePrice": 2800,
@@ -20105,7 +20105,7 @@
   },
   {
     "name": "Póliza mantenimiento AHU/Manejadora de aire - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para manejadora de aire | 2 visitas preventivas/año (semestral) | $4,000/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentines de enfriamiento y calefacción, filtros, ventiladores, compuertas de mezcla, drenaje | Revisión de transmisiones, bandas, poleas, conexiones eléctricas, controles, sensores | Cotizar: TR del equipo × $4,000/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para manejadora de aire | 2 visitas preventivas/año (semestral) | $4,000/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentines de enfriamiento y calefacción, filtros, ventiladores, compuertas de mezcla, drenaje | Revisión de transmisiones, bandas, poleas, conexiones eléctricas, controles, sensores | Cotizar: TR del equipo × $4,000/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4000,
@@ -20113,7 +20113,7 @@
   },
   {
     "name": "Póliza mantenimiento AHU/Manejadora de aire - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para manejadora de aire | 4 visitas preventivas/año (trimestral) | $6,600/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentines de enfriamiento y calefacción, filtros, ventiladores, compuertas de mezcla, drenaje | Revisión de transmisiones, bandas, poleas, conexiones eléctricas, controles, sensores | Cotizar: TR del equipo × $6,600/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para manejadora de aire | 4 visitas preventivas/año (trimestral) | $6,600/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentines de enfriamiento y calefacción, filtros, ventiladores, compuertas de mezcla, drenaje | Revisión de transmisiones, bandas, poleas, conexiones eléctricas, controles, sensores | Cotizar: TR del equipo × $6,600/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 6600,
@@ -20121,7 +20121,7 @@
   },
   {
     "name": "Póliza mantenimiento AHU/Manejadora de aire - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para manejadora de aire | 4 visitas preventivas/año + emergencias 24/7 sin costo | $8,200/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentines de enfriamiento y calefacción, filtros, ventiladores, compuertas de mezcla, drenaje | Revisión de transmisiones, bandas, poleas, conexiones eléctricas, controles, sensores | Cotizar: TR del equipo × $8,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para manejadora de aire | 4 visitas preventivas/año + emergencias 24/7 sin costo | $8,200/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentines de enfriamiento y calefacción, filtros, ventiladores, compuertas de mezcla, drenaje | Revisión de transmisiones, bandas, poleas, conexiones eléctricas, controles, sensores | Cotizar: TR del equipo × $8,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 8200,
@@ -20129,7 +20129,7 @@
   },
   {
     "name": "Póliza mantenimiento Bomba de agua HVAC - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para bomba de agua HVAC | 2 visitas preventivas/año (semestral) | $1,600/HP/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Lubricación de baleros y chumaceras, revisión de sellos mecánicos, acoplamiento, motor, válvulas de succión y descarga, presiones, amperajes, alineación, base y nivelación | Cotizar: HP del equipo × $1,600/HP/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para bomba de agua HVAC | 2 visitas preventivas/año (semestral) | $1,600/HP/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Lubricación de baleros y chumaceras, revisión de sellos mecánicos, acoplamiento, motor, válvulas de succión y descarga, presiones, amperajes, alineación, base y nivelación | Cotizar: HP del equipo × $1,600/HP/año",
     "unit": "HP/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 1600,
@@ -20137,7 +20137,7 @@
   },
   {
     "name": "Póliza mantenimiento Bomba de agua HVAC - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para bomba de agua HVAC | 4 visitas preventivas/año (trimestral) | $2,800/HP/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Lubricación de baleros y chumaceras, revisión de sellos mecánicos, acoplamiento, motor, válvulas de succión y descarga, presiones, amperajes, alineación, base y nivelación | Cotizar: HP del equipo × $2,800/HP/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para bomba de agua HVAC | 4 visitas preventivas/año (trimestral) | $2,800/HP/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Lubricación de baleros y chumaceras, revisión de sellos mecánicos, acoplamiento, motor, válvulas de succión y descarga, presiones, amperajes, alineación, base y nivelación | Cotizar: HP del equipo × $2,800/HP/año",
     "unit": "HP/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 2800,
@@ -20145,7 +20145,7 @@
   },
   {
     "name": "Póliza mantenimiento Caldera - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para caldera | 2 visitas preventivas/año (semestral) | $2,400/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Revisión de quemadores, intercambiador de calor, válvulas de seguridad, chimenea, controles, presión de gas | Análisis de combustión, eficiencia | Cotizar: TR del equipo × $2,400/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para caldera | 2 visitas preventivas/año (semestral) | $2,400/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Revisión de quemadores, intercambiador de calor, válvulas de seguridad, chimenea, controles, presión de gas | Análisis de combustión, eficiencia | Cotizar: TR del equipo × $2,400/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 2400,
@@ -20153,7 +20153,7 @@
   },
   {
     "name": "Póliza mantenimiento Caldera - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para caldera | 4 visitas preventivas/año (trimestral) | $4,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Revisión de quemadores, intercambiador de calor, válvulas de seguridad, chimenea, controles, presión de gas | Análisis de combustión, eficiencia | Cotizar: TR del equipo × $4,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para caldera | 4 visitas preventivas/año (trimestral) | $4,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Revisión de quemadores, intercambiador de calor, válvulas de seguridad, chimenea, controles, presión de gas | Análisis de combustión, eficiencia | Cotizar: TR del equipo × $4,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4200,
@@ -20161,7 +20161,7 @@
   },
   {
     "name": "Póliza mantenimiento Caldera - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para caldera | 4 visitas preventivas/año + emergencias 24/7 sin costo | $5,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Revisión de quemadores, intercambiador de calor, válvulas de seguridad, chimenea, controles, presión de gas | Análisis de combustión, eficiencia | Cotizar: TR del equipo × $5,500/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para caldera | 4 visitas preventivas/año + emergencias 24/7 sin costo | $5,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Revisión de quemadores, intercambiador de calor, válvulas de seguridad, chimenea, controles, presión de gas | Análisis de combustión, eficiencia | Cotizar: TR del equipo × $5,500/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 5500,
@@ -20169,7 +20169,7 @@
   },
   {
     "name": "Póliza mantenimiento Cassette - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para cassette | 2 visitas preventivas/año (semestral) | $4,400/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto | Cotizar: TR del equipo × $4,400/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para cassette | 2 visitas preventivas/año (semestral) | $4,400/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto | Cotizar: TR del equipo × $4,400/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4400,
@@ -20177,7 +20177,7 @@
   },
   {
     "name": "Póliza mantenimiento Cassette - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para cassette | 4 visitas preventivas/año (trimestral) | $7,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto | Cotizar: TR del equipo × $7,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para cassette | 4 visitas preventivas/año (trimestral) | $7,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto | Cotizar: TR del equipo × $7,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 7200,
@@ -20185,7 +20185,7 @@
   },
   {
     "name": "Póliza mantenimiento Cassette - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para cassette | 4 visitas preventivas/año + emergencias 24/7 sin costo | $9,000/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto | Cotizar: TR del equipo × $9,000/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para cassette | 4 visitas preventivas/año + emergencias 24/7 sin costo | $9,000/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, bomba de condensados, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto | Cotizar: TR del equipo × $9,000/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 9000,
@@ -20193,7 +20193,7 @@
   },
   {
     "name": "Póliza mantenimiento Chiller - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para chiller | 2 visitas preventivas/año (semestral) | $2,800/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de condensador y evaporador, cambio de aceite y filtros, revisión de compresor | Análisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, válvulería | Cotizar: TR del equipo × $2,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para chiller | 2 visitas preventivas/año (semestral) | $2,800/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de condensador y evaporador, cambio de aceite y filtros, revisión de compresor | Análisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, válvulería | Cotizar: TR del equipo × $2,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 2800,
@@ -20201,7 +20201,7 @@
   },
   {
     "name": "Póliza mantenimiento Chiller - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para chiller | 4 visitas preventivas/año (trimestral) | $4,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de condensador y evaporador, cambio de aceite y filtros, revisión de compresor | Análisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, válvulería | Cotizar: TR del equipo × $4,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para chiller | 4 visitas preventivas/año (trimestral) | $4,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de condensador y evaporador, cambio de aceite y filtros, revisión de compresor | Análisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, válvulería | Cotizar: TR del equipo × $4,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4800,
@@ -20209,7 +20209,7 @@
   },
   {
     "name": "Póliza mantenimiento Chiller - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para chiller | 4 visitas preventivas/año + emergencias 24/7 sin costo | $6,000/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de condensador y evaporador, cambio de aceite y filtros, revisión de compresor | Análisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, válvulería | Cotizar: TR del equipo × $6,000/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para chiller | 4 visitas preventivas/año + emergencias 24/7 sin costo | $6,000/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de condensador y evaporador, cambio de aceite y filtros, revisión de compresor | Análisis de refrigerante, presiones, temperaturas, controles, bombas, torre de enfriamiento, válvulería | Cotizar: TR del equipo × $6,000/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 6000,
@@ -20217,7 +20217,7 @@
   },
   {
     "name": "Póliza mantenimiento Cuarto frío - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para cuarto frío | 2 visitas preventivas/año (semestral) | $4,000/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de condensador, evaporador, puerta, cortinas, drenaje, control de temperatura | Revisión de presiones, carga de refrigerante, cortinas, burletes | Cotizar: TR del equipo × $4,000/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para cuarto frío | 2 visitas preventivas/año (semestral) | $4,000/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de condensador, evaporador, puerta, cortinas, drenaje, control de temperatura | Revisión de presiones, carga de refrigerante, cortinas, burletes | Cotizar: TR del equipo × $4,000/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4000,
@@ -20225,7 +20225,7 @@
   },
   {
     "name": "Póliza mantenimiento Cuarto frío - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para cuarto frío | 4 visitas preventivas/año (trimestral) | $6,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de condensador, evaporador, puerta, cortinas, drenaje, control de temperatura | Revisión de presiones, carga de refrigerante, cortinas, burletes | Cotizar: TR del equipo × $6,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para cuarto frío | 4 visitas preventivas/año (trimestral) | $6,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de condensador, evaporador, puerta, cortinas, drenaje, control de temperatura | Revisión de presiones, carga de refrigerante, cortinas, burletes | Cotizar: TR del equipo × $6,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 6800,
@@ -20233,7 +20233,7 @@
   },
   {
     "name": "Póliza mantenimiento Cuarto frío - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para cuarto frío | 4 visitas preventivas/año + emergencias 24/7 sin costo | $8,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de condensador, evaporador, puerta, cortinas, drenaje, control de temperatura | Revisión de presiones, carga de refrigerante, cortinas, burletes | Cotizar: TR del equipo × $8,500/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para cuarto frío | 4 visitas preventivas/año + emergencias 24/7 sin costo | $8,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de condensador, evaporador, puerta, cortinas, drenaje, control de temperatura | Revisión de presiones, carga de refrigerante, cortinas, burletes | Cotizar: TR del equipo × $8,500/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 8500,
@@ -20241,7 +20241,7 @@
   },
   {
     "name": "Póliza mantenimiento Enfriador de líquido (chiller compacto) - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para enfriador de líquido compacto | 2 visitas preventivas/año (semestral) | $3,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Revisión de compresor Scroll, condensador de aire, filtros, presiones | Temperatura de agua helada, controles, alarmas | Cotizar: TR del equipo × $3,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para enfriador de líquido compacto | 2 visitas preventivas/año (semestral) | $3,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Revisión de compresor Scroll, condensador de aire, filtros, presiones | Temperatura de agua helada, controles, alarmas | Cotizar: TR del equipo × $3,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 3200,
@@ -20249,7 +20249,7 @@
   },
   {
     "name": "Póliza mantenimiento Enfriador de líquido (chiller compacto) - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para enfriador de líquido compacto | 4 visitas preventivas/año (trimestral) | $5,400/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Revisión de compresor Scroll, condensador de aire, filtros, presiones | Temperatura de agua helada, controles, alarmas | Cotizar: TR del equipo × $5,400/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para enfriador de líquido compacto | 4 visitas preventivas/año (trimestral) | $5,400/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Revisión de compresor Scroll, condensador de aire, filtros, presiones | Temperatura de agua helada, controles, alarmas | Cotizar: TR del equipo × $5,400/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 5400,
@@ -20257,7 +20257,7 @@
   },
   {
     "name": "Póliza mantenimiento Enfriador de líquido (chiller compacto) - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para enfriador de líquido compacto | 4 visitas preventivas/año + emergencias 24/7 sin costo | $6,800/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Revisión de compresor Scroll, condensador de aire, filtros, presiones | Temperatura de agua helada, controles, alarmas | Cotizar: TR del equipo × $6,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para enfriador de líquido compacto | 4 visitas preventivas/año + emergencias 24/7 sin costo | $6,800/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Revisión de compresor Scroll, condensador de aire, filtros, presiones | Temperatura de agua helada, controles, alarmas | Cotizar: TR del equipo × $6,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 6800,
@@ -20265,7 +20265,7 @@
   },
   {
     "name": "Póliza mantenimiento Fan Coil (agua helada) - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para fan coil (agua helada) | 2 visitas preventivas/año (semestral) | $5,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentín de agua helada, bandeja de condensados, filtros, ventilador, válvulas de control | Revisión de temperatura de impulsión y retorno, conexiones hidráulicas, actuadores | Cotizar: TR del equipo × $5,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para fan coil (agua helada) | 2 visitas preventivas/año (semestral) | $5,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentín de agua helada, bandeja de condensados, filtros, ventilador, válvulas de control | Revisión de temperatura de impulsión y retorno, conexiones hidráulicas, actuadores | Cotizar: TR del equipo × $5,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 5200,
@@ -20273,7 +20273,7 @@
   },
   {
     "name": "Póliza mantenimiento Fan Coil (agua helada) - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para fan coil (agua helada) | 4 visitas preventivas/año (trimestral) | $8,400/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentín de agua helada, bandeja de condensados, filtros, ventilador, válvulas de control | Revisión de temperatura de impulsión y retorno, conexiones hidráulicas, actuadores | Cotizar: TR del equipo × $8,400/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para fan coil (agua helada) | 4 visitas preventivas/año (trimestral) | $8,400/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentín de agua helada, bandeja de condensados, filtros, ventilador, válvulas de control | Revisión de temperatura de impulsión y retorno, conexiones hidráulicas, actuadores | Cotizar: TR del equipo × $8,400/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 8400,
@@ -20281,7 +20281,7 @@
   },
   {
     "name": "Póliza mantenimiento Fan Coil (agua helada) - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para fan coil (agua helada) | 4 visitas preventivas/año + emergencias 24/7 sin costo | $10,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentín de agua helada, bandeja de condensados, filtros, ventilador, válvulas de control | Revisión de temperatura de impulsión y retorno, conexiones hidráulicas, actuadores | Cotizar: TR del equipo × $10,500/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para fan coil (agua helada) | 4 visitas preventivas/año + emergencias 24/7 sin costo | $10,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentín de agua helada, bandeja de condensados, filtros, ventilador, válvulas de control | Revisión de temperatura de impulsión y retorno, conexiones hidráulicas, actuadores | Cotizar: TR del equipo × $10,500/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 10500,
@@ -20289,7 +20289,7 @@
   },
   {
     "name": "Póliza mantenimiento Minisplit - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para minisplit (alta pared) | 2 visitas preventivas/año (semestral) | $4,800/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto, drenaje | Cotizar: TR del equipo × $4,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para minisplit (alta pared) | 2 visitas preventivas/año (semestral) | $4,800/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto, drenaje | Cotizar: TR del equipo × $4,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4800,
@@ -20297,7 +20297,7 @@
   },
   {
     "name": "Póliza mantenimiento Minisplit - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para minisplit (alta pared) | 4 visitas preventivas/año (trimestral) | $7,600/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto, drenaje | Cotizar: TR del equipo × $7,600/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para minisplit (alta pared) | 4 visitas preventivas/año (trimestral) | $7,600/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto, drenaje | Cotizar: TR del equipo × $7,600/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 7600,
@@ -20305,7 +20305,7 @@
   },
   {
     "name": "Póliza mantenimiento Minisplit - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para minisplit (alta pared) | 4 visitas preventivas/año + emergencias 24/7 sin costo | $9,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto, drenaje | Cotizar: TR del equipo × $9,500/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para minisplit (alta pared) | 4 visitas preventivas/año + emergencias 24/7 sin costo | $9,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de filtros, evaporadora, condensadora, bandeja de drenaje, ventilador | Revisión de presiones, amperajes, carga de refrigerante, conexiones eléctricas, control remoto, drenaje | Cotizar: TR del equipo × $9,500/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 9500,
@@ -20313,7 +20313,7 @@
   },
   {
     "name": "Póliza mantenimiento Mirage / equipo tipo ventana - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para equipo tipo ventana/Mirage | 2 visitas preventivas/año (semestral) | $2,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentines, filtro, bandeja, motor, control, drenaje | Revisión de presiones, amperajes | Cotizar: TR del equipo × $2,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para equipo tipo ventana/Mirage | 2 visitas preventivas/año (semestral) | $2,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentines, filtro, bandeja, motor, control, drenaje | Revisión de presiones, amperajes | Cotizar: TR del equipo × $2,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 2200,
@@ -20321,7 +20321,7 @@
   },
   {
     "name": "Póliza mantenimiento Mirage / equipo tipo ventana - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para equipo tipo ventana/Mirage | 4 visitas preventivas/año (trimestral) | $3,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentines, filtro, bandeja, motor, control, drenaje | Revisión de presiones, amperajes | Cotizar: TR del equipo × $3,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para equipo tipo ventana/Mirage | 4 visitas preventivas/año (trimestral) | $3,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentines, filtro, bandeja, motor, control, drenaje | Revisión de presiones, amperajes | Cotizar: TR del equipo × $3,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 3800,
@@ -20329,7 +20329,7 @@
   },
   {
     "name": "Póliza mantenimiento Mirage / equipo tipo ventana - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para equipo tipo ventana/Mirage | 4 visitas preventivas/año + emergencias 24/7 sin costo | $4,800/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentines, filtro, bandeja, motor, control, drenaje | Revisión de presiones, amperajes | Cotizar: TR del equipo × $4,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para equipo tipo ventana/Mirage | 4 visitas preventivas/año + emergencias 24/7 sin costo | $4,800/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentines, filtro, bandeja, motor, control, drenaje | Revisión de presiones, amperajes | Cotizar: TR del equipo × $4,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4800,
@@ -20337,7 +20337,7 @@
   },
   {
     "name": "Póliza mantenimiento Piso-Techo - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para piso-techo | 2 visitas preventivas/año (semestral) | $4,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentín, filtros, ventilador, drenaje, control, termostato | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $4,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para piso-techo | 2 visitas preventivas/año (semestral) | $4,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentín, filtros, ventilador, drenaje, control, termostato | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $4,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4200,
@@ -20345,7 +20345,7 @@
   },
   {
     "name": "Póliza mantenimiento Piso-Techo - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para piso-techo | 4 visitas preventivas/año (trimestral) | $6,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentín, filtros, ventilador, drenaje, control, termostato | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $6,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para piso-techo | 4 visitas preventivas/año (trimestral) | $6,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentín, filtros, ventilador, drenaje, control, termostato | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $6,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 6800,
@@ -20353,7 +20353,7 @@
   },
   {
     "name": "Póliza mantenimiento Piso-Techo - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para piso-techo | 4 visitas preventivas/año + emergencias 24/7 sin costo | $8,600/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentín, filtros, ventilador, drenaje, control, termostato | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $8,600/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para piso-techo | 4 visitas preventivas/año + emergencias 24/7 sin costo | $8,600/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentín, filtros, ventilador, drenaje, control, termostato | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $8,600/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 8600,
@@ -20361,7 +20361,7 @@
   },
   {
     "name": "Póliza mantenimiento Rooftop/Paquete - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para rooftop/paquete | 2 visitas preventivas/año (semestral) | $4,500/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentines de condensador y evaporador, filtros, quemadores, ventiladores, drenaje | Revisión de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operación | Cotizar: TR del equipo × $4,500/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para rooftop/paquete | 2 visitas preventivas/año (semestral) | $4,500/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentines de condensador y evaporador, filtros, quemadores, ventiladores, drenaje | Revisión de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operación | Cotizar: TR del equipo × $4,500/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4500,
@@ -20369,7 +20369,7 @@
   },
   {
     "name": "Póliza mantenimiento Rooftop/Paquete - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para rooftop/paquete | 4 visitas preventivas/año (trimestral) | $7,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentines de condensador y evaporador, filtros, quemadores, ventiladores, drenaje | Revisión de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operación | Cotizar: TR del equipo × $7,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para rooftop/paquete | 4 visitas preventivas/año (trimestral) | $7,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentines de condensador y evaporador, filtros, quemadores, ventiladores, drenaje | Revisión de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operación | Cotizar: TR del equipo × $7,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 7200,
@@ -20377,7 +20377,7 @@
   },
   {
     "name": "Póliza mantenimiento Rooftop/Paquete - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para rooftop/paquete | 4 visitas preventivas/año + emergencias 24/7 sin costo | $9,000/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentines de condensador y evaporador, filtros, quemadores, ventiladores, drenaje | Revisión de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operación | Cotizar: TR del equipo × $9,000/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para rooftop/paquete | 4 visitas preventivas/año + emergencias 24/7 sin costo | $9,000/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentines de condensador y evaporador, filtros, quemadores, ventiladores, drenaje | Revisión de presiones, amperajes, carga de refrigerante, controles, termostato, secuencia de operación | Cotizar: TR del equipo × $9,000/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 9000,
@@ -20385,7 +20385,7 @@
   },
   {
     "name": "Póliza mantenimiento Sistema agua helada completo - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para sistema de agua helada completo | 2 visitas preventivas/año (semestral) | $2,400/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, válvulería, controles, sensores | Reporte ejecutivo de eficiencia | Cotizar: TR del equipo × $2,400/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para sistema de agua helada completo | 2 visitas preventivas/año (semestral) | $2,400/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, válvulería, controles, sensores | Reporte ejecutivo de eficiencia | Cotizar: TR del equipo × $2,400/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 2400,
@@ -20393,7 +20393,7 @@
   },
   {
     "name": "Póliza mantenimiento Sistema agua helada completo - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para sistema de agua helada completo | 4 visitas preventivas/año (trimestral) | $4,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, válvulería, controles, sensores | Reporte ejecutivo de eficiencia | Cotizar: TR del equipo × $4,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para sistema de agua helada completo | 4 visitas preventivas/año (trimestral) | $4,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, válvulería, controles, sensores | Reporte ejecutivo de eficiencia | Cotizar: TR del equipo × $4,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4200,
@@ -20401,7 +20401,7 @@
   },
   {
     "name": "Póliza mantenimiento Sistema agua helada completo - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para sistema de agua helada completo | 4 visitas preventivas/año + emergencias 24/7 sin costo | $5,400/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, válvulería, controles, sensores | Reporte ejecutivo de eficiencia | Cotizar: TR del equipo × $5,400/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para sistema de agua helada completo | 4 visitas preventivas/año + emergencias 24/7 sin costo | $5,400/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Mantenimiento completo de todo el sistema: chiller, bombas de agua helada y condensado, torre de enfriamiento, fan coils o manejadoras, válvulería, controles, sensores | Reporte ejecutivo de eficiencia | Cotizar: TR del equipo × $5,400/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 5400,
@@ -20409,7 +20409,7 @@
   },
   {
     "name": "Póliza mantenimiento Sistema expansión directa (DX) - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para sistema de expansión directa (DX) | 2 visitas preventivas/año (semestral) | $3,800/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Revisión de evaporador, condensador, válvula de expansión, línea de líquido, succión | Presiones, amperajes, temperatura de sobrecalentamiento y subenfriamiento | Cotizar: TR del equipo × $3,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para sistema de expansión directa (DX) | 2 visitas preventivas/año (semestral) | $3,800/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Revisión de evaporador, condensador, válvula de expansión, línea de líquido, succión | Presiones, amperajes, temperatura de sobrecalentamiento y subenfriamiento | Cotizar: TR del equipo × $3,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 3800,
@@ -20417,7 +20417,7 @@
   },
   {
     "name": "Póliza mantenimiento Sistema expansión directa (DX) - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para sistema de expansión directa (DX) | 4 visitas preventivas/año (trimestral) | $6,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Revisión de evaporador, condensador, válvula de expansión, línea de líquido, succión | Presiones, amperajes, temperatura de sobrecalentamiento y subenfriamiento | Cotizar: TR del equipo × $6,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para sistema de expansión directa (DX) | 4 visitas preventivas/año (trimestral) | $6,200/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Revisión de evaporador, condensador, válvula de expansión, línea de líquido, succión | Presiones, amperajes, temperatura de sobrecalentamiento y subenfriamiento | Cotizar: TR del equipo × $6,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 6200,
@@ -20425,7 +20425,7 @@
   },
   {
     "name": "Póliza mantenimiento Sistema expansión directa (DX) - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para sistema de expansión directa (DX) | 4 visitas preventivas/año + emergencias 24/7 sin costo | $7,800/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Revisión de evaporador, condensador, válvula de expansión, línea de líquido, succión | Presiones, amperajes, temperatura de sobrecalentamiento y subenfriamiento | Cotizar: TR del equipo × $7,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para sistema de expansión directa (DX) | 4 visitas preventivas/año + emergencias 24/7 sin costo | $7,800/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Revisión de evaporador, condensador, válvula de expansión, línea de líquido, succión | Presiones, amperajes, temperatura de sobrecalentamiento y subenfriamiento | Cotizar: TR del equipo × $7,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 7800,
@@ -20433,7 +20433,7 @@
   },
   {
     "name": "Póliza mantenimiento Torre de enfriamiento - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para torre de enfriamiento | 2 visitas preventivas/año (semestral) | $2,000/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, válvula de llenado | Revisión de motor, ventilador, transmisión, análisis de agua (pH, TDS, dureza), tratamiento químico | Cotizar: TR del equipo × $2,000/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para torre de enfriamiento | 2 visitas preventivas/año (semestral) | $2,000/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, válvula de llenado | Revisión de motor, ventilador, transmisión, análisis de agua (pH, TDS, dureza), tratamiento químico | Cotizar: TR del equipo × $2,000/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 2000,
@@ -20441,7 +20441,7 @@
   },
   {
     "name": "Póliza mantenimiento Torre de enfriamiento - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para torre de enfriamiento | 4 visitas preventivas/año (trimestral) | $3,600/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, válvula de llenado | Revisión de motor, ventilador, transmisión, análisis de agua (pH, TDS, dureza), tratamiento químico | Cotizar: TR del equipo × $3,600/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para torre de enfriamiento | 4 visitas preventivas/año (trimestral) | $3,600/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, válvula de llenado | Revisión de motor, ventilador, transmisión, análisis de agua (pH, TDS, dureza), tratamiento químico | Cotizar: TR del equipo × $3,600/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 3600,
@@ -20449,7 +20449,7 @@
   },
   {
     "name": "Póliza mantenimiento Torre de enfriamiento - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para torre de enfriamiento | 4 visitas preventivas/año + emergencias 24/7 sin costo | $4,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, válvula de llenado | Revisión de motor, ventilador, transmisión, análisis de agua (pH, TDS, dureza), tratamiento químico | Cotizar: TR del equipo × $4,500/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para torre de enfriamiento | 4 visitas preventivas/año + emergencias 24/7 sin costo | $4,500/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de relleno, eliminador de arrastre, boquillas, bandeja, flotador, válvula de llenado | Revisión de motor, ventilador, transmisión, análisis de agua (pH, TDS, dureza), tratamiento químico | Cotizar: TR del equipo × $4,500/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 4500,
@@ -20457,7 +20457,7 @@
   },
   {
     "name": "Póliza mantenimiento Unidad condensadora remota - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para unidad condensadora remota | 2 visitas preventivas/año (semestral) | $3,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentín, ventilador, compresor, presiones, controles | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $3,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para unidad condensadora remota | 2 visitas preventivas/año (semestral) | $3,200/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de serpentín, ventilador, compresor, presiones, controles | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $3,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 3200,
@@ -20465,7 +20465,7 @@
   },
   {
     "name": "Póliza mantenimiento Unidad condensadora remota - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para unidad condensadora remota | 4 visitas preventivas/año (trimestral) | $5,600/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentín, ventilador, compresor, presiones, controles | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $5,600/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para unidad condensadora remota | 4 visitas preventivas/año (trimestral) | $5,600/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de serpentín, ventilador, compresor, presiones, controles | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $5,600/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 5600,
@@ -20473,7 +20473,7 @@
   },
   {
     "name": "Póliza mantenimiento Unidad condensadora remota - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para unidad condensadora remota | 4 visitas preventivas/año + emergencias 24/7 sin costo | $7,000/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentín, ventilador, compresor, presiones, controles | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $7,000/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para unidad condensadora remota | 4 visitas preventivas/año + emergencias 24/7 sin costo | $7,000/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de serpentín, ventilador, compresor, presiones, controles | Revisión de presiones, amperajes, carga de refrigerante | Cotizar: TR del equipo × $7,000/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 7000,
@@ -20481,7 +20481,7 @@
   },
   {
     "name": "Póliza mantenimiento VRF - Basico",
-    "description": "Póliza de mantenimiento preventivo Basico para sistema VRF | 2 visitas preventivas/año (semestral) | $3,600/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revisión de tubería de refrigerante, detección de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicación | Cotizar: TR del equipo × $3,600/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Basico para sistema VRF | 2 visitas preventivas/año (semestral) | $3,600/TR/año | Mano de obra preventiva, reporte digital con fotos, 10% descuento en refacciones, 15% descuento en mano de obra correctiva | Trabajos incluidos: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revisión de tubería de refrigerante, detección de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicación | Cotizar: TR del equipo × $3,600/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 3600,
@@ -20489,7 +20489,7 @@
   },
   {
     "name": "Póliza mantenimiento VRF - Estandar",
-    "description": "Póliza de mantenimiento preventivo Estandar para sistema VRF | 4 visitas preventivas/año (trimestral) | $5,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revisión de tubería de refrigerante, detección de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicación | Cotizar: TR del equipo × $5,800/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Estandar para sistema VRF | 4 visitas preventivas/año (trimestral) | $5,800/TR/año | Mano de obra preventiva, reporte digital ejecutivo, 15% descuento en refacciones, 20% descuento en mano de obra correctiva, respuesta prioritaria < 24 hrs hábiles | Trabajos incluidos: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revisión de tubería de refrigerante, detección de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicación | Cotizar: TR del equipo × $5,800/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 5800,
@@ -20497,7 +20497,7 @@
   },
   {
     "name": "Póliza mantenimiento VRF - Premium",
-    "description": "Póliza de mantenimiento preventivo Premium para sistema VRF | 4 visitas preventivas/año + emergencias 24/7 sin costo | $7,200/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revisión de tubería de refrigerante, detección de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicación | Cotizar: TR del equipo × $7,200/TR/año | Precios basados en HomePro CDMX Feb 2026, competitivos para contratos corporativos",
+    "description": "Póliza de mantenimiento preventivo Premium para sistema VRF | 4 visitas preventivas/año + emergencias 24/7 sin costo | $7,200/TR/año | Mano de obra preventiva y correctiva sin costo, reporte ejecutivo, 20% descuento en refacciones, respuesta inmediata < 4 hrs, atención 24/7/365, monitoreo remoto trimestral | Trabajos incluidos: Limpieza de condensadoras, evaporadoras, filtros de aire, drenajes | Revisión de tubería de refrigerante, detección de fugas, carga de refrigerante, presiones, controles de red, cableado de comunicación | Cotizar: TR del equipo × $7,200/TR/año",
     "unit": "TR/año",
     "category": "Pólizas de Mantenimiento",
     "basePrice": 7200,
@@ -22097,7 +22097,7 @@
   },
   {
     "name": "Reemplazo bomba de condensado",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 1800,
@@ -22137,7 +22137,7 @@
   },
   {
     "name": "Reemplazo capacitor compresor (50-80 Ôö¼µF)",
-    "description": "Notas: Pieza $200-400 + mano obra | Fuente: FrioRefacciones + servicio",
+    "description": "Notas: Pieza $200-400 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 500,
@@ -22193,7 +22193,7 @@
   },
   {
     "name": "Reemplazo capacitor dual (55+5 a 70+5 Ôö¼µF)",
-    "description": "Notas: Pieza $140-200 + mano obra | Fuente: FrioRefacciones + servicio",
+    "description": "Notas: Pieza $140-200 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 500,
@@ -22321,7 +22321,7 @@
   },
   {
     "name": "Reemplazo capacitor ventilador (2-5 Ôö¼µF)",
-    "description": "Notas: Pieza $150-250 + mano obra | Fuente: ClimasMonterrey + servicio",
+    "description": "Notas: Pieza $150-250 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 400,
@@ -22465,7 +22465,7 @@
   },
   {
     "name": "Reemplazo compresor centráfugo chiller",
-    "description": "Notas: USD 60k-150k | Fuente: InganVF 2026",
+    "description": "Notas: USD 60k-150k",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 1200000,
@@ -22473,7 +22473,7 @@
   },
   {
     "name": "Reemplazo compresor minisplit 1.5T (18K)",
-    "description": "Fuente: Proyección",
+    "description": "",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 5000,
@@ -22481,7 +22481,7 @@
   },
   {
     "name": "Reemplazo compresor minisplit 1T (12K)",
-    "description": "Notas: CD $5,057 - APU detallado | Fuente: analisisdepreciosunitarios 2025",
+    "description": "Notas: CD $5,057 - APU detallado",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 4000,
@@ -22489,7 +22489,7 @@
   },
   {
     "name": "Reemplazo compresor minisplit 2T (24K)",
-    "description": "Fuente: Proyección",
+    "description": "",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 6000,
@@ -22497,7 +22497,7 @@
   },
   {
     "name": "Reemplazo compresor paquete 3T",
-    "description": "Fuente: analisisdepreciosunitarios 2025",
+    "description": "",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 9500,
@@ -22505,7 +22505,7 @@
   },
   {
     "name": "Reemplazo compresor paquete 5T",
-    "description": "Fuente: Proyección",
+    "description": "",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 14000,
@@ -22513,7 +22513,7 @@
   },
   {
     "name": "Reemplazo compresor scroll chiller 50T",
-    "description": "Fuente: Proyección",
+    "description": "",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 60000,
@@ -22521,7 +22521,7 @@
   },
   {
     "name": "Reemplazo compresor tornillo chiller 100T",
-    "description": "Fuente: Proyección",
+    "description": "",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 120000,
@@ -22681,7 +22681,7 @@
   },
   {
     "name": "Reemplazo contactor/arrancador",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 800,
@@ -22977,7 +22977,7 @@
   },
   {
     "name": "Reemplazo filtro deshidratador",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 400,
@@ -23017,7 +23017,7 @@
   },
   {
     "name": "Reemplazo motor condensador minisplit",
-    "description": "Notas: Pieza $1,050-1,400 + mano obra | Fuente: TotalHogar + servicio",
+    "description": "Notas: Pieza $1,050-1,400 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 1800,
@@ -23057,7 +23057,7 @@
   },
   {
     "name": "Reemplazo motor evaporador minisplit",
-    "description": "Notas: Pieza $980-2,260 + mano obra | Fuente: TotalHogar + servicio",
+    "description": "Notas: Pieza $980-2,260 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 1800,
@@ -23249,7 +23249,7 @@
   },
   {
     "name": "Reemplazo motor ventilador fan coil",
-    "description": "Fuente: Proyección",
+    "description": "",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 3500,
@@ -23257,7 +23257,7 @@
   },
   {
     "name": "Reemplazo motor ventilador rooftop/paquete",
-    "description": "Fuente: Proyección",
+    "description": "",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 5000,
@@ -23561,7 +23561,7 @@
   },
   {
     "name": "Reemplazo sensor de temperatura",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 600,
@@ -23745,7 +23745,7 @@
   },
   {
     "name": "Reemplazo tarjeta condensadora minisplit",
-    "description": "Notas: Pieza $1,200-1,500 + mano obra | Fuente: ClimasMonterrey + servicio",
+    "description": "Notas: Pieza $1,200-1,500 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 2000,
@@ -23825,7 +23825,7 @@
   },
   {
     "name": "Reemplazo tarjeta evaporadora minisplit",
-    "description": "Notas: Pieza $800-1,500 + mano obra | Fuente: ClimasMonterrey + servicio",
+    "description": "Notas: Pieza $800-1,500 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 1800,
@@ -23921,7 +23921,7 @@
   },
   {
     "name": "Reemplazo tarjeta VRF exterior",
-    "description": "Notas: Pieza $5,000-12,000 + mano obra | Fuente: Proyección",
+    "description": "Notas: Pieza $5,000-12,000 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 8000,
@@ -23937,7 +23937,7 @@
   },
   {
     "name": "Reemplazo tarjeta VRF interior",
-    "description": "Notas: Pieza $2,000-4,000 + mano obra | Fuente: Proyección",
+    "description": "Notas: Pieza $2,000-4,000 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 3500,
@@ -23953,7 +23953,7 @@
   },
   {
     "name": "Reemplazo termostato digital/programable",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 1500,
@@ -23961,7 +23961,7 @@
   },
   {
     "name": "Reemplazo termostato mecánico",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 600,
@@ -23969,7 +23969,7 @@
   },
   {
     "name": "Reemplazo termostato WiFi",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 2000,
@@ -24009,7 +24009,7 @@
   },
   {
     "name": "Reemplazo transformador 220/24V",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 600,
@@ -24025,7 +24025,7 @@
   },
   {
     "name": "Reemplazo turbina/abanico minisplit",
-    "description": "Notas: Pieza $480-620 + mano obra | Fuente: TotalHogar + servicio",
+    "description": "Notas: Pieza $480-620 + mano obra",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 1500,
@@ -24033,7 +24033,7 @@
   },
   {
     "name": "Reemplazo válvula de expansión termostática",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 1200,
@@ -24297,7 +24297,7 @@
   },
   {
     "name": "Reemplazo variador de frecuencia (VFD)",
-    "description": "Categoría: Otros Reemplazos | Fuente: Proyección",
+    "description": "Categoría: Otros Reemplazos",
     "unit": "pieza",
     "category": "Reemplazo Componentes",
     "basePrice": 8000,

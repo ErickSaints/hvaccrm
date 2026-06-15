@@ -927,8 +927,9 @@ export default function HvacCalculatorPage() {
   const quoteMutation = useMutation({
     mutationFn: async (item: CatalogItem) => {
       if (!selectedCustomerId && user?.role !== 'CLIENT') throw new Error('Selecciona un cliente');
-      const { data } = await api.post('/mercadolibre/create-quotation', {
-        itemId: item.id, title: item.name, price: item.price, quantity: 1, thumbnail: '',
+      const { data } = await api.post('/quotations', {
+        title: `Cotización: ${item.name}`,
+        items: [{ description: item.name, quantity: 1, unitPrice: item.price, total: item.price }],
         customerId: selectedCustomerId || undefined,
       });
       return data;
@@ -973,7 +974,7 @@ export default function HvacCalculatorPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Calculadora Técnica HVAC-R</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Dimensionamiento profesional HVAC-R · <span className="text-gray-400 dark:text-gray-500">by semasi</span></p>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Dimensionamiento profesional HVAC-R</p>
       </div>
 
       {/* Tab Bar */}
