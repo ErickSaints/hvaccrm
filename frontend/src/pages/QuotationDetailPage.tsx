@@ -359,57 +359,121 @@ export default function QuotationDetailPage() {
       <style>{`
         .print-only { display: none; }
         @media print {
-          @page { margin: 1.5cm 1.8cm; size: letter; }
-          * { box-shadow: none !important; text-shadow: none !important; background: transparent !important; }
-          body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          @page { margin: 1.8cm 1.5cm; size: letter; }
+          html, body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          body > div, body > div > div, body > div > div > div { background: white !important; }
           .no-print { display: none !important; }
-          .print-only { display: flex !important; }
-          .print-area { margin: 0; padding: 0; }
-          .print-area .card { border: none !important; padding: 0 !important; }
-          .print-area .text-3xl { font-size: 18px !important; color: #1e40af !important; }
-          .print-area .grid { display: flex !important; gap: 16px !important; margin-bottom: 14px !important; }
-          .print-area .grid > div { flex: 1; border: 1px solid #e5e7eb; border-radius: 4px; padding: 10px 12px; }
-          .print-area .grid p:first-child { font-size: 7px; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; font-weight: 700; }
-          .print-area .grid .font-medium { font-size: 9px; color: #1f2937; font-weight: 600; }
-          .print-area .grid .text-sm { font-size: 8px; color: #4b5563; }
-          .print-area .grid .text-xs { font-size: 7px; }
-          .print-area .grid svg { display: none; }
-          .print-area table { font-size: 9px; border-collapse: collapse; width: 100%; margin-bottom: 12px; }
-          .print-area table thead tr { border: none; }
-          .print-area table thead th { background: #1e40af !important; color: white !important; padding: 6px 8px; font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; border: none; }
-          .print-area table thead th:nth-child(2) { text-align: center; width: 50px; }
-          .print-area table thead th:nth-child(3) { text-align: right; width: 80px; }
-          .print-area table thead th:nth-child(4) { text-align: right; width: 80px; }
-          .print-area table tbody tr { border: none; }
-          .print-area table tbody td { padding: 5px 8px; border-bottom: 1px solid #e5e7eb; color: #374151; }
-          .print-area table tbody td:nth-child(2) { text-align: center; }
-          .print-area table tbody td:nth-child(3) { text-align: right; }
-          .print-area table tbody td:nth-child(4) { text-align: right; font-weight: 600; }
-          .print-area table tbody tr:nth-child(even) td { background: #f9fafb !important; }
-          .print-area table tbody tr:last-child td { border-bottom: 2px solid #1e40af; }
-          .print-area .border-t-2 { border: none !important; padding-top: 0 !important; margin-top: 0 !important; }
-          .print-area .border-t-2 .ml-auto { width: 240px !important; margin-left: auto !important; }
-          .print-area .border-t-2 .space-y-2 > div { padding: 2px 0; font-size: 9px; display: flex; justify-content: space-between; }
-          .print-area .border-t-2 .font-bold { border-top: 2px solid #1e40af; margin-top: 2px; padding-top: 4px; font-size: 11px; color: #1e40af; }
-          .print-area .border-t-2 .text-red-600 { color: #dc2626 !important; }
-          .print-area .border-t { border-top: 1px solid #e5e7eb !important; margin-top: 10px !important; padding-top: 8px !important; }
-          .print-area .border-t h3 { font-size: 9px; }
-          .print-area .border-t p { font-size: 8px; color: #6b7280; }
-          .print-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 3px solid #1e40af; }
-          .print-header-left h1 { font-size: 18px; margin: 0 0 2px; color: #1e40af; }
-          .print-header-left p { margin: 0; font-size: 8px; color: #6b7280; }
-          .print-header-right { text-align: right; font-size: 7px; color: #374151; line-height: 1.6; }
+          .print-only { display: block !important; }
+          .print-area { display: none !important; }
         }
+        .print-doc { font-family: 'Helvetica', 'Arial', sans-serif; color: #1f2937; max-width: 100%; }
+        .print-doc .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 3px solid #1e40af; }
+        .print-doc .header .left h1 { font-size: 22px; margin: 0 0 2px; color: #1e40af; }
+        .print-doc .header .left p { margin: 0; font-size: 9px; color: #6b7280; }
+        .print-doc .header .right { text-align: right; font-size: 8px; color: #374151; line-height: 1.6; }
+        .print-doc .title-area { margin: 14px 0 4px; }
+        .print-doc .title-area .doc-title { font-size: 14px; color: #1e40af; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+        .print-doc .title-area .doc-number { font-size: 10px; color: #6b7280; margin-top: 2px; }
+        .print-doc .title-area .doc-subject { font-size: 14px; font-weight: 700; color: #111827; margin-top: 4px; }
+        .print-doc .info-boxes { display: flex; gap: 14px; margin: 12px 0 16px; }
+        .print-doc .info-boxes > div { flex: 1; background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 4px; padding: 8px 10px; }
+        .print-doc .info-boxes .label { font-size: 7px; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 3px; }
+        .print-doc .info-boxes .value { font-size: 9px; color: #1f2937; line-height: 1.5; }
+        .print-doc .info-boxes .value.nobreak { white-space: nowrap; }
+        .print-doc table.items { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 9px; }
+        .print-doc table.items thead th { background: #1e40af; color: white; padding: 6px 8px; font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; text-align: left; }
+        .print-doc table.items thead th:nth-child(1) { width: 55%; }
+        .print-doc table.items thead th:nth-child(2) { width: 10%; text-align: center; }
+        .print-doc table.items thead th:nth-child(3) { width: 17%; text-align: right; }
+        .print-doc table.items thead th:nth-child(4) { width: 18%; text-align: right; }
+        .print-doc table.items tbody td { padding: 5px 8px; border-bottom: 1px solid #e5e7eb; }
+        .print-doc table.items tbody td:nth-child(2) { text-align: center; }
+        .print-doc table.items tbody td:nth-child(3) { text-align: right; }
+        .print-doc table.items tbody td:nth-child(4) { text-align: right; font-weight: 600; }
+        .print-doc table.items tbody tr:nth-child(even) td { background: #f9fafb; }
+        .print-doc table.items tbody tr:last-child td { border-bottom: 2px solid #1e40af; }
+        .print-doc .totals { margin-left: auto; width: 240px; font-size: 9px; }
+        .print-doc .totals > div { display: flex; justify-content: space-between; padding: 2px 0; }
+        .print-doc .totals .total { border-top: 2px solid #1e40af; margin-top: 2px; padding-top: 4px; font-weight: 700; font-size: 11px; color: #1e40af; }
+        .print-doc .notes { margin-top: 14px; padding-top: 10px; border-top: 1px solid #e5e7eb; }
+        .print-doc .notes h3 { font-size: 9px; font-weight: 700; color: #111827; margin: 0 0 4px; }
+        .print-doc .notes p { font-size: 8px; color: #6b7280; white-space: pre-wrap; margin: 0; }
+        .print-doc .footer { margin-top: 20px; padding-top: 8px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 7px; color: #9ca3af; }
       `}</style>
-      <div className="print-only print-header">
-        <div className="print-header-left">
-          <h1>HVAC-R CRM</h1>
-          <p>El CRM inteligente para HVAC-R · www.hvaccrm.com</p>
+      <div className="print-only print-doc">
+        <div className="header">
+          <div className="left">
+            <h1>HVAC-R CRM</h1>
+            <p>El CRM inteligente para HVAC-R · www.hvaccrm.com</p>
+          </div>
+          <div className="right">
+            <div>Av. Principal 123, Col. Centro</div>
+            <div>Ciudad de México, CDMX</div>
+            <div>contacto@hvaccrm.com · (55) 1234-5678</div>
+          </div>
         </div>
-        <div className="print-header-right">
-          <div>Av. Principal 123, Col. Centro</div>
-          <div>Ciudad de México, CDMX</div>
-          <div>contacto@hvaccrm.com · (55) 1234-5678</div>
+        <div className="title-area">
+          <div className="doc-title">Cotizaci&oacute;n</div>
+          <div className="doc-number">{quotation.number}</div>
+          {quotation.title && <div className="doc-subject">{quotation.title}</div>}
+        </div>
+        <div className="info-boxes">
+          <div>
+            <div className="label">Cliente</div>
+            <div className="value">{quotation.customer?.companyName || quotation.customer?.contactName || `Cliente #${quotation.customerId}`}<br />{quotation.customer?.contactName}{quotation.customer?.companyName ? '' : <br />}{quotation.customer?.address && <><br />{quotation.customer.address}</>}</div>
+          </div>
+          <div>
+            <div className="label">Fechas</div>
+            <div className="value">Creada: {new Date(quotation.createdAt).toLocaleDateString('es-MX')}<br />Vence: {quotation.validUntil ? new Date(quotation.validUntil).toLocaleDateString('es-MX') : 'N/A'}</div>
+          </div>
+          <div>
+            <div className="label">Contacto</div>
+            <div className="value">{quotation.customer?.phone && <>{quotation.customer.phone}<br /></>}{quotation.customer?.email || ''}</div>
+          </div>
+        </div>
+        <table className="items">
+          <thead>
+            <tr>
+              <th>Descripci&oacute;n</th>
+              <th>Cant.</th>
+              <th>P. Unitario</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item, i) => (
+              <tr key={i}>
+                <td>{item.description}</td>
+                <td>{item.quantity}</td>
+                <td>${item.unitPrice.toFixed(2)}</td>
+                <td>${item.total.toFixed(2)}</td>
+              </tr>
+            ))}
+            {items.length === 0 && (
+              <tr><td colSpan={4} style={{ textAlign: 'center', color: '#9ca3af', padding: '20px' }}>Sin partidas</td></tr>
+            )}
+          </tbody>
+        </table>
+        <div className="totals">
+          <div><span>Subtotal</span><span>${quotation.subtotal.toFixed(2)}</span></div>
+          <div><span>IVA</span><span>${quotation.tax.toFixed(2)}</span></div>
+          {quotation.discount > 0 && <div><span>Descuento</span><span style={{ color: '#dc2626' }}>-${quotation.discount.toFixed(2)}</span></div>}
+          <div className="total"><span>Total</span><span>${quotation.total.toFixed(2)}</span></div>
+        </div>
+        {quotation.notes && (
+          <div className="notes">
+            <h3>Notas</h3>
+            <p>{quotation.notes}</p>
+          </div>
+        )}
+        {quotation.terms && (
+          <div className="notes">
+            <h3>T&eacute;rminos y condiciones</h3>
+            <p>{quotation.terms}</p>
+          </div>
+        )}
+        <div className="footer">
+          Documento generado electr&oacute;nicamente por HVAC-R CRM &middot; {new Date().toLocaleDateString('es-MX')}
         </div>
       </div>
     </div>

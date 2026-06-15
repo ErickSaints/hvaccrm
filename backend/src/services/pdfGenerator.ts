@@ -7,12 +7,10 @@ const GRAY_DARK = '#1f2937';
 const GRAY_MEDIUM = '#6b7280';
 const GRAY_LIGHT = '#f3f4f6';
 const BORDER = '#e5e7eb';
-const WHITE = '#ffffff';
 
 const COMPANY = {
   name: 'HVAC-R CRM',
   tagline: 'El CRM inteligente para HVAC-R',
-  rfc: 'HCRM-123456-ABC',
   address: 'Av. Principal 123, Col. Centro',
   city: 'Ciudad de México, CDMX',
   phone: '(55) 1234-5678',
@@ -20,29 +18,9 @@ const COMPANY = {
   website: 'www.hvaccrm.com',
 };
 
-interface InvoiceData {
-  number: string;
-  title: string;
-  subtotal: number;
-  tax: number;
-  discount: number;
-  total: number;
-  status: string;
-  dueDate?: Date | null;
-  paidAt?: Date | null;
-  notes?: string | null;
-  customer: {
-    companyName?: string | null;
-    contactName: string;
-    email?: string | null;
-    phone: string;
-    address: string;
-    taxId?: string | null;
-  };
-  createdBy: {
-    name: string;
-  };
-}
+const MARGIN_TOP = 50;
+const MARGIN_BOTTOM = 50;
+const CONTENT_HEIGHT = 720;
 
 interface QuotationData {
   number: string;
@@ -51,7 +29,6 @@ interface QuotationData {
   tax: number;
   discount: number;
   total: number;
-  status?: string;
   validUntil?: Date | null;
   notes?: string | null;
   terms?: string | null;
@@ -70,190 +47,40 @@ interface QuotationData {
   }>;
 }
 
-function formatCurrency(amount: number): string {
-  return `$${amount.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+function fmt(n: number): string {
+  return `$${n.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
-function formatDate(date: Date | string | null | undefined): string {
-  if (!date) return '';
-  const d = new Date(date);
-  return d.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+function fmtDate(d: Date | string | null | undefined): string {
+  if (!d) return '';
+  return new Date(d).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 function drawHeader(doc: PDFKit.PDFDocument): void {
-  doc.rect(0, 0, 612, 100).fill(PRIMARY);
-
-  doc.fillColor(WHITE).fontSize(22).font('Helvetica-Bold')
-    .text(COMPANY.name, 50, 20);
-
-  doc.fontSize(10).font('Helvetica')
-    .text(COMPANY.tagline, 50, 48);
-
-  doc.fontSize(8).font('Helvetica')
-    .text(COMPANY.address, 50, 65)
-    .text(`${COMPANY.city} | ${COMPANY.phone}`, 50, 78);
-
-  doc.fontSize(8).font('Helvetica')
-    .text(COMPANY.email, 380, 65)
-    .text(COMPANY.website, 380, 78);
-
-  doc.fillColor(GRAY_DARK);
+  doc.rect(0, 0, 612, 90).fill(PRIMARY);
+  doc.fillColor('#ffffff').fontSize(20).font('Helvetica-Bold').text(COMPANY.name, 50, 18);
+  doc.fontSize(9).font('Helvetica').text(COMPANY.tagline, 50, 44);
+  doc.fontSize(7).font('Helvetica')
+    .text(COMPANY.address, 50, 60)
+    .text(`${COMPANY.city} | ${COMPANY.phone}`, 50, 72);
+  doc.fontSize(7).font('Helvetica')
+    .text(COMPANY.email, 380, 60)
+    .text(COMPANY.website, 380, 72);
 }
 
 function drawFooter(doc: PDFKit.PDFDocument): void {
   doc.fillColor(GRAY_MEDIUM).fontSize(7).font('Helvetica');
-
-  const bottomY = 740;
-
-  doc.moveTo(50, bottomY).lineTo(562, bottomY).stroke(BORDER);
-
-  doc.text('Documento generado electrónicamente por HVAC-R CRM.', 50, bottomY + 8, { align: 'center' })
-    .text(`Generado el: ${formatDate(new Date())}`, 50, bottomY + 20, { align: 'center' });
-
-  doc.fillColor(GRAY_DARK);
+  doc.moveTo(50, 740).lineTo(562, 740).stroke(BORDER);
+  doc.text('Documento generado electrónicamente por HVAC-R CRM.', 50, 748, { align: 'center' });
+  doc.text(`Generado el: ${fmtDate(new Date())}`, 50, 760, { align: 'center' });
 }
 
-function drawItemsTable(doc: PDFKit.PDFDocument, items: QuotationData['items'], startY: number): number {
-  const left = 50;
-  const right = 562;
-  const tableWidth = right - left;
-
-  const colDesc = tableWidth * 0.45;
-  const colQty = tableWidth * 0.12;
-  const colPrice = tableWidth * 0.21;
-  const colTotal = tableWidth * 0.22;
-  const rowHeight = 22;
-  const headerHeight = 28;
-  let y = startY;
-
-  if (y + headerHeight + 20 > 700) {
+function needPage(doc: PDFKit.PDFDocument, y: number, needed: number): number {
+  if (y + needed > CONTENT_HEIGHT) {
     doc.addPage();
-    y = 50;
+    return MARGIN_TOP;
   }
-
-  doc.rect(left, y, tableWidth, headerHeight).fill(PRIMARY);
-  doc.fillColor(WHITE).fontSize(9).font('Helvetica-Bold');
-  doc.text('Descripción', left + 8, y + 8);
-  doc.text('Cant.', left + colDesc, y + 8, { width: colQty, align: 'center' });
-  doc.text('Precio Unit.', left + colDesc + colQty, y + 8, { width: colPrice, align: 'right' });
-  doc.text('Total', left + colDesc + colQty + colPrice, y + 8, { width: colTotal, align: 'right' });
-
-  y += headerHeight;
-
-  doc.fillColor(GRAY_DARK).fontSize(9).font('Helvetica');
-
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-
-    if (y + rowHeight > 700) {
-      doc.addPage();
-      y = 50;
-    }
-
-    if (i % 2 === 1) {
-      doc.rect(left, y, tableWidth, rowHeight).fill(GRAY_LIGHT);
-    }
-
-    doc.fillColor(GRAY_DARK).font('Helvetica');
-    doc.text(item.description, left + 8, y + 4, { width: colDesc - 16 });
-    doc.text(String(item.quantity), left + colDesc, y + 4, { width: colQty, align: 'center' });
-    doc.text(formatCurrency(item.unitPrice), left + colDesc + colQty, y + 4, { width: colPrice, align: 'right' });
-    doc.text(formatCurrency(item.total), left + colDesc + colQty + colPrice, y + 4, { width: colTotal, align: 'right' });
-
-    doc.moveTo(left, y + rowHeight - 1).lineTo(right, y + rowHeight - 1).stroke(BORDER);
-
-    y += rowHeight;
-  }
-
-  y += 6;
-
-  doc.moveTo(left, y).lineTo(right, y).stroke(GRAY_MEDIUM);
-
-  return y + 10;
-}
-
-function drawTotals(doc: PDFKit.PDFDocument, data: { subtotal: number; discount: number; tax: number; total: number }, y: number): number {
-  const left = 562 - 200;
-  const labelWidth = 100;
-  const valueWidth = 100;
-  const rowH = 20;
-
-  const lines: { label: string; value: string; bold?: boolean; color?: string }[] = [
-    { label: 'Subtotal:', value: formatCurrency(data.subtotal) },
-    { label: 'Descuento:', value: `-${formatCurrency(data.discount)}`, color: data.discount > 0 ? '#dc2626' : GRAY_MEDIUM },
-    { label: 'IVA:', value: formatCurrency(data.tax) },
-    { label: 'Total:', value: formatCurrency(data.total), bold: true },
-  ];
-
-  for (const line of lines) {
-    if (line.bold) {
-      doc.rect(left - 8, y - 2, 208, rowH + 4).fill(PRIMARY_LIGHT);
-      doc.fillColor(PRIMARY).fontSize(11).font('Helvetica-Bold');
-    } else {
-      doc.fillColor(line.color || GRAY_DARK).fontSize(9).font('Helvetica');
-    }
-
-    doc.text(line.label, left, y, { width: labelWidth, align: 'left' });
-    doc.text(line.value, left + labelWidth, y, { width: valueWidth, align: 'right' });
-    y += rowH;
-  }
-
-  doc.fillColor(GRAY_DARK);
   return y;
-}
-
-export function generateInvoicePdf(res: Response, invoice: InvoiceData): void {
-  const doc = new PDFDocument({ margin: 50, size: 'Letter' });
-
-  res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `attachment; filename=factura-${invoice.number}.pdf`);
-  doc.pipe(res);
-
-  drawHeader(doc);
-
-  doc.fontSize(20).font('Helvetica-Bold').fillColor(PRIMARY)
-    .text('FACTURA', 50, 120);
-  doc.fontSize(10).font('Helvetica').fillColor(GRAY_MEDIUM)
-    .text(`No. ${invoice.number}`, 50, 145);
-
-  doc.fillColor(GRAY_DARK);
-  doc.moveTo(50, doc.y + 10).lineTo(562, doc.y + 10).stroke(BORDER);
-  doc.moveDown(2);
-
-  doc.fontSize(10).font('Helvetica-Bold').text('Cliente:');
-  doc.font('Helvetica').fontSize(9)
-    .text(`${invoice.customer.companyName || invoice.customer.contactName}`)
-    .text(`Contacto: ${invoice.customer.contactName}`)
-    .text(`RFC: ${invoice.customer.taxId || 'N/A'}`)
-    .text(`Dirección: ${invoice.customer.address}`)
-    .text(`Tel: ${invoice.customer.phone}`)
-    .text(`Email: ${invoice.customer.email || 'N/A'}`);
-  doc.moveDown();
-
-  doc.font('Helvetica-Bold').text('Datos de la Factura:');
-  doc.font('Helvetica')
-    .text(`Estado: ${invoice.status}`)
-    .text(`Fecha de Vencimiento: ${formatDate(invoice.dueDate)}`)
-    .text(`Fecha de Pago: ${formatDate(invoice.paidAt)}`)
-    .text(`Creada por: ${invoice.createdBy.name}`);
-  doc.moveDown();
-
-  doc.font('Helvetica-Bold').text('Resumen:');
-  doc.font('Helvetica')
-    .text(`Subtotal: ${formatCurrency(invoice.subtotal)}`)
-    .text(`Descuento: ${formatCurrency(invoice.discount)}`)
-    .text(`IVA: ${formatCurrency(invoice.tax)}`)
-    .font('Helvetica-Bold')
-    .text(`Total: ${formatCurrency(invoice.total)}`);
-  doc.moveDown();
-
-  if (invoice.notes) {
-    doc.font('Helvetica-Bold').text('Notas:');
-    doc.font('Helvetica').text(invoice.notes);
-  }
-
-  drawFooter(doc);
-  doc.end();
 }
 
 export function generateQuotationPdf(res: Response, quotation: QuotationData): void {
@@ -263,79 +90,208 @@ export function generateQuotationPdf(res: Response, quotation: QuotationData): v
   res.setHeader('Content-Disposition', `attachment; filename=cotizacion-${quotation.number}.pdf`);
   doc.pipe(res);
 
-  drawHeader(doc);
+  doc.on('pageAdded', () => {
+    drawHeader(doc);
+    drawFooter(doc);
+  });
 
-  doc.fontSize(20).font('Helvetica-Bold').fillColor(PRIMARY)
-    .text('COTIZACIÓN', 50, 120);
-  doc.fontSize(9).font('Helvetica').fillColor(GRAY_MEDIUM)
-    .text(`No. ${quotation.number}`, 50, 145);
+  drawHeader(doc);
+  drawFooter(doc);
+
+  let y = MARGIN_TOP + 100;
+
+  doc.fontSize(18).font('Helvetica-Bold').fillColor(PRIMARY).text('COTIZACIÓN', 50, y);
+  y += 24;
+  doc.fontSize(9).font('Helvetica').fillColor(GRAY_MEDIUM).text(`No. ${quotation.number}`, 50, y);
+  y += 16;
 
   if (quotation.title) {
-    doc.fontSize(12).font('Helvetica-Bold').fillColor(GRAY_DARK)
-      .text(quotation.title, 50, 162);
+    doc.fontSize(11).font('Helvetica-Bold').fillColor(GRAY_DARK).text(quotation.title, 50, y);
+    y += 18;
   }
 
-  doc.fillColor(GRAY_DARK);
+  y += 4;
+  doc.moveTo(50, y).lineTo(562, y).stroke(BORDER);
+  y += 12;
 
-  const infoY = quotation.title ? 185 : 170;
-  doc.moveTo(50, infoY).lineTo(562, infoY).stroke(BORDER);
-  let y = infoY + 15;
+  y = needPage(doc, y, 120);
 
   doc.rect(50, y, 250, 4).fill(PRIMARY_LIGHT);
   doc.rect(310, y, 252, 4).fill(PRIMARY_LIGHT);
 
-  doc.fontSize(9).font('Helvetica-Bold').fillColor(GRAY_DARK);
-  doc.text('Cliente', 58, y + 10);
-  doc.text('Vigencia', 318, y + 10);
+  doc.fontSize(8).font('Helvetica-Bold').fillColor(GRAY_DARK);
+  doc.text('CLIENTE', 58, y + 10);
+  doc.text('VIGENCIA', 318, y + 10);
 
+  const cy = y + 24;
   doc.fontSize(9).font('Helvetica').fillColor(GRAY_DARK);
-  const customerLine = y + 26;
-
-  const customerInfo = quotation.customer.companyName
+  const customerLines = quotation.customer.companyName
     ? `${quotation.customer.companyName}\n${quotation.customer.contactName}\n${quotation.customer.address}`
     : `${quotation.customer.contactName}\n${quotation.customer.address}`;
 
-  doc.text(customerInfo, 58, customerLine, { width: 240 });
+  doc.text(customerLines, 58, cy, { width: 240 });
+  const ch = doc.heightOfString(customerLines, { width: 240 }) + 8;
 
-  const validUntilText = quotation.validUntil
-    ? `Válida hasta: ${formatDate(quotation.validUntil)}`
-    : 'No especificada';
-  doc.text(validUntilText, 318, customerLine);
-  doc.text(`Tel: ${quotation.customer.phone}`, 318, customerLine + 30);
+  doc.text(quotation.validUntil ? `Válida hasta: ${fmtDate(quotation.validUntil)}` : 'No especificada', 318, cy);
+  doc.text(`Tel: ${quotation.customer.phone}`, 318, cy + 20);
   if (quotation.customer.email) {
-    doc.text(`Email: ${quotation.customer.email}`, 318, customerLine + 45);
+    doc.text(`Email: ${quotation.customer.email}`, 318, cy + 34);
   }
 
-  const customerBlockHeight = Math.max(
-    60,
-    30 + doc.heightOfString(customerInfo, { width: 240 }) + 10
-  );
+  y = cy + Math.max(ch, 70) + 8;
 
-  y = customerLine + customerBlockHeight + 10;
-  y = drawItemsTable(doc, quotation.items, y);
+  y = needPage(doc, y, 40);
 
-  y = drawTotals(doc, quotation, y);
+  const left = 50;
+  const right = 562;
+  const tw = right - left;
+  const cd = tw * 0.44;
+  const cq = tw * 0.13;
+  const cp = tw * 0.21;
+  const ct = tw * 0.22;
+  const rh = 20;
+
+  doc.rect(left, y, tw, 24).fill(PRIMARY);
+  doc.fillColor('#ffffff').fontSize(8).font('Helvetica-Bold');
+  doc.text('Descripción', left + 8, y + 7);
+  doc.text('Cant.', left + cd, y + 7, { width: cq, align: 'center' });
+  doc.text('Precio Unit.', left + cd + cq, y + 7, { width: cp, align: 'right' });
+  doc.text('Total', left + cd + cq + cp, y + 7, { width: ct, align: 'right' });
+
+  y += 24;
+  doc.fillColor(GRAY_DARK).fontSize(8).font('Helvetica');
+
+  for (let i = 0; i < quotation.items.length; i++) {
+    y = needPage(doc, y, rh + 4);
+
+    if (i % 2 === 1) {
+      doc.rect(left, y, tw, rh).fill(GRAY_LIGHT);
+      doc.fillColor(GRAY_DARK);
+    }
+    doc.fillColor(GRAY_DARK);
+    doc.text(quotation.items[i].description, left + 8, y + 3, { width: cd - 16 });
+    doc.text(String(quotation.items[i].quantity), left + cd, y + 3, { width: cq, align: 'center' });
+    doc.text(fmt(quotation.items[i].unitPrice), left + cd + cq, y + 3, { width: cp, align: 'right' });
+    doc.text(fmt(quotation.items[i].total), left + cd + cq + cp, y + 3, { width: ct, align: 'right' });
+    doc.moveTo(left, y + rh - 1).lineTo(right, y + rh - 1).stroke(BORDER);
+    y += rh;
+  }
+
+  y += 4;
+  doc.moveTo(left, y).lineTo(right, y).stroke(GRAY_MEDIUM);
   y += 10;
 
-  if (quotation.notes) {
-    if (y + 60 > 700) {
-      doc.addPage();
-      y = 50;
+  y = needPage(doc, y, 100);
+
+  const tl = 562 - 190;
+  const totLines: { label: string; value: string; bold?: boolean; red?: boolean }[] = [
+    { label: 'Subtotal:', value: fmt(quotation.subtotal) },
+    { label: 'Descuento:', value: `-${fmt(quotation.discount)}`, red: quotation.discount > 0 },
+    { label: 'IVA:', value: fmt(quotation.tax) },
+    { label: 'Total:', value: fmt(quotation.total), bold: true },
+  ];
+
+  for (const line of totLines) {
+    if (line.bold) {
+      doc.rect(tl - 8, y - 2, 198, 22).fill(PRIMARY_LIGHT);
+      doc.fillColor(PRIMARY).fontSize(10).font('Helvetica-Bold');
+    } else {
+      doc.fillColor(line.red ? '#dc2626' : GRAY_DARK).fontSize(8).font('Helvetica');
     }
-    doc.fontSize(10).font('Helvetica-Bold').fillColor(GRAY_DARK).text('Notas:');
-    doc.fontSize(9).font('Helvetica').fillColor(GRAY_MEDIUM).text(quotation.notes, { width: 512 });
-    y = doc.y + 15;
+    doc.text(line.label, tl, y, { width: 90, align: 'left' });
+    doc.text(line.value, tl + 90, y, { width: 90, align: 'right' });
+    y += 18;
+  }
+
+  y += 8;
+
+  if (quotation.notes) {
+    y = needPage(doc, y, 40);
+    doc.fontSize(9).font('Helvetica-Bold').fillColor(GRAY_DARK).text('Notas:', 50, y);
+    y += 14;
+    doc.fontSize(8).font('Helvetica').fillColor(GRAY_MEDIUM).text(quotation.notes, 50, y, { width: 512 });
+    y = doc.y + 12;
   }
 
   if (quotation.terms) {
-    if (y + 60 > 700) {
-      doc.addPage();
-      y = 50;
-    }
-    doc.fontSize(10).font('Helvetica-Bold').fillColor(GRAY_DARK).text('Términos y Condiciones:');
-    doc.fontSize(9).font('Helvetica').fillColor(GRAY_MEDIUM).text(quotation.terms, { width: 512 });
+    y = needPage(doc, y, 40);
+    doc.fontSize(9).font('Helvetica-Bold').fillColor(GRAY_DARK).text('Términos y Condiciones:', 50, y);
+    y += 14;
+    doc.fontSize(8).font('Helvetica').fillColor(GRAY_MEDIUM).text(quotation.terms, 50, y, { width: 512 });
   }
 
+  doc.end();
+}
+
+export function generateInvoicePdf(res: Response, invoice: any): void {
+  const doc = new PDFDocument({ margin: 50, size: 'Letter' });
+
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename=factura-${invoice.number}.pdf`);
+  doc.pipe(res);
+
+  doc.on('pageAdded', () => {
+    drawHeader(doc);
+    drawFooter(doc);
+  });
+
+  drawHeader(doc);
   drawFooter(doc);
+
+  let y = MARGIN_TOP + 100;
+
+  doc.fontSize(18).font('Helvetica-Bold').fillColor(PRIMARY).text('FACTURA', 50, y);
+  y += 22;
+  doc.fontSize(9).font('Helvetica').fillColor(GRAY_MEDIUM).text(`No. ${invoice.number}`, 50, y);
+  y += 16;
+
+  doc.moveTo(50, y).lineTo(562, y).stroke(BORDER);
+  y += 12;
+
+  y = needPage(doc, y, 180);
+
+  doc.rect(50, y, 250, 4).fill(PRIMARY_LIGHT);
+  doc.fontSize(8).font('Helvetica-Bold').fillColor(GRAY_DARK).text('CLIENTE', 58, y + 10);
+  y += 18;
+  doc.fontSize(9).font('Helvetica').fillColor(GRAY_DARK);
+  doc.text(`${invoice.customer.companyName || invoice.customer.contactName}`, 58, y);
+  y += 12;
+  doc.text(`Contacto: ${invoice.customer.contactName}`, 58, y);
+  y += 10;
+  doc.text(`RFC: ${invoice.customer.taxId || 'N/A'}`, 58, y);
+  y += 10;
+  doc.text(`Dirección: ${invoice.customer.address}`, 58, y);
+  y += 10;
+  doc.text(`Tel: ${invoice.customer.phone}`, 58, y);
+  y += 10;
+  if (invoice.customer.email) {
+    doc.text(`Email: ${invoice.customer.email}`, 58, y);
+    y += 10;
+  }
+  y += 8;
+
+  y = needPage(doc, y, 100);
+  doc.rect(50, y, 250, 4).fill(PRIMARY_LIGHT);
+  doc.fontSize(8).font('Helvetica-Bold').fillColor(GRAY_DARK).text('DATOS DE LA FACTURA', 58, y + 10);
+  y += 18;
+  doc.fontSize(9).font('Helvetica').fillColor(GRAY_DARK);
+  doc.text(`Estado: ${invoice.status}`, 58, y); y += 10;
+  doc.text(`Fecha de Vencimiento: ${fmtDate(invoice.dueDate)}`, 58, y); y += 10;
+  doc.text(`Fecha de Pago: ${fmtDate(invoice.paidAt)}`, 58, y); y += 10;
+  doc.text(`Creada por: ${invoice.createdBy.name}`, 58, y); y += 14;
+
+  doc.fontSize(9).font('Helvetica-Bold').fillColor(GRAY_DARK).text('Resumen:', 58, y); y += 14;
+  doc.fontSize(9).font('Helvetica').fillColor(GRAY_DARK);
+  doc.text(`Subtotal: ${fmt(invoice.subtotal)}`, 58, y); y += 10;
+  doc.text(`Descuento: ${fmt(invoice.discount)}`, 58, y); y += 10;
+  doc.text(`IVA: ${fmt(invoice.tax)}`, 58, y); y += 10;
+  doc.font('Helvetica-Bold').fillColor(PRIMARY).fontSize(11).text(`Total: ${fmt(invoice.total)}`, 58, y); y += 16;
+
+  if (invoice.notes) {
+    y = needPage(doc, y, 30);
+    doc.fontSize(9).font('Helvetica-Bold').fillColor(GRAY_DARK).text('Notas:', 50, y); y += 12;
+    doc.fontSize(8).font('Helvetica').fillColor(GRAY_MEDIUM).text(invoice.notes, 50, y, { width: 512 });
+  }
+
   doc.end();
 }
