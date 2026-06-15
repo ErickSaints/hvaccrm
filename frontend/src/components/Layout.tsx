@@ -71,6 +71,7 @@ const mainNav = [
   ]},
   { section: 'Proyectos', items: [
     { name: 'Levantamientos', href: '/surveys', icon: Ruler },
+    { name: 'Requisiciones de Materiales', href: '/requisitions', icon: ClipboardList },
   ]},
   { section: 'Herramientas', items: [
     { name: 'Inventario', href: '/inventory', icon: PackageSearch },

@@ -108,6 +108,8 @@ model User {
   regionPriceUpdates PricebookRegionPrice[] @relation("RegionPriceUpdater")
   commissionEarnings CommissionEarning[]
   purchaseOrders PurchaseOrder[]       @relation("POCreator")
+  requestedRequisitions MaterialRequisition[] @relation("RequisitionRequester")
+  approvedRequisitions MaterialRequisition[] @relation("RequisitionApprover")
 }
 
 model RolePermission {
@@ -593,6 +595,7 @@ model Branch {
   timeEntries   TimeEntry[]
   invoices      Invoice[]
   purchaseOrders PurchaseOrder[]
+  requisitions   MaterialRequisition[]
 }
 
 model UserBranch {
@@ -1077,6 +1080,48 @@ model PricebookRegionPrice {
   @@index([stateId])
 }
 
+// === MATERIAL REQUISITIONS ===
+enum RequisitionStatus {
+  PENDIENTE
+  EN_ESPERA
+  ENVIADO
+}
+
+model MaterialRequisition {
+  id            Int               @id @default(autoincrement())
+  number        String            @unique
+  title         String
+  status        RequisitionStatus @default(PENDIENTE)
+  notes         String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  requestedById  Int
+  requestedBy    User             @relation("RequisitionRequester", fields: [requestedById], references: [id])
+
+  approvedById  Int?
+  approvedBy    User?             @relation("RequisitionApprover", fields: [approvedById], references: [id])
+
+  branchId      Int?
+  branch        Branch?           @relation(fields: [branchId], references: [id])
+
+  items         MaterialRequisitionItem[]
+
+  @@map("material_requisitions")
+}
+
+model MaterialRequisitionItem {
+  id            Int               @id @default(autoincrement())
+  description   String
+  quantity      Float             @default(1)
+  unit          String            @default("pza")
+  notes         String?
+
+  requisitionId Int
+  requisition   MaterialRequisition @relation(fields: [requisitionId], references: [id], onDelete: Cascade)
+
+  @@map("material_requisition_items")
+}
 
 
 

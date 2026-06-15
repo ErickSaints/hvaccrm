@@ -42,6 +42,7 @@ import warrantyRoutes from './routes/warranties';
 import purchasingRoutes from './routes/purchasing';
 import quotationRequestRoutes from './routes/quotationRequests';
 import aiAssistantRoutes from './routes/aiAssistant';
+import materialRequisitionRoutes from './routes/materialRequisitions';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler';
 import { startReminderScheduler } from './notifications/scheduler';
 import { startMaintenanceScheduler } from './notifications/maintenanceScheduler';
@@ -90,6 +91,7 @@ app.use('/api/commissions', commissionRoutes);
 app.use('/api/warranties', warrantyRoutes);
 app.use('/api/purchasing', purchasingRoutes);
 app.use('/api/quotation-requests', quotationRequestRoutes);
+app.use('/api/material-requisitions', materialRequisitionRoutes);
 app.use('/api/admin/ai', aiAssistantRoutes);
 
 app.get('/health', (_req, res) => {

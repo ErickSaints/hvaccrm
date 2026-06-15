@@ -68,6 +68,9 @@ const PricebookRegionalPage = lazy(() => import('./pages/PricebookRegionalPage')
 const QuotationRequestsPage = lazy(() => import('./pages/QuotationRequestsPage'));
 const QuotationRequestForm = lazy(() => import('./pages/QuotationRequestForm'));
 const QuotationRequestDetail = lazy(() => import('./pages/QuotationRequestDetail'));
+const RequisitionsPage = lazy(() => import('./pages/RequisitionsPage'));
+const RequisitionFormPage = lazy(() => import('./pages/RequisitionFormPage'));
+const RequisitionDetailPage = lazy(() => import('./pages/RequisitionDetailPage'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -208,6 +211,10 @@ function AnimatedRoutes() {
             <Route path="pricebook" element={<PageTransition><PricebookPage /></PageTransition>} />
             <Route path="pricebook/regiones" element={<PageTransition><PricebookRegionalPage /></PageTransition>} />
             <Route path="campaigns" element={<PageTransition><MarketingCampaignsPage /></PageTransition>} />
+            <Route path="requisitions" element={<PageTransition><RequisitionsPage /></PageTransition>} />
+            <Route path="requisitions/new" element={<PageTransition><RequisitionFormPage /></PageTransition>} />
+            <Route path="requisitions/:id" element={<PageTransition><RequisitionDetailPage /></PageTransition>} />
+            <Route path="requisitions/:id/edit" element={<PageTransition><RequisitionFormPage /></PageTransition>} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
