@@ -106,8 +106,25 @@ export default function QuotationDetailPage() {
     window.print();
   };
 
-  const handleDownloadPdf = () => {
-    window.open(`/api/quotations/${id}/pdf`, '_blank');
+  const handleDownloadPdf = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/quotations/${id}/pdf`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error('Error al generar PDF');
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `cotizacion-${quotation?.number || id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error('Error al descargar PDF');
+    }
   };
 
   const handleSend = () => {
@@ -340,12 +357,61 @@ export default function QuotationDetailPage() {
       </div>
 
       <style>{`
+        .print-only { display: none; }
         @media print {
-          .no-print { display: none; }
+          @page { margin: 1.5cm 1.8cm; size: letter; }
+          * { box-shadow: none !important; text-shadow: none !important; background: transparent !important; }
+          body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          .no-print { display: none !important; }
+          .print-only { display: flex !important; }
           .print-area { margin: 0; padding: 0; }
-          body { background: white; }
+          .print-area .card { border: none !important; padding: 0 !important; }
+          .print-area .text-3xl { font-size: 18px !important; color: #1e40af !important; }
+          .print-area .grid { display: flex !important; gap: 16px !important; margin-bottom: 14px !important; }
+          .print-area .grid > div { flex: 1; border: 1px solid #e5e7eb; border-radius: 4px; padding: 10px 12px; }
+          .print-area .grid p:first-child { font-size: 7px; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; font-weight: 700; }
+          .print-area .grid .font-medium { font-size: 9px; color: #1f2937; font-weight: 600; }
+          .print-area .grid .text-sm { font-size: 8px; color: #4b5563; }
+          .print-area .grid .text-xs { font-size: 7px; }
+          .print-area .grid svg { display: none; }
+          .print-area table { font-size: 9px; border-collapse: collapse; width: 100%; margin-bottom: 12px; }
+          .print-area table thead tr { border: none; }
+          .print-area table thead th { background: #1e40af !important; color: white !important; padding: 6px 8px; font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; border: none; }
+          .print-area table thead th:nth-child(2) { text-align: center; width: 50px; }
+          .print-area table thead th:nth-child(3) { text-align: right; width: 80px; }
+          .print-area table thead th:nth-child(4) { text-align: right; width: 80px; }
+          .print-area table tbody tr { border: none; }
+          .print-area table tbody td { padding: 5px 8px; border-bottom: 1px solid #e5e7eb; color: #374151; }
+          .print-area table tbody td:nth-child(2) { text-align: center; }
+          .print-area table tbody td:nth-child(3) { text-align: right; }
+          .print-area table tbody td:nth-child(4) { text-align: right; font-weight: 600; }
+          .print-area table tbody tr:nth-child(even) td { background: #f9fafb !important; }
+          .print-area table tbody tr:last-child td { border-bottom: 2px solid #1e40af; }
+          .print-area .border-t-2 { border: none !important; padding-top: 0 !important; margin-top: 0 !important; }
+          .print-area .border-t-2 .ml-auto { width: 240px !important; margin-left: auto !important; }
+          .print-area .border-t-2 .space-y-2 > div { padding: 2px 0; font-size: 9px; display: flex; justify-content: space-between; }
+          .print-area .border-t-2 .font-bold { border-top: 2px solid #1e40af; margin-top: 2px; padding-top: 4px; font-size: 11px; color: #1e40af; }
+          .print-area .border-t-2 .text-red-600 { color: #dc2626 !important; }
+          .print-area .border-t { border-top: 1px solid #e5e7eb !important; margin-top: 10px !important; padding-top: 8px !important; }
+          .print-area .border-t h3 { font-size: 9px; }
+          .print-area .border-t p { font-size: 8px; color: #6b7280; }
+          .print-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 3px solid #1e40af; }
+          .print-header-left h1 { font-size: 18px; margin: 0 0 2px; color: #1e40af; }
+          .print-header-left p { margin: 0; font-size: 8px; color: #6b7280; }
+          .print-header-right { text-align: right; font-size: 7px; color: #374151; line-height: 1.6; }
         }
       `}</style>
+      <div className="print-only print-header">
+        <div className="print-header-left">
+          <h1>HVAC-R CRM</h1>
+          <p>El CRM inteligente para HVAC-R · www.hvaccrm.com</p>
+        </div>
+        <div className="print-header-right">
+          <div>Av. Principal 123, Col. Centro</div>
+          <div>Ciudad de México, CDMX</div>
+          <div>contacto@hvaccrm.com · (55) 1234-5678</div>
+        </div>
+      </div>
     </div>
   );
 }
