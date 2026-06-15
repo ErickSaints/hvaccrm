@@ -1,43 +1,64 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Search, Loader2, Package, AlertCircle, ShoppingCart, User, Tag } from 'lucide-react';
+import { Search, Loader2, Package, AlertCircle, ShoppingCart, Truck, User } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import AsyncCustomerSelect from '../components/AsyncCustomerSelect';
 
-interface CatalogItem {
-  id: number;
-  name: string;
-  description: string | null;
-  basePrice: number;
-  unit: string;
-  category: string;
+interface PartProduct {
+  id: string;
+  title: string;
+  price: number;
+  currency: string;
+  condition: string;
+  availableQuantity: number;
+  thumbnail: string;
+  freeShipping: boolean;
+  deliveryDays: number;
+  source: string;
 }
 
 export default function RefaccionesPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [query, setQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(null);
-  const [quantities, setQuantities] = useState<Record<number, number>>({});
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (query.trim()) {
+      debounceRef.current = setTimeout(() => {
+        setSearchTerm(query.trim());
+      }, 400);
+    } else {
+      setSearchTerm('');
+    }
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [query]);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['catalog-search', query],
-    queryFn: () => api.get(`/pricebook/items?search=${encodeURIComponent(query)}&limit=50`).then((r) => r.data),
-    enabled: query.trim().length > 0,
+    queryKey: ['ml-search', searchTerm],
+    queryFn: () => api.get(`/mercadolibre/search?q=${encodeURIComponent(searchTerm)}&limit=50`).then((r) => r.data),
+    enabled: searchTerm.length > 0,
     staleTime: 0,
   });
 
   const quoteMutation = useMutation({
-    mutationFn: async ({ item, qty }: { item: CatalogItem; qty: number }) => {
+    mutationFn: async ({ product, qty }: { product: PartProduct; qty: number }) => {
       if (!selectedCustomerId && user?.role !== 'CLIENT') {
         throw new Error('Selecciona un cliente');
       }
-      const { data } = await api.post('/quotations', {
-        title: `Cotización: ${item.name}`,
-        items: [{ description: item.name, quantity: qty, unitPrice: item.basePrice, total: item.basePrice * qty }],
+      const { data } = await api.post('/mercadolibre/create-quotation', {
+        itemId: product.id,
+        title: product.title,
+        price: product.price,
+        quantity: qty,
+        thumbnail: product.thumbnail,
         customerId: selectedCustomerId || undefined,
       });
       return data;
@@ -51,7 +72,7 @@ export default function RefaccionesPage() {
     },
   });
 
-  const setQty = (id: number, val: number) => {
+  const setQty = (id: string, val: number) => {
     setQuantities((prev) => ({ ...prev, [id]: Math.max(1, val) }));
   };
 
@@ -88,11 +109,11 @@ export default function RefaccionesPage() {
       </div>
 
       <div>
-        {!query.trim() && (
+        {!searchTerm && (
           <div className="text-center py-16 text-gray-500 dark:text-gray-400">
             <Package className="w-16 h-16 mx-auto mb-4 text-gray-200" />
             <p className="text-lg font-medium text-gray-400 dark:text-gray-500">Busca cualquier refacción o herramienta</p>
-            <p className="text-sm mt-1">Encuentra productos de nuestro catálogo y genera una cotización al instante</p>
+            <p className="text-sm mt-1">Encuentra productos y genera una cotización al instante</p>
           </div>
         )}
 
@@ -107,30 +128,37 @@ export default function RefaccionesPage() {
             <AlertCircle className="w-12 h-12 mx-auto mb-3 text-red-400" />
             <p className="text-red-600 font-medium">Error al buscar productos</p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Servicio temporalmente no disponible</p>
-            <button onClick={() => setQuery(query.trim())} className="btn-secondary mt-4">Reintentar</button>
+            <button onClick={() => setSearchTerm(query.trim())} className="btn-secondary mt-4">Reintentar</button>
           </div>
         )}
 
-        {data?.data?.length > 0 && (
+        {data?.results?.length > 0 && (
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{data.total} producto(s) encontrado(s)</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{data.total} resultados para "<strong>{data.query}</strong>"</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {data.data.map((product: CatalogItem) => (
+              {data.results.map((product: PartProduct) => (
                 <div key={product.id} className="card group hover:shadow-lg transition-shadow flex flex-col">
                   <div className="aspect-square bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden mb-3 flex items-center justify-center p-4">
-                    <Package className="w-16 h-16 text-gray-300" />
+                    <img
+                      src={product.thumbnail}
+                      alt={product.title}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                    />
                   </div>
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-2 mb-1 flex-1">{product.name}</h3>
-                  {product.description && (
-                    <p className="text-xs text-gray-400 dark:text-gray-500 line-clamp-2 mb-2">{product.description}</p>
-                  )}
-                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
-                    <Tag className="w-3 h-3" />
-                    <span className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{product.category}</span>
-                    <span>{product.unit}</span>
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-2 mb-2 flex-1">{product.title}</h3>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2">
+                    <span className="bg-gray-100 px-1.5 py-0.5 rounded">{product.condition}</span>
+                    {product.freeShipping && (
+                      <span className="text-green-600 flex items-center gap-1">
+                        <Truck className="w-3 h-3" /> Envío gratis
+                      </span>
+                    )}
+                    <span className="flex items-center gap-1">
+                      <Truck className="w-3 h-3" /> {product.deliveryDays} días hábiles
+                    </span>
                   </div>
                   <p className="text-xl font-bold text-primary-600 mb-3">
-                    ${product.basePrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                    ${product.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </p>
                   <div className="flex items-center gap-2 mb-3">
                     <label className="text-xs text-gray-500 dark:text-gray-400 font-medium">Cant:</label>
@@ -153,7 +181,7 @@ export default function RefaccionesPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => quoteMutation.mutate({ item: product, qty: quantities[product.id] || 1 })}
+                    onClick={() => quoteMutation.mutate({ product, qty: quantities[product.id] || 1 })}
                     disabled={quoteMutation.isPending || (user?.role !== 'CLIENT' && !selectedCustomerId)}
                     className="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -170,7 +198,7 @@ export default function RefaccionesPage() {
           </div>
         )}
 
-        {query.trim() && !isLoading && data?.data?.length === 0 && (
+        {searchTerm && !isLoading && data?.results?.length === 0 && (
           <div className="text-center py-16 text-gray-500 dark:text-gray-400">
             <Package className="w-12 h-12 mx-auto mb-3 text-gray-300" />
             <p className="font-medium">No se encontraron resultados</p>
