@@ -41,7 +41,7 @@ const statusSchema = z.object({
 
 router.use(authenticate);
 
-router.get('/', requireBackoffice, paginate, async (req: Request, res: Response) => {
+router.get('/', requireBackoffice, async (req: Request, res: Response) => {
   try {
     const { search, status } = req.query;
     const where: any = {};
@@ -60,14 +60,12 @@ router.get('/', requireBackoffice, paginate, async (req: Request, res: Response)
           approvedBy: { select: { id: true, name: true } },
           branch: { select: { id: true, name: true } },
           items: true,
-          _count: { select: { items: true } },
         },
         orderBy: { createdAt: 'desc' },
-        ...(req as any).paginate,
       }),
       prisma.materialRequisition.count({ where }),
     ]);
-    res.json(paginatedResponse(requisitions, total, req));
+    res.json({ data: requisitions, total });
   } catch (err) {
     res.status(500).json({ error: 'Error al listar requisiciones' });
   }

@@ -16,7 +16,7 @@ interface Requisition {
   approvedBy: { id: number; name: string } | null;
   branch: { id: number; name: string } | null;
   items: Item[];
-  _count: { items: number };
+  items: Item[];
 }
 
 const statusStyles: Record<string, string> = {
@@ -115,7 +115,7 @@ export default function RequisitionsPage() {
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">{req.title}</h3>
                     <div className="flex items-center gap-3 mt-1 text-[11px] text-gray-500">
                       <span>Solicitó: {req.requestedBy.name}</span>
-                      <span>{req._count.items} artículos</span>
+                      <span>{req.items.length} artículos</span>
                       {req.branch && <span>Sucursal: {req.branch.name}</span>}
                       <span>{new Date(req.createdAt).toLocaleDateString('es-MX')}</span>
                     </div>
