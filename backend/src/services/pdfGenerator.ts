@@ -87,6 +87,12 @@ function needPage(doc: PDFKit.PDFDocument, y: number, needed: number): number {
 export function generateQuotationPdf(res: Response, quotation: QuotationData): void {
   const doc = new PDFDocument({ margin: 50, size: 'Letter' });
 
+  doc.on('error', (err) => {
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Error al generar PDF' });
+    }
+  });
+
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename=cotizacion-${quotation.number}.pdf`);
   doc.pipe(res);

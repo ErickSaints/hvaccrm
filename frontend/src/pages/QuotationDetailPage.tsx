@@ -108,12 +108,7 @@ export default function QuotationDetailPage() {
 
   const handleDownloadPdf = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/quotations/${id}/pdf`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error('Error al generar PDF');
-      const blob = await response.blob();
+      const { data: blob } = await api.get(`/quotations/${id}/pdf`, { responseType: 'blob' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -122,8 +117,18 @@ export default function QuotationDetailPage() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    } catch {
-      toast.error('Error al descargar PDF');
+    } catch (err: any) {
+      let msg = 'Error al descargar PDF';
+      if (err?.response?.data instanceof Blob) {
+        try {
+          const text = await err.response.data.text();
+          const json = JSON.parse(text);
+          msg = json.error || msg;
+        } catch {}
+      } else {
+        msg = err?.response?.data?.error || err?.message || msg;
+      }
+      toast.error(msg);
     }
   };
 
