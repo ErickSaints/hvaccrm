@@ -106,6 +106,10 @@ export default function QuotationDetailPage() {
     window.print();
   };
 
+  const handleDownloadPdf = () => {
+    window.open(`/api/quotations/${id}/pdf`, '_blank');
+  };
+
   const handleSend = () => {
     statusMutation.mutate('ENVIADA');
   };
@@ -194,6 +198,10 @@ export default function QuotationDetailPage() {
               )}
             </div>
           )}
+          <button onClick={handleDownloadPdf} className="btn-secondary inline-flex items-center gap-2">
+            <FileText className="w-4 h-4" />
+            Descargar PDF
+          </button>
           <button onClick={handlePrint} className="btn-secondary inline-flex items-center gap-2">
             <Printer className="w-4 h-4" />
             Imprimir

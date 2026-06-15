@@ -1,6 +1,25 @@
 import PDFDocument from 'pdfkit';
 import { Response } from 'express';
 
+const PRIMARY = '#1e40af';
+const PRIMARY_LIGHT = '#dbeafe';
+const GRAY_DARK = '#1f2937';
+const GRAY_MEDIUM = '#6b7280';
+const GRAY_LIGHT = '#f3f4f6';
+const BORDER = '#e5e7eb';
+const WHITE = '#ffffff';
+
+const COMPANY = {
+  name: 'HVAC-R CRM',
+  tagline: 'El CRM inteligente para HVAC-R',
+  rfc: 'HCRM-123456-ABC',
+  address: 'Av. Principal 123, Col. Centro',
+  city: 'Ciudad de México, CDMX',
+  phone: '(55) 1234-5678',
+  email: 'contacto@hvaccrm.com',
+  website: 'www.hvaccrm.com',
+};
+
 interface InvoiceData {
   number: string;
   title: string;
@@ -32,6 +51,7 @@ interface QuotationData {
   tax: number;
   discount: number;
   total: number;
+  status?: string;
   validUntil?: Date | null;
   notes?: string | null;
   terms?: string | null;
@@ -60,6 +80,128 @@ function formatDate(date: Date | string | null | undefined): string {
   return d.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
+function drawHeader(doc: PDFKit.PDFDocument): void {
+  doc.rect(0, 0, 612, 100).fill(PRIMARY);
+
+  doc.fillColor(WHITE).fontSize(22).font('Helvetica-Bold')
+    .text(COMPANY.name, 50, 20);
+
+  doc.fontSize(10).font('Helvetica')
+    .text(COMPANY.tagline, 50, 48);
+
+  doc.fontSize(8).font('Helvetica')
+    .text(COMPANY.address, 50, 65)
+    .text(`${COMPANY.city} | ${COMPANY.phone}`, 50, 78);
+
+  doc.fontSize(8).font('Helvetica')
+    .text(COMPANY.email, 380, 65)
+    .text(COMPANY.website, 380, 78);
+
+  doc.fillColor(GRAY_DARK);
+}
+
+function drawFooter(doc: PDFKit.PDFDocument): void {
+  doc.fillColor(GRAY_MEDIUM).fontSize(7).font('Helvetica');
+
+  const bottomY = 740;
+
+  doc.moveTo(50, bottomY).lineTo(562, bottomY).stroke(BORDER);
+
+  doc.text('Documento generado electrónicamente por HVAC-R CRM.', 50, bottomY + 8, { align: 'center' })
+    .text(`Generado el: ${formatDate(new Date())}`, 50, bottomY + 20, { align: 'center' });
+
+  doc.fillColor(GRAY_DARK);
+}
+
+function drawItemsTable(doc: PDFKit.PDFDocument, items: QuotationData['items'], startY: number): number {
+  const left = 50;
+  const right = 562;
+  const tableWidth = right - left;
+
+  const colDesc = tableWidth * 0.45;
+  const colQty = tableWidth * 0.12;
+  const colPrice = tableWidth * 0.21;
+  const colTotal = tableWidth * 0.22;
+  const rowHeight = 22;
+  const headerHeight = 28;
+  let y = startY;
+
+  if (y + headerHeight + 20 > 700) {
+    doc.addPage();
+    y = 50;
+  }
+
+  doc.rect(left, y, tableWidth, headerHeight).fill(PRIMARY);
+  doc.fillColor(WHITE).fontSize(9).font('Helvetica-Bold');
+  doc.text('Descripción', left + 8, y + 8);
+  doc.text('Cant.', left + colDesc, y + 8, { width: colQty, align: 'center' });
+  doc.text('Precio Unit.', left + colDesc + colQty, y + 8, { width: colPrice, align: 'right' });
+  doc.text('Total', left + colDesc + colQty + colPrice, y + 8, { width: colTotal, align: 'right' });
+
+  y += headerHeight;
+
+  doc.fillColor(GRAY_DARK).fontSize(9).font('Helvetica');
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+
+    if (y + rowHeight > 700) {
+      doc.addPage();
+      y = 50;
+    }
+
+    if (i % 2 === 1) {
+      doc.rect(left, y, tableWidth, rowHeight).fill(GRAY_LIGHT);
+    }
+
+    doc.fillColor(GRAY_DARK).font('Helvetica');
+    doc.text(item.description, left + 8, y + 4, { width: colDesc - 16 });
+    doc.text(String(item.quantity), left + colDesc, y + 4, { width: colQty, align: 'center' });
+    doc.text(formatCurrency(item.unitPrice), left + colDesc + colQty, y + 4, { width: colPrice, align: 'right' });
+    doc.text(formatCurrency(item.total), left + colDesc + colQty + colPrice, y + 4, { width: colTotal, align: 'right' });
+
+    doc.moveTo(left, y + rowHeight - 1).lineTo(right, y + rowHeight - 1).stroke(BORDER);
+
+    y += rowHeight;
+  }
+
+  y += 6;
+
+  doc.moveTo(left, y).lineTo(right, y).stroke(GRAY_MEDIUM);
+
+  return y + 10;
+}
+
+function drawTotals(doc: PDFKit.PDFDocument, data: { subtotal: number; discount: number; tax: number; total: number }, y: number): number {
+  const left = 562 - 200;
+  const labelWidth = 100;
+  const valueWidth = 100;
+  const rowH = 20;
+
+  const lines: { label: string; value: string; bold?: boolean; color?: string }[] = [
+    { label: 'Subtotal:', value: formatCurrency(data.subtotal) },
+    { label: 'Descuento:', value: `-${formatCurrency(data.discount)}`, color: data.discount > 0 ? '#dc2626' : GRAY_MEDIUM },
+    { label: 'IVA:', value: formatCurrency(data.tax) },
+    { label: 'Total:', value: formatCurrency(data.total), bold: true },
+  ];
+
+  for (const line of lines) {
+    if (line.bold) {
+      doc.rect(left - 8, y - 2, 208, rowH + 4).fill(PRIMARY_LIGHT);
+      doc.fillColor(PRIMARY).fontSize(11).font('Helvetica-Bold');
+    } else {
+      doc.fillColor(line.color || GRAY_DARK).fontSize(9).font('Helvetica');
+    }
+
+    doc.text(line.label, left, y, { width: labelWidth, align: 'left' });
+    doc.text(line.value, left + labelWidth, y, { width: valueWidth, align: 'right' });
+    y += rowH;
+  }
+
+  doc.fillColor(GRAY_DARK);
+  return y;
+}
+
 export function generateInvoicePdf(res: Response, invoice: InvoiceData): void {
   const doc = new PDFDocument({ margin: 50, size: 'Letter' });
 
@@ -67,20 +209,19 @@ export function generateInvoicePdf(res: Response, invoice: InvoiceData): void {
   res.setHeader('Content-Disposition', `attachment; filename=factura-${invoice.number}.pdf`);
   doc.pipe(res);
 
-  doc.fontSize(24).font('Helvetica-Bold').text('FACTURA', { align: 'center' });
-  doc.fontSize(10).font('Helvetica').text(`No. ${invoice.number}`, { align: 'center' });
-  doc.moveDown();
+  drawHeader(doc);
 
-  doc.moveTo(50, doc.y).lineTo(545, doc.y).stroke();
-  doc.moveDown();
+  doc.fontSize(20).font('Helvetica-Bold').fillColor(PRIMARY)
+    .text('FACTURA', 50, 120);
+  doc.fontSize(10).font('Helvetica').fillColor(GRAY_MEDIUM)
+    .text(`No. ${invoice.number}`, 50, 145);
 
-  doc.fontSize(10).font('Helvetica-Bold').text('RFC: HVAC-CRM-123456-ABC');
-  doc.font('Helvetica').text('HVAC-R CRM - by semasi');
-  doc.text('www.hvaccrm.com');
-  doc.moveDown();
+  doc.fillColor(GRAY_DARK);
+  doc.moveTo(50, doc.y + 10).lineTo(562, doc.y + 10).stroke(BORDER);
+  doc.moveDown(2);
 
-  doc.font('Helvetica-Bold').text('Cliente:');
-  doc.font('Helvetica')
+  doc.fontSize(10).font('Helvetica-Bold').text('Cliente:');
+  doc.font('Helvetica').fontSize(9)
     .text(`${invoice.customer.companyName || invoice.customer.contactName}`)
     .text(`Contacto: ${invoice.customer.contactName}`)
     .text(`RFC: ${invoice.customer.taxId || 'N/A'}`)
@@ -103,7 +244,7 @@ export function generateInvoicePdf(res: Response, invoice: InvoiceData): void {
     .text(`Descuento: ${formatCurrency(invoice.discount)}`)
     .text(`IVA: ${formatCurrency(invoice.tax)}`)
     .font('Helvetica-Bold')
-    .text(`Total: ${formatCurrency(invoice.total)}`, { underline: true });
+    .text(`Total: ${formatCurrency(invoice.total)}`);
   doc.moveDown();
 
   if (invoice.notes) {
@@ -111,11 +252,7 @@ export function generateInvoicePdf(res: Response, invoice: InvoiceData): void {
     doc.font('Helvetica').text(invoice.notes);
   }
 
-  doc.moveDown();
-  doc.fontSize(8).font('Helvetica').fillColor('#666')
-    .text('Documento generado electrónicamente por HVAC-R CRM.', { align: 'center' })
-    .text(`Generado el: ${formatDate(new Date())}`, { align: 'center' });
-
+  drawFooter(doc);
   doc.end();
 }
 
@@ -126,88 +263,79 @@ export function generateQuotationPdf(res: Response, quotation: QuotationData): v
   res.setHeader('Content-Disposition', `attachment; filename=cotizacion-${quotation.number}.pdf`);
   doc.pipe(res);
 
-  doc.fontSize(24).font('Helvetica-Bold').text('COTIZACIÓN', { align: 'center' });
-  doc.fontSize(10).font('Helvetica').text(`No. ${quotation.number}`, { align: 'center' });
+  drawHeader(doc);
+
+  doc.fontSize(20).font('Helvetica-Bold').fillColor(PRIMARY)
+    .text('COTIZACIÓN', 50, 120);
+  doc.fontSize(9).font('Helvetica').fillColor(GRAY_MEDIUM)
+    .text(`No. ${quotation.number}`, 50, 145);
+
   if (quotation.title) {
-    doc.fontSize(14).font('Helvetica-Bold').text(quotation.title, { align: 'center' });
+    doc.fontSize(12).font('Helvetica-Bold').fillColor(GRAY_DARK)
+      .text(quotation.title, 50, 162);
   }
-  doc.moveDown();
 
-  doc.moveTo(50, doc.y).lineTo(545, doc.y).stroke();
-  doc.moveDown();
+  doc.fillColor(GRAY_DARK);
 
-  doc.fontSize(10).font('Helvetica-Bold').text('Cliente:');
-  doc.font('Helvetica')
-    .text(`${quotation.customer.companyName || quotation.customer.contactName}`)
-    .text(`Contacto: ${quotation.customer.contactName}`)
-    .text(`Dirección: ${quotation.customer.address}`)
-    .text(`Tel: ${quotation.customer.phone}`)
-    .text(`Email: ${quotation.customer.email || 'N/A'}`);
-  doc.moveDown();
+  const infoY = quotation.title ? 185 : 170;
+  doc.moveTo(50, infoY).lineTo(562, infoY).stroke(BORDER);
+  let y = infoY + 15;
 
-  doc.font('Helvetica-Bold').text('Vigencia:');
-  doc.font('Helvetica').text(quotation.validUntil ? `Válida hasta: ${formatDate(quotation.validUntil)}` : 'No especificada');
-  doc.moveDown();
+  doc.rect(50, y, 250, 4).fill(PRIMARY_LIGHT);
+  doc.rect(310, y, 252, 4).fill(PRIMARY_LIGHT);
 
-  doc.font('Helvetica-Bold').text('Partidas:', { underline: true });
-  doc.moveDown();
+  doc.fontSize(9).font('Helvetica-Bold').fillColor(GRAY_DARK);
+  doc.text('Cliente', 58, y + 10);
+  doc.text('Vigencia', 318, y + 10);
 
-  const tableTop = doc.y;
-  const colDescriptions = 220;
-  const colQty = 60;
-  const colUnitPrice = 100;
-  const colTotal = 100;
+  doc.fontSize(9).font('Helvetica').fillColor(GRAY_DARK);
+  const customerLine = y + 26;
 
-  doc.font('Helvetica-Bold').fontSize(9);
-  doc.text('Descripción', 50, tableTop);
-  doc.text('Cant.', 50 + colDescriptions, tableTop, { width: colQty, align: 'center' });
-  doc.text('Precio Unit.', 50 + colDescriptions + colQty, tableTop, { width: colUnitPrice, align: 'right' });
-  doc.text('Total', 50 + colDescriptions + colQty + colUnitPrice, tableTop, { width: colTotal, align: 'right' });
+  const customerInfo = quotation.customer.companyName
+    ? `${quotation.customer.companyName}\n${quotation.customer.contactName}\n${quotation.customer.address}`
+    : `${quotation.customer.contactName}\n${quotation.customer.address}`;
 
-  doc.moveTo(50, doc.y + 5).lineTo(545, doc.y + 5).stroke();
-  doc.moveDown();
+  doc.text(customerInfo, 58, customerLine, { width: 240 });
 
-  doc.font('Helvetica').fontSize(9);
-  let y = doc.y;
-  for (const item of quotation.items) {
-    if (y > 700) {
+  const validUntilText = quotation.validUntil
+    ? `Válida hasta: ${formatDate(quotation.validUntil)}`
+    : 'No especificada';
+  doc.text(validUntilText, 318, customerLine);
+  doc.text(`Tel: ${quotation.customer.phone}`, 318, customerLine + 30);
+  if (quotation.customer.email) {
+    doc.text(`Email: ${quotation.customer.email}`, 318, customerLine + 45);
+  }
+
+  const customerBlockHeight = Math.max(
+    60,
+    30 + doc.heightOfString(customerInfo, { width: 240 }) + 10
+  );
+
+  y = customerLine + customerBlockHeight + 10;
+  y = drawItemsTable(doc, quotation.items, y);
+
+  y = drawTotals(doc, quotation, y);
+  y += 10;
+
+  if (quotation.notes) {
+    if (y + 60 > 700) {
       doc.addPage();
       y = 50;
     }
-
-    const descLines = doc.heightOfString(item.description, { width: colDescriptions });
-    doc.text(item.description, 50, y, { width: colDescriptions });
-    doc.text(String(item.quantity), 50 + colDescriptions, y, { width: colQty, align: 'center' });
-    doc.text(formatCurrency(item.unitPrice), 50 + colDescriptions + colQty, y, { width: colUnitPrice, align: 'right' });
-    doc.text(formatCurrency(item.total), 50 + colDescriptions + colQty + colUnitPrice, y, { width: colTotal, align: 'right' });
-
-    y += Math.max(descLines, 20);
-  }
-
-  doc.moveDown(2);
-  doc.font('Helvetica-Bold');
-  doc.text(`Subtotal: ${formatCurrency(quotation.subtotal)}`, { align: 'right' });
-  doc.text(`Descuento: ${formatCurrency(quotation.discount)}`, { align: 'right' });
-  doc.text(`IVA: ${formatCurrency(quotation.tax)}`, { align: 'right' });
-  doc.font('Helvetica-Bold').fontSize(12)
-    .text(`Total: ${formatCurrency(quotation.total)}`, { align: 'right', underline: true });
-  doc.moveDown();
-
-  if (quotation.notes) {
-    doc.fontSize(10).font('Helvetica-Bold').text('Notas:');
-    doc.font('Helvetica').text(quotation.notes);
+    doc.fontSize(10).font('Helvetica-Bold').fillColor(GRAY_DARK).text('Notas:');
+    doc.fontSize(9).font('Helvetica').fillColor(GRAY_MEDIUM).text(quotation.notes, { width: 512 });
+    y = doc.y + 15;
   }
 
   if (quotation.terms) {
-    doc.moveDown();
-    doc.font('Helvetica-Bold').text('Términos y Condiciones:');
-    doc.font('Helvetica').text(quotation.terms);
+    if (y + 60 > 700) {
+      doc.addPage();
+      y = 50;
+    }
+    doc.fontSize(10).font('Helvetica-Bold').fillColor(GRAY_DARK).text('Términos y Condiciones:');
+    doc.fontSize(9).font('Helvetica').fillColor(GRAY_MEDIUM).text(quotation.terms, { width: 512 });
   }
 
-  doc.moveDown();
-  doc.fontSize(8).font('Helvetica').fillColor('#666')
-    .text('Documento generado electrónicamente por HVAC-R CRM.', { align: 'center' })
-    .text(`Generado el: ${formatDate(new Date())}`, { align: 'center' });
-
+  drawFooter(doc);
   doc.end();
 }
