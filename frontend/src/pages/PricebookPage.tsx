@@ -109,10 +109,10 @@ export default function PricebookPage() {
   const itemMutation = useMutation({
     mutationFn: async () => {
       const payload = {
-        sku: formSku || undefined, name: formName, description: formDescription || null,
-        unit: formUnit, basePrice: formBasePrice ? parseFloat(formBasePrice) : null,
-        costPrice: formCostPrice ? parseFloat(formCostPrice) : null,
-        supplier: formSupplier || null, categoryId: formCategoryId,
+        sku: formSku || undefined, name: formName, description: formDescription || undefined,
+        unit: formUnit, basePrice: formBasePrice ? parseFloat(formBasePrice) : undefined,
+        costPrice: formCostPrice ? parseFloat(formCostPrice) : undefined,
+        supplier: formSupplier || undefined, categoryId: formCategoryId ?? undefined,
       };
       if (editingItem) { await api.put(`/pricebook/items/${editingItem.id}`, payload); }
       else { await api.post('/pricebook/items', payload); }
