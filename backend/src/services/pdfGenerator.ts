@@ -21,6 +21,7 @@ const COMPANY = {
 const MARGIN_TOP = 50;
 const MARGIN_BOTTOM = 50;
 const CONTENT_HEIGHT = 720;
+const CONTENT_START = 150;
 
 interface QuotationData {
   number: string;
@@ -78,7 +79,7 @@ function drawFooter(doc: PDFKit.PDFDocument): void {
 function needPage(doc: PDFKit.PDFDocument, y: number, needed: number): number {
   if (y + needed > CONTENT_HEIGHT) {
     doc.addPage();
-    return MARGIN_TOP;
+    return CONTENT_START;
   }
   return y;
 }
@@ -98,7 +99,7 @@ export function generateQuotationPdf(res: Response, quotation: QuotationData): v
   drawHeader(doc);
   drawFooter(doc);
 
-  let y = MARGIN_TOP + 100;
+  let y = CONTENT_START;
 
   doc.fontSize(18).font('Helvetica-Bold').fillColor(PRIMARY).text('COTIZACIÓN', 50, y);
   y += 24;
